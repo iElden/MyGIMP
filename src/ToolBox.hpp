@@ -17,6 +17,10 @@ namespace Mimp
 		std::vector<std::shared_ptr<Tool>> _tools;
 		unsigned int _selectedTool = 0;
 		tgui::ChildWindow::Ptr _window;
+		std::pair<Color, Color> _selectedColor = {
+			Color::White,
+			Color::Black
+		};
 
 		void _generateGuiWindow();
 	public:
@@ -24,6 +28,7 @@ namespace Mimp
 		Tool &getSelectedTool() noexcept;
 		const Tool &getSelectedTool() const noexcept;
 		tgui::ChildWindow::Ptr getWindow() const;
+		Color getSelectedColor(MouseClick click);
 	};
 }
 

@@ -9,7 +9,7 @@
 namespace Mimp
 {
 	ToolBox::ToolBox() :
-		_tools(ToolFactory::buildAll())
+		_tools(ToolFactory::buildAll(*this))
 	{
 		this->_generateGuiWindow();
 	}
@@ -48,5 +48,12 @@ namespace Mimp
 				}
 			}
 		}
+	}
+
+	Color ToolBox::getSelectedColor(MouseClick click)
+	{
+		if (click == MIMP_LEFT_CLICK)
+			return this->_selectedColor.first;
+		return this->_selectedColor.second;
 	}
 }

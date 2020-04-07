@@ -13,12 +13,14 @@
 
 namespace Mimp
 {
+	class ToolBox;
+
 	class ToolFactory {
 	private:
-		static const std::vector<std::function<std::shared_ptr<Tool>()>> _builders;
+		static const std::vector<std::function<std::shared_ptr<Tool>(ToolBox &)>> _builders;
 
 	public:
-		static std::vector<std::shared_ptr<Tool>> buildAll();
+		static std::vector<std::shared_ptr<Tool>> buildAll(ToolBox &);
 	};
 }
 

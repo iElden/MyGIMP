@@ -1,7 +1,8 @@
-#include <iostream>
+#include "Editor.hpp"
 
 int main()
 {
-	std::cout << "Hello, World!" << std::endl;
-	return 0;
+	Mimp::Editor editor;
+
+	return editor.run();
 }
