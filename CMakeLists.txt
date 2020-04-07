@@ -23,7 +23,7 @@ add_executable(
 	src/CanvasWidget.cpp
 	src/CanvasWidget.hpp
 	src/Data/MouseClick.hpp
-)
+	src/Tools/ToolFactory.cpp src/Tools/ToolFactory.hpp src/Exceptions.hpp)
 
 target_link_libraries(
 	MyGimp
