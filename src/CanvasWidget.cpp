@@ -102,7 +102,7 @@ namespace Mimp
 		this->_layers.render(buffer);
 
 		texture.create(buffer.getSize().x, buffer.getSize().y);
-		texture.update(reinterpret_cast<sf::Uint8 *>(buffer.getBuffer()));
+		texture.update(reinterpret_cast<const sf::Uint8 *>(buffer.getBuffer()));
 
 		sprite.setTexture(texture);
 

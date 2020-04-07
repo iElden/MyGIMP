@@ -6,17 +6,17 @@
 
 namespace Mimp
 {
-	const Color Black       = 0x000000FF;
-	const Color LightGray   = 0xA0A0A0FF;
-	const Color DarkGray    = 0x505050FF;
-	const Color White       = 0xFFFFFFFF;
-	const Color Red         = 0xFF0000FF;
-	const Color Blue        = 0x0000FFFF;
-	const Color Green       = 0x00FF00FF;
-	const Color Magenta     = 0xFF00FFFF;
-	const Color Yellow      = 0xFFFF00FF;
-	const Color Cyan        = 0x00FFFFFF;
-	const Color Transparent = 0x00000000;
+	const Color Color::Black       = 0x000000FF;
+	const Color Color::LightGray   = 0xA0A0A0FF;
+	const Color Color::DarkGray    = 0x505050FF;
+	const Color Color::White       = 0xFFFFFFFF;
+	const Color Color::Red         = 0xFF0000FF;
+	const Color Color::Blue        = 0x0000FFFF;
+	const Color Color::Green       = 0x00FF00FF;
+	const Color Color::Magenta     = 0xFF00FFFF;
+	const Color Color::Yellow      = 0xFFFF00FF;
+	const Color Color::Cyan        = 0x00FFFFFF;
+	const Color Color::Transparent = 0x00000000;
 
 	Color::Color(unsigned int color) noexcept :
 		r(color >> 0x18U & 0xFFU),

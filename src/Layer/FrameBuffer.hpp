@@ -18,14 +18,15 @@ namespace Mimp
 		unsigned int *_pixelBuffer;
 
 	public:
+		FrameBuffer(const FrameBuffer &other);
 		FrameBuffer(Vector2<unsigned int> size, const unsigned int *buffer);
 		FrameBuffer(Vector2<unsigned int> size, const std::vector<Color> &buffer);
 		FrameBuffer(Vector2<unsigned int> size, const Color &defaultColor = Color::Transparent);
 		~FrameBuffer();
 
-		unsigned int *getBuffer();
-		Color operator[](unsigned int index) const;
-		Color operator[](Vector2<unsigned> pos) const;
+		const unsigned int *getBuffer() const;
+		unsigned int &operator[](unsigned int index) const;
+		Color operator[](Vector2<int> pos) const noexcept;
 		Vector2<unsigned int> getSize() const noexcept;
 		void drawPixel(Vector2<int> pos, const Color &color) noexcept;
 		void drawLine(Vector2<int> pt1, Vector2<int> pt2) noexcept;
