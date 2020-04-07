@@ -27,9 +27,23 @@ namespace Mimp
 		~BaseException() override = default;
 	};
 
-	class CorruptedGuiFile : public BaseException {
+	class CorruptedGuiFileException : public BaseException {
 	public:
-		explicit CorruptedGuiFile(const std::string &&msg) :
+		explicit CorruptedGuiFileException(const std::string &&msg) :
+			BaseException(static_cast<const std::string &&>(msg))
+		{};
+	};
+
+	class InvalidArgumentException : public BaseException {
+	public:
+		explicit InvalidArgumentException(const std::string &&msg) :
+			BaseException(static_cast<const std::string &&>(msg))
+		{};
+	};
+
+	class OutOfBoundException : public BaseException {
+	public:
+		explicit OutOfBoundException(const std::string &&msg) :
 			BaseException(static_cast<const std::string &&>(msg))
 		{};
 	};

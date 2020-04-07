@@ -40,11 +40,11 @@ namespace Mimp
 					auto index = std::stol(static_cast<std::string>(name.substring(sizeof("Tool"))));
 
 					if (index >= this->_tools.size())
-						throw CorruptedGuiFile("Tool index out of range");
+						throw CorruptedGuiFileException("Tool index out of range");
 				} catch (std::out_of_range &e) {
-					throw CorruptedGuiFile("Tool index out of range");
+					throw CorruptedGuiFileException("Tool index out of range");
 				} catch (std::invalid_argument &e) {
-					throw CorruptedGuiFile("Tool index is not a valid number");
+					throw CorruptedGuiFileException("Tool index is not a valid number");
 				}
 			}
 		}

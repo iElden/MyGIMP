@@ -27,11 +27,11 @@ namespace Mimp
 		Color operator[](unsigned int index) const;
 		Color operator[](Vector2<unsigned> pos) const;
 		Vector2<unsigned int> getSize() const noexcept;
-		void drawPixel(Vector2<unsigned> pos, const Color &color) noexcept;
-		void drawLine(Vector2<unsigned> pt1, Vector2<unsigned> pt2) noexcept;
-		void drawRect(Vector2<unsigned> pos, Vector2<unsigned> size, const Color &color) noexcept;
-		void drawEllipsoid(Vector2<unsigned> pos, Vector2<unsigned> size, const Color &color) noexcept;
-		void drawFrameBuffer(Vector2<unsigned> pos, const FrameBuffer &buffer) noexcept;
+		void drawPixel(Vector2<int> pos, const Color &color) noexcept;
+		void drawLine(Vector2<int> pt1, Vector2<int> pt2) noexcept;
+		void drawRect(Vector2<int> pos, Vector2<unsigned> size, const Color &color) noexcept;
+		void drawEllipsoid(Vector2<int> pos, Vector2<unsigned> size, const Color &color) noexcept;
+		void drawFrameBuffer(Vector2<int> pos, const FrameBuffer &buffer) noexcept;
 		FrameBuffer getRectFromBuffer(Vector2<int> pos, Vector2<unsigned> size, const Color &fill = Color::Transparent);
 		void clear(const Color &color) noexcept;
 	};

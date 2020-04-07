@@ -6,13 +6,14 @@
 #define MYGIMP_LAYERMANAGER_HPP
 
 
+#include <memory>
 #include "Layer.hpp"
 
 namespace Mimp
 {
 	class LayerManager {
 	private:
-		std::vector<Layer> _layers;
+		std::vector<std::shared_ptr<Layer>> _layers;
 		unsigned int _selectedLayer;
 
 	public:
@@ -28,8 +29,8 @@ namespace Mimp
 		void setLayerIndex(unsigned int layerOldIndex, unsigned int layerNewIndex);
 
 		//Iterator
-		std::vector<Layer>::iterator begin();
-		std::vector<Layer>::iterator end();
+		std::vector<std::shared_ptr<Layer>>::iterator begin();
+		std::vector<std::shared_ptr<Layer>>::iterator end();
 	};
 }
 
