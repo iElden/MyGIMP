@@ -13,6 +13,7 @@ namespace Mimp
 		_gui(this->_mainWindow)
 	{
 		this->_gui.add(this->_toolBox.getWindow(), "ToolBox");
+		this->_gui.loadWidgetsFromFile("widgets/top_menu.gui");
 	}
 
 	void Editor::setSelectedImage(const std::shared_ptr<CanvasWidget> &canvas)

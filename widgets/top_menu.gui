@@ -1,0 +1,100 @@
+MenuBar.main_bar {
+    MinimumSubMenuWidth = 125;
+    Size = (&.size, 20);
+    TextSize = 13;
+
+    Renderer {
+        backgroundcolor = #D8D8D8;
+        distancetoside = 4;
+        selectedbackgroundcolor = #006EFF;
+        selectedtextcolor = white;
+        textcolor = black;
+        textcolordisabled = #7D7D7D;
+    }
+
+    Menu {
+        Text = File;
+
+        Menu {
+            Text = "New";
+        }
+
+        Menu {
+            Text = "Open";
+        }
+
+        Menu {
+            Text = Save;
+            Enabled = false;
+        }
+
+        Menu {
+            Text = "Save as";
+            Enabled = false;
+        }
+
+        Menu {
+            Text = Close;
+            Enabled = false;
+        }
+
+        Menu {
+            Text = "Close All";
+            Enabled = false;
+        }
+
+        Menu {
+            Text = Quit;
+        }
+    }
+
+    Menu {
+        Text = Edit;
+        Items = [];
+    }
+
+    Menu {
+        Text = Selection;
+        Items = [];
+    }
+
+    Menu {
+        Text = Display;
+        Items = [];
+    }
+
+    Menu {
+        Text = Image;
+        Items = [];
+    }
+
+    Menu {
+        Text = Layer;
+        Items = [];
+    }
+
+    Menu {
+        Text = Colors;
+        Items = [];
+    }
+
+    Menu {
+        Text = Tools;
+        Items = [];
+    }
+
+    Menu {
+        Text = Filters;
+        Items = [];
+    }
+
+    Menu {
+        Text = Windows;
+        Items = [];
+    }
+
+    Menu {
+        Text = Help;
+        Items = [];
+    }
+}
