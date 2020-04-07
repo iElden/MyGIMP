@@ -2,6 +2,8 @@
 // Created by Gegel85 on 06/04/2020.
 //
 
+#include <iostream>
+#include <TGUI/TGUI.hpp>
 #include "ToolBox.hpp"
 #include "Tools/ToolFactory.hpp"
 #include "Exceptions.hpp"
@@ -34,13 +36,25 @@ namespace Mimp
 		this->_window = tgui::ChildWindow::create();
 		this->_window->loadWidgetsFromFile("widgets/tool_box.gui");
 
-		for (auto &name : this->_window->getWidgetNames()) {
-			if (name.substring(0, sizeof("Tool")) == "Tool") {
+		auto panel = this->_window->get<tgui::ScrollablePanel>("Panel");
+
+		this->_window->setPosition("&.w - w", 20);
+		this->_window->setSize(panel->getSize());
+		this->_window->setTitle("Tools");
+
+		for (auto &widget : panel->getWidgets()) {
+			auto name = panel->getWidgetName(widget);
+
+			if (name.substr(0, strlen("Tool")) == "Tool") {
 				try {
-					auto index = std::stol(static_cast<std::string>(name.substring(sizeof("Tool"))));
+					size_t index = std::stol(static_cast<std::string>(name.substr(strlen("Tool"))));
 
 					if (index >= this->_tools.size())
 						throw CorruptedGuiFileException("Tool index out of range");
+
+					widget->connect("Pressed", [this, index]{
+						this->_selectedTool = index;
+					});
 				} catch (std::out_of_range &e) {
 					throw CorruptedGuiFileException("Tool index out of range");
 				} catch (std::invalid_argument &e) {

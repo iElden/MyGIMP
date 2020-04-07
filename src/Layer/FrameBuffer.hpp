@@ -26,7 +26,7 @@ namespace Mimp
 
 		const unsigned int *getBuffer() const;
 		unsigned int &operator[](unsigned int index) const;
-		Color operator[](Vector2<int> pos) const noexcept;
+		Color getPixel(Vector2<int> pos, const Color &fill = Color::Transparent) const noexcept;
 		Vector2<unsigned int> getSize() const noexcept;
 		void drawPixel(Vector2<int> pos, const Color &color) noexcept;
 		void drawLine(Vector2<int> pt1, Vector2<int> pt2) noexcept;

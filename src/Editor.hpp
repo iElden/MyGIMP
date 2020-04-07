@@ -16,8 +16,8 @@ namespace Mimp
 	class Editor {
 	private:
 		ToolBox _toolBox;
-		tgui::Gui _gui;
 		sf::RenderWindow _mainWindow;
+		tgui::Gui _gui;
 		std::shared_ptr<CanvasWidget> _selectedImage;
 
 	public:

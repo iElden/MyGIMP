@@ -1,4 +1,4 @@
-ScrollablePanel.ScrollablePanel1 {
+ScrollablePanel.Panel {
     ContentSize = (0, 0);
     Size = (100, 220);
 

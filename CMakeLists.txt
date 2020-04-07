@@ -1,7 +1,21 @@
 cmake_minimum_required(VERSION 3.15)
 project(MyGimp)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
+
+if ("${CMAKE_BUILD_TYPE}" STREQUAL Debug)
+	if (CMAKE_COMPILER_IS_GNUCC)
+		add_compile_options(-Wall -Wextra -W -g -D_DEBUG)
+	endif (CMAKE_COMPILER_IS_GNUCC)
+endif ()
+
+if ("${CMAKE_BUILD_TYPE}" STREQUAL Release)
+	if (CMAKE_COMPILER_IS_GNUCC)
+		if (WIN32)
+			add_link_options(-mwindows)
+		endif (WIN32)
+	endif (CMAKE_COMPILER_IS_GNUCC)
+endif ()
 
 add_executable(
 	MyGimp
@@ -28,7 +42,7 @@ add_executable(
 	src/Exceptions.hpp
 	src/Tools/Pencil.cpp
 	src/Tools/Pencil.hpp
-)
+	src/Utils.cpp src/Utils.hpp)
 
 target_link_libraries(
 	MyGimp
