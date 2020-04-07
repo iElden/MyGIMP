@@ -14,7 +14,7 @@ namespace Mimp
 	class LayerManager {
 	private:
 		std::vector<std::shared_ptr<Layer>> _layers;
-		unsigned int _selectedLayer;
+		unsigned int _selectedLayer = 0;
 
 	public:
 		LayerManager(Vector2<unsigned> size, unsigned int nbOfLayer = 1, const Color &defaultColor = Color::Transparent);

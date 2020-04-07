@@ -25,6 +25,7 @@ namespace Mimp
 
 		static tgui::ChildWindow::Ptr _makeImagePanel(CanvasWidget::Ptr canvas);
 	public:
+		Editor(const Editor &) = delete;
 		Editor(const std::vector<std::string> &images = {});
 
 		void setSelectedImage(const std::shared_ptr<CanvasWidget> &_canvas);

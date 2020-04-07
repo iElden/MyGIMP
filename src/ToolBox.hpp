@@ -18,8 +18,8 @@ namespace Mimp
 		unsigned int _selectedTool = 0;
 		tgui::ChildWindow::Ptr _window;
 		std::pair<Color, Color> _selectedColor = {
-			Color::White,
-			Color::Black
+			Color::Black,
+			Color::White
 		};
 
 		void _generateGuiWindow();

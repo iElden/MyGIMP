@@ -29,11 +29,8 @@ namespace Mimp
 		CanvasWidget(const ToolBox &box, Vector2<unsigned int> size);
 		CanvasWidget(const ToolBox &box, const std::string &path);
 
-		template<typename ...Args>
-		static CanvasWidget::Ptr create(Args... args)
-		{
-			return std::make_shared<CanvasWidget>(args...);
-		}
+		static CanvasWidget::Ptr create(const ToolBox &box, Vector2<unsigned int> size);
+		static CanvasWidget::Ptr create(const ToolBox &box, const std::string &path);
 
 		void mouseMoved(tgui::Vector2f pos) override;
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

@@ -58,4 +58,9 @@ namespace Mimp
 		else
 			return other;
 	}
+
+	Color::operator sf::Color() const noexcept
+	{
+		return sf::Color(static_cast<unsigned>(*this));
+	}
 }

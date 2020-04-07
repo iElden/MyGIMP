@@ -74,7 +74,7 @@ namespace Mimp
 			realPos.x = pos.x;
 			realPos.y = pos.y;
 			this->_rightMouseDown = true;
-			this->_box.getSelectedTool().onClick(realPos, MIMP_LEFT_CLICK, this->_layers.getSelectedLayer());
+			this->_box.getSelectedTool().onClick(realPos, MIMP_RIGHT_CLICK, this->_layers.getSelectedLayer());
 		});
 		this->onRightMouseRelease.connect([this](){
 			this->_rightMouseDown = false;
@@ -97,15 +97,33 @@ namespace Mimp
 			static_cast<unsigned>(this->getSize().x),
 			static_cast<unsigned>(this->getSize().y)
 		});
+		auto size = buffer.getSize();
 
 		states.transform.translate(getPosition());
 		this->_layers.render(buffer);
 
-		texture.create(buffer.getSize().x, buffer.getSize().y);
-		texture.update(reinterpret_cast<const sf::Uint8 *>(buffer.getBuffer()));
+		texture.create(size.x, size.y);
+
+		auto pixelArray = new sf::Color[size.x * size.y];
+
+		for (unsigned x = 0; x < size.x; x++)
+			for (unsigned y = 0; y < size.y; y++)
+				pixelArray[x + y * size.x] = buffer.getPixel({static_cast<int>(x), static_cast<int>(y)});
+		texture.update(reinterpret_cast<const sf::Uint8 *>(pixelArray));
 
 		sprite.setTexture(texture);
 
 		target.draw(sprite, states);
+		delete[] pixelArray;
+	}
+
+	CanvasWidget::Ptr CanvasWidget::create(const ToolBox &box, Vector2<unsigned int> size)
+	{
+		return std::make_shared<CanvasWidget>(box, size);
+	}
+
+	CanvasWidget::Ptr CanvasWidget::create(const ToolBox &box, const std::string &path)
+	{
+		return std::make_shared<CanvasWidget>(box, path);
 	}
 }

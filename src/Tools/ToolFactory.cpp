@@ -16,8 +16,9 @@ namespace Mimp
 
 	std::vector<std::shared_ptr<Tool>> ToolFactory::buildAll(ToolBox &box)
 	{
-		std::vector<std::shared_ptr<Tool>> array{ToolFactory::_builders.size()};
+		std::vector<std::shared_ptr<Tool>> array;
 
+		array.reserve(ToolFactory::_builders.size());
 		for (auto &func : ToolFactory::_builders)
 			array.push_back(func(box));
 		return array;

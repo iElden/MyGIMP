@@ -3,6 +3,7 @@
 //
 
 #include <cstring>
+#include <SFML/Graphics/Color.hpp>
 #include "FrameBuffer.hpp"
 #include "../Exceptions.hpp"
 

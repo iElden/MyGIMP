@@ -6,6 +6,8 @@
 #define MYGIMP_COLOR_HPP
 
 
+#include <SFML/Graphics/Color.hpp>
+
 namespace Mimp
 {
 	struct Color {
@@ -17,6 +19,7 @@ namespace Mimp
 		Color(unsigned int color) noexcept;
 		Color(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255) noexcept;
 		operator unsigned int() const noexcept;
+		operator sf::Color() const noexcept;
 		Color operator+(const Color &other);
 
 		static const Color Black      ;
