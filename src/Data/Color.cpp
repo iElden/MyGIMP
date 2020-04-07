@@ -2,6 +2,7 @@
 // Created by Gegel85 on 06/04/2020.
 //
 
+#include <cmath>
 #include "Color.hpp"
 
 namespace Mimp
@@ -37,5 +38,24 @@ namespace Mimp
 	Color::operator unsigned int() const noexcept
 	{
 		return (this->r << 0x18U) | (this->g << 0x10U) | (this->b << 0x08U) | (this->a << 0x00U);
+	}
+
+	Color Color::operator+(const Mimp::Color &other)
+	{
+		if (this->a && other.a) {
+			double thisA = this->a / 255.;
+			double otherA = other.a / 255.;
+			double resultA = 1 - (1 - otherA) * (1 - thisA);
+
+			return {
+				static_cast<unsigned char>(round((other.r * otherA / resultA) + (this->r * thisA * (1 - otherA) / resultA))),
+				static_cast<unsigned char>(round((other.g * otherA / resultA) + (this->g * thisA * (1 - otherA) / resultA))),
+				static_cast<unsigned char>(round((other.b * otherA / resultA) + (this->b * thisA * (1 - otherA) / resultA))),
+				static_cast<unsigned char>(resultA * 255)
+			};
+		} else if (this->a)
+			return *this;
+		else
+			return other;
 	}
 }

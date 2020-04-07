@@ -14,9 +14,9 @@ namespace Mimp
 {
 	struct Layer {
 		FrameBuffer buffer;
-		bool locked;
-		bool visible;
-		Vector2<int> pos;
+		bool locked = false;
+		bool visible = true;
+		Vector2<int> pos = {0, 0};
 
 		Layer(Vector2<unsigned int> size, const Color &defaultColor = Color::Transparent);
 
