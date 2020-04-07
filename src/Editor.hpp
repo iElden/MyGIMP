@@ -15,11 +15,15 @@ namespace Mimp
 {
 	class Editor {
 	private:
+		unsigned _lastUntitled = 0;
 		ToolBox _toolBox;
 		sf::RenderWindow _mainWindow;
 		tgui::Gui _gui;
-		std::shared_ptr<CanvasWidget> _selectedImage;
+		CanvasWidget::Ptr _selectedImage;
 
+		void _setupButtonCallbacks();
+
+		static tgui::ChildWindow::Ptr _makeImagePanel(CanvasWidget::Ptr canvas);
 	public:
 		Editor(const std::vector<std::string> &images = {});
 

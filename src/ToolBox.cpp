@@ -28,6 +28,7 @@ namespace Mimp
 
 	tgui::ChildWindow::Ptr ToolBox::getWindow() const
 	{
+		this->_window->setPosition("&.w - w", 20);
 		return this->_window;
 	}
 
@@ -38,9 +39,11 @@ namespace Mimp
 
 		auto panel = this->_window->get<tgui::ScrollablePanel>("Panel");
 
-		this->_window->setPosition("&.w - w", 20);
 		this->_window->setSize(panel->getSize());
 		this->_window->setTitle("Tools");
+		this->_window->connect("Closed", [this]{
+			this->_generateGuiWindow();
+		});
 
 		for (auto &widget : panel->getWidgets()) {
 			auto name = panel->getWidgetName(widget);

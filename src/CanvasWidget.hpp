@@ -23,6 +23,9 @@ namespace Mimp
 		CanvasWidget(const ToolBox &box, Vector2<unsigned int> size, const LayerManager &layers);
 
 	public:
+		typedef std::shared_ptr<CanvasWidget> Ptr; ///< Shared widget pointer
+		typedef std::shared_ptr<const CanvasWidget> ConstPtr; ///< Shared constant widget pointer
+
 		CanvasWidget(const ToolBox &box, Vector2<unsigned int> size);
 		CanvasWidget(const ToolBox &box, const std::string &path);
 
