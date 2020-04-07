@@ -86,25 +86,169 @@ namespace Mimp
 		this->_pixelBuffer[pos.x + pos.y * this->_size.x] = this->getPixel(pos) + color;
 	}
 
-	void FrameBuffer::drawPoint(Vector2<float> pos, const Color &color) noexcept
+	void FrameBuffer::drawLine(Vector2<int> pt1, Vector2<int> pt2, const Color &color) noexcept
 	{
-		this->drawPixel({static_cast<int>(pos.x), static_cast<int>(pos.y)}, color);
+		/*procédure tracerSegment(entier x1, entier y1, entier x2, entier y2) est
+		déclarer entier dx, dy;
 
-		if (static_cast<int>(pos.x) != pos.x)
-			this->drawPixel({static_cast<int>(pos.x + 1), static_cast<int>(pos.y)}, color);
+		si (dx ← x2 - x1) ≠ 0 alors
+			si dx > 0 alors
+				si (dy ← y2 - y1) ≠ 0 alors
+					si dy > 0 alors
+						// vecteur oblique dans le 1er quadran
 
-		if (static_cast<int>(pos.y) != pos.y)
-			this->drawPixel({static_cast<int>(pos.x), static_cast<int>(pos.y + 1)}, color);
+						si dx ≥ dy alors
+							// vecteur diagonal ou oblique proche de l’horizontale, dans le 1er octant
+							déclarer entier e ;
+							dx ← (e ← dx) × 2 ; dy ← dy × 2 ;  // e est positif
+							boucle sans fin  // déplacements horizontaux
+								tracePixel(x1, y1) ;
+								interrompre boucle si (x1 ← x1 + 1) = x2 ;
+								si (e ← e - dy) < 0 alors
+									y1 ← y1 + 1 ;  // déplacement diagonal
+									e ← e + dx ;
+								fin si ;
+							fin boucle ;
+						sinon
+							// vecteur oblique proche de la verticale, dans le 2d octant
+							déclarer entier e ;
+							dy ← (e ← dy) × 2 ; dx ← dx × 2 ;  // e est positif
+							boucle sans fin  // déplacements verticaux
+								tracePixel(x1, y1) ;
+									interrompre boucle si (y1 ← y1 + 1) = y2 ;
+									si (e ← e - dx) < 0 alors
+									x1 ← x1 + 1 ;  // déplacement diagonal
+									e ← e + dy ;
+								fin si ;
+							fin boucle ;
+						fin si ;
 
-		if (static_cast<int>(pos.x) != pos.x && static_cast<int>(pos.y) != pos.y)
-			this->drawPixel({static_cast<int>(pos.x + 1), static_cast<int>(pos.y + 1)}, color);
-	}
+					sinon  // dy < 0 (et dx > 0)
+						// vecteur oblique dans le 4e cadran
 
-	void FrameBuffer::drawLine(Vector2<int> pt1, Vector2<int> pt2) noexcept
-	{
-		static_cast<void>(pt1);
-		static_cast<void>(pt2);
-		//TODO: Draw line
+						si dx ≥ -dy alors
+							// vecteur diagonal ou oblique proche de l’horizontale, dans le 8e octant
+							déclarer entier e ;
+							dx ← (e ← dx) × 2 ; dy ← dy × 2 ;  // e est positif
+							boucle sans fin  // déplacements horizontaux
+								tracePixel(x1, y1) ;
+								interrompre boucle si (x1 ← x1 + 1) = x2 ;
+								si (e ← e + dy) < 0 alors
+									y1 ← y1 - 1 ;  // déplacement diagonal
+									e ← e + dx ;
+								fin si ;
+							fin boucle ;
+						sinon  // vecteur oblique proche de la verticale, dans le 7e octant
+							déclarer entier e ;
+							dy ← (e ← dy) × 2 ; dx ← dx × 2 ;  // e est négatif
+							boucle sans fin  // déplacements verticaux
+								tracePixel(x1, y1) ;
+								interrompre boucle si (y1 ← y1 - 1) = y2 ;
+								si (e ← e + dx) > 0 alors
+									x1 ← x1 + 1 ;  // déplacement diagonal
+									e ← e + dy ;
+								fin si ;
+							fin boucle ;
+						fin si ;
+
+					fin si ;
+				sinon  // dy = 0 (et dx > 0)
+
+					// vecteur horizontal vers la droite
+					répéter
+						tracePixel(x1, y1) ;
+					jusqu’à ce que (x1 ← x1 + 1) = x2 ;
+
+				fin si ;
+			sinon  // dx < 0
+				si (dy ← y2 - y1) ≠ 0 alors
+					si dy > 0 alors
+						// vecteur oblique dans le 2d quadran
+
+						si -dx ≥ dy alors
+							// vecteur diagonal ou oblique proche de l’horizontale, dans le 4e octant
+							déclarer entier e ;
+							dx ← (e ← dx) × 2 ; dy ← dy × 2 ;  // e est négatif
+							boucle sans fin  // déplacements horizontaux
+								tracePixel(x1, y1) ;
+								interrompre boucle si (x1 ← x1 - 1) = x2 ;
+								si (e ← e + dy) ≥ 0 alors
+									y1 ← y1 + 1 ;  // déplacement diagonal
+									e ← e + dx ;
+								fin si ;
+							fin boucle ;
+						sinon
+							// vecteur oblique proche de la verticale, dans le 3e octant
+							déclarer entier e ;
+							dy ← (e ← dy) × 2 ; dx ← dx × 2 ;  // e est positif
+							boucle sans fin  // déplacements verticaux
+								tracePixel(x1, y1) ;
+								interrompre boucle si (y1 ← y1 + 1) = y2 ;
+								si (e ← e + dx) ≤ 0 alors
+									x1 ← x1 - 1 ;  // déplacement diagonal
+									e ← e + dy ;
+								fin si ;
+							fin boucle ;
+						fin si ;
+
+					sinon  // dy < 0 (et dx < 0)
+						// vecteur oblique dans le 3e cadran
+
+						si dx ≤ dy alors
+							// vecteur diagonal ou oblique proche de l’horizontale, dans le 5e octant
+							déclarer entier e ;
+							dx ← (e ← dx) × 2 ; dy ← dy × 2 ;  // e est négatif
+							boucle sans fin  // déplacements horizontaux
+								tracePixel(x1, y1) ;
+								interrompre boucle si (x1 ← x1 - 1) = x2 ;
+								si (e ← e - dy) ≥ 0 alors
+									y1 ← y1 - 1 ;  // déplacement diagonal
+									e ← e + dx ;
+								fin si ;
+							fin boucle ;
+						sinon  // vecteur oblique proche de la verticale, dans le 6e octant
+							déclarer entier e ;
+							dy ← (e ← dy) × 2 ; dx ← dx × 2 ;  // e est négatif
+							boucle sans fin  // déplacements verticaux
+								tracePixel(x1, y1) ;
+								interrompre boucle si (y1 ← y1 - 1) = y2 ;
+								si (e ← e - dx) ≥ 0 alors
+									x1 ← x1 - 1 ;  // déplacement diagonal
+									e ← e + dy ;
+								fin si ;
+							fin boucle ;
+						fin si ;
+
+					fin si ;
+				sinon  // dy = 0 (et dx < 0)
+
+					// vecteur horizontal vers la gauche
+					répéter
+						tracePixel(x1, y1) ;
+					jusqu’à ce que (x1 ← x1 - 1) = x2 ;
+
+				fin si ;
+			fin si ;
+		sinon  // dx = 0
+			si (dy ← y2 - y1) ≠ 0 alors
+				si dy > 0 alors
+
+					// vecteur vertical croissant
+					répéter
+						tracePixel(x1, y1) ;
+					jusqu’à ce que (y1 ← y1 + 1) = y2 ;
+
+				sinon  // dy < 0 (et dx = 0)
+
+					// vecteur vertical décroissant
+					répéter
+						tracePixel(x1, y1) ;
+					jusqu’à ce que (y1 ← y1 - 1) = y2 ;
+
+				fin si ;
+			fin si ;
+		fin si ;*/
+		//TODO: Implement the above algorithm
 	}
 
 	void FrameBuffer::drawRect(Vector2<int> pos, Vector2<unsigned> size, const Color &color) noexcept

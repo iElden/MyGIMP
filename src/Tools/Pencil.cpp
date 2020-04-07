@@ -11,11 +11,11 @@ namespace Mimp
 	{
 	}
 
-	void Pencil::onMouseDrag(Vector2<int> pos, MouseClick click, Layer &layer) const
+	void Pencil::onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Layer &layer) const
 	{
 		if (layer.isLocked())
 			return;
-		layer.buffer.drawPixel(pos, this->_box.getSelectedColor(click));
+		layer.buffer.drawLine(oldPos, newPos, this->_box.getSelectedColor(click));
 	}
 
 	void Pencil::onClick(Vector2<int> pos, MouseClick click, Layer &layer) const
