@@ -86,6 +86,20 @@ namespace Mimp
 		this->_pixelBuffer[pos.x + pos.y * this->_size.x] = this->getPixel(pos) + color;
 	}
 
+	void FrameBuffer::drawPoint(Vector2<float> pos, const Color &color) noexcept
+	{
+		this->drawPixel({static_cast<int>(pos.x), static_cast<int>(pos.y)}, color);
+
+		if (static_cast<int>(pos.x) != pos.x)
+			this->drawPixel({static_cast<int>(pos.x + 1), static_cast<int>(pos.y)}, color);
+
+		if (static_cast<int>(pos.y) != pos.y)
+			this->drawPixel({static_cast<int>(pos.x), static_cast<int>(pos.y + 1)}, color);
+
+		if (static_cast<int>(pos.x) != pos.x && static_cast<int>(pos.y) != pos.y)
+			this->drawPixel({static_cast<int>(pos.x + 1), static_cast<int>(pos.y + 1)}, color);
+	}
+
 	void FrameBuffer::drawLine(Vector2<int> pt1, Vector2<int> pt2) noexcept
 	{
 		static_cast<void>(pt1);

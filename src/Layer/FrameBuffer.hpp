@@ -29,6 +29,7 @@ namespace Mimp
 		Color getPixel(Vector2<int> pos, const Color &fill = Color::Transparent) const noexcept;
 		Vector2<unsigned int> getSize() const noexcept;
 		void drawPixel(Vector2<int> pos, const Color &color) noexcept;
+		void drawPoint(Vector2<float> pos, const Color &color) noexcept;
 		void drawLine(Vector2<int> pt1, Vector2<int> pt2) noexcept;
 		void drawRect(Vector2<int> pos, Vector2<unsigned> size, const Color &color) noexcept;
 		void drawEllipsoid(Vector2<int> pos, Vector2<unsigned> size, const Color &color) noexcept;
