@@ -8,9 +8,9 @@
 
 namespace Mimp
 {
-	LayerManager::LayerManager(Vector2<unsigned> size, unsigned int nbOfLayer, const Color &defaultColor) :
-		_layers(nbOfLayer)
+	LayerManager::LayerManager(Vector2<unsigned> size, unsigned int nbOfLayer, const Color &defaultColor)
 	{
+		this->_layers.reserve(nbOfLayer);
 		if (!nbOfLayer)
 			throw InvalidArgumentException("Must add at least a single layer");
 		while (nbOfLayer--)
@@ -63,8 +63,11 @@ namespace Mimp
 	{
 		if (!layer)
 			throw InvalidArgumentException("Cannot delete layer 0.");
+		if (layer >= this->_layers.size())
+			throw OutOfBoundException("Cannot delete layer " + std::to_string(layer) + " because there are only " + std::to_string(this->_layers.size()) + " layers.");
 		if (this->_selectedLayer >= layer)
 			this->_selectedLayer--;
+		this->_layers.erase(this->_layers.begin() + layer);
 	}
 
 	void LayerManager::setLayerIndex(unsigned int layerOldIndex, unsigned int layerNewIndex)
