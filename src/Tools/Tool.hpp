@@ -8,13 +8,15 @@
 
 #include <TGUI/Widgets/ScrollablePanel.hpp>
 #include "../Layer/Layer.hpp"
+#include "../Data/MouseClick.hpp"
 
 namespace Mimp
 {
 	class Tool {
 	public:
-		virtual void operator()(Vector2<int> pos, Layer &layer) = 0;
-		virtual tgui::ScrollablePanel::Ptr makeParametersPanel() = 0;
+		virtual void onMouseDrag(Vector2<int> pos, MouseClick click, Layer &layer) const = 0;
+		virtual void onClick(Vector2<int> pos, MouseClick click, Layer &layer) const = 0;
+		virtual tgui::ScrollablePanel::Ptr getParametersPanel() const = 0;
 	};
 }
 

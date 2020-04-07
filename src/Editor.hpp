@@ -9,18 +9,22 @@
 #include <SFML/Graphics.hpp>
 #include <TGUI/Gui.hpp>
 #include "ToolBox.hpp"
+#include "CanvasWidget.hpp"
 
 namespace Mimp
 {
 	class Editor {
 	private:
 		ToolBox _toolBox;
-		sf::RenderWindow _mainWindow;
 		tgui::Gui _gui;
+		sf::RenderWindow _mainWindow;
+		std::shared_ptr<CanvasWidget> _selectedImage;
 
 	public:
 		Editor(const std::vector<std::string> &images = {});
 
+		void setSelectedImage(const std::shared_ptr<CanvasWidget> &_canvas);
+		std::shared_ptr<CanvasWidget> getSelectedImage() const;
 		int run();
 	};
 }

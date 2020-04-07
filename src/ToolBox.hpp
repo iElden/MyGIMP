@@ -16,11 +16,13 @@ namespace Mimp
 	private:
 		std::vector<std::unique_ptr<Tool>> _tools;
 		unsigned int _selectedTool = 0;
+		tgui::ChildWindow::Ptr _window;
 
 	public:
 		ToolBox();
 		Tool &getSelectedTool() noexcept;
-		tgui::ChildWindow::Ptr makeWindow();
+		const Tool &getSelectedTool() const noexcept;
+		tgui::ChildWindow::Ptr getWindow();
 	};
 }
 

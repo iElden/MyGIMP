@@ -19,7 +19,6 @@ namespace Mimp
 		Vector2<int> pos;
 
 		Layer(Vector2<unsigned int> size, const Color &defaultColor = Color::Transparent);
-		Layer(const std::string &imagePath);
 
 		Vector2<unsigned int> getSize() const noexcept;
 		bool isLocked() const noexcept;

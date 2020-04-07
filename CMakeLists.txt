@@ -20,6 +20,15 @@ add_executable(
 	src/Editor.hpp
 	src/ToolBox.cpp
 	src/ToolBox.hpp
-	src/ImageEditorWidget.cpp
-	src/ImageEditorWidget.hpp
+	src/CanvasWidget.cpp
+	src/CanvasWidget.hpp
+	src/Data/MouseClick.hpp
+)
+
+target_link_libraries(
+	MyGimp
+	tgui
+	sfml-graphics
+	sfml-window
+	sfml-system
 )
