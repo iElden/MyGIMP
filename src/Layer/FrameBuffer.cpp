@@ -88,166 +88,191 @@ namespace Mimp
 
 	void FrameBuffer::drawLine(Vector2<int> pt1, Vector2<int> pt2, const Color &color) noexcept
 	{
-		/*procédure tracerSegment(entier x1, entier y1, entier x2, entier y2) est
-		déclarer entier dx, dy;
+		int dx = pt2.x - pt1.x;
+		int dy = pt2.y - pt1.y;
 
-		si (dx ← x2 - x1) ≠ 0 alors
-			si dx > 0 alors
-				si (dy ← y2 - y1) ≠ 0 alors
-					si dy > 0 alors
+		if (dx) {
+			if (dx > 0) {
+				if (dy) {
+					if (dy > 0) {
 						// vecteur oblique dans le 1er quadran
 
-						si dx ≥ dy alors
+						if (dx >= dy) {
 							// vecteur diagonal ou oblique proche de l’horizontale, dans le 1er octant
-							déclarer entier e ;
-							dx ← (e ← dx) × 2 ; dy ← dy × 2 ;  // e est positif
-							boucle sans fin  // déplacements horizontaux
-								tracePixel(x1, y1) ;
-								interrompre boucle si (x1 ← x1 + 1) = x2 ;
-								si (e ← e - dy) < 0 alors
-									y1 ← y1 + 1 ;  // déplacement diagonal
-									e ← e + dx ;
-								fin si ;
-							fin boucle ;
-						sinon
+							int e = dx;
+							dx *= 2;
+							dy *= 2 ;  // e est positif
+							while (true) { // déplacements horizontaux
+								this->drawPixel(pt1, color);
+								pt1.x++;
+								if (pt1.x == pt2.x)
+									break;
+								e -= dy;
+								if (e < 0) {
+									pt1.y++;  // déplacement diagonal
+									e += dx ;
+								}
+							}
+						} else {
 							// vecteur oblique proche de la verticale, dans le 2d octant
-							déclarer entier e ;
-							dy ← (e ← dy) × 2 ; dx ← dx × 2 ;  // e est positif
-							boucle sans fin  // déplacements verticaux
-								tracePixel(x1, y1) ;
-									interrompre boucle si (y1 ← y1 + 1) = y2 ;
-									si (e ← e - dx) < 0 alors
-									x1 ← x1 + 1 ;  // déplacement diagonal
-									e ← e + dy ;
-								fin si ;
-							fin boucle ;
-						fin si ;
+							int e = dy;
+							dy *= 2;
+							dx *= 2;  // e est positif
+							while (true) {  // déplacements verticaux
+								this->drawPixel(pt1, color);
+								pt1.y++;
+								if (pt1.y == pt2.y)
+									break;
+								e -= dx;
+								if (e < 0) {
+									pt1.x++;  // déplacement diagonal
+									e += dy;
+								}
+							}
+						}
 
-					sinon  // dy < 0 (et dx > 0)
+					} else {  // dy < 0 (et dx > 0)
 						// vecteur oblique dans le 4e cadran
 
-						si dx ≥ -dy alors
+						if (dx >= -dy) {
 							// vecteur diagonal ou oblique proche de l’horizontale, dans le 8e octant
-							déclarer entier e ;
-							dx ← (e ← dx) × 2 ; dy ← dy × 2 ;  // e est positif
-							boucle sans fin  // déplacements horizontaux
-								tracePixel(x1, y1) ;
-								interrompre boucle si (x1 ← x1 + 1) = x2 ;
-								si (e ← e + dy) < 0 alors
-									y1 ← y1 - 1 ;  // déplacement diagonal
-									e ← e + dx ;
-								fin si ;
-							fin boucle ;
-						sinon  // vecteur oblique proche de la verticale, dans le 7e octant
-							déclarer entier e ;
-							dy ← (e ← dy) × 2 ; dx ← dx × 2 ;  // e est négatif
-							boucle sans fin  // déplacements verticaux
-								tracePixel(x1, y1) ;
-								interrompre boucle si (y1 ← y1 - 1) = y2 ;
-								si (e ← e + dx) > 0 alors
-									x1 ← x1 + 1 ;  // déplacement diagonal
-									e ← e + dy ;
-								fin si ;
-							fin boucle ;
-						fin si ;
-
-					fin si ;
-				sinon  // dy = 0 (et dx > 0)
-
-					// vecteur horizontal vers la droite
-					répéter
-						tracePixel(x1, y1) ;
-					jusqu’à ce que (x1 ← x1 + 1) = x2 ;
-
-				fin si ;
-			sinon  // dx < 0
-				si (dy ← y2 - y1) ≠ 0 alors
-					si dy > 0 alors
+							int e = dx;
+							dx *= 2;
+							dy *= 2 ;  // e est positif
+							while (true) {  // déplacements horizontaux
+								this->drawPixel(pt1, color);
+								pt1.x++;
+								if (pt1.x == pt2.x)
+									break;
+								e += dy;
+								if (e < 0) {
+									pt1.y--;  // déplacement diagonal
+									e += dx;
+								}
+							}
+						} else {  // vecteur oblique proche de la verticale, dans le 7e octant
+							int e = dy;
+							dy *= 2;
+							dx *= 2;  // e est négatif
+							while (true) {  // déplacements verticaux
+								this->drawPixel(pt1, color);
+								pt1.y--;
+								if (pt1.y == pt2.y)
+									break;
+								e += dx;
+								if (e > 0) {
+									pt1.x++;  // déplacement diagonal
+									e += dy;
+								}
+							}
+						}
+					}
+				} else { // dy = 0 (et dx > 0)
+					do {
+						this->drawPixel(pt1, color) ;
+						pt1.x++;
+					} while (pt2.x != pt1.x);
+				}
+			} else {  // dx < 0
+				if (dy) {
+					if (dy > 0) {
 						// vecteur oblique dans le 2d quadran
 
-						si -dx ≥ dy alors
+						if (-dx >= dy) {
 							// vecteur diagonal ou oblique proche de l’horizontale, dans le 4e octant
-							déclarer entier e ;
-							dx ← (e ← dx) × 2 ; dy ← dy × 2 ;  // e est négatif
-							boucle sans fin  // déplacements horizontaux
-								tracePixel(x1, y1) ;
-								interrompre boucle si (x1 ← x1 - 1) = x2 ;
-								si (e ← e + dy) ≥ 0 alors
-									y1 ← y1 + 1 ;  // déplacement diagonal
-									e ← e + dx ;
-								fin si ;
-							fin boucle ;
-						sinon
+							int e = dx;
+							dx *= 2;
+							dy *= 2 ;  // e est négatif
+							while (true) { // déplacements horizontaux
+								this->drawPixel(pt1, color);
+								pt1.x--;
+								if (pt1.x == pt2.x)
+									break;
+								e += dy;
+								if (e >= 0) {
+									pt1.y++;  // déplacement diagonal
+									e += dx ;
+								}
+							}
+						} else {
 							// vecteur oblique proche de la verticale, dans le 3e octant
-							déclarer entier e ;
-							dy ← (e ← dy) × 2 ; dx ← dx × 2 ;  // e est positif
-							boucle sans fin  // déplacements verticaux
-								tracePixel(x1, y1) ;
-								interrompre boucle si (y1 ← y1 + 1) = y2 ;
-								si (e ← e + dx) ≤ 0 alors
-									x1 ← x1 - 1 ;  // déplacement diagonal
-									e ← e + dy ;
-								fin si ;
-							fin boucle ;
-						fin si ;
+							int e = dy;
+							dy *= 2 ;
+							dx *= 2 ;  // e est positif
+							while (true) {  // déplacements verticaux
+								this->drawPixel(pt1, color);
+								pt1.y++;
+								if (pt1.y == pt2.y)
+									break;
+								e += dx;
+								if (e <= 0) {
+									pt1.x--;  // déplacement diagonal
+									e += dy;
+								}
+							}
+						}
 
-					sinon  // dy < 0 (et dx < 0)
+					} else { // dy < 0 (et dx < 0)
 						// vecteur oblique dans le 3e cadran
 
-						si dx ≤ dy alors
+						if (dx <= dy) {
 							// vecteur diagonal ou oblique proche de l’horizontale, dans le 5e octant
-							déclarer entier e ;
-							dx ← (e ← dx) × 2 ; dy ← dy × 2 ;  // e est négatif
-							boucle sans fin  // déplacements horizontaux
-								tracePixel(x1, y1) ;
-								interrompre boucle si (x1 ← x1 - 1) = x2 ;
-								si (e ← e - dy) ≥ 0 alors
-									y1 ← y1 - 1 ;  // déplacement diagonal
-									e ← e + dx ;
-								fin si ;
-							fin boucle ;
-						sinon  // vecteur oblique proche de la verticale, dans le 6e octant
-							déclarer entier e ;
-							dy ← (e ← dy) × 2 ; dx ← dx × 2 ;  // e est négatif
-							boucle sans fin  // déplacements verticaux
-								tracePixel(x1, y1) ;
-								interrompre boucle si (y1 ← y1 - 1) = y2 ;
-								si (e ← e - dx) ≥ 0 alors
-									x1 ← x1 - 1 ;  // déplacement diagonal
-									e ← e + dy ;
-								fin si ;
-							fin boucle ;
-						fin si ;
+							int e = dx;
+							dx *= 2;
+							dy *= 2;  // e est négatif
+							while (true) {  // déplacements horizontaux
+								this->drawPixel(pt1, color);
+								pt1.x--;
+								if (pt1.x == pt2.x)
+									break;
+								e -= dy;
+								if (e >= 0){
+									pt1.y--;  // déplacement diagonal
+									e += dx;
+								}
+							}
+						} else {  // vecteur oblique proche de la verticale, dans le 6e octant
+							int e = dy;
 
-					fin si ;
-				sinon  // dy = 0 (et dx < 0)
+							dy *= 2;
+							dx *= 2;  // e est négatif
+							while (true){  // déplacements verticaux
+								this->drawPixel(pt1, color);
+								pt1.y--;
+								if (pt1.y == pt2.y)
+									break;
+								e -= dx;
+								if (e >= 0) {
+									pt1.x--;  // déplacement diagonal
+									e += dy;
+								}
+							}
+						}
+
+					}
+				} else {  // dy = 0 (et dx < 0)
 
 					// vecteur horizontal vers la gauche
-					répéter
-						tracePixel(x1, y1) ;
-					jusqu’à ce que (x1 ← x1 - 1) = x2 ;
+					do {
+						this->drawPixel(pt1, color);
+						pt1.x--;
+					} while (pt2.x != pt1.x);
 
-				fin si ;
-			fin si ;
-		sinon  // dx = 0
-			si (dy ← y2 - y1) ≠ 0 alors
-				si dy > 0 alors
-
-					// vecteur vertical croissant
-					répéter
-						tracePixel(x1, y1) ;
-					jusqu’à ce que (y1 ← y1 + 1) = y2 ;
-
-				sinon  // dy < 0 (et dx = 0)
-
-					// vecteur vertical décroissant
-					répéter
-						tracePixel(x1, y1) ;
-					jusqu’à ce que (y1 ← y1 - 1) = y2 ;
-
-				fin si ;
-			fin si ;
-		fin si ;*/
+				}
+			}
+		} else {  // dx = 0
+			if (dy > 0) {
+				do {
+					this->drawPixel(pt1, color);
+					pt1.y++;
+				} while (pt1.y != pt2.y);
+			} else if (dy) {
+				do {
+					this->drawPixel(pt1, color);
+					pt1.y--;
+				} while (pt1.y != pt2.y);
+			}
+		}
 		//TODO: Implement the above algorithm
 	}
 
