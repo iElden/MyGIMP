@@ -13,7 +13,16 @@
 namespace Mimp
 {
 	class Tool {
+	private:
+		std::string _name;
+
 	public:
+		explicit Tool(const std::string &name) : _name(name) {};
+		std::string getName() const
+		{
+			return this->_name;
+		};
+
 		virtual void onSelect(Layer &) {};
 		virtual void onUnselect(Layer &) {};
 		virtual void onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Layer &layer) = 0;
