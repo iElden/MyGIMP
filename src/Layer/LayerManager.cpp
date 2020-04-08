@@ -61,10 +61,10 @@ namespace Mimp
 
 	void LayerManager::deleteLayer(unsigned int layer)
 	{
-		if (!layer)
-			throw InvalidArgumentException("Cannot delete layer 0.");
 		if (layer >= this->_layers.size())
 			throw OutOfBoundException("Cannot delete layer " + std::to_string(layer) + " because there are only " + std::to_string(this->_layers.size()) + " layers.");
+		if (this->_layers.size() == 1)
+			throw InvalidArgumentException("Cannot delete layer because there are only a single layer.");
 		if (this->_selectedLayer >= layer)
 			this->_selectedLayer--;
 		this->_layers.erase(this->_layers.begin() + layer);
