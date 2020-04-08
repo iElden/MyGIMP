@@ -26,7 +26,7 @@ namespace Mimp
 
 			realPos.x = pos.x;
 			realPos.y = pos.y;
-			this->_box.getSelectedTool().onClick(realPos, MIMP_LEFT_CLICK, this->_layers.getSelectedLayer());
+			this->_box.getSelectedTool()->onClick(realPos, MIMP_LEFT_CLICK, this->_layers.getSelectedLayer());
 		});
 		this->onRightMousePress.connect([this](tgui::Vector2f pos){
 			Vector2<int> realPos;
@@ -34,7 +34,7 @@ namespace Mimp
 			realPos.x = pos.x;
 			realPos.y = pos.y;
 			this->_rightMouseDown = true;
-			this->_box.getSelectedTool().onClick(realPos, MIMP_LEFT_CLICK, this->_layers.getSelectedLayer());
+			this->_box.getSelectedTool()->onClick(realPos, MIMP_LEFT_CLICK, this->_layers.getSelectedLayer());
 		});
 		this->onRightMouseRelease.connect([this](){
 			this->_rightMouseDown = false;
@@ -48,9 +48,9 @@ namespace Mimp
 		realPos.x = pos.x;
 		realPos.y = pos.y;
 		if (this->m_mouseDown)
-			this->_box.getSelectedTool().onMouseDrag(this->_mousePos, realPos, MIMP_LEFT_CLICK, this->_layers.getSelectedLayer());
+			this->_box.getSelectedTool()->onMouseDrag(this->_mousePos, realPos, MIMP_LEFT_CLICK, this->_layers.getSelectedLayer());
 		if (this->_rightMouseDown)
-			this->_box.getSelectedTool().onMouseDrag(this->_mousePos, realPos, MIMP_RIGHT_CLICK, this->_layers.getSelectedLayer());
+			this->_box.getSelectedTool()->onMouseDrag(this->_mousePos, realPos, MIMP_RIGHT_CLICK, this->_layers.getSelectedLayer());
 		this->_mousePos = realPos;
 	}
 
@@ -67,7 +67,7 @@ namespace Mimp
 
 			realPos.x = pos.x;
 			realPos.y = pos.y;
-			this->_box.getSelectedTool().onClick(realPos, MIMP_LEFT_CLICK, this->_layers.getSelectedLayer());
+			this->_box.getSelectedTool()->onClick(realPos, MIMP_LEFT_CLICK, this->_layers.getSelectedLayer());
 		});
 		this->onRightMousePress.connect([this](tgui::Vector2f pos){
 			Vector2<int> realPos;
@@ -75,7 +75,7 @@ namespace Mimp
 			realPos.x = pos.x;
 			realPos.y = pos.y;
 			this->_rightMouseDown = true;
-			this->_box.getSelectedTool().onClick(realPos, MIMP_RIGHT_CLICK, this->_layers.getSelectedLayer());
+			this->_box.getSelectedTool()->onClick(realPos, MIMP_RIGHT_CLICK, this->_layers.getSelectedLayer());
 		});
 		this->onRightMouseRelease.connect([this](){
 			this->_rightMouseDown = false;

@@ -20,7 +20,7 @@ namespace Mimp
 			try {
 				auto widget = CanvasWidget::create(this->_toolBox, image);
 
-				this->_gui.add(_makeImagePanel(widget), "Image" + image);
+				this->_gui.add(_makeImagePanel(widget), "Image");
 				this->_selectedImage = widget;
 			} catch (std::exception &e) {
 				Utils::dispMsg(
@@ -82,6 +82,7 @@ namespace Mimp
 	{
 		auto window = tgui::ChildWindow::create("Unnamed");
 
+		window->setPosition(0, 30);
 		window->add(canvas, "Canvas");
 		return window;
 	}
