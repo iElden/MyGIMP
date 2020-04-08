@@ -42,7 +42,7 @@ add_executable(
 	src/Exceptions.hpp
 	src/Tools/Pencil.cpp
 	src/Tools/Pencil.hpp
-	src/Utils.cpp src/Utils.hpp)
+	src/Utils.cpp src/Utils.hpp src/Tools/Fill.cpp src/Tools/Fill.hpp)
 
 target_link_libraries(
 	MyGimp
