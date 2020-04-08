@@ -7,6 +7,7 @@
 namespace Mimp
 {
 	Pencil::Pencil(ToolBox &box) :
+		Tool("Pencil"),
 		_box(box)
 	{
 	}

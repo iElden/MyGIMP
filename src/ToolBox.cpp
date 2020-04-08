@@ -51,6 +51,7 @@ namespace Mimp
 					if (index >= this->_tools.size())
 						throw CorruptedGuiFileException("Tool index out of range");
 
+					widget->setToolTip(tgui::Label::create(this->_tools[index]->getName()));
 					widget->connect("Pressed", [this, index]{
 						this->getSelectedTool()->onUnselect();
 						this->_selectedTool = index;
