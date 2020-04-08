@@ -14,8 +14,10 @@ namespace Mimp
 {
 	class Tool {
 	public:
-		virtual void onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Layer &layer) const = 0;
-		virtual void onClick(Vector2<int> pos, MouseClick click, Layer &layer) const = 0;
+		virtual void onSelect() {};
+		virtual void onUnselect() {};
+		virtual void onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Layer &layer) = 0;
+		virtual void onClick(Vector2<int> pos, MouseClick click, Layer &layer) = 0;
 		virtual tgui::ScrollablePanel::Ptr getParametersPanel() const = 0;
 	};
 }

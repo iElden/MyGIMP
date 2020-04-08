@@ -14,6 +14,7 @@ namespace Mimp
 		_tools(ToolFactory::buildAll(*this))
 	{
 		this->_generateGuiWindow();
+		this->_tools[0]->onSelect();
 	}
 
 	Tool &ToolBox::getSelectedTool() noexcept
@@ -56,7 +57,9 @@ namespace Mimp
 						throw CorruptedGuiFileException("Tool index out of range");
 
 					widget->connect("Pressed", [this, index]{
+						this->getSelectedTool()->onUnselect();
 						this->_selectedTool = index;
+						this->getSelectedTool()->onSelect();
 					});
 				} catch (std::out_of_range &e) {
 					throw CorruptedGuiFileException("Tool index out of range");
