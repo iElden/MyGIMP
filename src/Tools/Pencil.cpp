@@ -20,7 +20,9 @@ namespace Mimp
 
 	void Pencil::onClick(Vector2<int> pos, MouseClick click, Layer &layer) const
 	{
-		this->onMouseDrag(pos, click, layer);
+		if (layer.isLocked())
+			return;
+		layer.buffer.drawPixel(pos, this->_box.getSelectedColor(click));
 	}
 
 	tgui::ScrollablePanel::Ptr Pencil::getParametersPanel() const

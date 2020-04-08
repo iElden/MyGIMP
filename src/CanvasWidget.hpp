@@ -15,6 +15,7 @@ namespace Mimp
 {
 	class CanvasWidget : public tgui::ClickableWidget {
 	private:
+		Vector2<int> _mousePos = {0, 0};
 		LayerManager _layers;
 		const ToolBox &_box;
 		Vector2<unsigned int> _size;

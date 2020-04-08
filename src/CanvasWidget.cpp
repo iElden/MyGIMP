@@ -48,9 +48,10 @@ namespace Mimp
 		realPos.x = pos.x;
 		realPos.y = pos.y;
 		if (this->m_mouseDown)
-			this->_box.getSelectedTool().onMouseDrag(realPos, MIMP_LEFT_CLICK, this->_layers.getSelectedLayer());
+			this->_box.getSelectedTool().onMouseDrag(this->_mousePos, realPos, MIMP_LEFT_CLICK, this->_layers.getSelectedLayer());
 		if (this->_rightMouseDown)
-			this->_box.getSelectedTool().onMouseDrag(realPos, MIMP_RIGHT_CLICK, this->_layers.getSelectedLayer());
+			this->_box.getSelectedTool().onMouseDrag(this->_mousePos, realPos, MIMP_RIGHT_CLICK, this->_layers.getSelectedLayer());
+		this->_mousePos = realPos;
 	}
 
 	CanvasWidget::CanvasWidget(const ToolBox &box, Vector2<unsigned int> size) :
