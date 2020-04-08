@@ -14,13 +14,9 @@ namespace Mimp
 	class Fill : public Tool {
 	private:
 		ToolBox &_box;
-		// Variables for spread_color recursive function
-		unsigned int _target_color = 0;
-		unsigned int _fill_color = 0;
-		Layer *_target_layer = nullptr;
 
 		void apply(Vector2<int> pos, Layer &layer, MouseClick &click);
-		void _spread_color(Vector2<int> pos);
+		void _spread_color(Vector2<int> pos, Layer &layer, Color target_color, Color fill_color);
 
 	public:
 		Fill(Mimp::ToolBox &toolBox);

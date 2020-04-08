@@ -4,12 +4,16 @@
 
 #include "ToolFactory.hpp"
 #include "Pencil.hpp"
+#include "Fill.hpp"
 
 namespace Mimp
 {
 	const std::vector<std::function<std::shared_ptr<Tool>(ToolBox &)>> ToolFactory::_builders{
 		[](ToolBox &box){
 			return std::make_shared<Pencil>(box);
+		},
+		[](ToolBox &box){
+			return std::make_shared<Fill>(box);
 		}
 
 	};
