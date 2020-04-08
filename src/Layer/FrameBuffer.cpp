@@ -57,13 +57,7 @@ namespace Mimp
 
 	Color FrameBuffer::getPixel(Vector2<int> pos, const Color &fill) const noexcept
 	{
-		if (pos.x < 0)
-			return fill;
-		if (pos.y < 0)
-			return fill;
-		if (static_cast<unsigned>(pos.x) >= this->_size.x)
-			return fill;
-		if (static_cast<unsigned>(pos.y) >= this->_size.y)
+		if (this->posIsOutOfBound(pos))
 			return fill;
 		return this->operator[](pos.x + pos.y * this->_size.x);
 	}
@@ -334,5 +328,18 @@ namespace Mimp
 	{
 		for (unsigned i = 0; i < this->_size.x * this->_size.y; i++)
 			this->_pixelBuffer[i] = color;
+	}
+
+	bool FrameBuffer::posIsOutOfBound(Vector2<int> pos) const noexcept
+	{
+		if (pos.x < 0)
+			return true;
+		if (pos.y < 0)
+			return true;
+		if (static_cast<unsigned>(pos.x) >= this->_size.x)
+			return true;
+		if (static_cast<unsigned>(pos.y) >= this->_size.y)
+			return true;
+		return false;
 	}
 }
