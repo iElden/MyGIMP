@@ -16,14 +16,9 @@ namespace Mimp
 		this->_generateGuiWindow();
 	}
 
-	Tool &ToolBox::getSelectedTool() noexcept
+	std::shared_ptr<Tool> ToolBox::getSelectedTool() const
 	{
-		return *this->_tools[this->_selectedTool];
-	}
-
-	const Tool &ToolBox::getSelectedTool() const noexcept
-	{
-		return *this->_tools[this->_selectedTool];
+		return this->_tools[this->_selectedTool];
 	}
 
 	tgui::ChildWindow::Ptr ToolBox::getWindow() const

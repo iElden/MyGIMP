@@ -25,8 +25,7 @@ namespace Mimp
 		void _generateGuiWindow();
 	public:
 		ToolBox();
-		Tool &getSelectedTool() noexcept;
-		const Tool &getSelectedTool() const noexcept;
+		std::shared_ptr<Tool> getSelectedTool() const;
 		tgui::ChildWindow::Ptr getWindow() const;
 		Color getSelectedColor(MouseClick click);
 	};
