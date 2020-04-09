@@ -13,6 +13,7 @@ namespace Mimp
 		_mainWindow({640, 480}, "Mimp"),
 		_gui(this->_mainWindow)
 	{
+		this->_mainWindow.setFramerateLimit(60);
 		this->_gui.loadWidgetsFromFile("widgets/top_menu.gui");
 		this->_setupButtonCallbacks();
 		this->_gui.add(this->_toolBox.getWindow(), "ToolBox");
@@ -96,9 +97,19 @@ namespace Mimp
 		});
 		menu->connectMenuItem({"File", "New"}, [this, menu]{
 			auto widget = CanvasWidget::create(this->_toolBox, Vector2<unsigned>{640, 480});
+			auto window = _makeImagePanel(widget);
 
-			this->_gui.add(_makeImagePanel(widget), "ImageUntitled" + std::to_string(this->_lastUntitled++));
+			window->setTitle("Untitled " + std::to_string(++this->_lastUntitled));
+			this->_gui.add(_makeImagePanel(widget), "ImageUntitled" + std::to_string(this->_lastUntitled));
 			this->_selectedImage = widget;
 		});
+		/*menu->connectMenuItem({"File", "Open"}, [this, menu]{
+			auto widget = CanvasWidget::create(this->_toolBox, R"(C:\Users\Gegel85\Desktop\__cirno_daiyousei_letty_whiterock_and_lily_white_touhou_drawn_by_pudding_skymint_028__d040e0423b7912b008649e79262fb3e2.png)");
+			auto window = _makeImagePanel(widget);
+
+			window->setTitle(R"(C:\Users\Gegel85\Desktop\__cirno_daiyousei_letty_whiterock_and_lily_white_touhou_drawn_by_pudding_skymint_028__d040e0423b7912b008649e79262fb3e2.png)");
+			this->_gui.add(window, "Image" R"(C:\Users\Gegel85\Desktop\__cirno_daiyousei_letty_whiterock_and_lily_white_touhou_drawn_by_pudding_skymint_028__d040e0423b7912b008649e79262fb3e2.png)");
+			this->_selectedImage = widget;
+		});*/
 	}
 }

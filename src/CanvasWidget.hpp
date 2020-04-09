@@ -18,8 +18,8 @@ namespace Mimp
 		Vector2<int> _mousePos = {0, 0};
 		LayerManager _layers;
 		const ToolBox &_box;
-		Vector2<unsigned int> _size;
 		bool _rightMouseDown = false;
+		Vector2<unsigned> _size;
 
 		CanvasWidget(const ToolBox &box, Vector2<unsigned int> size, const LayerManager &layers);
 
@@ -37,6 +37,8 @@ namespace Mimp
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 		Widget::Ptr clone() const override;
 		void setSize(const tgui::Layout2d& size) override;
+		LayerManager &getLayers();
+		const LayerManager &getLayers() const;
 	};
 }
 

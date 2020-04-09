@@ -47,6 +47,13 @@ namespace Mimp
 			BaseException(static_cast<const std::string &&>(msg))
 		{};
 	};
+
+	class InvalidImageException : public BaseException {
+	public:
+		explicit InvalidImageException(const std::string &&msg) :
+			BaseException(static_cast<const std::string &&>(msg))
+		{};
+	};
 }
 
 

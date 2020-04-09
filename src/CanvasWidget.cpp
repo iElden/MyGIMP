@@ -8,9 +8,10 @@
 namespace Mimp
 {
 	CanvasWidget::CanvasWidget(const ToolBox &box, const std::string &path) :
-		CanvasWidget(box, Vector2<unsigned>{0, 0})
+		CanvasWidget(box, Vector2<unsigned>{0, 0}, LayerManager(path))
 	{
-		//TODO: Load file
+		this->_layers.selectLayer(0);
+		this->m_size = {this->_layers.getSelectedLayer().getSize().x, this->_layers.getSelectedLayer().getSize().y};
 	}
 
 	CanvasWidget::CanvasWidget(const ToolBox &box, Vector2<unsigned int> size, const LayerManager &layers) :
@@ -115,7 +116,6 @@ namespace Mimp
 		sprite.setTexture(texture);
 
 		target.draw(sprite, states);
-		delete[] pixelArray;
 	}
 
 	CanvasWidget::Ptr CanvasWidget::create(const ToolBox &box, Vector2<unsigned int> size)
@@ -126,5 +126,15 @@ namespace Mimp
 	CanvasWidget::Ptr CanvasWidget::create(const ToolBox &box, const std::string &path)
 	{
 		return std::make_shared<CanvasWidget>(box, path);
+	}
+
+	LayerManager &CanvasWidget::getLayers()
+	{
+		return this->_layers;
+	}
+
+	const LayerManager &CanvasWidget::getLayers() const
+	{
+		return this->_layers;
 	}
 }

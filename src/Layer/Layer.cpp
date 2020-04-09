@@ -6,6 +6,10 @@
 
 namespace Mimp
 {
+	Layer::Layer(Vector2<unsigned int> size, unsigned *buffer) :
+		buffer(size, buffer)
+	{
+	}
 
 	Layer::Layer(Vector2<unsigned int> size, const Color &defaultColor) :
 		buffer(size, defaultColor)

@@ -18,6 +18,7 @@ namespace Mimp
 		bool visible = true;
 		Vector2<int> pos = {0, 0};
 
+		Layer(Vector2<unsigned int> size, unsigned *buffer);
 		Layer(Vector2<unsigned int> size, const Color &defaultColor = Color::Transparent);
 
 		Vector2<unsigned int> getSize() const noexcept;
