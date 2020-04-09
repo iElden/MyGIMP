@@ -100,16 +100,54 @@ namespace Mimp
 			auto window = _makeImagePanel(widget);
 
 			window->setTitle("Untitled " + std::to_string(++this->_lastUntitled));
+			window->setSize({
+				widget->getLayers().getSize().x,
+				widget->getLayers().getSize().y
+			});
+			window->connect("Closed", [menu] {
+				menu->setMenuItemEnabled({"File", "Save"}, false);
+				menu->setMenuItemEnabled({"File", "Save as"}, false);
+			});
 			this->_gui.add(_makeImagePanel(widget), "ImageUntitled" + std::to_string(this->_lastUntitled));
 			this->_selectedImage = widget;
+			menu->setMenuItemEnabled({"File", "Save"}, true);
+			menu->setMenuItemEnabled({"File", "Save as"}, true);
 		});
-		/*menu->connectMenuItem({"File", "Open"}, [this, menu]{
-			auto widget = CanvasWidget::create(this->_toolBox, R"(C:\Users\Gegel85\Desktop\__cirno_daiyousei_letty_whiterock_and_lily_white_touhou_drawn_by_pudding_skymint_028__d040e0423b7912b008649e79262fb3e2.png)");
-			auto window = _makeImagePanel(widget);
+		menu->connectMenuItem({"File", "Open"}, [this, menu]{
+			try {
+				auto widget = CanvasWidget::create(this->_toolBox, "test.mimp");
+				auto window = _makeImagePanel(widget);
 
-			window->setTitle(R"(C:\Users\Gegel85\Desktop\__cirno_daiyousei_letty_whiterock_and_lily_white_touhou_drawn_by_pudding_skymint_028__d040e0423b7912b008649e79262fb3e2.png)");
-			this->_gui.add(window, "Image" R"(C:\Users\Gegel85\Desktop\__cirno_daiyousei_letty_whiterock_and_lily_white_touhou_drawn_by_pudding_skymint_028__d040e0423b7912b008649e79262fb3e2.png)");
-			this->_selectedImage = widget;
-		});*/
+				menu->setMenuItemEnabled({"File", "Save"}, true);
+				menu->setMenuItemEnabled({"File", "Save as"}, true);
+
+				window->setSize({
+					widget->getLayers().getSize().x,
+					widget->getLayers().getSize().y
+				});
+				window->setTitle("test.mimp");
+				window->connect("Closed", [menu] {
+					menu->setMenuItemEnabled({"File", "Save"}, false);
+					menu->setMenuItemEnabled({"File", "Save as"}, false);
+				});
+				this->_gui.add(window, "Image" "test.mimp");
+				this->_selectedImage = widget;
+			} catch (std::exception &e) {
+				auto window = tgui::ChildWindow::create("Loading error");
+				auto label = tgui::Label::create(
+					"Cannot load file " "test.mimp""\n" +
+					Utils::getLastExceptionName() + ":\n" + e.what()
+				);
+
+				window->setPosition(16, 16);
+				window->add(label);
+				window->getRenderer()->setBackgroundColor(tgui::Color("white"));
+				window->setSize(label->getSize());
+				this->_gui.add(window);
+			}
+		});
+		menu->connectMenuItem({"File", "Save"}, [this, menu] {
+			this->_selectedImage->getLayers().save("test.mimp");
+		});
 	}
 }
