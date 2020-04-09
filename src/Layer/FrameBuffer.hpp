@@ -28,6 +28,7 @@ namespace Mimp
 		unsigned int &operator[](unsigned int index) const;
 		Color getPixel(Vector2<int> pos, const Color &fill = Color::Transparent) const noexcept;
 		Vector2<unsigned int> getSize() const noexcept;
+		bool posIsOutOfBound(Vector2<int> pos) const noexcept;
 		void drawPixel(Vector2<int> pos, const Color &color) noexcept;
 		void drawLine(Vector2<int> pt1, Vector2<int> pt2, const Color &color) noexcept;
 		void drawRect(Vector2<int> pos, Vector2<unsigned> size, const Color &color) noexcept;
