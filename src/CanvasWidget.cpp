@@ -112,6 +112,7 @@ namespace Mimp
 			for (unsigned y = 0; y < size.y; y++)
 				pixelArray[x + y * size.x] = buffer.getPixel({static_cast<int>(x), static_cast<int>(y)});
 		texture.update(reinterpret_cast<const sf::Uint8 *>(pixelArray));
+		delete[] pixelArray;
 
 		sprite.setTexture(texture);
 
