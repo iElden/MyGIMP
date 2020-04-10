@@ -7,17 +7,16 @@
 
 namespace Mimp
 {
-	CanvasWidget::CanvasWidget(const ToolBox &box, const std::string &path) :
+	CanvasWidget::CanvasWidget(const ToolBox &box, const std::string &path):
 		CanvasWidget(box, Vector2<unsigned>{0, 0}, LayerManager(path))
 	{
 		this->_size = this->_layers.getSize();
 		this->m_size = {this->_size.x, this->_size.y};
 	}
 
-	CanvasWidget::CanvasWidget(const ToolBox &box, Vector2<unsigned int> size, const LayerManager &layers) :
-		_layers(layers),
-		_box(box),
-		_size(size)
+	CanvasWidget::CanvasWidget(const ToolBox &box, Vector2<unsigned int> size, const LayerManager &layers):
+		Image(size, layers),
+		_box(box)
 	{
 		this->m_size = {size.x, size.y};
 		this->m_type = "Canvas";
@@ -42,10 +41,9 @@ namespace Mimp
 		});
 	}
 
-	CanvasWidget::CanvasWidget(const ToolBox &box, Vector2<unsigned int> size) :
-		_layers(size, 1, Color::White),
-		_box(box),
-		_size(size)
+	CanvasWidget::CanvasWidget(const ToolBox &box, Vector2<unsigned int> size):
+		Image(size, LayerManager(size, 1, Color::White)),
+		_box(box)
 	{
 		this->m_size = {size.x, size.y};
 		this->m_type = "Canvas";
@@ -127,15 +125,5 @@ namespace Mimp
 	CanvasWidget::Ptr CanvasWidget::create(const ToolBox &box, const std::string &path)
 	{
 		return std::make_shared<CanvasWidget>(box, path);
-	}
-
-	LayerManager &CanvasWidget::getLayers()
-	{
-		return this->_layers;
-	}
-
-	const LayerManager &CanvasWidget::getLayers() const
-	{
-		return this->_layers;
 	}
 }
