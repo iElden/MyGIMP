@@ -54,6 +54,13 @@ namespace Mimp
 			BaseException(static_cast<const std::string &&>(msg))
 		{};
 	};
+
+	class ExportErrorException : public BaseException {
+	public:
+		explicit ExportErrorException(const std::string &&msg) :
+			BaseException(static_cast<const std::string &&>(msg))
+		{};
+	};
 }
 
 

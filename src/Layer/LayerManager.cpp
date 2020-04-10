@@ -14,11 +14,7 @@ namespace Mimp
 {
 	LayerManager::LayerManager(const std::string &path)
 	{
-		try {
-			this->_loadClassicalImage(path);
-		} catch (std::exception &) {
-			this->_loadMimpImage(path);
-		}
+		this->loadMimpImage(path);
 	}
 
 	LayerManager::LayerManager(Vector2<unsigned> size, unsigned int nbOfLayer, const Color &defaultColor) :
@@ -118,9 +114,8 @@ namespace Mimp
 		return magic == LayerManager::MAGIC_NBR;
 	}
 
-	void LayerManager::_loadMimpImage(const std::string &path)
+	void LayerManager::loadMimpImage(const std::string &path)
 	{
-		this->_layers.clear();
 		std::ifstream stream{path, std::ifstream::binary};
 
 		if (stream.fail())
@@ -173,9 +168,8 @@ namespace Mimp
 		delete[] buffer;
 	}
 
-	void LayerManager::_loadClassicalImage(const std::string &path)
+	void LayerManager::importImage(const std::string &path)
 	{
-		this->_layers.clear();
 		sf::Image image;
 
 		if (!image.loadFromFile(path))
@@ -186,6 +180,8 @@ namespace Mimp
 			image.getSize().y
 		};
 		auto pixelBuffer = new unsigned[size.x * size.y];
+
+		this->_size = size;
 
 		for (unsigned x = 0; x < size.x; x++)
 			for (unsigned y = 0; y < size.y; y++)

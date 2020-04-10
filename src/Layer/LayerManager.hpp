@@ -37,8 +37,6 @@ namespace Mimp
 		unsigned int _selectedLayer = 0;
 		Vector2<unsigned> _size;
 
-		void _loadMimpImage(const std::string &path);
-		void _loadClassicalImage(const std::string &path);
 	public:
 		LayerManager(const std::string &path);
 		LayerManager(Vector2<unsigned> size, unsigned int nbOfLayer = 1, const Color &defaultColor = Color::Transparent);
@@ -55,6 +53,9 @@ namespace Mimp
 		void setSize(const Vector2<unsigned> &size);
 		void save(const std::string &path) const;
 		void save(std::ostream &stream) const;
+
+		void loadMimpImage(const std::string &path);
+		void importImage(const std::string &path);
 
 		static bool isValidMimpImage(std::istream &stream);
 
