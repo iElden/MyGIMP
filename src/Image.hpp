@@ -22,7 +22,7 @@ namespace Mimp {
 		Image(Vector2<unsigned> size, const LayerManager &layers);
 		Layer &getSelectedLayer() noexcept;
 		const Layer &getSelectedLayer() const noexcept;
-		LayerManager &getLayers();
+		LayerManager &getLayers() noexcept;
 		const LayerManager &getLayers() const noexcept;
 		Vector2<unsigned> getImageSize() const noexcept;
 	};

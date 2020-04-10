@@ -28,7 +28,7 @@ namespace Mimp {
 	{
 	}
 
-	LayerManager &Image::getLayers()
+	LayerManager &Image::getLayers() noexcept
 	{
 		return this->_layers;
 	}
