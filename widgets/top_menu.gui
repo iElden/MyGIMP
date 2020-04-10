@@ -40,7 +40,6 @@ MenuBar.main_bar {
 
         Menu {
             Text = "Import";
-            Enabled = false;
         }
 
         Menu {

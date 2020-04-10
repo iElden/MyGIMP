@@ -23,6 +23,7 @@ namespace Mimp {
 		Layer &getSelectedLayer() noexcept;
 		const Layer &getSelectedLayer() const noexcept;
 		LayerManager &getLayers();
+		void exportImage(const std::string &path) const;
 		const LayerManager &getLayers() const noexcept;
 		Vector2<unsigned> getImageSize() const noexcept;
 	};

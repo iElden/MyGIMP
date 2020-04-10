@@ -37,6 +37,7 @@ namespace Mimp
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 		Widget::Ptr clone() const override;
 		void setSize(const tgui::Layout2d& size) override;
+		void importImage(const std::string &path);
 	};
 }
 
