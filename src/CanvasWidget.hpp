@@ -29,6 +29,7 @@ namespace Mimp
 
 		CanvasWidget(const ToolBox &box, Vector2<unsigned int> size);
 		CanvasWidget(const ToolBox &box, const std::string &path);
+		~CanvasWidget() override = default;
 
 		static CanvasWidget::Ptr create(const ToolBox &box, Vector2<unsigned int> size);
 		static CanvasWidget::Ptr create(const ToolBox &box, const std::string &path);
