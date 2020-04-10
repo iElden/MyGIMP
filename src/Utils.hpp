@@ -7,6 +7,7 @@
 
 
 #include <string>
+#include <vector>
 
 #ifndef _WIN32
 #define MB_ICONERROR 1
@@ -27,6 +28,9 @@ namespace Mimp::Utils
 	int	dispMsg(const std::string &title, const std::string &content, int variate);
 
 	std::string getLastExceptionName();
+
+	std::string openFileDialog(const std::string &title = "Open file", const std::string &basePath = ".", const std::vector<std::pair<std::string, std::string>> &patterns = {});
+	std::string saveFileDialog(const std::string &title = "Save file", const std::string &basePath = ".", const std::vector<std::pair<std::string, std::string>> &patterns = {});
 }
 
 

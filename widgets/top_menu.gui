@@ -34,6 +34,16 @@ MenuBar.main_bar {
         }
 
         Menu {
+            Text = Export;
+            Enabled = false;
+        }
+
+        Menu {
+            Text = "Import";
+            Enabled = false;
+        }
+
+        Menu {
             Text = Close;
             Enabled = false;
         }

@@ -19,7 +19,7 @@ namespace Mimp
 		ToolBox _toolBox;
 		sf::RenderWindow _mainWindow;
 		tgui::Gui _gui;
-		CanvasWidget::Ptr _selectedImage;
+		tgui::ChildWindow::Ptr _selectedImage;
 
 		void _setupButtonCallbacks();
 
@@ -28,8 +28,8 @@ namespace Mimp
 		Editor(const Editor &) = delete;
 		Editor(const std::vector<std::string> &images = {});
 
-		void setSelectedImage(const std::shared_ptr<CanvasWidget> &_canvas);
-		std::shared_ptr<CanvasWidget> getSelectedImage() const;
+		void setSelectedImage(tgui::ChildWindow::Ptr _canvas);
+		tgui::ChildWindow::Ptr getSelectedImage() const;
 		int run();
 	};
 }
