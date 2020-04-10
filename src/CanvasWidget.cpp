@@ -10,8 +10,8 @@ namespace Mimp
 	CanvasWidget::CanvasWidget(const ToolBox &box, const std::string &path) :
 		CanvasWidget(box, Vector2<unsigned>{0, 0}, LayerManager(path))
 	{
-		this->_layers.selectLayer(0);
-		this->m_size = {this->_layers.getSelectedLayer().getSize().x, this->_layers.getSelectedLayer().getSize().y};
+		this->_size = this->_layers.getSize();
+		this->m_size = {this->_size.x, this->_size.y};
 	}
 
 	CanvasWidget::CanvasWidget(const ToolBox &box, Vector2<unsigned int> size, const LayerManager &layers) :
@@ -42,19 +42,6 @@ namespace Mimp
 		});
 	}
 
-	void CanvasWidget::mouseMoved(tgui::Vector2f pos)
-	{
-		Vector2<int> realPos;
-
-		realPos.x = pos.x;
-		realPos.y = pos.y;
-		if (this->m_mouseDown)
-			this->_box.getSelectedTool()->onMouseDrag(this->_mousePos, realPos, MIMP_LEFT_CLICK, this->_layers.getSelectedLayer());
-		if (this->_rightMouseDown)
-			this->_box.getSelectedTool()->onMouseDrag(this->_mousePos, realPos, MIMP_RIGHT_CLICK, this->_layers.getSelectedLayer());
-		this->_mousePos = realPos;
-	}
-
 	CanvasWidget::CanvasWidget(const ToolBox &box, Vector2<unsigned int> size) :
 		_layers(size, 1, Color::White),
 		_box(box),
@@ -81,6 +68,19 @@ namespace Mimp
 		this->onRightMouseRelease.connect([this](){
 			this->_rightMouseDown = false;
 		});
+	}
+
+	void CanvasWidget::mouseMoved(tgui::Vector2f pos)
+	{
+		Vector2<int> realPos;
+
+		realPos.x = pos.x;
+		realPos.y = pos.y;
+		if (this->m_mouseDown)
+			this->_box.getSelectedTool()->onMouseDrag(this->_mousePos, realPos, MIMP_LEFT_CLICK, this->_layers.getSelectedLayer());
+		if (this->_rightMouseDown)
+			this->_box.getSelectedTool()->onMouseDrag(this->_mousePos, realPos, MIMP_RIGHT_CLICK, this->_layers.getSelectedLayer());
+		this->_mousePos = realPos;
 	}
 
 	tgui::Widget::Ptr CanvasWidget::clone() const

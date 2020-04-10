@@ -81,8 +81,18 @@ namespace Mimp
 
 	tgui::ChildWindow::Ptr Editor::_makeImagePanel(CanvasWidget::Ptr canvas)
 	{
+		auto menu = this->_gui.get<tgui::MenuBar>("main_bar");
 		auto window = tgui::ChildWindow::create("Unnamed");
 
+		window->setSize({
+			canvas->getLayers().getSize().x,
+			canvas->getLayers().getSize().y
+		});
+		window->connect("Closed", [this, menu, window] {
+			menu->setMenuItemEnabled({"File", "Save"}, false);
+			menu->setMenuItemEnabled({"File", "Save as"}, false);
+			this->_gui.remove(window);
+		});
 		window->setPosition(0, 30);
 		window->add(canvas, "Canvas");
 		return window;
@@ -100,15 +110,7 @@ namespace Mimp
 			auto window = _makeImagePanel(widget);
 
 			window->setTitle("Untitled " + std::to_string(++this->_lastUntitled));
-			window->setSize({
-				widget->getLayers().getSize().x,
-				widget->getLayers().getSize().y
-			});
-			window->connect("Closed", [menu] {
-				menu->setMenuItemEnabled({"File", "Save"}, false);
-				menu->setMenuItemEnabled({"File", "Save as"}, false);
-			});
-			this->_gui.add(_makeImagePanel(widget), "ImageUntitled" + std::to_string(this->_lastUntitled));
+			this->_gui.add(window, "ImageUntitled" + std::to_string(this->_lastUntitled));
 			this->_selectedImage = widget;
 			menu->setMenuItemEnabled({"File", "Save"}, true);
 			menu->setMenuItemEnabled({"File", "Save as"}, true);
@@ -121,15 +123,7 @@ namespace Mimp
 				menu->setMenuItemEnabled({"File", "Save"}, true);
 				menu->setMenuItemEnabled({"File", "Save as"}, true);
 
-				window->setSize({
-					widget->getLayers().getSize().x,
-					widget->getLayers().getSize().y
-				});
 				window->setTitle("test.mimp");
-				window->connect("Closed", [menu] {
-					menu->setMenuItemEnabled({"File", "Save"}, false);
-					menu->setMenuItemEnabled({"File", "Save as"}, false);
-				});
 				this->_gui.add(window, "Image" "test.mimp");
 				this->_selectedImage = widget;
 			} catch (std::exception &e) {

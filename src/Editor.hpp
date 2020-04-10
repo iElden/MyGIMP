@@ -23,7 +23,7 @@ namespace Mimp
 
 		void _setupButtonCallbacks();
 
-		static tgui::ChildWindow::Ptr _makeImagePanel(CanvasWidget::Ptr canvas);
+		tgui::ChildWindow::Ptr _makeImagePanel(CanvasWidget::Ptr canvas);
 	public:
 		Editor(const Editor &) = delete;
 		Editor(const std::vector<std::string> &images = {});

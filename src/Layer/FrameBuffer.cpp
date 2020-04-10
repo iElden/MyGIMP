@@ -14,7 +14,7 @@ namespace Mimp
 		_size(size)
 	{
 		this->_pixelBuffer = new unsigned int[size.x * size.y];
-		std::memcpy(this->_pixelBuffer, buffer, size.x * size.y);
+		std::memcpy(this->_pixelBuffer, buffer, size.x * size.y * sizeof(*this->_pixelBuffer));
 	}
 
 	FrameBuffer::FrameBuffer(Vector2<unsigned int> size, const std::vector<Color> &buffer) :

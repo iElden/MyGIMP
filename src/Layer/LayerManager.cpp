@@ -21,7 +21,8 @@ namespace Mimp
 		}
 	}
 
-	LayerManager::LayerManager(Vector2<unsigned> size, unsigned int nbOfLayer, const Color &defaultColor)
+	LayerManager::LayerManager(Vector2<unsigned> size, unsigned int nbOfLayer, const Color &defaultColor) :
+		_size(size)
 	{
 		this->_layers.reserve(nbOfLayer);
 		if (!nbOfLayer)
@@ -120,7 +121,7 @@ namespace Mimp
 	void LayerManager::_loadMimpImage(const std::string &path)
 	{
 		this->_layers.clear();
-		std::ifstream stream{path};
+		std::ifstream stream{path, std::ifstream::binary};
 
 		if (stream.fail())
 			throw InvalidImageException("Cannot open file " + path + ": " + strerror(errno));
@@ -145,6 +146,7 @@ namespace Mimp
 			char *currentLayer = reinterpret_cast<char *>(&image->layers);
 			std::vector<SavedLayer *> layers;
 
+			this->_size = image->size;
 			layers.reserve(image->nbLayers);
 			for (unsigned i = 0; i < image->nbLayers; i++) {
 				auto layer = reinterpret_cast<SavedLayer *>(currentLayer);
@@ -209,7 +211,7 @@ namespace Mimp
 
 	void LayerManager::save(const std::string &path) const
 	{
-		std::ofstream stream{path};
+		std::ofstream stream{path, std::ifstream::binary};
 
 		if (stream.fail())
 			throw;
@@ -242,7 +244,7 @@ namespace Mimp
 			layer->attributes.visible = layerObject->visible;
 			layer->attributes.locked = layerObject->locked;
 
-			std::memcpy(layer->pixels, layerObject->buffer.getBuffer(), layer->size.x * layer->size.y);
+			std::memcpy(layer->pixels, layerObject->buffer.getBuffer(), layer->size.x * layer->size.y * sizeof(*layer->pixels));
 
 			currentLayer = reinterpret_cast<char *>(&layer->pixels[layer->size.x * layer->size.y]);
 		}
