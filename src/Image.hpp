@@ -12,12 +12,19 @@
 
 namespace Mimp {
 	class Image {
+	protected:
+		Vector2<unsigned> _size;
+		LayerManager _layers;
 	public:
-		LayerManager layers;
 		SelectedArea selectedArea;
 
+		Image(Vector2<unsigned> size);
+		Image(Vector2<unsigned> size, const LayerManager &layers);
 		Layer &getSelectedLayer() noexcept;
 		const Layer &getSelectedLayer() const noexcept;
+		LayerManager &getLayers();
+		const LayerManager &getLayers() const noexcept;
+		Vector2<unsigned> getImageSize() const noexcept;
 	};
 }
 

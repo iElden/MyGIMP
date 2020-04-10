@@ -18,7 +18,7 @@ namespace Mimp {
 		std::vector<Vector2<int>> _selectedPoints = {};
 		Layer *selectedLayer = nullptr; // TODO: Gérer le fait que la layer puisse être supprimé !
 
-		SelectedArea();
+		SelectedArea() = default;
 		void clear();
 	};
 }
