@@ -8,6 +8,7 @@
 
 namespace Mimp
 {
+    //! @brief Enumeration for mouse click type
 	enum MouseClick {
 		MIMP_LEFT_CLICK,
 		MIMP_RIGHT_CLICK
