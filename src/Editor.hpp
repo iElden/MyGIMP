@@ -13,23 +13,43 @@
 
 namespace Mimp
 {
+    //! @brief Class Editor
+    //! @details Main window editor
 	class Editor {
 	private:
+	    //! @brief Last Untitled
 		unsigned _lastUntitled = 0;
+        //! @brief ToolBox
 		ToolBox _toolBox;
-		sf::RenderWindow _mainWindow;
+        //! @brief Main Window
+        sf::RenderWindow _mainWindow;
+        //! @brief Gui
 		tgui::Gui _gui;
+        //! @brief Selected Image
 		tgui::ChildWindow::Ptr _selectedImage;
 
+        //! @brief Setup Button Callbacks
 		void _setupButtonCallbacks();
 
-		tgui::ChildWindow::Ptr _makeImagePanel(CanvasWidget::Ptr canvas);
+        //! @brief Makes image panel
+        //! @param canvas Canvas used to make image panel
+        //! @return tgui::ChildWindow::Ptr The new window created
+        tgui::ChildWindow::Ptr _makeImagePanel(CanvasWidget::Ptr canvas);
 	public:
+	    //! @brief Copy Constructor of the Editor class not used
 		Editor(const Editor &) = delete;
+	    //! @brief Constructor of the Editor class
+	    //! @param images Vector of images used to build the Editor
 		Editor(const std::vector<std::string> &images = {});
 
+		//! @brief Set selected images
+		//! @param _canvas Canvas used to be selected
 		void setSelectedImage(tgui::ChildWindow::Ptr _canvas);
+        //! @brief Get selected images
+        //! @return tgui::ChildWindow::Ptr Selected image build into a Child window
 		tgui::ChildWindow::Ptr getSelectedImage() const;
+		//! @brief Run the editor
+		//! @return int Errors
 		int run();
 	};
 }

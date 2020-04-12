@@ -35,19 +35,8 @@ namespace Mimp
         //! @brief Constructor of the Fill Class
         //! @param toolBox ToolBox to create the Fill Tool
 		Fill(Mimp::ToolBox &toolBox);
-        //! @brief When mouse is dragging, apply another fill to the new position
-        //! @param oldPos Old Pos
-        //! @param oldPos New Pos
-        //! @param click Mouse click state
-        //! @param layer Layer used
 		void onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Layer &layer) override;
-        //! @brief When mouse is clicked, apply fill to the position
-        //! @param pos Position of the fill
-        //! @param click Mouse click state
-        //! @param layer Layer used
 		void onClick(Vector2<int> pos, MouseClick click, Layer &layer) override;
-        //! @brief Get the Parameters Panel Pointer
-        //! @return tgui::ScrollablePanel::Ptr Pointer containing the parameters panel
 		tgui::ScrollablePanel::Ptr getParametersPanel() const override;
 	};
 }

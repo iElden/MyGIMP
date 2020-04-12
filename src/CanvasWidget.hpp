@@ -14,29 +14,58 @@
 
 namespace Mimp
 {
+    //! @brief Class Canvas Widget
+    //! @inherit tgui::ClickableWidget
+    //! @inherit Image
+    //! @details Widget on which you can fully draw, edit, paint...
 	class CanvasWidget : public tgui::ClickableWidget, public Image {
 	private:
+	    //! @details Mouse Position
 		Vector2<int> _mousePos = {0, 0};
+        //! @details ToolBox
 		const ToolBox &_box;
+        //! @details Mouse Right Click State
 		bool _rightMouseDown = false;
 
+		//! @details Private Constructor of the Canvas Widget class
+		//! @param box ToolBox
+		//! @param size Size of the canvas
+		//! @param layers LayerManager of the canvas
 		CanvasWidget(const ToolBox &box, Vector2<unsigned int> size, const LayerManager &layers);
 
 	public:
+	    //! @brief Shared widget pointer
 		typedef std::shared_ptr<CanvasWidget> Ptr; ///< Shared widget pointer
+        //! @brief Shared constant widget pointer
 		typedef std::shared_ptr<const CanvasWidget> ConstPtr; ///< Shared constant widget pointer
 
+		//! @brief Public Constructor of the CanvasWidget class
+		//! @param box ToolBox
+		//! @param size Size of the Canvas
 		CanvasWidget(const ToolBox &box, Vector2<unsigned int> size);
+        //! @brief Public Constructor of the CanvasWidget class
+        //! @param box ToolBox
+        //! @param path Path of the Canvas file
 		CanvasWidget(const ToolBox &box, const std::string &path);
 		~CanvasWidget() override = default;
 
+		//! @brief create a new Canvas pointer
+		//! @param box ToolBox
+		//! @param size Size of the canva
+		//! @return CanvasWidget::Ptr
 		static CanvasWidget::Ptr create(const ToolBox &box, Vector2<unsigned int> size);
+        //! @brief create a new Canvas pointer
+        //! @param box ToolBox
+        //! @param path Path of the canva
+        //! @return CanvasWidget::Ptr
 		static CanvasWidget::Ptr create(const ToolBox &box, const std::string &path);
 
 		void mouseMoved(tgui::Vector2f pos) override;
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 		Widget::Ptr clone() const override;
 		void setSize(const tgui::Layout2d& size) override;
+		//! @brief Import an image
+		//! @param path Path of the image
 		void importImage(const std::string &path);
 	};
 }
