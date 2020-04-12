@@ -11,17 +11,43 @@
 
 namespace Mimp
 {
+    //! @brief Class For the Fill Tool
+    //! @inherit Tool
+    //! @details Fill tool fills the selected area
 	class Fill : public Tool {
 	private:
+	    //! @brief Reference of the Toolbox
 		ToolBox &_box;
 
+	    //! @brief Apply the fill tool
+	    //! @param pos Position of the fill application
+	    //! @param layer Layer where the fill tool is used
+	    //! @param click The Mouse click state
 		void apply(Vector2<int> pos, Layer &layer, MouseClick &click);
+        //! @brief Spread the color on the selected area
+        //! @param pos Position of the spreading
+        //! @param layer Layer where the spreading is applied
+        //! @param target_color Color of the current area
+        //! @param fill_color Color to apply
 		void _spread_color(Vector2<int> pos, Layer &layer, Color target_color, Color fill_color);
 
 	public:
+        //! @brief Constructor of the Fill Class
+        //! @param toolBox ToolBox to create the Fill Tool
 		Fill(Mimp::ToolBox &toolBox);
+        //! @brief When mouse is dragging, apply another fill to the new position
+        //! @param oldPos Old Pos
+        //! @param oldPos New Pos
+        //! @param click Mouse click state
+        //! @param layer Layer used
 		void onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Layer &layer) override;
+        //! @brief When mouse is clicked, apply fill to the position
+        //! @param pos Position of the fill
+        //! @param click Mouse click state
+        //! @param layer Layer used
 		void onClick(Vector2<int> pos, MouseClick click, Layer &layer) override;
+        //! @brief Get the Parameters Panel Pointer
+        //! @return tgui::ScrollablePanel::Ptr Pointer containing the parameters panel
 		tgui::ScrollablePanel::Ptr getParametersPanel() const override;
 	};
 }

@@ -12,16 +12,32 @@
 
 namespace Mimp
 {
+    //! @brief Layer
+    //! @details FrameBuffer that you can put above the main Framebuffer.
 	struct Layer {
+	    //! @brief FrameBuffer of the layer
 		FrameBuffer buffer;
-		bool locked = false;
-		bool visible = true;
+        //! @brief Is the layer locked on the screen ?
+        bool locked = false;
+        //! @brief Is the layer visible on the screen ?
+        bool visible = true;
+        //! @brief Position of the layer
 		Vector2<int> pos = {0, 0};
 
+        //! @brief Constructor of the Layer
+        //! @param size Size of the layer
+        //! @param buffer Framebuffer of the layer
 		Layer(Vector2<unsigned int> size, unsigned *buffer);
+        //! @brief Constructor of the Layer
+        //! @param size Size of the layer
+        //! @param color Color of the framebuffer
 		Layer(Vector2<unsigned int> size, const Color &defaultColor = Color::Transparent);
 
+        //! @brief Get the size of the layer
+        //! @return Vector2<unsigned int> Contains the width and height of the layer
 		Vector2<unsigned int> getSize() const noexcept;
+        //! @brief Function that returns the "locked" state of the layer
+        //! @return bool Locked State of the layer
 		bool isLocked() const noexcept;
 	};
 }
