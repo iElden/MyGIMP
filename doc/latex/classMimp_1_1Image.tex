@@ -1,0 +1,178 @@
+\hypertarget{classMimp_1_1Image}{}\doxysection{Mimp\+::Image Class Reference}
+\label{classMimp_1_1Image}\index{Mimp::Image@{Mimp::Image}}
+
+
+Class \mbox{\hyperlink{classMimp_1_1Image}{Image}}.  
+
+
+
+
+{\ttfamily \#include $<$Image.\+hpp$>$}
+
+Inheritance diagram for Mimp\+::Image\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classMimp_1_1Image}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classMimp_1_1Image_aecdd0fa65c8f1657741337c311ce3758}{Image}} (\mbox{\hyperlink{structMimp_1_1Vector2}{Vector2}}$<$ unsigned $>$ size)
+\begin{DoxyCompactList}\small\item\em Constructor of \mbox{\hyperlink{classMimp_1_1Image}{Image}}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMimp_1_1Image_a48d124aea53342e8dec79494b21c10e7}{Image}} (\mbox{\hyperlink{structMimp_1_1Vector2}{Vector2}}$<$ unsigned $>$ size, const \mbox{\hyperlink{classMimp_1_1LayerManager}{Layer\+Manager}} \&layers)
+\begin{DoxyCompactList}\small\item\em Constructor of \mbox{\hyperlink{classMimp_1_1Image}{Image}}. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structMimp_1_1Layer}{Layer}} \& \mbox{\hyperlink{classMimp_1_1Image_a60dfe516291c6f514dfd21b833aee933}{get\+Selected\+Layer}} () noexcept
+\begin{DoxyCompactList}\small\item\em Get the selected layer. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{structMimp_1_1Layer}{Layer}} \& \mbox{\hyperlink{classMimp_1_1Image_afa6564f10595ce46666191c66750452d}{get\+Selected\+Layer}} () const noexcept
+\begin{DoxyCompactList}\small\item\em Get the selected layer. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMimp_1_1LayerManager}{Layer\+Manager}} \& \mbox{\hyperlink{classMimp_1_1Image_a2638b9572293bce3da4752e1e9c6eb44}{get\+Layers}} () noexcept
+\begin{DoxyCompactList}\small\item\em Get all the layers. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classMimp_1_1Image_a2c921a39aa7f268527d198faf8152505}{export\+Image}} (const std\+::string \&path) const
+\begin{DoxyCompactList}\small\item\em Export an image. \end{DoxyCompactList}\item 
+const \mbox{\hyperlink{classMimp_1_1LayerManager}{Layer\+Manager}} \& \mbox{\hyperlink{classMimp_1_1Image_a8987f6b9f3adf3ed76d641c2ffdf262c}{get\+Layers}} () const noexcept
+\begin{DoxyCompactList}\small\item\em Get all the layers. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{structMimp_1_1Vector2}{Vector2}}$<$ unsigned $>$ \mbox{\hyperlink{classMimp_1_1Image_a565b407edf6e93e76bd8a365e82ba7d4}{get\+Image\+Size}} () const noexcept
+\begin{DoxyCompactList}\small\item\em Get the image size. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classMimp_1_1Image_a2bacd49e0f65a53f8f46c9ea5d85768d}\label{classMimp_1_1Image_a2bacd49e0f65a53f8f46c9ea5d85768d}} 
+\mbox{\hyperlink{classMimp_1_1SelectedArea}{Selected\+Area}} \mbox{\hyperlink{classMimp_1_1Image_a2bacd49e0f65a53f8f46c9ea5d85768d}{selected\+Area}}
+\begin{DoxyCompactList}\small\item\em Selected Area of the \mbox{\hyperlink{classMimp_1_1Image}{Image}}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classMimp_1_1Image_ad05d7aabf3150d628da74d654aa7ef5b}\label{classMimp_1_1Image_ad05d7aabf3150d628da74d654aa7ef5b}} 
+\mbox{\hyperlink{structMimp_1_1Vector2}{Vector2}}$<$ unsigned $>$ \mbox{\hyperlink{classMimp_1_1Image_ad05d7aabf3150d628da74d654aa7ef5b}{\+\_\+size}}
+\begin{DoxyCompactList}\small\item\em Size of the \mbox{\hyperlink{classMimp_1_1Image}{Image}}. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMimp_1_1Image_a8a7661c44f72b077a275dfe346a48465}\label{classMimp_1_1Image_a8a7661c44f72b077a275dfe346a48465}} 
+\mbox{\hyperlink{classMimp_1_1LayerManager}{Layer\+Manager}} \mbox{\hyperlink{classMimp_1_1Image_a8a7661c44f72b077a275dfe346a48465}{\+\_\+layers}}
+\begin{DoxyCompactList}\small\item\em Layers of the \mbox{\hyperlink{classMimp_1_1Image}{Image}}. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class \mbox{\hyperlink{classMimp_1_1Image}{Image}}. 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classMimp_1_1Image_aecdd0fa65c8f1657741337c311ce3758}\label{classMimp_1_1Image_aecdd0fa65c8f1657741337c311ce3758}} 
+\index{Mimp::Image@{Mimp::Image}!Image@{Image}}
+\index{Image@{Image}!Mimp::Image@{Mimp::Image}}
+\doxysubsubsection{\texorpdfstring{Image()}{Image()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Mimp\+::\+Image\+::\+Image (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structMimp_1_1Vector2}{Vector2}}$<$ unsigned $>$}]{size }\end{DoxyParamCaption})}
+
+
+
+Constructor of \mbox{\hyperlink{classMimp_1_1Image}{Image}}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em size} & Size of the \mbox{\hyperlink{classMimp_1_1Image}{Image}} \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classMimp_1_1Image_a48d124aea53342e8dec79494b21c10e7}\label{classMimp_1_1Image_a48d124aea53342e8dec79494b21c10e7}} 
+\index{Mimp::Image@{Mimp::Image}!Image@{Image}}
+\index{Image@{Image}!Mimp::Image@{Mimp::Image}}
+\doxysubsubsection{\texorpdfstring{Image()}{Image()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Mimp\+::\+Image\+::\+Image (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structMimp_1_1Vector2}{Vector2}}$<$ unsigned $>$}]{size,  }\item[{const \mbox{\hyperlink{classMimp_1_1LayerManager}{Layer\+Manager}} \&}]{layers }\end{DoxyParamCaption})}
+
+
+
+Constructor of \mbox{\hyperlink{classMimp_1_1Image}{Image}}. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em size} & Size of the \mbox{\hyperlink{classMimp_1_1Image}{Image}} \\
+\hline
+{\em layers} & Layers of the image \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classMimp_1_1Image_a2c921a39aa7f268527d198faf8152505}\label{classMimp_1_1Image_a2c921a39aa7f268527d198faf8152505}} 
+\index{Mimp::Image@{Mimp::Image}!exportImage@{exportImage}}
+\index{exportImage@{exportImage}!Mimp::Image@{Mimp::Image}}
+\doxysubsubsection{\texorpdfstring{exportImage()}{exportImage()}}
+{\footnotesize\ttfamily void Mimp\+::\+Image\+::export\+Image (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{path }\end{DoxyParamCaption}) const}
+
+
+
+Export an image. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & Path to the exported image \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classMimp_1_1Image_a565b407edf6e93e76bd8a365e82ba7d4}\label{classMimp_1_1Image_a565b407edf6e93e76bd8a365e82ba7d4}} 
+\index{Mimp::Image@{Mimp::Image}!getImageSize@{getImageSize}}
+\index{getImageSize@{getImageSize}!Mimp::Image@{Mimp::Image}}
+\doxysubsubsection{\texorpdfstring{getImageSize()}{getImageSize()}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structMimp_1_1Vector2}{Vector2}}$<$ unsigned $>$ Mimp\+::\+Image\+::get\+Image\+Size (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Get the image size. 
+
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{structMimp_1_1Vector2}{Vector2$<$unsigned$>$}} Size of the image 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classMimp_1_1Image_a8987f6b9f3adf3ed76d641c2ffdf262c}\label{classMimp_1_1Image_a8987f6b9f3adf3ed76d641c2ffdf262c}} 
+\index{Mimp::Image@{Mimp::Image}!getLayers@{getLayers}}
+\index{getLayers@{getLayers}!Mimp::Image@{Mimp::Image}}
+\doxysubsubsection{\texorpdfstring{getLayers()}{getLayers()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{classMimp_1_1LayerManager}{Layer\+Manager}} \& Mimp\+::\+Image\+::get\+Layers (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Get all the layers. 
+
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classMimp_1_1LayerManager}{Layer\+Manager}} All the layers 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classMimp_1_1Image_a2638b9572293bce3da4752e1e9c6eb44}\label{classMimp_1_1Image_a2638b9572293bce3da4752e1e9c6eb44}} 
+\index{Mimp::Image@{Mimp::Image}!getLayers@{getLayers}}
+\index{getLayers@{getLayers}!Mimp::Image@{Mimp::Image}}
+\doxysubsubsection{\texorpdfstring{getLayers()}{getLayers()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classMimp_1_1LayerManager}{Layer\+Manager}} \& Mimp\+::\+Image\+::get\+Layers (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Get all the layers. 
+
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classMimp_1_1LayerManager}{Layer\+Manager}} All the layers 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classMimp_1_1Image_afa6564f10595ce46666191c66750452d}\label{classMimp_1_1Image_afa6564f10595ce46666191c66750452d}} 
+\index{Mimp::Image@{Mimp::Image}!getSelectedLayer@{getSelectedLayer}}
+\index{getSelectedLayer@{getSelectedLayer}!Mimp::Image@{Mimp::Image}}
+\doxysubsubsection{\texorpdfstring{getSelectedLayer()}{getSelectedLayer()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily const \mbox{\hyperlink{structMimp_1_1Layer}{Layer}} \& Mimp\+::\+Image\+::get\+Selected\+Layer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Get the selected layer. 
+
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{structMimp_1_1Layer}{Layer}} The selected \mbox{\hyperlink{structMimp_1_1Layer}{Layer}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classMimp_1_1Image_a60dfe516291c6f514dfd21b833aee933}\label{classMimp_1_1Image_a60dfe516291c6f514dfd21b833aee933}} 
+\index{Mimp::Image@{Mimp::Image}!getSelectedLayer@{getSelectedLayer}}
+\index{getSelectedLayer@{getSelectedLayer}!Mimp::Image@{Mimp::Image}}
+\doxysubsubsection{\texorpdfstring{getSelectedLayer()}{getSelectedLayer()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structMimp_1_1Layer}{Layer}} \& Mimp\+::\+Image\+::get\+Selected\+Layer (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [noexcept]}}
+
+
+
+Get the selected layer. 
+
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{structMimp_1_1Layer}{Layer}} The selected \mbox{\hyperlink{structMimp_1_1Layer}{Layer}} 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/jmartin/\+My\+G\+I\+M\+P/src/Image.\+hpp\item 
+/home/jmartin/\+My\+G\+I\+M\+P/src/Image.\+cpp\end{DoxyCompactItemize}

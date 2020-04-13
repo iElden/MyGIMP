@@ -1,0 +1,125 @@
+\hypertarget{classMimp_1_1Fill}{}\doxysection{Mimp\+::Fill Class Reference}
+\label{classMimp_1_1Fill}\index{Mimp::Fill@{Mimp::Fill}}
+
+
+Class For the \mbox{\hyperlink{classMimp_1_1Fill}{Fill}} \mbox{\hyperlink{classMimp_1_1Tool}{Tool}}.  
+
+
+
+
+{\ttfamily \#include $<$Fill.\+hpp$>$}
+
+Inheritance diagram for Mimp\+::Fill\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classMimp_1_1Fill}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classMimp_1_1Fill_ad6f9b0c925d9bfbb839ba0b72ae846bf}{Fill}} (\mbox{\hyperlink{classMimp_1_1ToolBox}{Mimp\+::\+Tool\+Box}} \&tool\+Box)
+\begin{DoxyCompactList}\small\item\em Constructor of the \mbox{\hyperlink{classMimp_1_1Fill}{Fill}} Class. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classMimp_1_1Fill_a46d4a638f7a6bf732a18adf0a41625da}{on\+Mouse\+Drag}} (\mbox{\hyperlink{structMimp_1_1Vector2}{Vector2}}$<$ int $>$ old\+Pos, \mbox{\hyperlink{structMimp_1_1Vector2}{Vector2}}$<$ int $>$ new\+Pos, Mouse\+Click click, \mbox{\hyperlink{structMimp_1_1Layer}{Layer}} \&layer) override
+\begin{DoxyCompactList}\small\item\em When mouse is dragging, apply the tool to the new position. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classMimp_1_1Fill_ab46531a8b6303efabe966a84e18b8142}{on\+Click}} (\mbox{\hyperlink{structMimp_1_1Vector2}{Vector2}}$<$ int $>$ pos, Mouse\+Click click, \mbox{\hyperlink{structMimp_1_1Layer}{Layer}} \&layer) override
+\begin{DoxyCompactList}\small\item\em When mouse is clicked, apply the tool to the position. \end{DoxyCompactList}\item 
+tgui\+::\+Scrollable\+Panel\+::\+Ptr \mbox{\hyperlink{classMimp_1_1Fill_a023a8e9466a4991263db338acba1d60e}{get\+Parameters\+Panel}} () const override
+\begin{DoxyCompactList}\small\item\em Get the Parameters Panel Pointer. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class For the \mbox{\hyperlink{classMimp_1_1Fill}{Fill}} \mbox{\hyperlink{classMimp_1_1Tool}{Tool}}. 
+
+\mbox{\hyperlink{classMimp_1_1Fill}{Fill}} tool fills the selected area 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classMimp_1_1Fill_ad6f9b0c925d9bfbb839ba0b72ae846bf}\label{classMimp_1_1Fill_ad6f9b0c925d9bfbb839ba0b72ae846bf}} 
+\index{Mimp::Fill@{Mimp::Fill}!Fill@{Fill}}
+\index{Fill@{Fill}!Mimp::Fill@{Mimp::Fill}}
+\doxysubsubsection{\texorpdfstring{Fill()}{Fill()}}
+{\footnotesize\ttfamily Mimp\+::\+Fill\+::\+Fill (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classMimp_1_1ToolBox}{Mimp\+::\+Tool\+Box}} \&}]{tool\+Box }\end{DoxyParamCaption})}
+
+
+
+Constructor of the \mbox{\hyperlink{classMimp_1_1Fill}{Fill}} Class. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tool\+Box} & \mbox{\hyperlink{classMimp_1_1ToolBox}{Tool\+Box}} to create the \mbox{\hyperlink{classMimp_1_1Fill}{Fill}} \mbox{\hyperlink{classMimp_1_1Tool}{Tool}} \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classMimp_1_1Fill_a023a8e9466a4991263db338acba1d60e}\label{classMimp_1_1Fill_a023a8e9466a4991263db338acba1d60e}} 
+\index{Mimp::Fill@{Mimp::Fill}!getParametersPanel@{getParametersPanel}}
+\index{getParametersPanel@{getParametersPanel}!Mimp::Fill@{Mimp::Fill}}
+\doxysubsubsection{\texorpdfstring{getParametersPanel()}{getParametersPanel()}}
+{\footnotesize\ttfamily tgui\+::\+Scrollable\+Panel\+::\+Ptr Mimp\+::\+Fill\+::get\+Parameters\+Panel (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Get the Parameters Panel Pointer. 
+
+\begin{DoxyReturn}{Returns}
+tgui\+::\+Scrollable\+Panel\+::\+Ptr Pointer containing the parameters panel 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classMimp_1_1Tool_aa0f83cb132e2fe41d38722017b7334bb}{Mimp\+::\+Tool}}.
+
+\mbox{\Hypertarget{classMimp_1_1Fill_ab46531a8b6303efabe966a84e18b8142}\label{classMimp_1_1Fill_ab46531a8b6303efabe966a84e18b8142}} 
+\index{Mimp::Fill@{Mimp::Fill}!onClick@{onClick}}
+\index{onClick@{onClick}!Mimp::Fill@{Mimp::Fill}}
+\doxysubsubsection{\texorpdfstring{onClick()}{onClick()}}
+{\footnotesize\ttfamily void Mimp\+::\+Fill\+::on\+Click (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structMimp_1_1Vector2}{Vector2}}$<$ int $>$}]{pos,  }\item[{Mouse\+Click}]{click,  }\item[{\mbox{\hyperlink{structMimp_1_1Layer}{Layer}} \&}]{layer }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+When mouse is clicked, apply the tool to the position. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pos} & Position of the tool \\
+\hline
+{\em click} & Mouse click state \\
+\hline
+{\em layer} & \mbox{\hyperlink{structMimp_1_1Layer}{Layer}} used \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{classMimp_1_1Tool_a43b226e27e4546733da73dd02c3bb962}{Mimp\+::\+Tool}}.
+
+\mbox{\Hypertarget{classMimp_1_1Fill_a46d4a638f7a6bf732a18adf0a41625da}\label{classMimp_1_1Fill_a46d4a638f7a6bf732a18adf0a41625da}} 
+\index{Mimp::Fill@{Mimp::Fill}!onMouseDrag@{onMouseDrag}}
+\index{onMouseDrag@{onMouseDrag}!Mimp::Fill@{Mimp::Fill}}
+\doxysubsubsection{\texorpdfstring{onMouseDrag()}{onMouseDrag()}}
+{\footnotesize\ttfamily void Mimp\+::\+Fill\+::on\+Mouse\+Drag (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structMimp_1_1Vector2}{Vector2}}$<$ int $>$}]{old\+Pos,  }\item[{\mbox{\hyperlink{structMimp_1_1Vector2}{Vector2}}$<$ int $>$}]{new\+Pos,  }\item[{Mouse\+Click}]{click,  }\item[{\mbox{\hyperlink{structMimp_1_1Layer}{Layer}} \&}]{layer }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+When mouse is dragging, apply the tool to the new position. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em old\+Pos} & Old Pos \\
+\hline
+{\em old\+Pos} & New Pos \\
+\hline
+{\em click} & Mouse click state \\
+\hline
+{\em layer} & \mbox{\hyperlink{structMimp_1_1Layer}{Layer}} used \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{classMimp_1_1Tool_acb541f5ca7ec0092c4479c15ee7db245}{Mimp\+::\+Tool}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/jmartin/\+My\+G\+I\+M\+P/src/\+Tools/Fill.\+hpp\item 
+/home/jmartin/\+My\+G\+I\+M\+P/src/\+Tools/Fill.\+cpp\end{DoxyCompactItemize}

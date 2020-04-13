@@ -1,0 +1,125 @@
+\hypertarget{classMimp_1_1Pencil}{}\doxysection{Mimp\+::Pencil Class Reference}
+\label{classMimp_1_1Pencil}\index{Mimp::Pencil@{Mimp::Pencil}}
+
+
+Class For the \mbox{\hyperlink{classMimp_1_1Pencil}{Pencil}} \mbox{\hyperlink{classMimp_1_1Tool}{Tool}}.  
+
+
+
+
+{\ttfamily \#include $<$Pencil.\+hpp$>$}
+
+Inheritance diagram for Mimp\+::Pencil\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classMimp_1_1Pencil}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classMimp_1_1Pencil_ad65795d2cfe1521437cffa4093695b1a}{Pencil}} (\mbox{\hyperlink{classMimp_1_1ToolBox}{Tool\+Box}} \&)
+\begin{DoxyCompactList}\small\item\em Constructor of the \mbox{\hyperlink{classMimp_1_1Pencil}{Pencil}} Class. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classMimp_1_1Pencil_a64b1a8a7bd9df8fb7552e4e88582d8e6}{on\+Mouse\+Drag}} (\mbox{\hyperlink{structMimp_1_1Vector2}{Vector2}}$<$ int $>$ old\+Pos, \mbox{\hyperlink{structMimp_1_1Vector2}{Vector2}}$<$ int $>$ new\+Pos, Mouse\+Click click, \mbox{\hyperlink{structMimp_1_1Layer}{Layer}} \&layer) override
+\begin{DoxyCompactList}\small\item\em When mouse is dragging, apply the tool to the new position. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classMimp_1_1Pencil_aadb594756ab9fd1ef974097ac7b6dbf7}{on\+Click}} (\mbox{\hyperlink{structMimp_1_1Vector2}{Vector2}}$<$ int $>$ pos, Mouse\+Click click, \mbox{\hyperlink{structMimp_1_1Layer}{Layer}} \&layer) override
+\begin{DoxyCompactList}\small\item\em When mouse is clicked, apply the tool to the position. \end{DoxyCompactList}\item 
+tgui\+::\+Scrollable\+Panel\+::\+Ptr \mbox{\hyperlink{classMimp_1_1Pencil_a222c9c643d85d610ea089b3cec78a6a8}{get\+Parameters\+Panel}} () const override
+\begin{DoxyCompactList}\small\item\em Get the Parameters Panel Pointer. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class For the \mbox{\hyperlink{classMimp_1_1Pencil}{Pencil}} \mbox{\hyperlink{classMimp_1_1Tool}{Tool}}. 
+
+\mbox{\hyperlink{classMimp_1_1Pencil}{Pencil}} tool draw in the clicked area 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classMimp_1_1Pencil_ad65795d2cfe1521437cffa4093695b1a}\label{classMimp_1_1Pencil_ad65795d2cfe1521437cffa4093695b1a}} 
+\index{Mimp::Pencil@{Mimp::Pencil}!Pencil@{Pencil}}
+\index{Pencil@{Pencil}!Mimp::Pencil@{Mimp::Pencil}}
+\doxysubsubsection{\texorpdfstring{Pencil()}{Pencil()}}
+{\footnotesize\ttfamily Mimp\+::\+Pencil\+::\+Pencil (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{classMimp_1_1ToolBox}{Tool\+Box}} \&}]{box }\end{DoxyParamCaption})}
+
+
+
+Constructor of the \mbox{\hyperlink{classMimp_1_1Pencil}{Pencil}} Class. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em tool\+Box} & \mbox{\hyperlink{classMimp_1_1ToolBox}{Tool\+Box}} to create the \mbox{\hyperlink{classMimp_1_1Pencil}{Pencil}} \mbox{\hyperlink{classMimp_1_1Tool}{Tool}} \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classMimp_1_1Pencil_a222c9c643d85d610ea089b3cec78a6a8}\label{classMimp_1_1Pencil_a222c9c643d85d610ea089b3cec78a6a8}} 
+\index{Mimp::Pencil@{Mimp::Pencil}!getParametersPanel@{getParametersPanel}}
+\index{getParametersPanel@{getParametersPanel}!Mimp::Pencil@{Mimp::Pencil}}
+\doxysubsubsection{\texorpdfstring{getParametersPanel()}{getParametersPanel()}}
+{\footnotesize\ttfamily tgui\+::\+Scrollable\+Panel\+::\+Ptr Mimp\+::\+Pencil\+::get\+Parameters\+Panel (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+Get the Parameters Panel Pointer. 
+
+\begin{DoxyReturn}{Returns}
+tgui\+::\+Scrollable\+Panel\+::\+Ptr Pointer containing the parameters panel 
+\end{DoxyReturn}
+
+
+Implements \mbox{\hyperlink{classMimp_1_1Tool_aa0f83cb132e2fe41d38722017b7334bb}{Mimp\+::\+Tool}}.
+
+\mbox{\Hypertarget{classMimp_1_1Pencil_aadb594756ab9fd1ef974097ac7b6dbf7}\label{classMimp_1_1Pencil_aadb594756ab9fd1ef974097ac7b6dbf7}} 
+\index{Mimp::Pencil@{Mimp::Pencil}!onClick@{onClick}}
+\index{onClick@{onClick}!Mimp::Pencil@{Mimp::Pencil}}
+\doxysubsubsection{\texorpdfstring{onClick()}{onClick()}}
+{\footnotesize\ttfamily void Mimp\+::\+Pencil\+::on\+Click (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structMimp_1_1Vector2}{Vector2}}$<$ int $>$}]{pos,  }\item[{Mouse\+Click}]{click,  }\item[{\mbox{\hyperlink{structMimp_1_1Layer}{Layer}} \&}]{layer }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+When mouse is clicked, apply the tool to the position. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em pos} & Position of the tool \\
+\hline
+{\em click} & Mouse click state \\
+\hline
+{\em layer} & \mbox{\hyperlink{structMimp_1_1Layer}{Layer}} used \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{classMimp_1_1Tool_a43b226e27e4546733da73dd02c3bb962}{Mimp\+::\+Tool}}.
+
+\mbox{\Hypertarget{classMimp_1_1Pencil_a64b1a8a7bd9df8fb7552e4e88582d8e6}\label{classMimp_1_1Pencil_a64b1a8a7bd9df8fb7552e4e88582d8e6}} 
+\index{Mimp::Pencil@{Mimp::Pencil}!onMouseDrag@{onMouseDrag}}
+\index{onMouseDrag@{onMouseDrag}!Mimp::Pencil@{Mimp::Pencil}}
+\doxysubsubsection{\texorpdfstring{onMouseDrag()}{onMouseDrag()}}
+{\footnotesize\ttfamily void Mimp\+::\+Pencil\+::on\+Mouse\+Drag (\begin{DoxyParamCaption}\item[{\mbox{\hyperlink{structMimp_1_1Vector2}{Vector2}}$<$ int $>$}]{old\+Pos,  }\item[{\mbox{\hyperlink{structMimp_1_1Vector2}{Vector2}}$<$ int $>$}]{new\+Pos,  }\item[{Mouse\+Click}]{click,  }\item[{\mbox{\hyperlink{structMimp_1_1Layer}{Layer}} \&}]{layer }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [override]}, {\ttfamily [virtual]}}
+
+
+
+When mouse is dragging, apply the tool to the new position. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em old\+Pos} & Old Pos \\
+\hline
+{\em old\+Pos} & New Pos \\
+\hline
+{\em click} & Mouse click state \\
+\hline
+{\em layer} & \mbox{\hyperlink{structMimp_1_1Layer}{Layer}} used \\
+\hline
+\end{DoxyParams}
+
+
+Implements \mbox{\hyperlink{classMimp_1_1Tool_acb541f5ca7ec0092c4479c15ee7db245}{Mimp\+::\+Tool}}.
+
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/jmartin/\+My\+G\+I\+M\+P/src/\+Tools/Pencil.\+hpp\item 
+/home/jmartin/\+My\+G\+I\+M\+P/src/\+Tools/Pencil.\+cpp\end{DoxyCompactItemize}

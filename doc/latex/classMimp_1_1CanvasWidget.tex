@@ -1,0 +1,182 @@
+\hypertarget{classMimp_1_1CanvasWidget}{}\doxysection{Mimp\+::Canvas\+Widget Class Reference}
+\label{classMimp_1_1CanvasWidget}\index{Mimp::CanvasWidget@{Mimp::CanvasWidget}}
+
+
+Class Canvas Widget.  
+
+
+
+
+{\ttfamily \#include $<$Canvas\+Widget.\+hpp$>$}
+
+Inheritance diagram for Mimp\+::Canvas\+Widget\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classMimp_1_1CanvasWidget}
+\end{center}
+\end{figure}
+\doxysubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+typedef std\+::shared\+\_\+ptr$<$ \mbox{\hyperlink{classMimp_1_1CanvasWidget}{Canvas\+Widget}} $>$ \mbox{\hyperlink{classMimp_1_1CanvasWidget_ab210138720dfbd82f351517907ffd021}{Ptr}}
+\begin{DoxyCompactList}\small\item\em Shared widget pointer. \end{DoxyCompactList}\item 
+typedef std\+::shared\+\_\+ptr$<$ const \mbox{\hyperlink{classMimp_1_1CanvasWidget}{Canvas\+Widget}} $>$ \mbox{\hyperlink{classMimp_1_1CanvasWidget_a75df202c92ecfa289aa05925e8d050a3}{Const\+Ptr}}
+\begin{DoxyCompactList}\small\item\em Shared constant widget pointer. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classMimp_1_1CanvasWidget_aa769a35fa4ed703de3d1007fa954700f}{Canvas\+Widget}} (const \mbox{\hyperlink{classMimp_1_1ToolBox}{Tool\+Box}} \&box, \mbox{\hyperlink{structMimp_1_1Vector2}{Vector2}}$<$ unsigned int $>$ size)
+\begin{DoxyCompactList}\small\item\em Public Constructor of the \mbox{\hyperlink{classMimp_1_1CanvasWidget}{Canvas\+Widget}} class. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMimp_1_1CanvasWidget_a70105bfe696c98e7c75fc992777f40db}{Canvas\+Widget}} (const \mbox{\hyperlink{classMimp_1_1ToolBox}{Tool\+Box}} \&box, const std\+::string \&path)
+\begin{DoxyCompactList}\small\item\em Public Constructor of the \mbox{\hyperlink{classMimp_1_1CanvasWidget}{Canvas\+Widget}} class. \end{DoxyCompactList}\item 
+\mbox{\Hypertarget{classMimp_1_1CanvasWidget_a1797d73e90a256957e4224989a466607}\label{classMimp_1_1CanvasWidget_a1797d73e90a256957e4224989a466607}} 
+void {\bfseries mouse\+Moved} (tgui\+::\+Vector2f pos) override
+\item 
+\mbox{\Hypertarget{classMimp_1_1CanvasWidget_aa2151cfe5744b1cbca2f44682e56d69d}\label{classMimp_1_1CanvasWidget_aa2151cfe5744b1cbca2f44682e56d69d}} 
+void {\bfseries draw} (sf\+::\+Render\+Target \&target, sf\+::\+Render\+States states) const override
+\item 
+\mbox{\Hypertarget{classMimp_1_1CanvasWidget_afe5fb41817c6d7fe14ec6090a9ca2d0d}\label{classMimp_1_1CanvasWidget_afe5fb41817c6d7fe14ec6090a9ca2d0d}} 
+Widget\+::\+Ptr {\bfseries clone} () const override
+\item 
+\mbox{\Hypertarget{classMimp_1_1CanvasWidget_ac64443fdcc7b9d2bc02e93c1b8bf167d}\label{classMimp_1_1CanvasWidget_ac64443fdcc7b9d2bc02e93c1b8bf167d}} 
+void {\bfseries set\+Size} (const tgui\+::\+Layout2d \&size) override
+\item 
+void \mbox{\hyperlink{classMimp_1_1CanvasWidget_a79a5675dda0d448e03f974baafe6caa9}{import\+Image}} (const std\+::string \&path)
+\begin{DoxyCompactList}\small\item\em Import an image. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classMimp_1_1CanvasWidget_ab210138720dfbd82f351517907ffd021}{Canvas\+Widget\+::\+Ptr}} \mbox{\hyperlink{classMimp_1_1CanvasWidget_a8fc58fb7269d5f401f76263ac9ae648e}{create}} (const \mbox{\hyperlink{classMimp_1_1ToolBox}{Tool\+Box}} \&box, \mbox{\hyperlink{structMimp_1_1Vector2}{Vector2}}$<$ unsigned int $>$ size)
+\begin{DoxyCompactList}\small\item\em create a new Canvas pointer \end{DoxyCompactList}\item 
+static \mbox{\hyperlink{classMimp_1_1CanvasWidget_ab210138720dfbd82f351517907ffd021}{Canvas\+Widget\+::\+Ptr}} \mbox{\hyperlink{classMimp_1_1CanvasWidget_a1b5de766fb99a08401d339e95f63d7a1}{create}} (const \mbox{\hyperlink{classMimp_1_1ToolBox}{Tool\+Box}} \&box, const std\+::string \&path)
+\begin{DoxyCompactList}\small\item\em create a new Canvas pointer \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Additional Inherited Members}
+
+
+\doxysubsection{Detailed Description}
+Class Canvas Widget. 
+
+Widget on which you can fully draw, edit, paint... 
+
+\doxysubsection{Member Typedef Documentation}
+\mbox{\Hypertarget{classMimp_1_1CanvasWidget_a75df202c92ecfa289aa05925e8d050a3}\label{classMimp_1_1CanvasWidget_a75df202c92ecfa289aa05925e8d050a3}} 
+\index{Mimp::CanvasWidget@{Mimp::CanvasWidget}!ConstPtr@{ConstPtr}}
+\index{ConstPtr@{ConstPtr}!Mimp::CanvasWidget@{Mimp::CanvasWidget}}
+\doxysubsubsection{\texorpdfstring{ConstPtr}{ConstPtr}}
+{\footnotesize\ttfamily typedef std\+::shared\+\_\+ptr$<$const \mbox{\hyperlink{classMimp_1_1CanvasWidget}{Canvas\+Widget}}$>$ \mbox{\hyperlink{classMimp_1_1CanvasWidget_a75df202c92ecfa289aa05925e8d050a3}{Mimp\+::\+Canvas\+Widget\+::\+Const\+Ptr}}}
+
+
+
+Shared constant widget pointer. 
+
+Shared constant widget pointer \mbox{\Hypertarget{classMimp_1_1CanvasWidget_ab210138720dfbd82f351517907ffd021}\label{classMimp_1_1CanvasWidget_ab210138720dfbd82f351517907ffd021}} 
+\index{Mimp::CanvasWidget@{Mimp::CanvasWidget}!Ptr@{Ptr}}
+\index{Ptr@{Ptr}!Mimp::CanvasWidget@{Mimp::CanvasWidget}}
+\doxysubsubsection{\texorpdfstring{Ptr}{Ptr}}
+{\footnotesize\ttfamily typedef std\+::shared\+\_\+ptr$<$\mbox{\hyperlink{classMimp_1_1CanvasWidget}{Canvas\+Widget}}$>$ \mbox{\hyperlink{classMimp_1_1CanvasWidget_ab210138720dfbd82f351517907ffd021}{Mimp\+::\+Canvas\+Widget\+::\+Ptr}}}
+
+
+
+Shared widget pointer. 
+
+Shared widget pointer 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classMimp_1_1CanvasWidget_aa769a35fa4ed703de3d1007fa954700f}\label{classMimp_1_1CanvasWidget_aa769a35fa4ed703de3d1007fa954700f}} 
+\index{Mimp::CanvasWidget@{Mimp::CanvasWidget}!CanvasWidget@{CanvasWidget}}
+\index{CanvasWidget@{CanvasWidget}!Mimp::CanvasWidget@{Mimp::CanvasWidget}}
+\doxysubsubsection{\texorpdfstring{CanvasWidget()}{CanvasWidget()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily Mimp\+::\+Canvas\+Widget\+::\+Canvas\+Widget (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classMimp_1_1ToolBox}{Tool\+Box}} \&}]{box,  }\item[{\mbox{\hyperlink{structMimp_1_1Vector2}{Vector2}}$<$ unsigned int $>$}]{size }\end{DoxyParamCaption})}
+
+
+
+Public Constructor of the \mbox{\hyperlink{classMimp_1_1CanvasWidget}{Canvas\+Widget}} class. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em box} & \mbox{\hyperlink{classMimp_1_1ToolBox}{Tool\+Box}} \\
+\hline
+{\em size} & Size of the Canvas \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{classMimp_1_1CanvasWidget_a70105bfe696c98e7c75fc992777f40db}\label{classMimp_1_1CanvasWidget_a70105bfe696c98e7c75fc992777f40db}} 
+\index{Mimp::CanvasWidget@{Mimp::CanvasWidget}!CanvasWidget@{CanvasWidget}}
+\index{CanvasWidget@{CanvasWidget}!Mimp::CanvasWidget@{Mimp::CanvasWidget}}
+\doxysubsubsection{\texorpdfstring{CanvasWidget()}{CanvasWidget()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily Mimp\+::\+Canvas\+Widget\+::\+Canvas\+Widget (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classMimp_1_1ToolBox}{Tool\+Box}} \&}]{box,  }\item[{const std\+::string \&}]{path }\end{DoxyParamCaption})}
+
+
+
+Public Constructor of the \mbox{\hyperlink{classMimp_1_1CanvasWidget}{Canvas\+Widget}} class. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em box} & \mbox{\hyperlink{classMimp_1_1ToolBox}{Tool\+Box}} \\
+\hline
+{\em path} & Path of the Canvas file \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classMimp_1_1CanvasWidget_a1b5de766fb99a08401d339e95f63d7a1}\label{classMimp_1_1CanvasWidget_a1b5de766fb99a08401d339e95f63d7a1}} 
+\index{Mimp::CanvasWidget@{Mimp::CanvasWidget}!create@{create}}
+\index{create@{create}!Mimp::CanvasWidget@{Mimp::CanvasWidget}}
+\doxysubsubsection{\texorpdfstring{create()}{create()}\hspace{0.1cm}{\footnotesize\ttfamily [1/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classMimp_1_1CanvasWidget_ab210138720dfbd82f351517907ffd021}{Canvas\+Widget\+::\+Ptr}} Mimp\+::\+Canvas\+Widget\+::create (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classMimp_1_1ToolBox}{Tool\+Box}} \&}]{box,  }\item[{const std\+::string \&}]{path }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+create a new Canvas pointer 
+
+
+\begin{DoxyParams}{Parameters}
+{\em box} & \mbox{\hyperlink{classMimp_1_1ToolBox}{Tool\+Box}} \\
+\hline
+{\em path} & Path of the canva \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classMimp_1_1CanvasWidget_ab210138720dfbd82f351517907ffd021}{Canvas\+Widget\+::\+Ptr}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classMimp_1_1CanvasWidget_a8fc58fb7269d5f401f76263ac9ae648e}\label{classMimp_1_1CanvasWidget_a8fc58fb7269d5f401f76263ac9ae648e}} 
+\index{Mimp::CanvasWidget@{Mimp::CanvasWidget}!create@{create}}
+\index{create@{create}!Mimp::CanvasWidget@{Mimp::CanvasWidget}}
+\doxysubsubsection{\texorpdfstring{create()}{create()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}
+{\footnotesize\ttfamily \mbox{\hyperlink{classMimp_1_1CanvasWidget_ab210138720dfbd82f351517907ffd021}{Canvas\+Widget\+::\+Ptr}} Mimp\+::\+Canvas\+Widget\+::create (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classMimp_1_1ToolBox}{Tool\+Box}} \&}]{box,  }\item[{\mbox{\hyperlink{structMimp_1_1Vector2}{Vector2}}$<$ unsigned int $>$}]{size }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [static]}}
+
+
+
+create a new Canvas pointer 
+
+
+\begin{DoxyParams}{Parameters}
+{\em box} & \mbox{\hyperlink{classMimp_1_1ToolBox}{Tool\+Box}} \\
+\hline
+{\em size} & Size of the canva \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+\mbox{\hyperlink{classMimp_1_1CanvasWidget_ab210138720dfbd82f351517907ffd021}{Canvas\+Widget\+::\+Ptr}} 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classMimp_1_1CanvasWidget_a79a5675dda0d448e03f974baafe6caa9}\label{classMimp_1_1CanvasWidget_a79a5675dda0d448e03f974baafe6caa9}} 
+\index{Mimp::CanvasWidget@{Mimp::CanvasWidget}!importImage@{importImage}}
+\index{importImage@{importImage}!Mimp::CanvasWidget@{Mimp::CanvasWidget}}
+\doxysubsubsection{\texorpdfstring{importImage()}{importImage()}}
+{\footnotesize\ttfamily void Mimp\+::\+Canvas\+Widget\+::import\+Image (\begin{DoxyParamCaption}\item[{const std\+::string \&}]{path }\end{DoxyParamCaption})}
+
+
+
+Import an image. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em path} & Path of the image \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/jmartin/\+My\+G\+I\+M\+P/src/Canvas\+Widget.\+hpp\item 
+/home/jmartin/\+My\+G\+I\+M\+P/src/Canvas\+Widget.\+cpp\end{DoxyCompactItemize}

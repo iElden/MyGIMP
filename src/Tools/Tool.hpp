@@ -12,6 +12,7 @@
 
 namespace Mimp
 {
+    //! @brief Class Tool
 	class Tool {
 	private:
 	    //! @brief Name of the tool

@@ -1,0 +1,98 @@
+\hypertarget{classMimp_1_1Editor}{}\doxysection{Mimp\+::Editor Class Reference}
+\label{classMimp_1_1Editor}\index{Mimp::Editor@{Mimp::Editor}}
+
+
+Class \mbox{\hyperlink{classMimp_1_1Editor}{Editor}}.  
+
+
+
+
+{\ttfamily \#include $<$Editor.\+hpp$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classMimp_1_1Editor_a363d04ab97e63cfe33647fa2d846bf85}\label{classMimp_1_1Editor_a363d04ab97e63cfe33647fa2d846bf85}} 
+\mbox{\hyperlink{classMimp_1_1Editor_a363d04ab97e63cfe33647fa2d846bf85}{Editor}} (const \mbox{\hyperlink{classMimp_1_1Editor}{Editor}} \&)=delete
+\begin{DoxyCompactList}\small\item\em Copy Constructor of the \mbox{\hyperlink{classMimp_1_1Editor}{Editor}} class not used. \end{DoxyCompactList}\item 
+\mbox{\hyperlink{classMimp_1_1Editor_a49c0955618a4373b0e31e65e91e5f53f}{Editor}} (const std\+::vector$<$ std\+::string $>$ \&images=\{\})
+\begin{DoxyCompactList}\small\item\em Constructor of the \mbox{\hyperlink{classMimp_1_1Editor}{Editor}} class. \end{DoxyCompactList}\item 
+void \mbox{\hyperlink{classMimp_1_1Editor_a13b674348887be19b1ae08ba2d9294c9}{set\+Selected\+Image}} (tgui\+::\+Child\+Window\+::\+Ptr \+\_\+canvas)
+\begin{DoxyCompactList}\small\item\em Set selected images. \end{DoxyCompactList}\item 
+tgui\+::\+Child\+Window\+::\+Ptr \mbox{\hyperlink{classMimp_1_1Editor_a82204c4f80c579d429b71b207b274643}{get\+Selected\+Image}} () const
+\begin{DoxyCompactList}\small\item\em Get selected images. \end{DoxyCompactList}\item 
+int \mbox{\hyperlink{classMimp_1_1Editor_ae331ed86924e92220466766350a49dcb}{run}} ()
+\begin{DoxyCompactList}\small\item\em Run the editor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+Class \mbox{\hyperlink{classMimp_1_1Editor}{Editor}}. 
+
+Main window editor 
+
+\doxysubsection{Constructor \& Destructor Documentation}
+\mbox{\Hypertarget{classMimp_1_1Editor_a49c0955618a4373b0e31e65e91e5f53f}\label{classMimp_1_1Editor_a49c0955618a4373b0e31e65e91e5f53f}} 
+\index{Mimp::Editor@{Mimp::Editor}!Editor@{Editor}}
+\index{Editor@{Editor}!Mimp::Editor@{Mimp::Editor}}
+\doxysubsubsection{\texorpdfstring{Editor()}{Editor()}}
+{\footnotesize\ttfamily Mimp\+::\+Editor\+::\+Editor (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ std\+::string $>$ \&}]{images = {\ttfamily \{\}} }\end{DoxyParamCaption})}
+
+
+
+Constructor of the \mbox{\hyperlink{classMimp_1_1Editor}{Editor}} class. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em images} & Vector of images used to build the \mbox{\hyperlink{classMimp_1_1Editor}{Editor}} \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classMimp_1_1Editor_a82204c4f80c579d429b71b207b274643}\label{classMimp_1_1Editor_a82204c4f80c579d429b71b207b274643}} 
+\index{Mimp::Editor@{Mimp::Editor}!getSelectedImage@{getSelectedImage}}
+\index{getSelectedImage@{getSelectedImage}!Mimp::Editor@{Mimp::Editor}}
+\doxysubsubsection{\texorpdfstring{getSelectedImage()}{getSelectedImage()}}
+{\footnotesize\ttfamily tgui\+::\+Child\+Window\+::\+Ptr Mimp\+::\+Editor\+::get\+Selected\+Image (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const}
+
+
+
+Get selected images. 
+
+\begin{DoxyReturn}{Returns}
+tgui\+::\+Child\+Window\+::\+Ptr Selected image build into a Child window 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classMimp_1_1Editor_ae331ed86924e92220466766350a49dcb}\label{classMimp_1_1Editor_ae331ed86924e92220466766350a49dcb}} 
+\index{Mimp::Editor@{Mimp::Editor}!run@{run}}
+\index{run@{run}!Mimp::Editor@{Mimp::Editor}}
+\doxysubsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily int Mimp\+::\+Editor\+::run (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Run the editor. 
+
+\begin{DoxyReturn}{Returns}
+int Errors 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classMimp_1_1Editor_a13b674348887be19b1ae08ba2d9294c9}\label{classMimp_1_1Editor_a13b674348887be19b1ae08ba2d9294c9}} 
+\index{Mimp::Editor@{Mimp::Editor}!setSelectedImage@{setSelectedImage}}
+\index{setSelectedImage@{setSelectedImage}!Mimp::Editor@{Mimp::Editor}}
+\doxysubsubsection{\texorpdfstring{setSelectedImage()}{setSelectedImage()}}
+{\footnotesize\ttfamily void Mimp\+::\+Editor\+::set\+Selected\+Image (\begin{DoxyParamCaption}\item[{tgui\+::\+Child\+Window\+::\+Ptr}]{\+\_\+canvas }\end{DoxyParamCaption})}
+
+
+
+Set selected images. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em \+\_\+canvas} & Canvas used to be selected \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/home/jmartin/\+My\+G\+I\+M\+P/src/Editor.\+hpp\item 
+/home/jmartin/\+My\+G\+I\+M\+P/src/Editor.\+cpp\end{DoxyCompactItemize}
