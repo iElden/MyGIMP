@@ -12,21 +12,36 @@
 
 namespace Mimp
 {
+    //! @brief Class ToolBox
+    //! @details Contains all the tools required in Mimp
 	class ToolBox {
 	private:
+	    //! @brief Tools as shared pointers
 		std::vector<std::shared_ptr<Tool>> _tools;
+        //! @brief Tool index that is selected
 		unsigned int _selectedTool = 0;
+        //! @brief Window of the toolbox
 		tgui::ChildWindow::Ptr _window;
+        //! @brief Pair of Selected Colors
 		std::pair<Color, Color> _selectedColor = {
 			Color::Black,
 			Color::White
 		};
 
+		//! @brief Generates the GUI Window
 		void _generateGuiWindow();
 	public:
+	    //! @brief Constructor of ToolBox Class
 		ToolBox();
+	    //! @brief Get the selected Tool as Shared pointer
+	    //! @return std::shared_ptr<Tool> The selected Tool as Shared Pointer
 		std::shared_ptr<Tool> getSelectedTool() const;
+		//! @brief Get the window of the toolbox
+		//! @return tgui::ChildWindow::Ptr Window of the toolbox
 		tgui::ChildWindow::Ptr getWindow() const;
+		//! @brief Get the selected color
+		//! @param click The mouse click state
+		//! @return Color The selected color
 		Color getSelectedColor(MouseClick click);
 	};
 }
