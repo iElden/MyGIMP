@@ -14,7 +14,7 @@ namespace Mimp
 		_gui(this->_mainWindow),
 		_toolBox(this->_gui)
 	{
-		this->_mainWindow.setFramerateLimit(60);
+		this->_mainWindow.setFramerateLimit(240);
 		this->_gui.loadWidgetsFromFile("widgets/top_menu.gui");
 		this->_setupButtonCallbacks();
 		this->_gui.add(this->_toolBox.getWindow(), "ToolBox");
@@ -97,10 +97,12 @@ namespace Mimp
 			canvas->getLayers().getSize().x,
 			canvas->getLayers().getSize().y
 		});
-		window->connect("Closed", [this, menu, window] {
+		window->connect("Closed", [this, menu, window, canvas] {
 			menu->setMenuItemEnabled({"File", "Save"}, false);
 			menu->setMenuItemEnabled({"File", "Save as"}, false);
 			menu->setMenuItemEnabled({"File", "Export"}, false);
+			this->_selectedImage = nullptr;
+			canvas->disableRendering();
 			this->_gui.remove(window);
 		});
 		window->setPosition(0, 30);
