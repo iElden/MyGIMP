@@ -188,6 +188,7 @@ namespace Mimp
 			throw InvalidImageException("Failed to load file " + path);
 
 		this->_setBusy();
+		this->_layers.clear();
 
 		Vector2<unsigned> size{
 			image.getSize().x,
