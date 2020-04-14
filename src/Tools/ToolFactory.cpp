@@ -5,6 +5,7 @@
 #include "ToolFactory.hpp"
 #include "Pencil.hpp"
 #include "Fill.hpp"
+#include "ColorPick.hpp"
 
 namespace Mimp
 {
@@ -14,8 +15,10 @@ namespace Mimp
 		},
 		[](ToolBox &box){
 			return std::make_shared<Fill>(box);
+		},
+		[](ToolBox &box){
+			return std::make_shared<ColorPick>(box);
 		}
-
 	};
 
 	std::vector<std::shared_ptr<Tool>> ToolFactory::buildAll(ToolBox &box)

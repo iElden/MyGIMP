@@ -153,12 +153,12 @@ namespace Mimp::Utils
 		return "";
 	}
 #else
-	std::string openFileDialog(const std::string &basePath, const std::vector<std::pair<std::string, std::string>> &patterns)
+	std::string openFileDialog(const std::string &title, const std::string &basePath, const std::vector<std::pair<std::string, std::string>> &patterns)
 	{
 		return "";
 	}
 
-	std::string saveFileDialog(const std::string &basePath, const std::vector<std::pair<std::string, std::string>> &patterns)
+	std::string saveFileDialog(const std::string &title, const std::string &basePath, const std::vector<std::pair<std::string, std::string>> &patterns)
 	{
 		return "";
 	}

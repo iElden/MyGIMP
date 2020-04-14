@@ -160,6 +160,7 @@ namespace Mimp
 	{
 		if (click == MIMP_LEFT_CLICK)
 			this->_changeSelectedColor(this->_colorButtons.first, &this->_selectedColor.first, newColor);
-		this->_changeSelectedColor(this->_colorButtons.second, &this->_selectedColor.second, newColor);
+		else if (click == MIMP_RIGHT_CLICK)
+			this->_changeSelectedColor(this->_colorButtons.second, &this->_selectedColor.second, newColor);
 	}
 }
