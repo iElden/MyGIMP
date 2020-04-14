@@ -3,6 +3,7 @@
 //
 
 #include <SFML/Graphics/Sprite.hpp>
+#include <iostream>
 #include "CanvasWidget.hpp"
 
 namespace Mimp
@@ -39,6 +40,13 @@ namespace Mimp
 		this->onRightMouseRelease.connect([this](){
 			this->_rightMouseDown = false;
 		});
+		this->_renderThread = std::thread([this]{
+			while (!this->_destroyed) {
+				this->_updateInternalBuffer();
+				std::this_thread::sleep_for(std::chrono::milliseconds(10));
+			}
+		});
+		this->_drawBuffer.create(size.x, size.y);
 	}
 
 	CanvasWidget::CanvasWidget(const ToolBox &box, Vector2<unsigned int> size):
@@ -66,6 +74,33 @@ namespace Mimp
 		this->onRightMouseRelease.connect([this](){
 			this->_rightMouseDown = false;
 		});
+		this->_drawBuffer.create(size.x, size.y);
+		this->_renderThread = std::thread([this]{
+			while (!this->_destroyed) {
+				this->_updateInternalBuffer();
+				std::this_thread::sleep_for(std::chrono::milliseconds(10));
+			}
+		});
+	}
+
+	void CanvasWidget::_updateInternalBuffer()
+	{
+		FrameBuffer buffer({
+			static_cast<unsigned>(this->getSize().x),
+			static_cast<unsigned>(this->getSize().y)
+		});
+		auto size = buffer.getSize();
+
+		this->_layers.render(buffer);
+
+		auto pixelArray = new sf::Color[size.x * size.y];
+
+		for (unsigned x = 0; x < size.x; x++)
+			for (unsigned y = 0; y < size.y; y++)
+				pixelArray[x + y * size.x] = buffer.getPixel({static_cast<int>(x), static_cast<int>(y)});
+		this->_drawBuffer.create(size.x, size.y);
+		this->_drawBuffer.update(reinterpret_cast<const sf::Uint8 *>(pixelArray), buffer.getSize().x, buffer.getSize().y, 0, 0);
+		delete[] pixelArray;
 	}
 
 	void CanvasWidget::mouseMoved(tgui::Vector2f pos)
@@ -91,29 +126,10 @@ namespace Mimp
 
 	void CanvasWidget::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	{
-		sf::Texture texture;
 		sf::Sprite sprite;
-		FrameBuffer buffer({
-			static_cast<unsigned>(this->getSize().x),
-			static_cast<unsigned>(this->getSize().y)
-		});
-		auto size = buffer.getSize();
 
 		states.transform.translate(getPosition());
-		this->_layers.render(buffer);
-
-		texture.create(size.x, size.y);
-
-		auto pixelArray = new sf::Color[size.x * size.y];
-
-		for (unsigned x = 0; x < size.x; x++)
-			for (unsigned y = 0; y < size.y; y++)
-				pixelArray[x + y * size.x] = buffer.getPixel({static_cast<int>(x), static_cast<int>(y)});
-		texture.update(reinterpret_cast<const sf::Uint8 *>(pixelArray));
-		delete[] pixelArray;
-
-		sprite.setTexture(texture);
-
+		sprite.setTexture(this->_drawBuffer);
 		target.draw(sprite, states);
 	}
 
@@ -138,5 +154,20 @@ namespace Mimp
 			this->_size.x,
 			this->_size.x
 		};
+		this->_drawBuffer.create(this->_size.x, this->_size.y);
+	}
+
+	CanvasWidget::~CanvasWidget()
+	{
+		this->_destroyed = true;
+		if (this->_renderThread.joinable())
+			this->_renderThread.join();
+	}
+
+	void CanvasWidget::disableRendering()
+	{
+		this->_destroyed = true;
+		if (this->_renderThread.joinable())
+			this->_renderThread.join();
 	}
 }

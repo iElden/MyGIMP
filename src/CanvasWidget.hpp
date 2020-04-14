@@ -8,6 +8,7 @@
 
 #include <TGUI/Widgets/ChildWindow.hpp>
 #include <memory>
+#include <thread>
 #include "Layer/LayerManager.hpp"
 #include "ToolBox.hpp"
 #include "Image.hpp"
@@ -27,11 +28,19 @@ namespace Mimp
 		//! @details Mouse Right Click State
 		bool _rightMouseDown = false;
 
+		bool _destroyed = false;
+
+		std::thread _renderThread;
+
+		sf::Texture _drawBuffer;
+
 		//! @details Private Constructor of the Canvas Widget class
 		//! @param box ToolBox
 		//! @param size Size of the canvas
 		//! @param layers LayerManager of the canvas
 		CanvasWidget(const ToolBox &box, Vector2<unsigned int> size, const LayerManager &layers);
+
+		void _updateInternalBuffer();
 
 	public:
 		//! @brief Shared widget pointer
@@ -47,7 +56,7 @@ namespace Mimp
 		//! @param box ToolBox
 		//! @param path Path of the Canvas file
 		CanvasWidget(const ToolBox &box, const std::string &path);
-		~CanvasWidget() override = default;
+		~CanvasWidget() override;
 
 		//! @brief create a new Canvas pointer
 		//! @param box ToolBox
@@ -60,6 +69,7 @@ namespace Mimp
 		//! @return CanvasWidget::Ptr
 		static CanvasWidget::Ptr create(const ToolBox &box, const std::string &path);
 
+		void disableRendering();
 		void mouseMoved(tgui::Vector2f pos) override;
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 		Widget::Ptr clone() const override;

@@ -56,6 +56,12 @@ namespace Mimp
 		//! @brief Size
 		Vector2<unsigned> _size;
 
+		mutable bool _busy = false;
+
+		void _checkBusy() const;
+		void _setBusy() const;
+		void _unsetBusy() const;
+
 	public:
 		//! @brief Constructor of the Layer Manager
 		//! @param path Path of the layer manager

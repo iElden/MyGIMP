@@ -7,6 +7,8 @@
 #include <cstring>
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include <chrono>
+#include <thread>
 #include "LayerManager.hpp"
 #include "../Exceptions.hpp"
 
@@ -29,12 +31,16 @@ namespace Mimp
 
 	void LayerManager::addLayer(const Layer &layer)
 	{
+		this->_setBusy();
 		this->_layers.emplace_back(new Layer(layer));
+		this->_unsetBusy();
 	}
 
 	void LayerManager::addLayer(Vector2<unsigned> size, const Color &defaultColor)
 	{
+		this->_setBusy();
 		this->_layers.emplace_back(new Layer(size, defaultColor));
+		this->_unsetBusy();
 	}
 
 	Layer &LayerManager::operator[](unsigned int index)
@@ -44,6 +50,7 @@ namespace Mimp
 
 	void LayerManager::render(FrameBuffer &buffer) const noexcept
 	{
+		this->_checkBusy();
 		for (auto &layer : this->_layers)
 			if (layer->visible)
 				buffer.drawFrameBuffer(layer->pos, layer->buffer);
@@ -75,9 +82,11 @@ namespace Mimp
 			throw OutOfBoundException("Cannot delete layer " + std::to_string(layer) + " because there are only " + std::to_string(this->_layers.size()) + " layers.");
 		if (this->_layers.size() == 1)
 			throw InvalidArgumentException("Cannot delete layer because there are only a single layer.");
+		this->_setBusy();
 		if (this->_selectedLayer >= layer)
 			this->_selectedLayer--;
 		this->_layers.erase(this->_layers.begin() + layer);
+		this->_unsetBusy();
 	}
 
 	void LayerManager::setLayerIndex(unsigned int layerOldIndex, unsigned int layerNewIndex)
@@ -121,7 +130,8 @@ namespace Mimp
 		if (stream.fail())
 			throw InvalidImageException("Cannot open file " + path + ": " + strerror(errno));
 
-		stream.seekg (0, std::ifstream::end);
+		this->_setBusy();
+		stream.seekg(0, std::ifstream::end);
 		auto length = stream.tellg();
 		char *buffer = new char[length];
 
@@ -129,12 +139,12 @@ namespace Mimp
 		stream.read(buffer, length);
 		stream.close();
 
-		if (static_cast<unsigned>(length) < sizeof(MimpImage))
-			throw InvalidImageException("Unexpected end of file when parsing header.");
-
-		auto image = reinterpret_cast<MimpImage *>(buffer);
-
 		try {
+			if (static_cast<unsigned>(length) < sizeof(MimpImage))
+				throw InvalidImageException("Unexpected end of file when parsing header.");
+
+			auto image = reinterpret_cast<MimpImage *>(buffer);
+
 			if (image->magic != LayerManager::MAGIC_NBR)
 				throw InvalidImageException("Invalid magic number.");
 
@@ -161,10 +171,12 @@ namespace Mimp
 				createdLayer->pos = layer->pos;
 			}
 		} catch (...) {
+			this->_unsetBusy();
 			delete[] buffer;
 			throw;
 		}
 
+		this->_unsetBusy();
 		delete[] buffer;
 	}
 
@@ -174,6 +186,8 @@ namespace Mimp
 
 		if (!image.loadFromFile(path))
 			throw InvalidImageException("Failed to load file " + path);
+
+		this->_setBusy();
 
 		Vector2<unsigned> size{
 			image.getSize().x,
@@ -193,6 +207,7 @@ namespace Mimp
 				};
 		this->_layers.emplace_back(new Layer{size, pixelBuffer});
 		delete[] pixelBuffer;
+		this->_unsetBusy();
 	}
 
 	Vector2<unsigned> LayerManager::getSize() const
@@ -218,6 +233,8 @@ namespace Mimp
 
 	void LayerManager::save(std::ostream &stream) const
 	{
+		this->_checkBusy();
+
 		size_t bufferSize = sizeof(MimpImage);
 
 		for (auto &layer : this->_layers)
@@ -247,5 +264,22 @@ namespace Mimp
 
 		stream.write(buffer, bufferSize);
 		delete[] buffer;
+	}
+
+	void LayerManager::_setBusy() const
+	{
+		this->_checkBusy();
+		this->_busy = true;
+	}
+
+	void LayerManager::_unsetBusy() const
+	{
+		this->_busy = false;
+	}
+
+	void LayerManager::_checkBusy() const
+	{
+		while (this->_busy)
+			std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
 }
