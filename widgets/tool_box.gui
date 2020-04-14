@@ -40,7 +40,7 @@ ScrollablePanel.Panel {
     }
 
     BitmapButton.Tool1 {
-        Image = "icons/brush.png";
+        Image = "icons/bucket.png";
         ImageScaling = 0;
         Position = (50, 10);
         Size = (30, 30);
