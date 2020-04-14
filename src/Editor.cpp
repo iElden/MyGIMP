@@ -10,9 +10,9 @@
 namespace Mimp
 {
 	Editor::Editor(const std::vector<std::string> &images) :
-		_toolBox(),
 		_mainWindow({640, 480}, "Mimp"),
-		_gui(this->_mainWindow)
+		_gui(this->_mainWindow),
+		_toolBox(this->_gui)
 	{
 		this->_mainWindow.setFramerateLimit(60);
 		this->_gui.loadWidgetsFromFile("widgets/top_menu.gui");

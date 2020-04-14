@@ -28,11 +28,13 @@ namespace Mimp
 			Color::White
 		};
 
+		std::pair<tgui::Button::Ptr, tgui::Button::Ptr> _colorButtons;
+
 		//! @brief Generates the GUI Window
-		void _generateGuiWindow();
+		void _generateGuiWindow(tgui::Gui &gui);
 	public:
 	    //! @brief Constructor of ToolBox Class
-		ToolBox();
+		ToolBox(tgui::Gui &gui);
 	    //! @brief Get the selected Tool as Shared pointer
 	    //! @return std::shared_ptr<Tool> The selected Tool as Shared Pointer
 		std::shared_ptr<Tool> getSelectedTool() const;

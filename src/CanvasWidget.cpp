@@ -34,7 +34,7 @@ namespace Mimp
 			realPos.x = pos.x;
 			realPos.y = pos.y;
 			this->_rightMouseDown = true;
-			this->_box.getSelectedTool()->onClick(realPos, MIMP_LEFT_CLICK, this->_layers.getSelectedLayer());
+			this->_box.getSelectedTool()->onClick(realPos, MIMP_RIGHT_CLICK, this->_layers.getSelectedLayer());
 		});
 		this->onRightMouseRelease.connect([this](){
 			this->_rightMouseDown = false;
