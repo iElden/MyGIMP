@@ -30,7 +30,7 @@ namespace Mimp
 
 	void ToolBox::_generateGuiWindow(tgui::Gui &gui)
 	{
-		auto callback = [&gui](tgui::Button::Ptr button, Color *color){
+		auto callback = [this, &gui](tgui::Button::Ptr button, Color *color){
 			auto panel = tgui::Panel::create({"100%", "100%"});
 
 			panel->getRenderer()->setBackgroundColor({0, 0, 0, 175});
@@ -78,17 +78,14 @@ namespace Mimp
 			window->get<tgui::Button>("Cancel")->connect("Clicked", [window]{
 				window->close();
 			});
-			window->get<tgui::Button>("OK")->connect("Clicked", [red, green, blue, window, button, color]{
+			window->get<tgui::Button>("OK")->connect("Clicked", [this, red, green, blue, window, button, color]{
 				Color bufferColor{
 					static_cast<unsigned char>(red->getValue()),
 					static_cast<unsigned char>(green->getValue()),
 					static_cast<unsigned char>(blue->getValue())
 				};
 
-				*color = bufferColor;
-				button->getRenderer()->setBackgroundColor({bufferColor.r, bufferColor.g, bufferColor.b, 255});
-				button->getRenderer()->setBackgroundColorHover({bufferColor.r, bufferColor.g, bufferColor.b, 255});
-				button->getRenderer()->setBackgroundColorDown({bufferColor.r, bufferColor.g, bufferColor.b, 255});
+				this->_changeSelectedColor(button, color, bufferColor);
 				window->close();
 			});
 		};
@@ -147,5 +144,22 @@ namespace Mimp
 		if (click == MIMP_LEFT_CLICK)
 			return this->_selectedColor.first;
 		return this->_selectedColor.second;
+	}
+
+	void ToolBox::_changeSelectedColor(tgui::Button::Ptr button, Color *color, Color newColor)
+	{
+		tgui::Color buffer = {newColor.r, newColor.g, newColor.b, 255};
+
+		*color = newColor;
+		button->getRenderer()->setBackgroundColor(buffer);
+		button->getRenderer()->setBackgroundColorHover(buffer);
+		button->getRenderer()->setBackgroundColorDown(buffer);
+	}
+
+	void ToolBox::setSelectedColor(MouseClick click, Color newColor)
+	{
+		if (click == MIMP_LEFT_CLICK)
+			this->_changeSelectedColor(this->_colorButtons.first, &this->_selectedColor.first, newColor);
+		this->_changeSelectedColor(this->_colorButtons.second, &this->_selectedColor.second, newColor);
 	}
 }

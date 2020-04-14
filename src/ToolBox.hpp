@@ -32,6 +32,8 @@ namespace Mimp
 
 		//! @brief Generates the GUI Window
 		void _generateGuiWindow(tgui::Gui &gui);
+
+		void _changeSelectedColor(tgui::Button::Ptr button, Color *color, Color newColor);
 	public:
 		//! @brief Constructor of ToolBox Class
 		ToolBox(tgui::Gui &gui);
@@ -45,6 +47,8 @@ namespace Mimp
 		//! @param click The mouse click state
 		//! @return Color The selected color
 		Color getSelectedColor(MouseClick click);
+
+		void setSelectedColor(MouseClick click, Color newColor);
 	};
 }
 
