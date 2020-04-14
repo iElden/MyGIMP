@@ -1,0 +1,33 @@
+name: Update the documentation
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  Building:
+    runs-on: [ubuntu-latest]
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install Doxygen
+        run: sudo apt-get install --yes doxygen graphviz
+      - name: Update the docs
+        run: |
+          git clone https://${GITHUB_REPO} mimp
+          cd mimp
+          doxygen ./Doxyfile
+          mv doc/html ../doc
+          cd ../doc
+          git config --global user.email "${GITHUB_ACTOR}@github.com";
+          git config --global user.name "${GITHUB_ACTOR}";
+          git init
+          git remote add origin git@github.com:iElden/MyGIMP.git
+          git add -A
+          git commit -m "Added doc"
+          git remote set-url --push origin https://${GITHUB_ACTOR}:${GITHUB_TOKEN}@${GITHUB_REPO};
+          git push origin gh-pages --force
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPO: "github.com/iElden/MyGIMP.git"
