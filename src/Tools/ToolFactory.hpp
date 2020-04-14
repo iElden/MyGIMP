@@ -13,21 +13,21 @@
 
 namespace Mimp
 {
-    //! @brief Class ToolBox
+	//! @brief Class ToolBox
 	class ToolBox;
 
 	//! @brief Class ToolFactory
 	class ToolFactory {
 	private:
-	    //! @brief Tools of the tool box
-	    //! @details Contains all the Tools under shared pointers
+		//! @brief Tools of the tool box
+		//! @details Contains all the Tools under shared pointers
 		static const std::vector<std::function<std::shared_ptr<Tool>(ToolBox &)>> _builders;
 
 	public:
-        //! @brief Build all the tools
-        //! @details Build all the tools under shared pointers
-        //! @param toolBox ToolBox where the tools are built
-        //! @return std::vector<std::shared_ptr<Tool>> Return a vector of Tools Shared Pointers
+		//! @brief Build all the tools
+		//! @details Build all the tools under shared pointers
+		//! @param toolBox ToolBox where the tools are built
+		//! @return std::vector<std::shared_ptr<Tool>> Return a vector of Tools Shared Pointers
 		static std::vector<std::shared_ptr<Tool>> buildAll(ToolBox &toolBox);
 	};
 }
