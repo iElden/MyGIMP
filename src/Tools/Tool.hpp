@@ -34,7 +34,7 @@ namespace Mimp
 		virtual void onUnselect() {};
 		//! @brief When mouse is dragging, apply the tool to the new position
 		//! @param oldPos Old Pos
-		//! @param oldPos New Pos
+		//! @param newPos New Pos
 		//! @param click Mouse click state
 		//! @param layer Layer used
 		virtual void onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Layer &layer) = 0;
