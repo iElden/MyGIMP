@@ -6,7 +6,7 @@
 */
 #include "SelectedArea.hpp"
 
-void Mimp::SelectedArea::clear()
+void Mimp::SelectedArea::clear() noexcept
 {
 	this->_selectedPoints.clear();
 	this->selectedLayer = nullptr;

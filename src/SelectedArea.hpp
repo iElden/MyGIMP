@@ -23,7 +23,7 @@ namespace Mimp {
 
 		SelectedArea() = default;
 		//! @brief Clears the selected points
-		void clear();
+		void clear() noexcept;
 
 		bool isAnAreaSelected() const noexcept;
 	};
