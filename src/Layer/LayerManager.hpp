@@ -56,10 +56,14 @@ namespace Mimp
 		//! @brief Size
 		Vector2<unsigned> _size;
 
+		//! @brief Is The layer manager busy (thread)
 		mutable bool _busy = false;
 
+        //! @brief Check if the layer manager is busy
 		void _checkBusy() const;
+        //! @brief Set layer manager as state busy
 		void _setBusy() const;
+        //! @brief Set layer manager as state not busy
 		void _unsetBusy() const;
 
 	public:

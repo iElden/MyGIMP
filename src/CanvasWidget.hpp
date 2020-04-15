@@ -69,6 +69,7 @@ namespace Mimp
 		//! @return CanvasWidget::Ptr
 		static CanvasWidget::Ptr create(const ToolBox &box, const std::string &path);
 
+		//! @brief Disable the rendering by joining the render thread
 		void disableRendering();
 		void mouseMoved(tgui::Vector2f pos) override;
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
