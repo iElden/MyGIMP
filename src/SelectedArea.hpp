@@ -15,15 +15,17 @@
 namespace Mimp {
 	//! @brief Class Selected Area
 	class SelectedArea {
-	public:
 		//! @brief All the points selected, building the selected area
 		std::vector<Vector2<int>> _selectedPoints = {};
+	public:
 		//! @brief The Selected Layer
 		Layer *selectedLayer = nullptr; // TODO: Gérer le fait que la layer puisse être supprimé !
 
 		SelectedArea() = default;
 		//! @brief Clears the selected points
 		void clear();
+
+		bool isAreaSelected() const noexcept;
 	};
 }
 
