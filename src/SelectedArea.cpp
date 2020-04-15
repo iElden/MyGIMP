@@ -12,7 +12,7 @@ void Mimp::SelectedArea::clear()
 	this->selectedLayer = nullptr;
 }
 
-bool Mimp::SelectedArea::isAreaSelected() const noexcept
+bool Mimp::SelectedArea::isAnAreaSelected() const noexcept
 {
 	return !this->_selectedPoints.empty();
 }

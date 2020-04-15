@@ -25,7 +25,7 @@ namespace Mimp {
 		//! @brief Clears the selected points
 		void clear();
 
-		bool isAreaSelected() const noexcept;
+		bool isAnAreaSelected() const noexcept;
 	};
 }
 
