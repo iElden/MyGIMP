@@ -12,7 +12,7 @@
 
 namespace Mimp {
 	class SelectionTool : public Tool {
-	private:
+	protected:
 		Image _image;
 	public:
 		SelectionTool(const std::string &name, Image &image);

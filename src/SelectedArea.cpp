@@ -16,3 +16,13 @@ bool Mimp::SelectedArea::isAnAreaSelected() const noexcept
 {
 	return !this->_selectedPoints.empty();
 }
+
+void Mimp::SelectedArea::add(Mimp::Vector2<int> point)
+{
+	this->_selectedPoints.push_back(point);
+}
+
+void Mimp::SelectedArea::add(int x, int y)
+{
+	this->_selectedPoints.emplace_back(x, y);
+}

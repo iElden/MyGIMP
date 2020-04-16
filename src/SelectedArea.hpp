@@ -26,6 +26,9 @@ namespace Mimp {
 		void clear() noexcept;
 
 		bool isAnAreaSelected() const noexcept;
+
+		void add(Vector2<int> point);
+		void add(int x, int y);
 	};
 }
 
