@@ -44,6 +44,9 @@ namespace Mimp::Utils
 	//! @param patterns The patterns of the FileDialog
 	//! @return std::string FileDialog message
 	std::string saveFileDialog(const std::string &title = "Save file", const std::string &basePath = ".", const std::vector<std::pair<std::string, std::string>> &patterns = {});
+
+	std::string wstring_to_utf8(const std::wstring &str);
+	std::wstring utf8_to_wstring(const std::string &str);
 }
 
 

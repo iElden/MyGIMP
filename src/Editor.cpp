@@ -129,11 +129,11 @@ namespace Mimp
 			menu->setMenuItemEnabled({"File", "Export"}, true);
 		});
 		menu->connectMenuItem({"File", "Open"}, [this, menu]{
-			try {
-				std::string path = Utils::openFileDialog("Load MIMP file", ".", {{"*.mimp", "MIMP image file"}});
+			std::string path = Utils::openFileDialog("Load MIMP file", ".", {{"*.mimp", "MIMP image file"}});
 
-				if (path.empty())
-					return;
+			if (path.empty())
+				return;
+			try {
 
 				auto widget = CanvasWidget::create(this->_toolBox, path);
 				auto window = _makeImagePanel(widget);
@@ -148,7 +148,7 @@ namespace Mimp
 			} catch (std::exception &e) {
 				auto window = tgui::ChildWindow::create("Loading error");
 				auto label = tgui::Label::create(
-					"Cannot load file " "test.mimp""\n" +
+					"Cannot load file " + path + "\n" +
 					Utils::getLastExceptionName() + ":\n" + e.what()
 				);
 
