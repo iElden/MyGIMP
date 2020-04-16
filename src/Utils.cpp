@@ -5,7 +5,6 @@
 #ifdef __GNUG__
 #include <cxxabi.h>
 #endif
-#include <filesystem>
 #include <codecvt>
 #include <SFML/Graphics.hpp>
 #include <TGUI/TGUI.hpp>
@@ -15,71 +14,80 @@
 
 namespace Mimp::Utils
 {
-	static const std::pair<std::string, std::string> _icons[] = {
-		{"icons/folder.png",     ""},
-		{"icons/archive.png",    ".rar"},
-		{"icons/archive.png",    ".zip"},
-		{"icons/archive.png",    ".7z"},
-		{"icons/archive.png",    ".tgz"},
-		{"icons/archive.png",    ".tar.gz"},
-		{"icons/archive.png",    ".tar.xz"},
-		{"icons/webFile.png",    ".htm"},
-		{"icons/webFile.png",    ".html"},
-		{"icons/webFile.png",    ".css"},
-		{"icons/discFile.png",   ".iso"},
-		{"icons/textFile.png",   ".txt"},
-		{"icons/textFile.png",   ".doc"},
-		{"icons/midiFile.png",   ".mid"},
-		{"icons/midiFile.png",   ".midi"},
-		{"icons/javaFile.png",   ".class"},
-		{"icons/javaFile.png",   ".jar"},
-		{"icons/fontsFile.png",  ".ttf"},
-		{"icons/fontsFile.png",  ".otf"},
-		{"icons/musicFile.png",  ".wav"},
-		{"icons/musicFile.png",  ".ogg"},
-		{"icons/musicFile.png",  ".mp3"},
-		{"icons/imageFile.png",  ".png"},
-		{"icons/imageFile.png",  ".jpg"},
-		{"icons/imageFile.png",  ".jpeg"},
-		{"icons/imageFile.png",  ".bmp"},
-		{"icons/imageFile.png",  ".gif"},
-		{"icons/binaryFile.png", ".exe"},
-		{"icons/binaryFile.png", ".o"},
-		{"icons/binaryFile.png", ".out"},
-		{"icons/binaryFile.png", ".a"},
-		{"icons/binaryFile.png", ".gch"},
-		{"icons/binaryFile.png", ".dll"},
-		{"icons/binaryFile.png", ".so"},
-		{"icons/configFile.png", ".xml"},
-		{"icons/configFile.png", ".ini"},
-		{"icons/configFile.png", ".json"},
-		{"icons/configFile.png", ".md"},
-		{"icons/sourceFile.png", ".c"},
-		{"icons/sourceFile.png", ".h"},
-		{"icons/sourceFile.png", ".hpp"},
-		{"icons/sourceFile.png", ".cpp"},
-		{"icons/sourceFile.png", ".lua"},
-		{"icons/sourceFile.png", ".java"},
-		{"icons/sourceFile.png", ".py"},
-		{"icons/sourceFile.png", ".asm"},
-		{"icons/sourceFile.png", ".php"},
-		{"icons/sourceFile.png", ".js"},
-		{"icons/shellScript.png",".sh"},
-		{"icons/shellScript.png",".run"},
-		{"icons/shellScript.png",".bat"},
-		{"icons/unknownFile.png",""},
+	static const std::map<std::string, std::string> _icons{
+		{"folder", "icons/folder.png"     },
+		{".rar",   "icons/archive.png"    },
+		{".zip",   "icons/archive.png"    },
+		{".7z",    "icons/archive.png"    },
+		{".tgz",   "icons/archive.png"    },
+		{".gz",    "icons/archive.png"    },
+		{".xz",    "icons/archive.png"    },
+		{".htm",   "icons/webFile.png"    },
+		{".html",  "icons/webFile.png"    },
+		{".css",   "icons/webFile.png"    },
+		{".mimp",  "icons/mimpFile.png"   },
+		{".iso",   "icons/discFile.png"   },
+		{".txt",   "icons/textFile.png"   },
+		{".doc",   "icons/textFile.png"   },
+		{".mid",   "icons/midiFile.png"   },
+		{".midi",  "icons/midiFile.png"   },
+		{".class", "icons/javaFile.png"   },
+		{".jar",   "icons/javaFile.png"   },
+		{".ttf",   "icons/fontsFile.png"  },
+		{".otf",   "icons/fontsFile.png"  },
+		{".wav",   "icons/musicFile.png"  },
+		{".ogg",   "icons/musicFile.png"  },
+		{".mp3",   "icons/musicFile.png"  },
+		{".png",   "icons/imageFile.png"  },
+		{".jpg",   "icons/imageFile.png"  },
+		{".jpeg",  "icons/imageFile.png"  },
+		{".bmp",   "icons/imageFile.png"  },
+		{".gif",   "icons/imageFile.png"  },
+		{".exe",   "icons/binaryFile.png" },
+		{".o",     "icons/binaryFile.png" },
+		{".out",   "icons/binaryFile.png" },
+		{".a",     "icons/binaryFile.png" },
+		{".gch",   "icons/binaryFile.png" },
+		{".dll",   "icons/binaryFile.png" },
+		{".so",    "icons/binaryFile.png" },
+		{".xml",   "icons/configFile.png" },
+		{".ini",   "icons/configFile.png" },
+		{".json",  "icons/configFile.png" },
+		{".md",    "icons/configFile.png" },
+		{".c",     "icons/sourceFile.png" },
+		{".h",     "icons/sourceFile.png" },
+		{".hpp",   "icons/sourceFile.png" },
+		{".cpp",   "icons/sourceFile.png" },
+		{".lua",   "icons/sourceFile.png" },
+		{".java",  "icons/sourceFile.png" },
+		{".py",    "icons/sourceFile.png" },
+		{".asm",   "icons/sourceFile.png" },
+		{".php",   "icons/sourceFile.png" },
+		{".js",    "icons/sourceFile.png" },
+		{".sh",    "icons/shellScript.png"},
+		{".run",   "icons/shellScript.png"},
+		{".bat",   "icons/shellScript.png"},
+		{"",       "icons/unknownFile.png"},
 	};
 
-	std::wstring utf8_to_wstring(const std::string& str)
+	std::wstring utf8ToWstring(const std::string& str)
 	{
 		std::wstring_convert<std::codecvt_utf8<wchar_t>> myconv;
 		return myconv.from_bytes(str);
 	}
 
-	std::string wstring_to_utf8(const std::wstring& str)
+	std::string wstringToUtf8(const std::wstring& str)
 	{
 		std::wstring_convert<std::codecvt_utf8<wchar_t>> myconv;
 		return myconv.to_bytes(str);
+	}
+
+	std::string pathToString(const std::filesystem::path &path) {
+#ifdef _GLIBCXX_FILESYSTEM_IS_WINDOWS
+		return wstringToUtf8(path);
+#else
+		return path;
+#endif
 	}
 
 	std::string getLastExceptionName()
@@ -112,121 +120,59 @@ namespace Mimp::Utils
 //		tgui::Gui gui{win};
 #endif
 	}
-/*
-#ifdef _WIN32
-	std::string openFileDialog(const std::string &title, const std::string &basePath, const std::vector<std::pair<std::string, std::string>> &patterns)
+
+	static void _makeFolders(std::filesystem::path &currentPath, const tgui::ScrollablePanel::Ptr &panel, const tgui::EditBox::Ptr &file, const tgui::TextBox::Ptr &path)
 	{
-		OPENFILENAME  ofn;
-		char *filters = nullptr;
-		size_t length = strlen("All Files\0*\0\0");
-		char file[MAX_PATH];
-		TCHAR** lppPart={nullptr};
+		auto pos = 10;
+		std::vector<std::filesystem::directory_entry> paths = {
+			std::filesystem::directory_entry("."),
+			std::filesystem::directory_entry("..")
+		};
 
-		if (!GetFullPathName(
-			basePath.c_str(),
-			sizeof(file),
-			file,
-			lppPart
-		))
-			throw InvalidArgumentException("GetFullPathName failed with code " + std::to_string(GetLastError()));
+		for (auto &entry : std::filesystem::directory_iterator(currentPath))
+			paths.push_back(entry);
 
-		strcat(file, "\\*");
-		for (auto &pair : patterns)
-			length += pair.first.size() + pair.second.size() + 2;
+		panel->removeAllWidgets();
+		for (auto &entry : paths) {
+			std::string pic;
+			auto filePath = entry.path();
 
-		if (!patterns.empty()) {
-			size_t pos = 0;
+			if (entry.is_directory())
+				pic = _icons.at("folder");
+			else
+				try {
+					pic = _icons.at(pathToString(filePath.extension()));
+				} catch (std::out_of_range &) {
+					pic = _icons.at("");
+				}
 
-			filters = new char[length];
-			for (auto &pair : patterns) {
-				strcpy(&filters[pos], pair.second.c_str());
-				pos += pair.second.size() + 1;
-				strcpy(&filters[pos], pair.first.c_str());
-				pos += pair.first.size() + 1;
-			}
-			memcpy(&filters[pos], "All Files\0*\0\0", strlen("All Files\0*\0\0"));
+			auto button = tgui::Button::create("");
+			auto picture = tgui::Picture::create(pic);
+			auto label = tgui::Label::create(pathToString(filePath.filename()));
+
+			button->setPosition(10, pos);
+			button->setSize({"&.w - 40", 20});
+			label->setPosition(40, pos + 2);
+			picture->setPosition(12, pos + 2);
+			panel->add(button);
+			panel->add(label);
+			panel->add(picture);
+			pos += 30;
 		}
 
-		memset(&ofn, 0, sizeof(ofn));
-		ofn.lStructSize       = sizeof(ofn);
-		ofn.hwndOwner         = nullptr;
-		ofn.lpstrFilter       = filters;
-		ofn.lpstrFile         = file;
-		ofn.nMaxFile          = sizeof(file);
-		ofn.lpstrTitle        = title.c_str();
-		ofn.nFilterIndex      = 1;
-		ofn.Flags             = OFN_NONETWORKBUTTON | OFN_FILEMUSTEXIST;
+		auto label = tgui::Label::create();
 
-		if (GetOpenFileName(&ofn)) {
-			delete[] filters;
-			return file;
-		}
-		delete[] filters;
-		return "";
+		label->setPosition(40, pos - 11);
+		label->setSize(10, 9);
+		panel->add(label);
+
+		panel->setVerticalScrollAmount(30);
+		panel->setVerticalScrollbarValue(0);
 	}
 
-	std::string saveFileDialog(const std::string &title, const std::string &basePath, const std::vector<std::pair<std::string, std::string>> &patterns)
-	{
-		OPENFILENAME  ofn;
-		char *filters = nullptr;
-		size_t length = strlen("All Files\0*\0\0");
-		char file[MAX_PATH];
-		TCHAR** lppPart={nullptr};
-
-		if (!GetFullPathName(
-			basePath.c_str(),
-			sizeof(file),
-			file,
-			lppPart
-		))
-			throw InvalidArgumentException("GetFullPathName failed with code " + std::to_string(GetLastError()));
-
-		if (GetFileAttributesA(file) != INVALID_FILE_ATTRIBUTES && (GetFileAttributesA(file) & FILE_DIRECTORY_FILE))
-			strcat(file, "\\*");
-		else if (!patterns.empty()) {
-			auto pattern = patterns[0].first;
-			auto pos = pattern.find_last_of('*');
-
-			strcpy(file, (pattern.substr(0, pos) + file + pattern.substr(pos + 1)).c_str());
-		}
-
-		for (auto &pair : patterns)
-			length += pair.first.size() + pair.second.size() + 2;
-
-		if (!patterns.empty()) {
-			size_t pos = 0;
-
-			filters = new char[length];
-			for (auto &pair : patterns) {
-				strcpy(&filters[pos], pair.second.c_str());
-				pos += pair.second.size() + 1;
-				strcpy(&filters[pos], pair.first.c_str());
-				pos += pair.first.size() + 1;
-			}
-			memcpy(&filters[pos], "All Files\0*\0\0", strlen("All Files\0*\0\0"));
-		}
-
-		memset(&ofn, 0, sizeof(ofn));
-		ofn.lStructSize       = sizeof(ofn);
-		ofn.hwndOwner         = nullptr;
-		ofn.lpstrFilter       = filters;
-		ofn.lpstrFile         = file;
-		ofn.nMaxFile          = sizeof(file);
-		ofn.nFilterIndex      = 1;
-		ofn.lpstrTitle        = title.c_str();
-		ofn.Flags             = OFN_NONETWORKBUTTON | OFN_OVERWRITEPROMPT;
-
-		if (GetSaveFileName(&ofn)) {
-			delete[] filters;
-			return file;
-		}
-		delete[] filters;
-		return "";
-	}
-#else*/
 	std::string openFileDialog(const std::string &title, const std::string &basePath, const std::vector<std::pair<std::string, std::string>> &patterns)
 	{
-		sf::RenderWindow window{{500, 300}, title};
+		sf::RenderWindow window{{500, 300}, title, sf::Style::Titlebar};
 		tgui::Gui gui{window};
 		std::string result;
 		std::string startText;
@@ -234,17 +180,11 @@ namespace Mimp::Utils
 		sf::Event event;
 
 		currentPath = std::filesystem::absolute(currentPath);
-		std::cout << "'" << currentPath << "' !! '" << startText << "'" << std::endl;
 		while (!std::filesystem::is_directory(currentPath)) {
 			if (!startText.empty())
 				startText += std::filesystem::path::preferred_separator;
-			#ifdef _GLIBCXX_FILESYSTEM_IS_WINDOWS
-			startText += wstring_to_utf8(currentPath.filename());
-			#else
-			startText += currentPath.filename();
-			#endif
+			startText += pathToString(currentPath.filename());
 			currentPath = currentPath.parent_path();
-			std::cout << "'" << currentPath << "' !! '" << startText << "'" << std::endl;
 		}
 
 		gui.loadWidgetsFromFile("widgets/open_file_dialog.gui");
@@ -252,7 +192,8 @@ namespace Mimp::Utils
 		auto path = gui.get<tgui::TextBox>("Path");
 		auto file = gui.get<tgui::EditBox>("file");
 		auto box = gui.get<tgui::ComboBox>("Patterns");
-		auto open = [&result, &window, &path, box, file]{
+		auto panel = gui.get<tgui::ScrollablePanel>("Folders");
+		auto open = [&result, &window, path, box, file, &currentPath, panel]{
 			if (file->getText().isEmpty())
 				return;
 
@@ -262,6 +203,15 @@ namespace Mimp::Utils
 				ext = ext.substr(ext.find_first_of('*') + 1);
 
 			result = path->getText() + std::filesystem::path::preferred_separator + file->getText();
+
+			if (std::filesystem::is_directory(result)) {
+				currentPath = std::filesystem::absolute(result);
+				path->setText(pathToString(currentPath));
+				file->setText("");
+				_makeFolders(currentPath, panel, file, path);
+				return;
+			}
+
 			if (result.find_last_of('.') == std::string::npos)
 				result += ext;
 			window.close();
@@ -278,12 +228,9 @@ namespace Mimp::Utils
 		box->addItem("All files");
 		box->setSelectedItemByIndex(0);
 
-		#ifdef _GLIBCXX_FILESYSTEM_IS_WINDOWS
-		path->setText(wstring_to_utf8(currentPath));
-		#else
-		path->setText(static_cast<std::string>(currentPath));
-		#endif
+		path->setText(pathToString(currentPath));
 		file->setText(startText);
+		_makeFolders(currentPath, panel, file, path);
 
 		while (window.isOpen()) {
 			while (window.pollEvent(event)) {
@@ -307,5 +254,4 @@ namespace Mimp::Utils
 	{
 		return openFileDialog(title, basePath, patterns);
 	}
-//#endif
 }

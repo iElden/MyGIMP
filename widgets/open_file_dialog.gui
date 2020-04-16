@@ -35,7 +35,7 @@ ScrollablePanel.Folders {
 
 ComboBox.Patterns {
     ChangeItemOnScroll = true;
-    ExpandDirection = Down;
+    ExpandDirection = Automatic;
     ItemsToDisplay = 0;
     MaximumItems = 0;
     Position = (330, 240);
