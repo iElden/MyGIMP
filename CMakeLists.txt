@@ -42,7 +42,7 @@ add_executable(
 	src/Exceptions.hpp
 	src/Tools/Pencil.cpp
 	src/Tools/Pencil.hpp
-	src/Utils.cpp src/Utils.hpp src/Tools/Fill.cpp src/Tools/Fill.hpp src/Image.cpp src/Image.hpp src/SelectedArea.cpp src/SelectedArea.hpp src/Tools/ColorPick.cpp src/Tools/ColorPick.hpp src/Tools/SelectionTool.cpp src/Tools/SelectionTool.hpp src/Tools/RectSelectTool.cpp src/Tools/RectSelectTool.hpp)
+	src/Utils.cpp src/Utils.hpp src/Tools/Fill.cpp src/Tools/Fill.hpp src/Image.cpp src/Image.hpp src/SelectedArea.cpp src/SelectedArea.hpp src/Tools/ColorPick.cpp src/Tools/ColorPick.hpp src/Tools/SelectionTool.cpp src/Tools/SelectionTool.hpp src/Tools/RectSelectTool.cpp src/Tools/RectSelectTool.hpp src/Tools/SelectByColorTool.cpp src/Tools/SelectByColorTool.hpp)
 
 target_link_libraries(
 	MyGimp
