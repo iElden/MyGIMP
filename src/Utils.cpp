@@ -5,6 +5,7 @@
 #ifdef __GNUG__
 #include <cxxabi.h>
 #endif
+#include <regex>
 #include <codecvt>
 #include <SFML/Graphics.hpp>
 #include <TGUI/TGUI.hpp>
@@ -121,8 +122,13 @@ namespace Mimp::Utils
 #endif
 	}
 
-	static void _makeFolders(std::filesystem::path &currentPath, const tgui::ScrollablePanel::Ptr &panel, const tgui::EditBox::Ptr &file, const tgui::TextBox::Ptr &path)
-	{
+	static void _makeFolders(
+		std::filesystem::path &currentPath,
+		const tgui::ScrollablePanel::Ptr &panel,
+		const tgui::EditBox::Ptr &file,
+		const tgui::TextBox::Ptr &path,
+		const std::regex &pattern = std::regex(".*", std::regex_constants::icase)
+	) {
 		auto pos = 10;
 		std::vector<std::filesystem::directory_entry> paths = {
 			std::filesystem::directory_entry("."),
@@ -135,10 +141,12 @@ namespace Mimp::Utils
 		panel->removeAllWidgets();
 		for (auto &entry : paths) {
 			std::string pic;
-			auto filePath = entry.path();
+			const auto &filePath = entry.path();
 
 			if (entry.is_directory())
 				pic = _icons.at("folder");
+			else if (!std::regex_search(pathToString(filePath), pattern))
+				continue;
 			else
 				try {
 					pic = _icons.at(pathToString(filePath.extension()));
@@ -208,7 +216,7 @@ namespace Mimp::Utils
 				currentPath = std::filesystem::absolute(result);
 				path->setText(pathToString(currentPath));
 				file->setText("");
-				_makeFolders(currentPath, panel, file, path);
+				_makeFolders(currentPath, panel, file, path, std::regex(box->getSelectedItemId().toAnsiString(), std::regex_constants::icase));
 				return;
 			}
 
@@ -225,12 +233,15 @@ namespace Mimp::Utils
 
 		for (auto &pair : patterns)
 			box->addItem(pair.second, pair.first);
-		box->addItem("All files");
+		box->addItem("All files", ".*");
 		box->setSelectedItemByIndex(0);
+		box->connect("ItemSelected", [&currentPath, panel, file, path, box]{
+			_makeFolders(currentPath, panel, file, path, std::regex(box->getSelectedItemId().toAnsiString(), std::regex_constants::icase));
+		});
 
 		path->setText(pathToString(currentPath));
 		file->setText(startText);
-		_makeFolders(currentPath, panel, file, path);
+		_makeFolders(currentPath, panel, file, path, std::regex(box->getSelectedItemId().toAnsiString(), std::regex_constants::icase));
 
 		while (window.isOpen()) {
 			while (window.pollEvent(event)) {
