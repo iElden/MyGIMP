@@ -49,6 +49,7 @@ namespace Mimp::Utils
 	std::string wstringToUtf8(const std::wstring &str);
 	std::wstring utf8ToWstring(const std::string &str);
 	std::string pathToString(const std::filesystem::path &path);
+	std::string cleanPath(const std::string &path);
 }
 
 

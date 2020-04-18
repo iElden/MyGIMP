@@ -10,6 +10,7 @@
 #include <SFML/Graphics.hpp>
 #include <TGUI/TGUI.hpp>
 #include <iostream>
+#include <numeric>
 #include "Utils.hpp"
 #include "Exceptions.hpp"
 
@@ -85,7 +86,16 @@ namespace Mimp::Utils
 
 	std::string pathToString(const std::filesystem::path &path) {
 #ifdef _GLIBCXX_FILESYSTEM_IS_WINDOWS
-		return wstringToUtf8(path);
+		std::string result;
+		std::wstring p = path;
+
+		result.reserve(p.size());
+		for (wchar_t c : p)
+			if (c > 255)
+				result.push_back('?');
+			else
+				result.push_back(c);
+		return result;
 #else
 		return path;
 #endif
@@ -126,7 +136,7 @@ namespace Mimp::Utils
 		std::filesystem::path &currentPath,
 		const tgui::ScrollablePanel::Ptr &panel,
 		const tgui::EditBox::Ptr &file,
-		const tgui::TextBox::Ptr &path,
+		const std::function<void()> &open,
 		const std::regex &pattern = std::regex(".*", std::regex_constants::icase)
 	) {
 		auto pos = 10;
@@ -142,6 +152,7 @@ namespace Mimp::Utils
 		for (auto &entry : paths) {
 			std::string pic;
 			const auto &filePath = entry.path();
+			auto fileStr = pathToString(filePath.filename());
 
 			if (entry.is_directory())
 				pic = _icons.at("folder");
@@ -156,11 +167,17 @@ namespace Mimp::Utils
 
 			auto button = tgui::Button::create("");
 			auto picture = tgui::Picture::create(pic);
-			auto label = tgui::Label::create(pathToString(filePath.filename()));
+			auto label = tgui::Label::create(fileStr);
 			auto renderer = button->getRenderer();
 
 			button->setPosition(10, pos);
 			button->setSize({"&.w - 40", 20});
+			button->connect("Clicked", [button, file, fileStr, &open]{
+				if (file->getText() == fileStr)
+					open();
+				else
+					file->setText(fileStr);
+			});
 			renderer->setBackgroundColor("transparent");
 			renderer->setBackgroundColorFocused("blue");
 			renderer->setBackgroundColorHover("#00BFFF");
@@ -186,6 +203,29 @@ namespace Mimp::Utils
 		panel->setVerticalScrollbarValue(0);
 	}
 
+	std::string cleanPath(const std::string &path)
+	{
+		std::vector<std::string> files = {};
+		std::istringstream iss{path};
+		std::string item;
+
+		while (std::getline(iss, item, static_cast<char>(std::filesystem::path::preferred_separator)))
+			if (item == "..") {
+				if (files.size() > 1)
+					files.pop_back();
+			} else if (item != ".")
+				files.push_back(item);
+
+		return std::accumulate(
+			files.begin() + 1,
+			files.end(),
+			files[0],
+			[](const std::string &a, const std::string &b){
+				return a + static_cast<char>(std::filesystem::path::preferred_separator) + b;
+			}
+		);
+	}
+
 	std::string openFileDialog(const std::string &title, const std::string &basePath, const std::vector<std::pair<std::string, std::string>> &patterns)
 	{
 		sf::RenderWindow window{{500, 300}, title, sf::Style::Titlebar};
@@ -209,27 +249,26 @@ namespace Mimp::Utils
 		auto file = gui.get<tgui::EditBox>("file");
 		auto box = gui.get<tgui::ComboBox>("Patterns");
 		auto panel = gui.get<tgui::ScrollablePanel>("Folders");
-		auto open = [&result, &window, path, box, file, &currentPath, panel]{
+		std::function<void()> open = [&result, &window, path, box, file, &currentPath, panel, &open]{
 			if (file->getText().isEmpty())
 				return;
 
 			std::string ext = box->getSelectedItemId();
 
-			if (ext.find_first_of('*') != std::string::npos)
-				ext = ext.substr(ext.find_first_of('*') + 1);
-
-			result = path->getText() + std::filesystem::path::preferred_separator + file->getText();
+			if (std::filesystem::path(file->getText()).is_relative())
+				result = path->getText() + std::filesystem::path::preferred_separator + file->getText();
+			else
+				result = file->getText();
 
 			if (std::filesystem::is_directory(result)) {
-				currentPath = std::filesystem::absolute(result);
+				result = cleanPath(result);
+				currentPath = result + static_cast<char>(std::filesystem::path::preferred_separator);
 				path->setText(pathToString(currentPath));
 				file->setText("");
-				_makeFolders(currentPath, panel, file, path, std::regex(box->getSelectedItemId().toAnsiString(), std::regex_constants::icase));
+				_makeFolders(currentPath, panel, file, open, std::regex(box->getSelectedItemId().toAnsiString(), std::regex_constants::icase));
 				return;
 			}
 
-			if (result.find_last_of('.') == std::string::npos)
-				result += ext;
 			window.close();
 		};
 
@@ -243,13 +282,13 @@ namespace Mimp::Utils
 			box->addItem(pair.second, pair.first);
 		box->addItem("All files", ".*");
 		box->setSelectedItemByIndex(0);
-		box->connect("ItemSelected", [&currentPath, panel, file, path, box]{
-			_makeFolders(currentPath, panel, file, path, std::regex(box->getSelectedItemId().toAnsiString(), std::regex_constants::icase));
+		box->connect("ItemSelected", [&currentPath, &panel, &file, &path, &box, &open]{
+			_makeFolders(currentPath, panel, file, open, std::regex(box->getSelectedItemId().toAnsiString(), std::regex_constants::icase));
 		});
 
 		path->setText(pathToString(currentPath));
 		file->setText(startText);
-		_makeFolders(currentPath, panel, file, path, std::regex(box->getSelectedItemId().toAnsiString(), std::regex_constants::icase));
+		_makeFolders(currentPath, panel, file, open, std::regex(box->getSelectedItemId().toAnsiString(), std::regex_constants::icase));
 
 		while (window.isOpen()) {
 			while (window.pollEvent(event)) {
