@@ -34,3 +34,7 @@
 # Clion
 cmake-build-*
 .idea
+
+# Criterion
+*.gcno
+*.gcda

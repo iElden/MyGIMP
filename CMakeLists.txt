@@ -17,6 +17,8 @@ if ("${CMAKE_BUILD_TYPE}" STREQUAL Release)
 	endif (CMAKE_COMPILER_IS_GNUCC)
 endif ()
 
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -pthread")
+
 add_executable(
 	MyGimp
 	src/main.cpp
@@ -46,6 +48,44 @@ add_executable(
 
 target_link_libraries(
 	MyGimp
+	tgui
+	sfml-graphics
+	sfml-window
+	sfml-system
+)
+
+add_executable(
+	testExec
+	src/Layer/Layer.cpp
+	src/Layer/Layer.hpp
+	src/Data/Vector2.hpp
+	src/Data/Color.hpp
+	src/Data/Color.cpp
+	src/Layer/FrameBuffer.cpp
+	src/Layer/FrameBuffer.hpp
+	src/Layer/LayerManager.cpp
+	src/Layer/LayerManager.hpp
+	src/Tools/Tool.hpp
+	src/Editor.cpp
+	src/Editor.hpp
+	src/ToolBox.cpp
+	src/ToolBox.hpp
+	src/CanvasWidget.cpp
+	src/CanvasWidget.hpp
+	src/Data/MouseClick.hpp
+	src/Tools/ToolFactory.cpp
+	src/Tools/ToolFactory.hpp
+	src/Exceptions.hpp
+	src/Tools/Pencil.cpp
+	src/Tools/Pencil.hpp
+	src/Utils.cpp src/Utils.hpp src/Tools/Fill.cpp src/Tools/Fill.hpp src/Image.cpp src/Image.hpp src/SelectedArea.cpp src/SelectedArea.hpp src/Tools/ColorPick.cpp src/Tools/ColorPick.hpp
+	tests/ToolBoxTests.cpp
+	tests/UtilsTests.cpp
+)
+
+target_link_libraries(
+	testExec
+	criterion
 	tgui
 	sfml-graphics
 	sfml-window
