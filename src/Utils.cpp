@@ -157,11 +157,19 @@ namespace Mimp::Utils
 			auto button = tgui::Button::create("");
 			auto picture = tgui::Picture::create(pic);
 			auto label = tgui::Label::create(pathToString(filePath.filename()));
+			auto renderer = button->getRenderer();
 
 			button->setPosition(10, pos);
 			button->setSize({"&.w - 40", 20});
+			renderer->setBackgroundColor("transparent");
+			renderer->setBackgroundColorFocused("blue");
+			renderer->setBackgroundColorHover("#00BFFF");
+			renderer->setBorderColor("transparent");
+			renderer->setBorderColorHover("#00BFFF");
 			label->setPosition(40, pos + 2);
+			label->ignoreMouseEvents();
 			picture->setPosition(12, pos + 2);
+			picture->ignoreMouseEvents();
 			panel->add(button);
 			panel->add(label);
 			panel->add(picture);
