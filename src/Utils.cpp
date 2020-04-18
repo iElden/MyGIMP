@@ -226,7 +226,7 @@ namespace Mimp::Utils
 		);
 	}
 
-	std::string openFileDialog(const std::string &title, const std::string &basePath, const std::vector<std::pair<std::string, std::string>> &patterns)
+	std::string openFileDialog(const std::string &title, const std::string &basePath, const std::vector<std::pair<std::string, std::string>> &patterns, bool overWriteWarning, bool mustExist)
 	{
 		sf::RenderWindow window{{500, 300}, title, sf::Style::Titlebar};
 		tgui::Gui gui{window};
@@ -249,7 +249,7 @@ namespace Mimp::Utils
 		auto file = gui.get<tgui::EditBox>("file");
 		auto box = gui.get<tgui::ComboBox>("Patterns");
 		auto panel = gui.get<tgui::ScrollablePanel>("Folders");
-		std::function<void()> open = [&result, &window, path, box, file, &currentPath, panel, &open]{
+		std::function<void()> open = [&gui, &result, &window, path, box, file, &currentPath, panel, &open, mustExist, overWriteWarning]{
 			if (file->getText().isEmpty())
 				return;
 
@@ -266,6 +266,44 @@ namespace Mimp::Utils
 				path->setText(pathToString(currentPath));
 				file->setText("");
 				_makeFolders(currentPath, panel, file, open, std::regex(box->getSelectedItemId().toAnsiString(), std::regex_constants::icase));
+				return;
+			}
+
+			if (mustExist && !std::filesystem::exists(result))
+				return;
+
+			if (overWriteWarning && std::filesystem::exists(result)) {
+				auto pan = tgui::Panel::create({"100%", "100%"});
+				pan->getRenderer()->setBackgroundColor({0, 0, 0, 175});
+				gui.add(pan);
+
+				auto win = tgui::ChildWindow::create();
+				win->setPosition("(&.w - w) / 2", "(&.h - h) / 2");
+				gui.add(win);
+
+				win->setFocused(true);
+
+				const bool tabUsageEnabled = gui.isTabKeyUsageEnabled();
+				auto closeWindow = [&gui, win, pan, tabUsageEnabled]{
+					gui.remove(win);
+					gui.remove(pan);
+					gui.setTabKeyUsageEnabled(tabUsageEnabled);
+				};
+
+				pan->connect("Clicked", closeWindow);
+				win->connect({"Closed", "EscapeKeyPressed"}, closeWindow);
+				win->loadWidgetsFromFile("widgets/overwrite_warning.gui");
+
+				auto label = win->get<tgui::Label>("Label");
+
+				label->setText(result + label->getText());
+				win->setSize(label->getSize().x + 20, 100);
+				win->get<tgui::Button>("Yes")->connect("Clicked", [&window]{
+					window.close();
+				});
+				win->get<tgui::Button>("No")->connect("Clicked", [win]{
+					win->close();
+				});
 				return;
 			}
 
@@ -310,6 +348,6 @@ namespace Mimp::Utils
 
 	std::string saveFileDialog(const std::string &title, const std::string &basePath, const std::vector<std::pair<std::string, std::string>> &patterns)
 	{
-		return openFileDialog(title, basePath, patterns);
+		return openFileDialog(title, basePath, patterns, true, false);
 	}
 }

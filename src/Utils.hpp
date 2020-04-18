@@ -38,7 +38,7 @@ namespace Mimp::Utils
 	//! @param basePath The path of the FileDialog
 	//! @param patterns The patterns of the FileDialog
 	//! @return std::string FileDialog message
-	std::string openFileDialog(const std::string &title = "Open file", const std::string &basePath = ".", const std::vector<std::pair<std::string, std::string>> &patterns = {});
+	std::string openFileDialog(const std::string &title = "Open file", const std::string &basePath = ".", const std::vector<std::pair<std::string, std::string>> &patterns = {}, bool overWriteWarning = false, bool mustExist = true);
 	//! @brief Saves a file dialog
 	//! @param title Title of the FileDialog
 	//! @param basePath The path of the FileDialog
