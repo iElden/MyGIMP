@@ -81,6 +81,7 @@ add_executable(
 	src/Utils.cpp src/Utils.hpp src/Tools/Fill.cpp src/Tools/Fill.hpp src/Image.cpp src/Image.hpp src/SelectedArea.cpp src/SelectedArea.hpp src/Tools/ColorPick.cpp src/Tools/ColorPick.hpp
 	tests/ToolBoxTests.cpp
 	tests/UtilsTests.cpp
+	tests/ImageTests.cpp
 )
 
 target_link_libraries(
