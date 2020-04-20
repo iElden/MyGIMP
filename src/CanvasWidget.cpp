@@ -152,7 +152,7 @@ namespace Mimp
 		};
 		this->m_size = {
 			this->_size.x,
-			this->_size.x
+			this->_size.y
 		};
 		this->_drawBuffer.create(this->_size.x, this->_size.y);
 	}
