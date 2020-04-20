@@ -26,7 +26,7 @@ namespace Mimp
 		//! @brief ToolBox
 		ToolBox _toolBox;
 		//! @brief Selected Image
-		tgui::ChildWindow::Ptr _selectedImage;
+		tgui::ChildWindow::Ptr _selectedImageWindow;
 
 		//! @brief Setup Button Callbacks
 		void _setupButtonCallbacks();
@@ -35,6 +35,8 @@ namespace Mimp
 		//! @param canvas Canvas used to make image panel
 		//! @return tgui::ChildWindow::Ptr The new window created
 		tgui::ChildWindow::Ptr _makeImagePanel(CanvasWidget::Ptr canvas);
+
+		CanvasWidget::Ptr _getSelectedCanvas();
 	public:
 		//! @brief Copy Constructor of the Editor class not used
 		Editor(const Editor &) = delete;

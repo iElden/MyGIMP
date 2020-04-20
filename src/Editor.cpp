@@ -28,7 +28,7 @@ namespace Mimp
 
 				window->setTitle(image);
 				this->_gui.add(window, "Image" + image);
-				this->_selectedImage = window;
+				this->_selectedImageWindow = window;
 				menu->setMenuItemEnabled({"File", "Save"}, true);
 				menu->setMenuItemEnabled({"File", "Save as"}, true);
 				menu->setMenuItemEnabled({"File", "Export"}, true);
@@ -45,12 +45,12 @@ namespace Mimp
 
 	void Editor::setSelectedImage(tgui::ChildWindow::Ptr canvas)
 	{
-		this->_selectedImage = canvas;
+		this->_selectedImageWindow = canvas;
 	}
 
 	tgui::ChildWindow::Ptr Editor::getSelectedImage() const
 	{
-		return this->_selectedImage;
+		return this->_selectedImageWindow;
 	}
 
 	int Editor::run()
@@ -92,21 +92,30 @@ namespace Mimp
 	{
 		auto menu = this->_gui.get<tgui::MenuBar>("main_bar");
 		auto window = tgui::ChildWindow::create("Unnamed");
+		auto layersPanel = tgui::ScrollablePanel::create({170, 400});
+		auto canvasPanel = tgui::ScrollablePanel::create({400, 400});
+		auto &layers = canvas->getLayers();
 
 		window->setSize({
-			canvas->getLayers().getSize().x,
-			canvas->getLayers().getSize().y
+			600,
+			420
 		});
 		window->connect("Closed", [this, menu, window, canvas] {
 			menu->setMenuItemEnabled({"File", "Save"}, false);
 			menu->setMenuItemEnabled({"File", "Save as"}, false);
 			menu->setMenuItemEnabled({"File", "Export"}, false);
-			this->_selectedImage = nullptr;
+			this->_selectedImageWindow = nullptr;
 			canvas->disableRendering();
 			this->_gui.remove(window);
 		});
 		window->setPosition(0, 30);
-		window->add(canvas, "Canvas");
+
+		layersPanel->setPosition(10, 10);
+		window->add(layersPanel, "Layers");
+
+		canvasPanel->setPosition(190, 10);
+		canvasPanel->add(canvas, "Canvas");
+		window->add(canvasPanel, "Canvas");
 		return window;
 	}
 
@@ -123,7 +132,7 @@ namespace Mimp
 
 			window->setTitle("Untitled " + std::to_string(++this->_lastUntitled));
 			this->_gui.add(window, "ImageUntitled " + std::to_string(this->_lastUntitled));
-			this->_selectedImage = window;
+			this->_selectedImageWindow = window;
 			menu->setMenuItemEnabled({"File", "Save"}, true);
 			menu->setMenuItemEnabled({"File", "Save as"}, true);
 			menu->setMenuItemEnabled({"File", "Export"}, true);
@@ -144,7 +153,7 @@ namespace Mimp
 
 				window->setTitle(path);
 				this->_gui.add(window, "Image" + path);
-				this->_selectedImage = window;
+				this->_selectedImageWindow = window;
 			} catch (std::exception &e) {
 				auto window = tgui::ChildWindow::create("Loading error");
 				auto label = tgui::Label::create(
@@ -160,7 +169,7 @@ namespace Mimp
 			}
 		});
 		menu->connectMenuItem({"File", "Save"}, [this, menu] {
-			std::string path = this->_gui.getWidgetName(this->_selectedImage).substr(strlen("Image"));
+			std::string path = this->_gui.getWidgetName(this->_selectedImageWindow).substr(strlen("Image"));
 
 			if (path.substr(path.find_last_of('.')) != ".mimp")
 				path = Utils::saveFileDialog("Save MIMP file", path, {{".+[.]mimp", "MIMP image file"}});
@@ -168,26 +177,26 @@ namespace Mimp
 			if (path.empty())
 				return;
 
-			this->_selectedImage->setTitle(path);
-			this->_gui.remove(this->_selectedImage);
-			this->_gui.add(this->_selectedImage, "Image" + path);
-			this->_selectedImage->get<CanvasWidget>("Canvas")->getLayers().save(path);
+			this->_selectedImageWindow->setTitle(path);
+			this->_gui.remove(this->_selectedImageWindow);
+			this->_gui.add(this->_selectedImageWindow, "Image" + path);
+			this->_getSelectedCanvas()->getLayers().save(path);
 		});
 		menu->connectMenuItem({"File", "Save as"}, [this, menu] {
-			std::string name = this->_gui.getWidgetName(this->_selectedImage).substr(strlen("Image"));
+			std::string name = this->_gui.getWidgetName(this->_selectedImageWindow).substr(strlen("Image"));
 			std::string path = Utils::saveFileDialog("Save MIMP file", name, {{".+[.]mimp", "MIMP image file"}});
 
 			if (path.empty())
 				return;
-			this->_selectedImage->get<CanvasWidget>("Canvas")->getLayers().save(path);
+			this->_getSelectedCanvas()->getLayers().save(path);
 		});
 		menu->connectMenuItem({"File", "Export"}, [this, menu] {
-			std::string name = this->_gui.getWidgetName(this->_selectedImage).substr(strlen("Image"));
+			std::string name = this->_gui.getWidgetName(this->_selectedImageWindow).substr(strlen("Image"));
 			std::string path = Utils::saveFileDialog("Export image", name, {{".+[.]png", "Portable Network Graphics (PNG)"}});
 
 			if (path.empty())
 				return;
-			this->_selectedImage->get<CanvasWidget>("Canvas")->exportImage(path);
+			this->_getSelectedCanvas()->exportImage(path);
 		});
 		menu->connectMenuItem({"File", "Import"}, [this, menu] {
 			std::string path = Utils::openFileDialog("Load MIMP file", ".", {
@@ -213,7 +222,7 @@ namespace Mimp
 
 				window->setTitle(path);
 				this->_gui.add(window, "Image" + path);
-				this->_selectedImage = window;
+				this->_selectedImageWindow = window;
 			} catch (std::exception &e) {
 				auto window = tgui::ChildWindow::create("Loading error");
 				auto label = tgui::Label::create(
@@ -228,5 +237,12 @@ namespace Mimp
 				this->_gui.add(window);
 			}
 		});
+	}
+
+	CanvasWidget::Ptr Editor::_getSelectedCanvas()
+	{
+		if (!this->_selectedImageWindow)
+			return nullptr;
+		return this->_selectedImageWindow->get<tgui::ScrollablePanel>("Canvas")->get<CanvasWidget>("Canvas");
 	}
 }
