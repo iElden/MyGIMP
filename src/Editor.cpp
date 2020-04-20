@@ -92,7 +92,7 @@ namespace Mimp
 	{
 		auto menu = this->_gui.get<tgui::MenuBar>("main_bar");
 		auto window = tgui::ChildWindow::create("Unnamed");
-		auto layersPanel = tgui::ScrollablePanel::create({170, 400});
+		auto layersPanel = _makeLayersPanel(canvas);
 		auto canvasPanel = tgui::ScrollablePanel::create({400, 400});
 		auto &layers = canvas->getLayers();
 
@@ -244,5 +244,40 @@ namespace Mimp
 		if (!this->_selectedImageWindow)
 			return nullptr;
 		return this->_selectedImageWindow->get<tgui::ScrollablePanel>("Canvas")->get<CanvasWidget>("Canvas");
+	}
+
+	tgui::Panel::Ptr Editor::_getLayerRightClickPanel()
+	{
+		auto panel = tgui::Panel::create();
+
+		return panel;
+	}
+
+	tgui::Panel::Ptr Editor::_getLayerPanelRightClickPanel()
+	{
+		auto panel = tgui::Panel::create();
+
+		return panel;
+	}
+
+	tgui::Panel::Ptr Editor::_makeLayersPanel(CanvasWidget::Ptr canvas)
+	{
+		auto panel = tgui::ScrollablePanel::create({170, 400});
+		auto &layers = canvas->getLayers();
+
+		for (size_t i = 0; i < layers.size(); i++) {
+			auto &layer = layers[i];
+			auto widget = tgui::Button::create();
+			auto label = tgui::Label::create(layer.name);
+
+			widget->setSize(64, 64);
+			widget->setPosition(2, i * 66 + 2);
+
+			label->setPosition(66, i * 66 + 26);
+
+			panel->add(widget, "Widget" + std::to_string(i));
+			panel->add(label, "Label" + std::to_string(i));
+		}
+		return panel;
 	}
 }

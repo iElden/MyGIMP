@@ -37,6 +37,10 @@ namespace Mimp
 		tgui::ChildWindow::Ptr _makeImagePanel(CanvasWidget::Ptr canvas);
 
 		CanvasWidget::Ptr _getSelectedCanvas();
+
+		static tgui::Panel::Ptr _getLayerRightClickPanel();
+		static tgui::Panel::Ptr _getLayerPanelRightClickPanel();
+		static tgui::Panel::Ptr _makeLayersPanel(CanvasWidget::Ptr canvas);
 	public:
 		//! @brief Copy Constructor of the Editor class not used
 		Editor(const Editor &) = delete;

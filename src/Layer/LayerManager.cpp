@@ -291,4 +291,9 @@ namespace Mimp
 		while (this->_busy)
 			std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
+
+	size_t LayerManager::size() const
+	{
+		return this->_layers.size();
+	}
 }
