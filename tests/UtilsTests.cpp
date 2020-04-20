@@ -36,5 +36,5 @@ Test(Utils, CleanPathTest)
 {
 	std::filesystem::path p = "../.././jmartin/";
 
-	cr_assert_eq(Mimp::Utils::cleanPath(p), "jmartin");
+	cr_assert_eq(Mimp::Utils::cleanPath(Mimp::Utils::pathToString(p)), "jmartin");
 }
