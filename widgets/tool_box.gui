@@ -42,28 +42,6 @@ Renderer.2 {
     texturehover = None;
 }
 
-Renderer.3 {
-    backgroundcolor = #F5F5F5;
-    backgroundcolordisabled = #E6E6E6;
-    backgroundcolordown = #EBEBEB;
-    backgroundcolorhover = white;
-    bordercolor = #3C3C3C;
-    bordercolordisabled = #7D7D7D;
-    bordercolordown = black;
-    bordercolorfocused = #1E1EB4;
-    bordercolorhover = black;
-    borders = (1, 1, 1, 1);
-    textcolor = #3C3C3C;
-    textcolordisabled = #7D7D7D;
-    textcolordown = black;
-    textcolorhover = black;
-    texture = None;
-    texturedisabled = None;
-    texturedown = None;
-    texturefocused = None;
-    texturehover = None;
-}
-
 ScrollablePanel.Panel {
     ContentSize = (0, 0);
     Size = (190, 220);
@@ -116,12 +94,12 @@ ScrollablePanel.Panel {
     }
 
     BitmapButton.Tool4 {
-        Image = "icons/placeholder.png";
+        Image = "icons/select_rect.png";
         ImageScaling = 0;
         Position = (110, 10);
         Size = (30, 30);
         TextSize = 13;
-        renderer = &3;
+        renderer = &1;
     }
 
     BitmapButton.Tool7 {
@@ -130,7 +108,7 @@ ScrollablePanel.Panel {
         Position = (150, 50);
         Size = (30, 30);
         TextSize = 13;
-        renderer = &3;
+        renderer = &1;
     }
 
     BitmapButton.Tool5 {
@@ -140,24 +118,24 @@ ScrollablePanel.Panel {
         Position = (150, 10);
         Size = (30, 30);
         TextSize = 13;
-        renderer = &3;
+        renderer = &1;
     }
 
     BitmapButton.Tool6 {
-        Image = "icons/placeholder.png";
+        Image = "icons/select_color.png";
         ImageScaling = 0;
         Position = (110, 50);
         Size = (30, 30);
         TextSize = 13;
-        renderer = &3;
+        renderer = &1;
     }
 
     BitmapButton.Tool3 {
-        Image = "icons/placeholder.png";
+        Image = "icons/bucket_fill.png";
         ImageScaling = 0;
         Position = (50, 50);
         Size = (30, 30);
         TextSize = 13;
-        renderer = &3;
+        renderer = &1;
     }
 }
