@@ -52,6 +52,8 @@ target_link_libraries(
 	sfml-graphics
 	sfml-window
 	sfml-system
+	pthread
+	stdc++fs
 )
 
 add_executable(
@@ -91,4 +93,6 @@ target_link_libraries(
 	sfml-graphics
 	sfml-window
 	sfml-system
+	pthread
+	stdc++fs
 )

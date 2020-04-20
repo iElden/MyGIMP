@@ -8,6 +8,7 @@
 
 #include <string>
 #include <vector>
+#include <filesystem>
 
 #ifndef _WIN32
 #define MB_ICONERROR 1
@@ -37,13 +38,18 @@ namespace Mimp::Utils
 	//! @param basePath The path of the FileDialog
 	//! @param patterns The patterns of the FileDialog
 	//! @return std::string FileDialog message
-	std::string openFileDialog(const std::string &title = "Open file", const std::string &basePath = ".", const std::vector<std::pair<std::string, std::string>> &patterns = {});
+	std::string openFileDialog(const std::string &title = "Open file", const std::string &basePath = ".", const std::vector<std::pair<std::string, std::string>> &patterns = {}, bool overWriteWarning = false, bool mustExist = true);
 	//! @brief Saves a file dialog
 	//! @param title Title of the FileDialog
 	//! @param basePath The path of the FileDialog
 	//! @param patterns The patterns of the FileDialog
 	//! @return std::string FileDialog message
 	std::string saveFileDialog(const std::string &title = "Save file", const std::string &basePath = ".", const std::vector<std::pair<std::string, std::string>> &patterns = {});
+
+	std::string wstringToUtf8(const std::wstring &str);
+	std::wstring utf8ToWstring(const std::string &str);
+	std::string pathToString(const std::filesystem::path &path);
+	std::string cleanPath(const std::string &path);
 }
 
 

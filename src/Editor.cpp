@@ -129,11 +129,11 @@ namespace Mimp
 			menu->setMenuItemEnabled({"File", "Export"}, true);
 		});
 		menu->connectMenuItem({"File", "Open"}, [this, menu]{
-			try {
-				std::string path = Utils::openFileDialog("Load MIMP file", ".", {{"*.mimp", "MIMP image file"}});
+			std::string path = Utils::openFileDialog("Load MIMP file", ".", {{".+[.]mimp", "MIMP image file"}});
 
-				if (path.empty())
-					return;
+			if (path.empty())
+				return;
+			try {
 
 				auto widget = CanvasWidget::create(this->_toolBox, path);
 				auto window = _makeImagePanel(widget);
@@ -148,7 +148,7 @@ namespace Mimp
 			} catch (std::exception &e) {
 				auto window = tgui::ChildWindow::create("Loading error");
 				auto label = tgui::Label::create(
-					"Cannot load file " "test.mimp""\n" +
+					"Cannot load file " + path + "\n" +
 					Utils::getLastExceptionName() + ":\n" + e.what()
 				);
 
@@ -163,7 +163,7 @@ namespace Mimp
 			std::string path = this->_gui.getWidgetName(this->_selectedImage).substr(strlen("Image"));
 
 			if (path.substr(path.find_last_of('.')) != ".mimp")
-				path = Utils::saveFileDialog("Save MIMP file", path, {{"*.mimp", "MIMP image file"}});
+				path = Utils::saveFileDialog("Save MIMP file", path, {{".+[.]mimp", "MIMP image file"}});
 
 			if (path.empty())
 				return;
@@ -175,7 +175,7 @@ namespace Mimp
 		});
 		menu->connectMenuItem({"File", "Save as"}, [this, menu] {
 			std::string name = this->_gui.getWidgetName(this->_selectedImage).substr(strlen("Image"));
-			std::string path = Utils::saveFileDialog("Save MIMP file", name, {{"*.mimp", "MIMP image file"}});
+			std::string path = Utils::saveFileDialog("Save MIMP file", name, {{".+[.]mimp", "MIMP image file"}});
 
 			if (path.empty())
 				return;
@@ -183,21 +183,21 @@ namespace Mimp
 		});
 		menu->connectMenuItem({"File", "Export"}, [this, menu] {
 			std::string name = this->_gui.getWidgetName(this->_selectedImage).substr(strlen("Image"));
-			std::string path = Utils::saveFileDialog("Export image", name, {{"*.png", "Portable Network Graphics (PNG)"}});
+			std::string path = Utils::saveFileDialog("Export image", name, {{".+[.]png", "Portable Network Graphics (PNG)"}});
 
 			if (path.empty())
 				return;
 			this->_selectedImage->get<CanvasWidget>("Canvas")->exportImage(path);
 		});
 		menu->connectMenuItem({"File", "Import"}, [this, menu] {
-			try {
-				std::string path = Utils::openFileDialog("Load MIMP file", ".", {
-					{"*.png", "Portable Network Graphics (PNG)"},
-					{"*.jpg", "Joint Photographic Experts Group (JPEG)"},
-					{"*.bmp", "Windows Bitmap (BMP)"},
-					{"*.gif", "Graphics Interchange Format (GIF)"},
-				});
+			std::string path = Utils::openFileDialog("Load MIMP file", ".", {
+				{".+[.]png", "Portable Network Graphics (PNG)"},
+				{".+[.]jpg", "Joint Photographic Experts Group (JPEG)"},
+				{".+[.]bmp", "Windows Bitmap (BMP)"},
+				{".+[.]gif", "Graphics Interchange Format (GIF)"},
+			});
 
+			try {
 				if (path.empty())
 					return;
 
@@ -217,7 +217,7 @@ namespace Mimp
 			} catch (std::exception &e) {
 				auto window = tgui::ChildWindow::create("Loading error");
 				auto label = tgui::Label::create(
-					"Cannot load file " "test.mimp""\n" +
+					"Cannot load file " + path + "\n" +
 					Utils::getLastExceptionName() + ":\n" + e.what()
 				);
 
