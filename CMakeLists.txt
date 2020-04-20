@@ -51,4 +51,5 @@ target_link_libraries(
 	sfml-window
 	sfml-system
 	pthread
+	stdc++fs
 )

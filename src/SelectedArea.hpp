@@ -25,6 +25,8 @@ namespace Mimp {
 		//! @brief Clears the selected points
 		void clear() noexcept;
 
+		//! @brief Is _selectedPoints not empty ?
+		//! @return bool The result of the verification
 		bool isAnAreaSelected() const noexcept;
 
 		void add(Vector2<int> point);
