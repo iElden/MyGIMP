@@ -32,6 +32,8 @@ namespace Mimp
 				menu->setMenuItemEnabled({"File", "Save"}, true);
 				menu->setMenuItemEnabled({"File", "Save as"}, true);
 				menu->setMenuItemEnabled({"File", "Export"}, true);
+				menu->setMenuItemEnabled({"File", "Close"}, true);
+				menu->setMenuItemEnabled({"File", "Close All"}, true);
 			} catch (std::exception &e) {
 				Utils::dispMsg(
 					"Error",
@@ -94,7 +96,6 @@ namespace Mimp
 		auto window = tgui::ChildWindow::create("Unnamed");
 		auto layersPanel = _makeLayersPanel(canvas);
 		auto canvasPanel = tgui::ScrollablePanel::create({400, 400});
-		auto &layers = canvas->getLayers();
 
 		window->setSize({
 			600,
@@ -104,6 +105,8 @@ namespace Mimp
 			menu->setMenuItemEnabled({"File", "Save"}, false);
 			menu->setMenuItemEnabled({"File", "Save as"}, false);
 			menu->setMenuItemEnabled({"File", "Export"}, false);
+			menu->setMenuItemEnabled({"File", "Close"}, false);
+			menu->setMenuItemEnabled({"File", "Close All"}, false);
 			this->_selectedImageWindow = nullptr;
 			canvas->disableRendering();
 			this->_gui.remove(window);
@@ -136,6 +139,8 @@ namespace Mimp
 			menu->setMenuItemEnabled({"File", "Save"}, true);
 			menu->setMenuItemEnabled({"File", "Save as"}, true);
 			menu->setMenuItemEnabled({"File", "Export"}, true);
+			menu->setMenuItemEnabled({"File", "Close"}, true);
+			menu->setMenuItemEnabled({"File", "Close All"}, true);
 		});
 		menu->connectMenuItem({"File", "Open"}, [this, menu]{
 			std::string path = Utils::openFileDialog("Load MIMP file", ".", {{".+[.]mimp", "MIMP image file"}});
@@ -150,6 +155,8 @@ namespace Mimp
 				menu->setMenuItemEnabled({"File", "Save"}, true);
 				menu->setMenuItemEnabled({"File", "Save as"}, true);
 				menu->setMenuItemEnabled({"File", "Export"}, true);
+				menu->setMenuItemEnabled({"File", "Close"}, true);
+				menu->setMenuItemEnabled({"File", "Close All"}, true);
 
 				window->setTitle(path);
 				this->_gui.add(window, "Image" + path);
@@ -198,6 +205,12 @@ namespace Mimp
 				return;
 			this->_getSelectedCanvas()->exportImage(path);
 		});
+		menu->connectMenuItem({"File", "Close"}, [this]{
+			this->_selectedImageWindow->close();
+		});
+		menu->connectMenuItem({"File", "Quit"}, [this]{
+			this->_mainWindow.close();
+		});
 		menu->connectMenuItem({"File", "Import"}, [this, menu] {
 			std::string path = Utils::openFileDialog("Load MIMP file", ".", {
 				{".+[.]png", "Portable Network Graphics (PNG)"},
@@ -219,6 +232,8 @@ namespace Mimp
 				menu->setMenuItemEnabled({"File", "Save"}, true);
 				menu->setMenuItemEnabled({"File", "Save as"}, true);
 				menu->setMenuItemEnabled({"File", "Export"}, true);
+				menu->setMenuItemEnabled({"File", "Close"}, true);
+				menu->setMenuItemEnabled({"File", "Close All"}, true);
 
 				window->setTitle(path);
 				this->_gui.add(window, "Image" + path);
