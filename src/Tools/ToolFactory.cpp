@@ -6,6 +6,9 @@
 #include "Pencil.hpp"
 #include "Fill.hpp"
 #include "ColorPick.hpp"
+#include "FillSelection.hpp"
+#include "RectSelectTool.hpp"
+#include "SelectByColorTool.hpp"
 
 namespace Mimp
 {
@@ -15,6 +18,21 @@ namespace Mimp
 		},
 		[](ToolBox &box){
 			return std::make_shared<Fill>(box);
+		},
+		[](ToolBox &box){
+			return std::make_shared<ColorPick>(box);
+		},
+		[](ToolBox &box){
+			return std::make_shared<FillSelection>(box);
+		},
+		[](ToolBox &box){
+			return std::make_shared<RectSelectTool>(box);
+		},
+		[](ToolBox &box){
+			return std::make_shared<RectSelectTool>(box);
+		},
+		[](ToolBox &box){
+			return std::make_shared<SelectByColorTool>(box);
 		},
 		[](ToolBox &box){
 			return std::make_shared<ColorPick>(box);

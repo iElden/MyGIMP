@@ -15,6 +15,8 @@ namespace Mimp
 		type x;
 		type y;
 
+		Vector2(type x_, type y_): x(x_), y(y_) {};
+		Vector2<type>() = default;
 		//! @brief Operator +
 		//! @details Adds two Vector2 and returns the result in a Vector2
 		//! @param other The other Vector2 to add

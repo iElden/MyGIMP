@@ -23,9 +23,19 @@ namespace Mimp {
 
 		SelectedArea() = default;
 		//! @brief Clears the selected points
-		void clear();
+		void clear() noexcept;
 
+		//! @brief Is _selectedPoints not empty ?
+		//! @return bool The result of the verification
 		bool isAnAreaSelected() const noexcept;
+
+		void add(Vector2<int> point);
+		void add(int x, int y);
+
+		//! @brief Iterator begin for vectors of layers
+		std::vector<Vector2<int>>::iterator begin();
+		//! @brief Iterator end for vectors of layers
+		std::vector<Vector2<int>>::iterator end();
 	};
 }
 

@@ -12,18 +12,18 @@ namespace Mimp
 	{
 	}
 
-	void Pencil::onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Layer &layer)
+	void Pencil::onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Image &image)
 	{
-		if (layer.isLocked())
+		if (image.getSelectedLayer().isLocked())
 			return;
-		layer.buffer.drawLine(oldPos, newPos, this->_box.getSelectedColor(click));
+		image.getSelectedLayer().buffer.drawLine(oldPos, newPos, this->_box.getSelectedColor(click));
 	}
 
-	void Pencil::onClick(Vector2<int> pos, MouseClick click, Layer &layer)
+	void Pencil::onClick(Vector2<int> pos, MouseClick click, Image &image)
 	{
-		if (layer.isLocked())
+		if (image.getSelectedLayer().isLocked())
 			return;
-		layer.buffer.drawPixel(pos, this->_box.getSelectedColor(click));
+		image.getSelectedLayer().buffer.drawPixel(pos, this->_box.getSelectedColor(click));
 	}
 
 	tgui::ScrollablePanel::Ptr Pencil::getParametersPanel() const
