@@ -25,6 +25,8 @@ namespace Mimp {
 		//! @brief Clears the selected points
 		void clear();
 
+		//! @brief Is _selectedPoints not empty ?
+		//! @return bool The result of the verification
 		bool isAnAreaSelected() const noexcept;
 	};
 }
