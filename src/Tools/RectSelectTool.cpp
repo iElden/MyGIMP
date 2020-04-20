@@ -7,8 +7,8 @@
 
 #include "RectSelectTool.hpp"
 
-Mimp::RectSelectTool::RectSelectTool(Mimp::Image &image):
-	SelectionTool("RectSelect", image)
+Mimp::RectSelectTool::RectSelectTool(ToolBox &toolBox):
+	SelectionTool("RectSelect", toolBox)
 {}
 
 void Mimp::RectSelectTool::clear()
@@ -16,32 +16,32 @@ void Mimp::RectSelectTool::clear()
 	this->_state = 0;
 }
 
-void Mimp::RectSelectTool::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick, Mimp::Layer &)
+void Mimp::RectSelectTool::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick, Mimp::Image &image)
 {
 	this->_pt1 = pos;
 	this->_pt2 = pos;
 	this->_state = 1;
-	this->_updateSelectedArea(); // TODO: Add onMouseRelease event for optimisation
+	this->_updateSelectedArea(image); // TODO: Add onMouseRelease event for optimisation
 }
 
-void Mimp::RectSelectTool::onMouseDrag(Mimp::Vector2<int>, Mimp::Vector2<int> newPos, Mimp::MouseClick, Mimp::Layer &)
+void Mimp::RectSelectTool::onMouseDrag(Mimp::Vector2<int>, Mimp::Vector2<int> newPos, Mimp::MouseClick, Mimp::Image &image)
 {
 	this->_pt2 = newPos;
 	this->_state = 2;
-	this->_updateSelectedArea(); // TODO: Add onMouseRelease event for optimisation
+	this->_updateSelectedArea(image); // TODO: Add onMouseRelease event for optimisation
 }
 
-void Mimp::RectSelectTool::_updateSelectedArea()
+void Mimp::RectSelectTool::_updateSelectedArea(Image &image)
 {
 	int min_x = std::min(this->_pt1.x, this->_pt2.x);
 	int max_x = std::max(this->_pt1.x, this->_pt2.x);
 	int min_y = std::min(this->_pt1.y, this->_pt2.y);
 	int max_y = std::max(this->_pt1.y, this->_pt2.y);
 
-	this->_image.selectedArea.clear();
+	image.selectedArea.clear();
 	for (int j = min_y; j <= max_y; j++)
 		for (int i = min_x; i <= max_x; i++)
-			this->_image.selectedArea.add(i, j);
+			image.selectedArea.add(i, j);
 }
 
 tgui::ScrollablePanel::Ptr Mimp::RectSelectTool::getParametersPanel() const

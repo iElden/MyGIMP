@@ -6,13 +6,12 @@
 */
 #include "SelectionTool.hpp"
 
-Mimp::SelectionTool::SelectionTool(const std::string &name, Mimp::Image &image):
+Mimp::SelectionTool::SelectionTool(const std::string &name, ToolBox &toolBox):
 	Tool(name),
-	_image(image)
+	_toolBox(toolBox)
 {}
 
 void Mimp::SelectionTool::onSelect()
 {
-	this->_image.selectedArea.clear();
 	this->clear();
 }

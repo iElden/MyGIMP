@@ -26,3 +26,13 @@ void Mimp::SelectedArea::add(int x, int y)
 {
 	this->_selectedPoints.emplace_back(x, y);
 }
+
+std::vector<Mimp::Vector2<int>, std::allocator<Mimp::Vector2<int>>>::iterator Mimp::SelectedArea::begin()
+{
+	return this->_selectedPoints.begin();
+}
+
+std::vector<Mimp::Vector2<int>, std::allocator<Mimp::Vector2<int>>>::iterator Mimp::SelectedArea::end()
+{
+	return this->_selectedPoints.end();
+}

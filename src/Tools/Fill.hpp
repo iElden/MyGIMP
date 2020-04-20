@@ -35,8 +35,8 @@ namespace Mimp
 		//! @brief Constructor of the Fill Class
 		//! @param toolBox ToolBox to create the Fill Tool
 		Fill(Mimp::ToolBox &toolBox);
-		void onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Layer &layer) override;
-		void onClick(Vector2<int> pos, MouseClick click, Layer &layer) override;
+		void onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Image &image) override;
+		void onClick(Vector2<int> pos, MouseClick click, Image &image) override;
 		tgui::ScrollablePanel::Ptr getParametersPanel() const override;
 	};
 }

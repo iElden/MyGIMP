@@ -9,13 +9,14 @@
 
 #include "../Image.hpp"
 #include "Tool.hpp"
+#include "../ToolBox.hpp"
 
 namespace Mimp {
 	class SelectionTool : public Tool {
 	protected:
-		Image _image;
+		ToolBox &_toolBox;
 	public:
-		SelectionTool(const std::string &name, Image &image);
+		SelectionTool(const std::string &name, ToolBox &);
 		void onSelect() override;
 		virtual void clear() {};
 	};

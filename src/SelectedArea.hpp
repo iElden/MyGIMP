@@ -29,6 +29,11 @@ namespace Mimp {
 
 		void add(Vector2<int> point);
 		void add(int x, int y);
+
+		//! @brief Iterator begin for vectors of layers
+		std::vector<Vector2<int>>::iterator begin();
+		//! @brief Iterator end for vectors of layers
+		std::vector<Vector2<int>>::iterator end();
 	};
 }
 

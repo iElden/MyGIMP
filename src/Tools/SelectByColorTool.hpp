@@ -12,12 +12,12 @@
 namespace Mimp {
 	class SelectByColorTool : public SelectionTool {
 	private:
-		void _updateSelectedArea(const Color &target_color);
+		void _updateSelectedArea(Image &image, const Color &target_color);
 
 	public:
-		SelectByColorTool(Image &image);
-		void onMouseDrag(Vector2<int>, Vector2<int>, MouseClick, Layer &) override {};
-		void onClick(Vector2<int> pos, MouseClick click, Layer &layer) override;
+		SelectByColorTool(ToolBox &toolBox);
+		void onMouseDrag(Vector2<int>, Vector2<int>, MouseClick, Image &) override {};
+		void onClick(Vector2<int> pos, MouseClick click, Image &layer) override;
 		tgui::ScrollablePanel::Ptr getParametersPanel() const override;
 	};
 }
