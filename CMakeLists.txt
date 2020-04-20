@@ -84,6 +84,9 @@ add_executable(
 	tests/ToolBoxTests.cpp
 	tests/UtilsTests.cpp
 	tests/ImageTests.cpp
+	tests/LayerManagerTest.cpp
+	tests/LayerTest.cpp
+	tests/FrameBufferTest.cpp
 )
 
 target_link_libraries(
