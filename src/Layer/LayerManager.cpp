@@ -25,8 +25,11 @@ namespace Mimp
 		this->_layers.reserve(nbOfLayer);
 		if (!nbOfLayer)
 			throw InvalidArgumentException("Must add at least a single layer");
-		while (nbOfLayer--)
-			this->_layers.emplace_back(new Layer{size, defaultColor});
+		while (nbOfLayer--) {
+			auto &layer = this->_layers.emplace_back(new Layer{size, defaultColor});
+
+			sprintf(layer->name, "Layer %llu", this->_layers.size());
+		}
 	}
 
 	void LayerManager::addLayer(const Layer &layer)
@@ -39,7 +42,8 @@ namespace Mimp
 	void LayerManager::addLayer(Vector2<unsigned> size, const Color &defaultColor)
 	{
 		this->_setBusy();
-		this->_layers.emplace_back(new Layer(size, defaultColor));
+		auto &layer = this->_layers.emplace_back(new Layer(size, defaultColor));
+		sprintf(layer->name, "Layer %lli", this->_layers.size());
 		this->_unsetBusy();
 	}
 
@@ -166,6 +170,7 @@ namespace Mimp
 			for (auto layer : layers) {
 				auto &createdLayer = this->_layers.emplace_back(new Layer{layer->size, layer->pixels});
 
+				std::memcpy(createdLayer->name, layer->name, sizeof(createdLayer->name));
 				createdLayer->visible = layer->attributes.visible;
 				createdLayer->locked = layer->attributes.locked;
 				createdLayer->pos = layer->pos;
@@ -206,7 +211,9 @@ namespace Mimp
 					image.getPixel(x, y).b,
 					image.getPixel(x, y).a
 				};
-		this->_layers.emplace_back(new Layer{size, pixelBuffer});
+		auto &layer = this->_layers.emplace_back(new Layer{size, pixelBuffer});
+
+		std::strcpy(layer->name, "Layer 1");
 		delete[] pixelBuffer;
 		this->_unsetBusy();
 	}
@@ -253,6 +260,7 @@ namespace Mimp
 		for (auto &layerObject : this->_layers) {
 			auto layer = reinterpret_cast<SavedLayer *>(currentLayer);
 
+			std::memcpy(layer->name, layerObject->name, sizeof(layer->name));
 			layer->size = layerObject->getSize();
 			layer->pos = layerObject->pos;
 			layer->attributes.visible = layerObject->visible;
