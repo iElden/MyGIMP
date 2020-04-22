@@ -4,20 +4,9 @@
 
 #include <criterion/criterion.h>
 #include <criterion/redirect.h>
-#include <iostream>
-#include <sstream>
 #include <zconf.h>
 #include "../src/Utils.hpp"
 #include "../src/Exceptions.hpp"
-
-Test(Utils, OpenAndSaveFileDialogTest)
-{
-	std::string openRes = Mimp::Utils::openFileDialog();
-	std::string saveRes = Mimp::Utils::saveFileDialog();
-
-	cr_assert_eq(openRes, "");
-	cr_assert_eq(saveRes, "");
-}
 
 Test(Utils, GetLastExceptionTest)
 {

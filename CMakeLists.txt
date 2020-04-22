@@ -87,6 +87,8 @@ add_executable(
 	tests/LayerManagerTest.cpp
 	tests/LayerTest.cpp
 	tests/FrameBufferTest.cpp
+	tests/SelectedAreaTests.cpp
+	tests/communism.hpp
 )
 
 target_link_libraries(
