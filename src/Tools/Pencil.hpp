@@ -23,8 +23,8 @@ namespace Mimp
 		//! @brief Constructor of the Pencil Class
 		//! @param toolBox ToolBox to create the Pencil Tool
 		Pencil(ToolBox &);
-		void onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Layer &layer) override;
-		void onClick(Vector2<int> pos, MouseClick click, Layer &layer) override;
+		void onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Image &image) override;
+		void onClick(Vector2<int> pos, MouseClick click, Image &image) override;
 		tgui::ScrollablePanel::Ptr getParametersPanel() const override;
 	};
 }

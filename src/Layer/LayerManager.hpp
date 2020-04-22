@@ -25,6 +25,8 @@ namespace Mimp
 			Vector2<int> pos;
 			//! @brief size of the SavedLayer
 			Vector2<unsigned> size;
+			//! @brief Name of the layer
+			char name[32];
 			//! @brief attributes of the SavedLayer
 			//! @details Contains "visible" and "locked" options
 			struct {
@@ -59,11 +61,11 @@ namespace Mimp
 		//! @brief Is The layer manager busy (thread)
 		mutable bool _busy = false;
 
-        //! @brief Check if the layer manager is busy
+		//! @brief Check if the layer manager is busy
 		void _checkBusy() const;
-        //! @brief Set layer manager as state busy
+		//! @brief Set layer manager as state busy
 		void _setBusy() const;
-        //! @brief Set layer manager as state not busy
+		//! @brief Set layer manager as state not busy
 		void _unsetBusy() const;
 
 	public:

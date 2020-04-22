@@ -44,7 +44,7 @@ Renderer.2 {
 
 ScrollablePanel.Panel {
     ContentSize = (0, 0);
-    Size = (100, 220);
+    Size = (190, 220);
 
     Renderer {
         backgroundcolor = white;
@@ -88,6 +88,52 @@ ScrollablePanel.Panel {
         Image = "icons/color_pick.png";
         ImageScaling = 0;
         Position = (10, 50);
+        Size = (30, 30);
+        TextSize = 13;
+        renderer = &1;
+    }
+
+    BitmapButton.Tool4 {
+        Image = "icons/select_rect.png";
+        ImageScaling = 0;
+        Position = (110, 10);
+        Size = (30, 30);
+        TextSize = 13;
+        renderer = &1;
+    }
+
+    BitmapButton.Tool7 {
+        Image = "icons/placeholder.png";
+        ImageScaling = 0;
+        Position = (150, 50);
+        Size = (30, 30);
+        TextSize = 13;
+        renderer = &1;
+    }
+
+    BitmapButton.Tool5 {
+        Enabled = false;
+        Image = "icons/placeholder.png";
+        ImageScaling = 0;
+        Position = (150, 10);
+        Size = (30, 30);
+        TextSize = 13;
+        renderer = &1;
+    }
+
+    BitmapButton.Tool6 {
+        Image = "icons/select_color.png";
+        ImageScaling = 0;
+        Position = (110, 50);
+        Size = (30, 30);
+        TextSize = 13;
+        renderer = &1;
+    }
+
+    BitmapButton.Tool3 {
+        Image = "icons/bucket_fill.png";
+        ImageScaling = 0;
+        Position = (50, 50);
         Size = (30, 30);
         TextSize = 13;
         renderer = &1;
