@@ -112,7 +112,6 @@ ScrollablePanel.Panel {
     }
 
     BitmapButton.Tool5 {
-        Enabled = false;
         Image = "icons/placeholder.png";
         ImageScaling = 0;
         Position = (150, 10);
