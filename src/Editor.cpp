@@ -94,7 +94,7 @@ namespace Mimp
 	{
 		auto menu = this->_gui.get<tgui::MenuBar>("main_bar");
 		auto window = tgui::ChildWindow::create("Unnamed");
-		auto layersPanel = _makeLayersPanel(canvas);
+		auto layersPanel = this->_makeLayersPanel(window, canvas);
 		auto canvasPanel = tgui::ScrollablePanel::create({400, 400});
 
 		window->setSize({
@@ -270,12 +270,14 @@ namespace Mimp
 
 	tgui::Panel::Ptr Editor::_getLayerPanelRightClickPanel()
 	{
-		auto panel = tgui::Panel::create();
+		auto panel = tgui::Panel::create({110, 230});
 
+		panel->getRenderer()->setBackgroundColor({"#D8D8D8"});
+		panel->loadWidgetsFromFile("widgets/context_box.gui");
 		return panel;
 	}
 
-	tgui::Panel::Ptr Editor::_makeLayersPanel(CanvasWidget::Ptr canvas)
+	tgui::Panel::Ptr Editor::_makeLayersPanel(tgui::ChildWindow::Ptr win, CanvasWidget::Ptr canvas)
 	{
 		auto panel = tgui::ScrollablePanel::create({170, 400});
 		auto &layers = canvas->getLayers();
@@ -287,6 +289,21 @@ namespace Mimp
 
 			widget->setSize(64, 64);
 			widget->setPosition(2, i * 66 + 2);
+			widget->connect("RightClicked", [this, win, panel](tgui::Vector2f pos){
+				auto fakePanel = tgui::Panel::create({"100%", "100%"});
+				auto pan = this->_getLayerPanelRightClickPanel();
+
+				fakePanel->getRenderer()->setBackgroundColor({0, 0, 0, 0});
+				fakePanel->connect("Clicked", [this, pan, fakePanel]{
+					this->_gui.remove(pan);
+					this->_gui.remove(fakePanel);
+				});
+				pos.x += win->getPosition().x + panel->getPosition().x;
+				pos.y += win->getPosition().y + panel->getPosition().y;
+				pan->setPosition(pos);
+				this->_gui.add(fakePanel);
+				this->_gui.add(pan);
+			});
 
 			label->setPosition(66, i * 66 + 26);
 
