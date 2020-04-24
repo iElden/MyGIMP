@@ -11,6 +11,8 @@
 #include "SelectByColorTool.hpp"
 #include "SelectByColorTool.hpp"
 #include "ElipseSelectionTool.hpp"
+#include "SelectAll.hpp"
+#include "UnselectAll.hpp"
 
 namespace Mimp
 {
@@ -38,6 +40,12 @@ namespace Mimp
 		},
 		[](ToolBox &box){
 			return std::make_shared<ColorPick>(box);
+		},
+		[](ToolBox &box){
+			return std::make_shared<SelectAll>(box);
+		},
+		[](ToolBox &box){
+			return std::make_shared<UnselectAll>(box);
 		}
 	};
 

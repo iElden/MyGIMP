@@ -42,6 +42,28 @@ Renderer.2 {
     texturehover = None;
 }
 
+Renderer.3 {
+    backgroundcolor = #F5F5F5;
+    backgroundcolordisabled = #E6E6E6;
+    backgroundcolordown = #EBEBEB;
+    backgroundcolorhover = white;
+    bordercolor = #3C3C3C;
+    bordercolordisabled = #7D7D7D;
+    bordercolordown = black;
+    bordercolorfocused = #1E1EB4;
+    bordercolorhover = black;
+    borders = (1, 1, 1, 1);
+    textcolor = #3C3C3C;
+    textcolordisabled = #7D7D7D;
+    textcolordown = black;
+    textcolorhover = black;
+    texture = None;
+    texturedisabled = None;
+    texturedown = None;
+    texturefocused = None;
+    texturehover = None;
+}
+
 ScrollablePanel.Panel {
     ContentSize = (0, 0);
     Size = (190, 220);
@@ -136,5 +158,23 @@ ScrollablePanel.Panel {
         Size = (30, 30);
         TextSize = 13;
         renderer = &1;
+    }
+
+    BitmapButton.Tool8 {
+        Image = "icons/placeholder.png";
+        ImageScaling = 0;
+        Position = (110, 90);
+        Size = (30, 30);
+        TextSize = 13;
+        renderer = &3;
+    }
+
+    BitmapButton.Tool9 {
+        Image = "icons/placeholder.png";
+        ImageScaling = 0;
+        Position = (150, 90);
+        Size = (30, 30);
+        TextSize = 13;
+        renderer = &3;
     }
 }
