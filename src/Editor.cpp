@@ -324,6 +324,14 @@ namespace Mimp
 			layers.deleteLayer(index);
 			this->_makeLayersPanel(win, canvas);
 		});
+		up->connect("Pressed", [&layers, index, this, win, canvas]{
+			layers.setLayerIndex(index, index + 1);
+			this->_makeLayersPanel(win, canvas);
+		});
+		down->connect("Pressed", [&layers, index, this, win, canvas]{
+			layers.setLayerIndex(index, index - 1);
+			this->_makeLayersPanel(win, canvas);
+		});
 		return panel;
 	}
 
