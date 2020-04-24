@@ -294,6 +294,13 @@ namespace Mimp
 		locked->connect("Pressed", [&layer, locked]{
 			layer.locked = !layer.locked;
 		});
+		duplicate->connect("Pressed", [this, &layer, locked, win, canvas, index]{
+			auto &layers = canvas->getLayers();
+
+			layers.addLayer(layer);
+			layers.setLayerIndex(layers.size() - 1, index + 1);
+			this->_makeLayersPanel(win, canvas);
+		});
 		return panel;
 	}
 
@@ -315,6 +322,9 @@ namespace Mimp
 
 			widget->setSize(64, 64);
 			widget->setPosition(2, (size - i - 1) * 66 + 2);
+			widget->connect("Clicked", [&layers, i]{
+				layers.selectLayer(i);
+			});
 			widget->connect("RightClicked", [this, win, panel, widget, label, &layer, i, canvas](tgui::Vector2f pos){
 				auto fakePanel = tgui::Panel::create({"100%", "100%"});
 				auto pan = this->_getLayerPanelRightClickPanel(win, canvas, widget, label, layer, i);
@@ -324,8 +334,8 @@ namespace Mimp
 					this->_gui.remove(pan);
 					this->_gui.remove(fakePanel);
 				});
-				for (auto &widget : pan->getWidgets())
-					widget->connect("Pressed", [this, pan, fakePanel]{
+				for (auto &wid : pan->getWidgets())
+					wid->connect("Pressed", [this, pan, fakePanel]{
 						this->_gui.remove(pan);
 						this->_gui.remove(fakePanel);
 					});
