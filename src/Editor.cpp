@@ -268,36 +268,67 @@ namespace Mimp
 		return panel;
 	}
 
-	tgui::Panel::Ptr Editor::_getLayerPanelRightClickPanel()
+	tgui::Panel::Ptr Editor::_getLayerPanelRightClickPanel(tgui::ChildWindow::Ptr win, CanvasWidget::Ptr canvas, tgui::Widget::Ptr widget, tgui::Label::Ptr label, Layer &layer, unsigned index)
 	{
 		auto panel = tgui::Panel::create({110, 230});
 
 		panel->getRenderer()->setBackgroundColor({"#D8D8D8"});
 		panel->loadWidgetsFromFile("widgets/context_box.gui");
+
+		auto visible = panel->get<tgui::Button>("Visible");
+		auto locked = panel->get<tgui::Button>("Locked");
+		auto rename = panel->get<tgui::Button>("Rename");
+		auto newLayer = panel->get<tgui::Button>("New Layer");
+		auto duplicate = panel->get<tgui::Button>("Duplicate");
+		auto merge = panel->get<tgui::Button>("Merge");
+		auto up = panel->get<tgui::Button>("Up");
+		auto down = panel->get<tgui::Button>("Down");
+		auto resize = panel->get<tgui::Button>("Resize");
+		auto deleteLayaer = panel->get<tgui::Button>("Delete");
+
+		visible->setText(layer.visible ? "Hide" : "Show");
+		visible->connect("Pressed", [&layer, visible]{
+			layer.visible = !layer.visible;
+		});
+		locked->setText(layer.locked ? "Unlock" : "Lock");
+		locked->connect("Pressed", [&layer, locked]{
+			layer.locked = !layer.locked;
+		});
 		return panel;
 	}
 
 	tgui::Panel::Ptr Editor::_makeLayersPanel(tgui::ChildWindow::Ptr win, CanvasWidget::Ptr canvas)
 	{
-		auto panel = tgui::ScrollablePanel::create({170, 400});
+		auto panel = win->get<tgui::ScrollablePanel>("Layers");
 		auto &layers = canvas->getLayers();
+		auto size = layers.size();
 
-		for (size_t i = 0; i < layers.size(); i++) {
+		if (!panel)
+			panel = tgui::ScrollablePanel::create({170, 400});
+		else
+			panel->removeAllWidgets();
+
+		for (size_t i = 0; i < size; i++) {
 			auto &layer = layers[i];
 			auto widget = tgui::Button::create();
 			auto label = tgui::Label::create(layer.name);
 
 			widget->setSize(64, 64);
-			widget->setPosition(2, i * 66 + 2);
-			widget->connect("RightClicked", [this, win, panel](tgui::Vector2f pos){
+			widget->setPosition(2, (size - i - 1) * 66 + 2);
+			widget->connect("RightClicked", [this, win, panel, widget, label, &layer, i, canvas](tgui::Vector2f pos){
 				auto fakePanel = tgui::Panel::create({"100%", "100%"});
-				auto pan = this->_getLayerPanelRightClickPanel();
+				auto pan = this->_getLayerPanelRightClickPanel(win, canvas, widget, label, layer, i);
 
 				fakePanel->getRenderer()->setBackgroundColor({0, 0, 0, 0});
 				fakePanel->connect("Clicked", [this, pan, fakePanel]{
 					this->_gui.remove(pan);
 					this->_gui.remove(fakePanel);
 				});
+				for (auto &widget : pan->getWidgets())
+					widget->connect("Pressed", [this, pan, fakePanel]{
+						this->_gui.remove(pan);
+						this->_gui.remove(fakePanel);
+					});
 				pos.x += win->getPosition().x + panel->getPosition().x;
 				pos.y += win->getPosition().y + panel->getPosition().y;
 				pan->setPosition(pos);
@@ -305,7 +336,7 @@ namespace Mimp
 				this->_gui.add(pan);
 			});
 
-			label->setPosition(66, i * 66 + 26);
+			label->setPosition(66, (size - i - 1) * 66 + 26);
 
 			panel->add(widget, "Widget" + std::to_string(i));
 			panel->add(label, "Label" + std::to_string(i));
