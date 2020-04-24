@@ -270,6 +270,7 @@ namespace Mimp
 
 	tgui::Panel::Ptr Editor::_getLayerPanelRightClickPanel(tgui::ChildWindow::Ptr win, CanvasWidget::Ptr canvas, tgui::Widget::Ptr widget, tgui::Label::Ptr label, Layer &layer, unsigned index)
 	{
+		auto &layers = canvas->getLayers();
 		auto panel = tgui::Panel::create({110, 230});
 
 		panel->getRenderer()->setBackgroundColor({"#D8D8D8"});
@@ -284,7 +285,16 @@ namespace Mimp
 		auto up = panel->get<tgui::Button>("Up");
 		auto down = panel->get<tgui::Button>("Down");
 		auto resize = panel->get<tgui::Button>("Resize");
-		auto deleteLayaer = panel->get<tgui::Button>("Delete");
+		auto deleteLayer = panel->get<tgui::Button>("Delete");
+
+		if (layers.size() == 1)
+			deleteLayer->setEnabled(false);
+		if (!index) {
+			down->setEnabled(false);
+			merge->setEnabled(false);
+		}
+		if (index == layers.size() - 1)
+			up->setEnabled(false);
 
 		visible->setText(layer.visible ? "Hide" : "Show");
 		visible->connect("Pressed", [&layer, visible]{
@@ -294,18 +304,24 @@ namespace Mimp
 		locked->connect("Pressed", [&layer, locked]{
 			layer.locked = !layer.locked;
 		});
-		newLayer->connect("Pressed", [this, locked, win, canvas, index]{
-			auto &layers = canvas->getLayers();
-
+		newLayer->connect("Pressed", [this, locked, win, canvas, index, &layers]{
 			layers.addLayer(layers.getSize());
 			layers.setLayerIndex(layers.size() - 1, index + 1);
 			this->_makeLayersPanel(win, canvas);
 		});
-		duplicate->connect("Pressed", [this, &layer, locked, win, canvas, index]{
-			auto &layers = canvas->getLayers();
-
+		duplicate->connect("Pressed", [this, &layer, locked, win, canvas, index, &layers]{
 			layers.addLayer(layer);
 			layers.setLayerIndex(layers.size() - 1, index + 1);
+			this->_makeLayersPanel(win, canvas);
+		});
+		merge->connect("Pressed", [&layer, &layers, index, this, win, canvas]{
+			layers.selectLayer(index - 1);
+			layers.getSelectedLayer().buffer.drawFrameBuffer(layer.pos, layer.buffer);
+			layers.deleteLayer(index);
+			this->_makeLayersPanel(win, canvas);
+		});
+		deleteLayer->connect("Pressed", [&layers, index, this, win, canvas]{
+			layers.deleteLayer(index);
 			this->_makeLayersPanel(win, canvas);
 		});
 		return panel;

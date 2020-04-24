@@ -54,10 +54,11 @@ namespace Mimp
 
 	void LayerManager::render(FrameBuffer &buffer) const noexcept
 	{
-		this->_checkBusy();
+		this->_setBusy();
 		for (auto &layer : this->_layers)
 			if (layer->visible)
 				buffer.drawFrameBuffer(layer->pos, layer->buffer);
+		this->_unsetBusy();
 	}
 
 	Layer &LayerManager::selectLayer(unsigned int layer)
