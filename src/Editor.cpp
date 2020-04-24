@@ -278,7 +278,7 @@ namespace Mimp
 		auto visible = panel->get<tgui::Button>("Visible");
 		auto locked = panel->get<tgui::Button>("Locked");
 		auto rename = panel->get<tgui::Button>("Rename");
-		auto newLayer = panel->get<tgui::Button>("New Layer");
+		auto newLayer = panel->get<tgui::Button>("New layer");
 		auto duplicate = panel->get<tgui::Button>("Duplicate");
 		auto merge = panel->get<tgui::Button>("Merge");
 		auto up = panel->get<tgui::Button>("Up");
@@ -293,6 +293,13 @@ namespace Mimp
 		locked->setText(layer.locked ? "Unlock" : "Lock");
 		locked->connect("Pressed", [&layer, locked]{
 			layer.locked = !layer.locked;
+		});
+		newLayer->connect("Pressed", [this, locked, win, canvas, index]{
+			auto &layers = canvas->getLayers();
+
+			layers.addLayer(layers.getSize());
+			layers.setLayerIndex(layers.size() - 1, index + 1);
+			this->_makeLayersPanel(win, canvas);
 		});
 		duplicate->connect("Pressed", [this, &layer, locked, win, canvas, index]{
 			auto &layers = canvas->getLayers();
