@@ -18,9 +18,6 @@ namespace Mimp {
 		//! @brief All the points selected, building the selected area
 		std::vector<Vector2<int>> _selectedPoints = {};
 	public:
-		//! @brief The Selected Layer
-		Layer *selectedLayer = nullptr; // TODO: Gérer le fait que la layer puisse être supprimé !
-
 		SelectedArea() = default;
 		//! @brief Clears the selected points
 		void clear() noexcept;
@@ -36,6 +33,11 @@ namespace Mimp {
 		std::vector<Vector2<int>>::iterator begin();
 		//! @brief Iterator end for vectors of layers
 		std::vector<Vector2<int>>::iterator end();
+
+		//! @brief Iterator begin for vectors of layers
+		std::vector<Vector2<int>>::const_iterator begin() const;
+		//! @brief Iterator end for vectors of layers
+		std::vector<Vector2<int>>::const_iterator end() const;
 	};
 }
 
