@@ -268,7 +268,7 @@ namespace Mimp
 		return panel;
 	}
 
-	tgui::Panel::Ptr Editor::_getLayerPanelRightClickPanel(tgui::ChildWindow::Ptr win, CanvasWidget::Ptr canvas, tgui::Widget::Ptr widget, tgui::Label::Ptr label, Layer &layer, unsigned index)
+	tgui::Panel::Ptr Editor::_getLayerPanelRightClickPanel(tgui::ChildWindow::Ptr win, CanvasWidget::Ptr canvas, tgui::Widget::Ptr, tgui::Label::Ptr, Layer &layer, unsigned index)
 	{
 		auto &layers = canvas->getLayers();
 		auto panel = tgui::Panel::create({110, 230});
