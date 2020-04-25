@@ -123,6 +123,8 @@ namespace Mimp
 	{
 		auto menu = this->_gui.get<tgui::MenuBar>("main_bar");
 
+		menu->addMenu("Window");
+		menu->addMenu("Help");
 		menu->connect("MouseEntered", [](tgui::Widget::Ptr bar, const std::string&){
 			bar->moveToFront();
 		});
