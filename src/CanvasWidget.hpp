@@ -32,7 +32,7 @@ namespace Mimp
 
 		bool _counterUp = true;
 
-		unsigned char _alphaCounter = 0;
+		unsigned char _colorCounter = 0;
 
 		std::thread _renderThread;
 

@@ -97,12 +97,13 @@ namespace Mimp
 		this->_layers.render(buffer);
 
 		auto pixelArray = new sf::Color[size.x * size.y];
+		auto color = Color{this->_colorCounter, this->_colorCounter, this->_colorCounter, 120};
 
-		this->_alphaCounter += (this->_counterUp * 2 - 1) * 5;
-		this->_counterUp = (this->_counterUp && this->_alphaCounter < 100) || !this->_alphaCounter;
+		this->_colorCounter += (this->_counterUp * 2 - 1) * 20;
+		this->_counterUp = (this->_counterUp && this->_colorCounter < 240) || !this->_colorCounter;
 		if (this->selectedArea.isAnAreaSelected())
 			for (auto &pt : this->selectedArea)
-				buffer.drawPixel(pt, {0, 0, 0, this->_alphaCounter});
+				buffer.drawPixel(pt, color);
 
 		for (unsigned x = 0; x < size.x; x++)
 			for (unsigned y = 0; y < size.y; y++)
