@@ -121,6 +121,8 @@ namespace Mimp
 		//! @param stream Stream to use to write/save the file
 		void save(std::ostream &stream) const;
 
+		size_t size() const;
+
 		//! @brief Load a Mimp Image from a path
 		//! @param path Path of the Mimp image to load
 		void loadMimpImage(const std::string &path);
