@@ -30,6 +30,10 @@ namespace Mimp
 
 		bool _destroyed = false;
 
+		bool _counterUp = true;
+
+		unsigned char _alphaCounter = 0;
+
 		std::thread _renderThread;
 
 		sf::Texture _drawBuffer;

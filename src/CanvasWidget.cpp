@@ -85,15 +85,24 @@ namespace Mimp
 
 	void CanvasWidget::_updateInternalBuffer()
 	{
-		FrameBuffer buffer({
-			static_cast<unsigned>(this->getSize().x),
-			static_cast<unsigned>(this->getSize().y)
-		});
+		FrameBuffer buffer(
+			{
+				static_cast<unsigned>(this->getSize().x),
+				static_cast<unsigned>(this->getSize().y)
+			},
+			Color::White
+		);
 		auto size = buffer.getSize();
 
 		this->_layers.render(buffer);
 
 		auto pixelArray = new sf::Color[size.x * size.y];
+
+		this->_alphaCounter += (this->_counterUp * 2 - 1) * 5;
+		this->_counterUp = (this->_counterUp && this->_alphaCounter < 100) || !this->_alphaCounter;
+		if (this->selectedArea.isAnAreaSelected())
+			for (auto &pt : this->selectedArea)
+				buffer.drawPixel(pt, {0, 0, 0, this->_alphaCounter});
 
 		for (unsigned x = 0; x < size.x; x++)
 			for (unsigned y = 0; y < size.y; y++)
