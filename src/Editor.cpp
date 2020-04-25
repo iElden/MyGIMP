@@ -6,13 +6,15 @@
 #include <iostream>
 #include "Editor.hpp"
 #include "Utils.hpp"
+#include "ImageOperations/ImageOperationFactory.hpp"
 
 namespace Mimp
 {
 	Editor::Editor(const std::vector<std::string> &images) :
 		_mainWindow({640, 480}, "Mimp"),
 		_gui(this->_mainWindow),
-		_toolBox(this->_gui)
+		_toolBox(this->_gui),
+		_imgOps(ImageOperationFactory::buildAll())
 	{
 		this->_mainWindow.setFramerateLimit(240);
 		this->_gui.loadWidgetsFromFile("widgets/top_menu.gui");
@@ -102,12 +104,7 @@ namespace Mimp
 			420
 		});
 		window->connect("Closed", [this, menu, window, canvas] {
-			menu->setMenuItemEnabled({"File", "Save"}, false);
-			menu->setMenuItemEnabled({"File", "Save as"}, false);
-			menu->setMenuItemEnabled({"File", "Export"}, false);
-			menu->setMenuItemEnabled({"File", "Close"}, false);
-			menu->setMenuItemEnabled({"File", "Close All"}, false);
-			this->_selectedImageWindow = nullptr;
+			this->_unselectImage();
 			canvas->disableRendering();
 			this->_gui.remove(window);
 		});
@@ -126,6 +123,19 @@ namespace Mimp
 	{
 		auto menu = this->_gui.get<tgui::MenuBar>("main_bar");
 
+		for (auto &imgOp : this->_imgOps) {
+			std::vector<sf::String> hierarchy;
+
+			for (auto &elem : imgOp->getMenuHierarchy())
+				hierarchy.emplace_back(elem);
+
+			menu->addMenuItem(hierarchy);
+			menu->setMenuItemEnabled(hierarchy, false);
+			menu->connectMenuItem(hierarchy, [this, imgOp]{
+				imgOp->click(this->_gui, *this->_getSelectedCanvas());
+			});
+		}
+
 		menu->addMenu("Window");
 		menu->addMenu("Help");
 		menu->connect("MouseEntered", [](tgui::Widget::Ptr bar, const std::string&){
@@ -137,12 +147,7 @@ namespace Mimp
 
 			window->setTitle("Untitled " + std::to_string(++this->_lastUntitled));
 			this->_gui.add(window, "ImageUntitled " + std::to_string(this->_lastUntitled));
-			this->_selectedImageWindow = window;
-			menu->setMenuItemEnabled({"File", "Save"}, true);
-			menu->setMenuItemEnabled({"File", "Save as"}, true);
-			menu->setMenuItemEnabled({"File", "Export"}, true);
-			menu->setMenuItemEnabled({"File", "Close"}, true);
-			menu->setMenuItemEnabled({"File", "Close All"}, true);
+			this->_selectImage(window);
 		});
 		menu->connectMenuItem({"File", "Open"}, [this, menu]{
 			std::string path = Utils::openFileDialog("Load MIMP file", ".", {{".+[.]mimp", "MIMP image file"}});
@@ -150,19 +155,12 @@ namespace Mimp
 			if (path.empty())
 				return;
 			try {
-
 				auto widget = CanvasWidget::create(this->_toolBox, path);
 				auto window = _makeImagePanel(widget);
 
-				menu->setMenuItemEnabled({"File", "Save"}, true);
-				menu->setMenuItemEnabled({"File", "Save as"}, true);
-				menu->setMenuItemEnabled({"File", "Export"}, true);
-				menu->setMenuItemEnabled({"File", "Close"}, true);
-				menu->setMenuItemEnabled({"File", "Close All"}, true);
-
 				window->setTitle(path);
 				this->_gui.add(window, "Image" + path);
-				this->_selectedImageWindow = window;
+				this->_selectImage(window);
 			} catch (std::exception &e) {
 				auto window = tgui::ChildWindow::create("Loading error");
 				auto label = tgui::Label::create(
@@ -231,15 +229,9 @@ namespace Mimp
 
 				auto window = _makeImagePanel(widget);
 
-				menu->setMenuItemEnabled({"File", "Save"}, true);
-				menu->setMenuItemEnabled({"File", "Save as"}, true);
-				menu->setMenuItemEnabled({"File", "Export"}, true);
-				menu->setMenuItemEnabled({"File", "Close"}, true);
-				menu->setMenuItemEnabled({"File", "Close All"}, true);
-
 				window->setTitle(path);
 				this->_gui.add(window, "Image" + path);
-				this->_selectedImageWindow = window;
+				this->_selectImage(window);
 			} catch (std::exception &e) {
 				auto window = tgui::ChildWindow::create("Loading error");
 				auto label = tgui::Label::create(
@@ -385,5 +377,49 @@ namespace Mimp
 			panel->add(label, "Label" + std::to_string(i));
 		}
 		return panel;
+	}
+
+	void Editor::_selectImage(tgui::ChildWindow::Ptr win)
+	{
+		auto menu = this->_gui.get<tgui::MenuBar>("main_bar");
+
+		menu->setMenuItemEnabled({"File", "Save"}, true);
+		menu->setMenuItemEnabled({"File", "Save as"}, true);
+		menu->setMenuItemEnabled({"File", "Export"}, true);
+		menu->setMenuItemEnabled({"File", "Close"}, true);
+		menu->setMenuItemEnabled({"File", "Close All"}, true);
+
+		for (auto &imgOp : this->_imgOps) {
+			std::vector<sf::String> hierarchy;
+
+			for (auto &elem : imgOp->getMenuHierarchy())
+				hierarchy.emplace_back(elem);
+
+			menu->setMenuItemEnabled(hierarchy, true);
+		}
+
+		this->_selectedImageWindow = win;
+	}
+
+	void Editor::_unselectImage()
+	{
+		auto menu = this->_gui.get<tgui::MenuBar>("main_bar");
+
+		menu->setMenuItemEnabled({"File", "Save"}, false);
+		menu->setMenuItemEnabled({"File", "Save as"}, false);
+		menu->setMenuItemEnabled({"File", "Export"}, false);
+		menu->setMenuItemEnabled({"File", "Close"}, false);
+		menu->setMenuItemEnabled({"File", "Close All"}, false);
+
+		for (auto &imgOp : this->_imgOps) {
+			std::vector<sf::String> hierarchy;
+
+			for (auto &elem : imgOp->getMenuHierarchy())
+				hierarchy.emplace_back(elem);
+
+			menu->setMenuItemEnabled(hierarchy, true);
+		}
+
+		this->_selectedImageWindow = nullptr;
 	}
 }

@@ -10,6 +10,7 @@
 #include <TGUI/TGUI.hpp>
 #include "ToolBox.hpp"
 #include "CanvasWidget.hpp"
+#include "ImageOperations/ImageOperation.hpp"
 
 namespace Mimp
 {
@@ -25,11 +26,16 @@ namespace Mimp
 		unsigned _lastUntitled = 0;
 		//! @brief ToolBox
 		ToolBox _toolBox;
+		//! @brief ImageOperation
+		std::vector<std::shared_ptr<ImageOperation>> _imgOps;
 		//! @brief Selected Image
 		tgui::ChildWindow::Ptr _selectedImageWindow;
 
 		//! @brief Setup Button Callbacks
 		void _setupButtonCallbacks();
+
+		void _selectImage(tgui::ChildWindow::Ptr win);
+		void _unselectImage();
 
 		//! @brief Makes image panel
 		//! @param canvas Canvas used to make image panel
