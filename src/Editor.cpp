@@ -97,6 +97,7 @@ namespace Mimp
 		auto layersPanel = this->_makeLayersPanel(window, canvas);
 		auto canvasPanel = tgui::ScrollablePanel::create({400, 400});
 
+		canvasPanel->getRenderer()->setBackgroundColor("transparent");
 		window->setSize({
 			600,
 			420

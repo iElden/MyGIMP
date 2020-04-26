@@ -4,6 +4,7 @@
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <iostream>
+#include <SFML/Graphics/RectangleShape.hpp>
 #include "CanvasWidget.hpp"
 
 namespace Mimp
@@ -90,7 +91,7 @@ namespace Mimp
 				static_cast<unsigned>(this->getSize().x),
 				static_cast<unsigned>(this->getSize().y)
 			},
-			Color::White
+			Color::Transparent
 		);
 		auto size = buffer.getSize();
 
@@ -136,9 +137,28 @@ namespace Mimp
 
 	void CanvasWidget::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	{
+		sf::RectangleShape rect;
 		sf::Sprite sprite;
+		bool dark = false;
+		auto size = this->_size;
 
 		states.transform.translate(getPosition());
+
+		target.draw(rect, states);
+		rect.setOutlineThickness(0);
+		for (unsigned x = 0; x < size.x; x += 10) {
+			dark = x % 20;
+			for (unsigned y = 0; y < size.y; y += 10) {
+				rect.setFillColor(dark ? sf::Color{0x444444FF} : sf::Color::White);
+				rect.setPosition(x, y);
+				rect.setSize({
+					static_cast<float>(size.x - x > 10 ? 10 : size.x - x),
+					static_cast<float>(size.y - y > 10 ? 10 : size.y - y)
+				});
+				target.draw(rect, states);
+				dark = !dark;
+			}
+		}
 		sprite.setTexture(this->_drawBuffer);
 		target.draw(sprite, states);
 	}
