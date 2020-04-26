@@ -47,4 +47,9 @@ namespace Mimp
 	{
 		return this->_selectedPoints.end();
 	}
+
+	std::vector<Vector2<int>> SelectedArea::copy() const noexcept
+	{
+		return this->_selectedPoints;
+	}
 }
