@@ -4,6 +4,7 @@
 ** File description:
 ** InvertSelection.cpp
 */
+#include <iostream>
 #include "InvertSelection.hpp"
 
 Mimp::InvertSelection::InvertSelection(Mimp::ToolBox &toolBox):
@@ -17,16 +18,7 @@ void Mimp::InvertSelection::onClick(Mimp::Vector2<int>, Mimp::MouseClick, Mimp::
 
 void Mimp::InvertSelection::_updateSelectedArea(Mimp::Image &image)
 {
-	std::vector<Vector2<int>> oldSelected = image.selectedArea.copy();
-
-	image.selectedArea.clear();
-	for (int j = 0; j <= static_cast<int>(image.getImageSize().y); j++) {
-		for (int i = 0; i <= static_cast<int>(image.getImageSize().x); i++) {
-			Vector2<int> pt = {i, j};
-			if (find(oldSelected.begin(), oldSelected.end(), pt) != oldSelected.end())
-				image.selectedArea.add(pt);
-		}
-	}
+	image.selectedArea.invert();
 }
 
 tgui::ScrollablePanel::Ptr Mimp::InvertSelection::getParametersPanel() const

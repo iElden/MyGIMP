@@ -16,9 +16,19 @@ namespace Mimp {
 	//! @brief Class Selected Area
 	class SelectedArea {
 		//! @brief All the points selected, building the selected area
-		std::vector<Vector2<int>> _selectedPoints = {};
+		mutable std::vector<Vector2<int>> _selectedPoints = {};
+		Vector2<unsigned> _size;
+		bool *_map;
+		bool _modified = false;
+		unsigned _nbPoints = 0;
+
+		void _generatePointArray() const noexcept;
+
 	public:
-		SelectedArea() = default;
+		SelectedArea(unsigned width, unsigned height);
+		SelectedArea(Vector2<unsigned> size);
+		~SelectedArea();
+
 		//! @brief Clears the selected points
 		void clear() noexcept;
 
@@ -29,6 +39,8 @@ namespace Mimp {
 
 		void add(Vector2<int> point);
 		void add(int x, int y);
+
+		void invert() noexcept;
 
 		//! @brief Iterator begin for vectors of layers
 		std::vector<Vector2<int>>::iterator begin();

@@ -21,12 +21,14 @@ namespace Mimp {
 
 	Image::Image(Vector2<unsigned> size):
 		_size(size),
-		_layers(size)
+		_layers(size),
+		selectedArea(size)
 	{}
 
 	Image::Image(Vector2<unsigned> size, const LayerManager &layers):
 		_size(size),
-		_layers(layers)
+		_layers(layers),
+		selectedArea(size)
 	{
 	}
 
