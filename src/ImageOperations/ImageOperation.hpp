@@ -48,6 +48,8 @@ namespace Mimp
 		NB_OF_KEYS
 	};
 
+	std::string KeyToString(Key key);
+
 	struct KeyCombination {
 		Key key;
 		bool control;
@@ -55,6 +57,7 @@ namespace Mimp
 		bool alt;
 
 		bool operator<(const KeyCombination &) const;
+		std::string toString() const;
 	};
 
 	class ImageOperation {

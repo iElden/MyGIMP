@@ -138,20 +138,21 @@ namespace Mimp
 
 		for (auto &imgOp : this->_imgOps) {
 			std::vector<sf::String> hierarchy;
+			auto key = imgOp->getKeyStroke();
 
 			for (auto &elem : imgOp->getMenuHierarchy())
 				hierarchy.emplace_back(elem);
+
+			if (key) {
+				this->_keysImgOps[*key] = imgOp;
+				hierarchy.back() += " (" + key->toString() + ")";
+			}
 
 			menu->addMenuItem(hierarchy);
 			menu->setMenuItemEnabled(hierarchy, false);
 			menu->connectMenuItem(hierarchy, [this, imgOp]{
 				imgOp->click(this->_gui, *this->_getSelectedCanvas());
 			});
-
-			auto key = imgOp->getKeyStroke();
-
-			if (key)
-				this->_keysImgOps[*key] = imgOp;
 		}
 
 		menu->addMenu("Window");
@@ -409,9 +410,13 @@ namespace Mimp
 
 		for (auto &imgOp : this->_imgOps) {
 			std::vector<sf::String> hierarchy;
+			auto key = imgOp->getKeyStroke();
 
 			for (auto &elem : imgOp->getMenuHierarchy())
 				hierarchy.emplace_back(elem);
+
+			if (key)
+				hierarchy.back() += " (" + key->toString() + ")";
 
 			menu->setMenuItemEnabled(hierarchy, true);
 		}
@@ -431,9 +436,13 @@ namespace Mimp
 
 		for (auto &imgOp : this->_imgOps) {
 			std::vector<sf::String> hierarchy;
+			auto key = imgOp->getKeyStroke();
 
 			for (auto &elem : imgOp->getMenuHierarchy())
 				hierarchy.emplace_back(elem);
+
+			if (key)
+				hierarchy.back() += " (" + key->toString() + ")";
 
 			menu->setMenuItemEnabled(hierarchy, true);
 		}

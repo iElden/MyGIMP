@@ -7,7 +7,7 @@
 #include "SelectAllOperation.hpp"
 
 Mimp::SelectAllOperation::SelectAllOperation():
-	ImageOperation({"Selection", "Select all"})
+	ImageOperation({"Selection", "Select all"}, {KEY_A, true, false, false})
 {
 
 }
