@@ -17,9 +17,7 @@ void Mimp::SelectAll::onClick(Mimp::Vector2<int>, Mimp::MouseClick, Mimp::Image 
 
 void Mimp::SelectAll::_updateSelectedArea(Mimp::Image &image)
 {
-	for (unsigned j = 0; j <= image.getImageSize().y; j++)
-		for (unsigned i = 0; i <= image.getImageSize().x; i++)
-			image.selectedArea.add(i, j);
+	image.selectedArea.fill();
 }
 
 tgui::ScrollablePanel::Ptr Mimp::SelectAll::getParametersPanel() const

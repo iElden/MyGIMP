@@ -27,6 +27,7 @@ namespace Mimp {
 
 		//! @brief Clears the selected points
 		void clear() noexcept;
+		void fill() noexcept;
 
 		//! @brief Is _selectedPoints not empty ?
 		//! @return bool The result of the verification

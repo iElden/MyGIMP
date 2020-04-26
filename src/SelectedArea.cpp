@@ -29,8 +29,14 @@ namespace Mimp
 
 	void SelectedArea::clear() noexcept
 	{
-		std::memset(this->_map, 0, this->_size.x * this->_size.y);
+		std::memset(this->_map, false, this->_size.x * this->_size.y);
 		this->_nbPoints = 0;
+	}
+
+	void SelectedArea::fill() noexcept
+	{
+		std::memset(this->_map, true, this->_size.x * this->_size.y);
+		this->_nbPoints = this->_size.x * this->_size.y;
 	}
 
 	bool SelectedArea::isAnAreaSelected() const noexcept
