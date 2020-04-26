@@ -73,7 +73,7 @@ namespace Mimp
 	void FillSelectionOperation::_fill(Layer &layer, const SelectedArea &area, const Color &color)
 	{
 		if (area.isAnAreaSelected())
-			for (const auto &pt : area)
+			for (const auto &pt : area.getPoints())
 				layer.buffer.setPixel(pt, color);
 	}
 }

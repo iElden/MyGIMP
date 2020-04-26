@@ -5,6 +5,7 @@
 ** SelectedArea.cpp
 */
 #include <cstring>
+#include <thread>
 #include "SelectedArea.hpp"
 
 namespace Mimp
@@ -29,6 +30,7 @@ namespace Mimp
 	void SelectedArea::clear() noexcept
 	{
 		std::memset(this->_map, 0, this->_size.x * this->_size.y);
+		this->_nbPoints = 0;
 	}
 
 	bool SelectedArea::isAnAreaSelected() const noexcept
@@ -55,60 +57,26 @@ namespace Mimp
 		auto &val = this->_map[x + y * this->_size.x];
 
 		this->_nbPoints += !val;
-		this->_modified |= !val;
 		val = true;
 	}
 
-	std::vector<Vector2<int>>::iterator SelectedArea::begin()
+	std::vector<Vector2<int>> SelectedArea::getPoints() const noexcept
 	{
-		this->_generatePointArray();
-		return this->_selectedPoints.begin();
-	}
-
-	std::vector<Vector2<int>>::iterator SelectedArea::end()
-	{
-		this->_generatePointArray();
-		return this->_selectedPoints.end();
-	}
-
-	std::vector<Vector2<int>>::const_iterator SelectedArea::begin() const
-	{
-		this->_generatePointArray();
-		return this->_selectedPoints.begin();
-	}
-
-	std::vector<Vector2<int>>::const_iterator SelectedArea::end() const
-	{
-		this->_generatePointArray();
-		return this->_selectedPoints.end();
-	}
-
-	std::vector<Vector2<int>> SelectedArea::copy() const noexcept
-	{
-		this->_generatePointArray();
-		return this->_selectedPoints;
-	}
-
-	void SelectedArea::_generatePointArray() const noexcept
-	{
-		if (!this->_modified)
-			return;
-
 		int index = 0;
+		std::vector<Vector2<int>> selectedPoints;
 
-		this->_selectedPoints.clear();
-		this->_selectedPoints.reserve(this->_nbPoints);
+		selectedPoints.reserve(this->_nbPoints);
 		for (unsigned y = 0; y < this->_size.y; y++)
 			for (unsigned x = 0; x < this->_size.x; x++)
 				if (this->_map[index++])
-					this->_selectedPoints.emplace_back(x, y);
+					selectedPoints.emplace_back(x, y);
+		return selectedPoints;
 	}
 
 	void SelectedArea::invert() noexcept
 	{
 		int index = 0;
 
-		this->_modified = true;
 		this->_nbPoints = this->_size.x * this->_size.y - this->_nbPoints;
 		for (unsigned y = 0; y < this->_size.y; y++)
 			for (unsigned x = 0; x < this->_size.x; x++) {

@@ -127,7 +127,7 @@ namespace Mimp
 		this->_colorCounter += (this->_counterUp * 2 - 1) * 20;
 		this->_counterUp = (this->_counterUp && this->_colorCounter < 240) || !this->_colorCounter;
 		if (this->selectedArea.isAnAreaSelected())
-			for (auto &pt : this->selectedArea)
+			for (auto &pt : this->selectedArea.getPoints())
 				buffer.drawPixel(pt, color);
 
 		for (unsigned x = 0; x < size.x; x++)
