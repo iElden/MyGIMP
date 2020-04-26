@@ -6,13 +6,15 @@
 #include <iostream>
 #include "Editor.hpp"
 #include "Utils.hpp"
+#include "ImageOperations/ImageOperationFactory.hpp"
 
 namespace Mimp
 {
 	Editor::Editor(const std::vector<std::string> &images) :
 		_mainWindow({640, 480}, "Mimp"),
 		_gui(this->_mainWindow),
-		_toolBox(this->_gui)
+		_toolBox(this->_gui),
+		_imgOps(ImageOperationFactory::buildAll())
 	{
 		this->_mainWindow.setFramerateLimit(240);
 		this->_gui.loadWidgetsFromFile("widgets/top_menu.gui");
@@ -32,6 +34,8 @@ namespace Mimp
 				menu->setMenuItemEnabled({"File", "Save"}, true);
 				menu->setMenuItemEnabled({"File", "Save as"}, true);
 				menu->setMenuItemEnabled({"File", "Export"}, true);
+				menu->setMenuItemEnabled({"File", "Close"}, true);
+				menu->setMenuItemEnabled({"File", "Close All"}, true);
 			} catch (std::exception &e) {
 				Utils::dispMsg(
 					"Error",
@@ -92,19 +96,15 @@ namespace Mimp
 	{
 		auto menu = this->_gui.get<tgui::MenuBar>("main_bar");
 		auto window = tgui::ChildWindow::create("Unnamed");
-		auto layersPanel = tgui::ScrollablePanel::create({170, 400});
+		auto layersPanel = this->_makeLayersPanel(window, canvas);
 		auto canvasPanel = tgui::ScrollablePanel::create({400, 400});
-		auto &layers = canvas->getLayers();
 
 		window->setSize({
 			600,
 			420
 		});
 		window->connect("Closed", [this, menu, window, canvas] {
-			menu->setMenuItemEnabled({"File", "Save"}, false);
-			menu->setMenuItemEnabled({"File", "Save as"}, false);
-			menu->setMenuItemEnabled({"File", "Export"}, false);
-			this->_selectedImageWindow = nullptr;
+			this->_unselectImage();
 			canvas->disableRendering();
 			this->_gui.remove(window);
 		});
@@ -123,6 +123,21 @@ namespace Mimp
 	{
 		auto menu = this->_gui.get<tgui::MenuBar>("main_bar");
 
+		for (auto &imgOp : this->_imgOps) {
+			std::vector<sf::String> hierarchy;
+
+			for (auto &elem : imgOp->getMenuHierarchy())
+				hierarchy.emplace_back(elem);
+
+			menu->addMenuItem(hierarchy);
+			menu->setMenuItemEnabled(hierarchy, false);
+			menu->connectMenuItem(hierarchy, [this, imgOp]{
+				imgOp->click(this->_gui, *this->_getSelectedCanvas());
+			});
+		}
+
+		menu->addMenu("Window");
+		menu->addMenu("Help");
 		menu->connect("MouseEntered", [](tgui::Widget::Ptr bar, const std::string&){
 			bar->moveToFront();
 		});
@@ -132,10 +147,7 @@ namespace Mimp
 
 			window->setTitle("Untitled " + std::to_string(++this->_lastUntitled));
 			this->_gui.add(window, "ImageUntitled " + std::to_string(this->_lastUntitled));
-			this->_selectedImageWindow = window;
-			menu->setMenuItemEnabled({"File", "Save"}, true);
-			menu->setMenuItemEnabled({"File", "Save as"}, true);
-			menu->setMenuItemEnabled({"File", "Export"}, true);
+			this->_selectImage(window);
 		});
 		menu->connectMenuItem({"File", "Open"}, [this, menu]{
 			std::string path = Utils::openFileDialog("Load MIMP file", ".", {{".+[.]mimp", "MIMP image file"}});
@@ -143,17 +155,12 @@ namespace Mimp
 			if (path.empty())
 				return;
 			try {
-
 				auto widget = CanvasWidget::create(this->_toolBox, path);
 				auto window = _makeImagePanel(widget);
 
-				menu->setMenuItemEnabled({"File", "Save"}, true);
-				menu->setMenuItemEnabled({"File", "Save as"}, true);
-				menu->setMenuItemEnabled({"File", "Export"}, true);
-
 				window->setTitle(path);
 				this->_gui.add(window, "Image" + path);
-				this->_selectedImageWindow = window;
+				this->_selectImage(window);
 			} catch (std::exception &e) {
 				auto window = tgui::ChildWindow::create("Loading error");
 				auto label = tgui::Label::create(
@@ -198,6 +205,12 @@ namespace Mimp
 				return;
 			this->_getSelectedCanvas()->exportImage(path);
 		});
+		menu->connectMenuItem({"File", "Close"}, [this]{
+			this->_selectedImageWindow->close();
+		});
+		menu->connectMenuItem({"File", "Quit"}, [this]{
+			this->_mainWindow.close();
+		});
 		menu->connectMenuItem({"File", "Import"}, [this, menu] {
 			std::string path = Utils::openFileDialog("Load MIMP file", ".", {
 				{".+[.]png", "Portable Network Graphics (PNG)"},
@@ -216,13 +229,9 @@ namespace Mimp
 
 				auto window = _makeImagePanel(widget);
 
-				menu->setMenuItemEnabled({"File", "Save"}, true);
-				menu->setMenuItemEnabled({"File", "Save as"}, true);
-				menu->setMenuItemEnabled({"File", "Export"}, true);
-
 				window->setTitle(path);
 				this->_gui.add(window, "Image" + path);
-				this->_selectedImageWindow = window;
+				this->_selectImage(window);
 			} catch (std::exception &e) {
 				auto window = tgui::ChildWindow::create("Loading error");
 				auto label = tgui::Label::create(
@@ -244,5 +253,173 @@ namespace Mimp
 		if (!this->_selectedImageWindow)
 			return nullptr;
 		return this->_selectedImageWindow->get<tgui::ScrollablePanel>("Canvas")->get<CanvasWidget>("Canvas");
+	}
+
+	tgui::Panel::Ptr Editor::_getLayerRightClickPanel()
+	{
+		auto panel = tgui::Panel::create();
+
+		return panel;
+	}
+
+	tgui::Panel::Ptr Editor::_getLayerPanelRightClickPanel(tgui::ChildWindow::Ptr win, CanvasWidget::Ptr canvas, tgui::Widget::Ptr, tgui::Label::Ptr, Layer &layer, unsigned index)
+	{
+		auto &layers = canvas->getLayers();
+		auto panel = tgui::Panel::create({110, 230});
+
+		panel->getRenderer()->setBackgroundColor({"#D8D8D8"});
+		panel->loadWidgetsFromFile("widgets/context_box.gui");
+
+		auto visible = panel->get<tgui::Button>("Visible");
+		auto locked = panel->get<tgui::Button>("Locked");
+		auto rename = panel->get<tgui::Button>("Rename");
+		auto newLayer = panel->get<tgui::Button>("New layer");
+		auto duplicate = panel->get<tgui::Button>("Duplicate");
+		auto merge = panel->get<tgui::Button>("Merge");
+		auto up = panel->get<tgui::Button>("Up");
+		auto down = panel->get<tgui::Button>("Down");
+		auto resize = panel->get<tgui::Button>("Resize");
+		auto deleteLayer = panel->get<tgui::Button>("Delete");
+
+		if (layers.size() == 1)
+			deleteLayer->setEnabled(false);
+		if (!index) {
+			down->setEnabled(false);
+			merge->setEnabled(false);
+		}
+		if (index == layers.size() - 1)
+			up->setEnabled(false);
+
+		visible->setText(layer.visible ? "Hide" : "Show");
+		visible->connect("Pressed", [&layer, visible]{
+			layer.visible = !layer.visible;
+		});
+		locked->setText(layer.locked ? "Unlock" : "Lock");
+		locked->connect("Pressed", [&layer, locked]{
+			layer.locked = !layer.locked;
+		});
+		newLayer->connect("Pressed", [this, locked, win, canvas, index, &layers]{
+			layers.addLayer(layers.getSize());
+			layers.setLayerIndex(layers.size() - 1, index + 1);
+			this->_makeLayersPanel(win, canvas);
+		});
+		duplicate->connect("Pressed", [this, &layer, locked, win, canvas, index, &layers]{
+			layers.addLayer(layer);
+			layers.setLayerIndex(layers.size() - 1, index + 1);
+			this->_makeLayersPanel(win, canvas);
+		});
+		merge->connect("Pressed", [&layer, &layers, index, this, win, canvas]{
+			layers.selectLayer(index - 1);
+			layers.getSelectedLayer().buffer.drawFrameBuffer(layer.pos, layer.buffer);
+			layers.deleteLayer(index);
+			this->_makeLayersPanel(win, canvas);
+		});
+		deleteLayer->connect("Pressed", [&layers, index, this, win, canvas]{
+			layers.deleteLayer(index);
+			this->_makeLayersPanel(win, canvas);
+		});
+		up->connect("Pressed", [&layers, index, this, win, canvas]{
+			layers.setLayerIndex(index, index + 1);
+			this->_makeLayersPanel(win, canvas);
+		});
+		down->connect("Pressed", [&layers, index, this, win, canvas]{
+			layers.setLayerIndex(index, index - 1);
+			this->_makeLayersPanel(win, canvas);
+		});
+		return panel;
+	}
+
+	tgui::Panel::Ptr Editor::_makeLayersPanel(tgui::ChildWindow::Ptr win, CanvasWidget::Ptr canvas)
+	{
+		auto panel = win->get<tgui::ScrollablePanel>("Layers");
+		auto &layers = canvas->getLayers();
+		auto size = layers.size();
+
+		if (!panel)
+			panel = tgui::ScrollablePanel::create({170, 400});
+		else
+			panel->removeAllWidgets();
+
+		for (size_t i = 0; i < size; i++) {
+			auto &layer = layers[i];
+			auto widget = tgui::Button::create();
+			auto label = tgui::Label::create(layer.name);
+
+			widget->setSize(64, 64);
+			widget->setPosition(2, (size - i - 1) * 66 + 2);
+			widget->connect("Clicked", [&layers, i]{
+				layers.selectLayer(i);
+			});
+			widget->connect("RightClicked", [this, win, panel, widget, label, &layer, i, canvas](tgui::Vector2f pos){
+				auto fakePanel = tgui::Panel::create({"100%", "100%"});
+				auto pan = this->_getLayerPanelRightClickPanel(win, canvas, widget, label, layer, i);
+
+				fakePanel->getRenderer()->setBackgroundColor({0, 0, 0, 0});
+				fakePanel->connect("Clicked", [this, pan, fakePanel]{
+					this->_gui.remove(pan);
+					this->_gui.remove(fakePanel);
+				});
+				for (auto &wid : pan->getWidgets())
+					wid->connect("Pressed", [this, pan, fakePanel]{
+						this->_gui.remove(pan);
+						this->_gui.remove(fakePanel);
+					});
+				pos.x += win->getPosition().x + panel->getPosition().x;
+				pos.y += win->getPosition().y + panel->getPosition().y;
+				pan->setPosition(pos);
+				this->_gui.add(fakePanel);
+				this->_gui.add(pan);
+			});
+
+			label->setPosition(66, (size - i - 1) * 66 + 26);
+
+			panel->add(widget, "Widget" + std::to_string(i));
+			panel->add(label, "Label" + std::to_string(i));
+		}
+		return panel;
+	}
+
+	void Editor::_selectImage(tgui::ChildWindow::Ptr win)
+	{
+		auto menu = this->_gui.get<tgui::MenuBar>("main_bar");
+
+		menu->setMenuItemEnabled({"File", "Save"}, true);
+		menu->setMenuItemEnabled({"File", "Save as"}, true);
+		menu->setMenuItemEnabled({"File", "Export"}, true);
+		menu->setMenuItemEnabled({"File", "Close"}, true);
+		menu->setMenuItemEnabled({"File", "Close All"}, true);
+
+		for (auto &imgOp : this->_imgOps) {
+			std::vector<sf::String> hierarchy;
+
+			for (auto &elem : imgOp->getMenuHierarchy())
+				hierarchy.emplace_back(elem);
+
+			menu->setMenuItemEnabled(hierarchy, true);
+		}
+
+		this->_selectedImageWindow = win;
+	}
+
+	void Editor::_unselectImage()
+	{
+		auto menu = this->_gui.get<tgui::MenuBar>("main_bar");
+
+		menu->setMenuItemEnabled({"File", "Save"}, false);
+		menu->setMenuItemEnabled({"File", "Save as"}, false);
+		menu->setMenuItemEnabled({"File", "Export"}, false);
+		menu->setMenuItemEnabled({"File", "Close"}, false);
+		menu->setMenuItemEnabled({"File", "Close All"}, false);
+
+		for (auto &imgOp : this->_imgOps) {
+			std::vector<sf::String> hierarchy;
+
+			for (auto &elem : imgOp->getMenuHierarchy())
+				hierarchy.emplace_back(elem);
+
+			menu->setMenuItemEnabled(hierarchy, true);
+		}
+
+		this->_selectedImageWindow = nullptr;
 	}
 }

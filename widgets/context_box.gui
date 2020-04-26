@@ -1,0 +1,103 @@
+Renderer.1 {
+    backgroundcolor = transparent;
+    backgroundcolordisabled = transparent;
+    backgroundcolordown = rgba(150, 150, 255, 255);
+    backgroundcolorhover = blue;
+    borders = (0, 0, 0, 0);
+    textcolor = black;
+    textcolordisabled = #EEEEEE;
+    textcolordown = black;
+    textcolorhover = white;
+    texture = None;
+    texturedisabled = None;
+    texturedown = None;
+    texturefocused = None;
+    texturehover = None;
+}
+
+    Button.Visible {
+        Size = (110, 20);
+        Text = Visible;
+        TextSize = 13;
+        renderer = &1;
+    }
+
+    Button.Locked {
+        Position = (0, 20);
+        Size = (110, 20);
+        Text = Locked;
+        TextSize = 13;
+        renderer = &1;
+    }
+
+    Button.Rename {
+        Position = (0, 40);
+        Size = (110, 20);
+        Text = Rename;
+        TextSize = 13;
+        renderer = &1;
+    }
+
+    Button."New layer" {
+        Position = (0, 60);
+        Size = (110, 20);
+        Text = "New layer";
+        TextSize = 13;
+        renderer = &1;
+    }
+
+    Button.Duplicate {
+        Position = (0, 80);
+        Size = (110, 20);
+        Text = Duplicate;
+        TextSize = 13;
+        renderer = &1;
+    }
+
+    Button.Merge {
+        Position = (0, 100);
+        Size = (110, 30);
+        Text = "Merge with\nlower layer";
+        TextSize = 13;
+        renderer = &1;
+    }
+
+    Button.Button2 {
+        Position = (0, 130);
+        Size = (110, 20);
+        Text = Duplicate;
+        TextSize = 13;
+        renderer = &1;
+    }
+
+    Button.Delete {
+        Position = (0, 210);
+        Size = (110, 20);
+        Text = Delete;
+        TextSize = 13;
+        renderer = &1;
+    }
+
+    Button.Up {
+        Position = (0, 150);
+        Size = (110, 20);
+        Text = "Move up";
+        TextSize = 13;
+        renderer = &1;
+    }
+
+    Button.Down {
+        Position = (0, 170);
+        Size = (110, 20);
+        Text = "Move down";
+        TextSize = 13;
+        renderer = &1;
+    }
+
+    Button.Resize {
+        Position = (0, 190);
+        Size = (110, 20);
+        Text = Resize;
+        TextSize = 13;
+        renderer = &1;
+    }
