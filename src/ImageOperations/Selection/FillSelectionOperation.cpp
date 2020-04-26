@@ -8,7 +8,7 @@
 namespace Mimp
 {
 	FillSelectionOperation::FillSelectionOperation() :
-		ImageOperation({"Selection", "Fill area"})
+		ImageOperation({"Selection", "Fill area"}/*, {KEY_A, true, false, false}*/)
 	{
 	}
 

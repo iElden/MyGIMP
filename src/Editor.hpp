@@ -28,6 +28,8 @@ namespace Mimp
 		ToolBox _toolBox;
 		//! @brief ImageOperation
 		std::vector<std::shared_ptr<ImageOperation>> _imgOps;
+		//! @brief ImageOperation
+		std::map<KeyCombination, std::shared_ptr<ImageOperation>> _keysImgOps;
 		//! @brief Selected Image
 		tgui::ChildWindow::Ptr _selectedImageWindow;
 
@@ -47,12 +49,15 @@ namespace Mimp
 		tgui::Panel::Ptr _getLayerRightClickPanel();
 		tgui::Panel::Ptr _getLayerPanelRightClickPanel(tgui::ChildWindow::Ptr win, CanvasWidget::Ptr canvas, tgui::Widget::Ptr widget, tgui::Label::Ptr label, Layer &layer, unsigned index);
 		tgui::Panel::Ptr _makeLayersPanel(tgui::ChildWindow::Ptr win, CanvasWidget::Ptr canvas);
+
 	public:
 		//! @brief Copy Constructor of the Editor class not used
 		Editor(const Editor &) = delete;
 		//! @brief Constructor of the Editor class
 		//! @param images Vector of images used to build the Editor
 		Editor(const std::vector<std::string> &images = {});
+
+		static Key SFMLKeyToKey(sf::Keyboard::Key key);
 
 		//! @brief Set selected images
 		//! @param _canvas Canvas used to be selected
