@@ -36,3 +36,8 @@ std::vector<Mimp::Vector2<int>, std::allocator<Mimp::Vector2<int>>>::iterator Mi
 {
 	return this->_selectedPoints.end();
 }
+
+std::vector<Mimp::Vector2<int>> Mimp::SelectedArea::copy() const noexcept
+{
+	return this->_selectedPoints;
+}

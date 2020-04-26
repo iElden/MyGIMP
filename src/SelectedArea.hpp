@@ -28,6 +28,7 @@ namespace Mimp {
 		//! @brief Is _selectedPoints not empty ?
 		//! @return bool The result of the verification
 		bool isAnAreaSelected() const noexcept;
+		std::vector<Vector2<int>> copy() const noexcept;
 
 		void add(Vector2<int> point);
 		void add(int x, int y);
