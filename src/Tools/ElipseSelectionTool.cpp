@@ -60,7 +60,5 @@ void Mimp::ElipseSelectionTool::_updateSelectedArea(Mimp::Image &image)
 
 bool Mimp::ElipseSelectionTool::point_in_elipse(int x, int y, int rx, int ry)
 {
-	printf("%d %d %d %d\n", x, y, rx, ry);
-	printf("%lf + %lf <= 1 ? ==> %d\n", std::pow(x, 2) / std::pow(rx, 2), std::pow(y, 2) / std::pow(ry, 2), std::pow(x, 2) / std::pow(rx, 2) + std::pow(y, 2) / std::pow(ry, 2) <= 1);
 	return std::pow(x, 2) / std::pow(rx, 2) + std::pow(y, 2) / std::pow(ry, 2) <= 1;
 }
