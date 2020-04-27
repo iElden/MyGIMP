@@ -4,35 +4,90 @@
 ** File description:
 ** SelectedArea.cpp
 */
+#include <cstring>
+#include <thread>
 #include "SelectedArea.hpp"
 
-void Mimp::SelectedArea::clear() noexcept
+namespace Mimp
 {
-	this->_selectedPoints.clear();
-	this->selectedLayer = nullptr;
-}
+	SelectedArea::SelectedArea(unsigned width, unsigned height) :
+		SelectedArea(Vector2<unsigned>{width, height})
+	{
+	}
 
-bool Mimp::SelectedArea::isAnAreaSelected() const noexcept
-{
-	return !this->_selectedPoints.empty();
-}
+	SelectedArea::SelectedArea(Vector2<unsigned> size) :
+		_size(size),
+		_map(new bool[size.x * size.y])
+	{
+		this->clear();
+	}
 
-void Mimp::SelectedArea::add(Mimp::Vector2<int> point)
-{
-	this->_selectedPoints.push_back(point);
-}
+	SelectedArea::~SelectedArea()
+	{
+		delete[] this->_map;
+	}
 
-void Mimp::SelectedArea::add(int x, int y)
-{
-	this->_selectedPoints.emplace_back(x, y);
-}
+	void SelectedArea::clear() noexcept
+	{
+		std::memset(this->_map, false, this->_size.x * this->_size.y);
+		this->_nbPoints = 0;
+	}
 
-std::vector<Mimp::Vector2<int>, std::allocator<Mimp::Vector2<int>>>::iterator Mimp::SelectedArea::begin()
-{
-	return this->_selectedPoints.begin();
-}
+	void SelectedArea::fill() noexcept
+	{
+		std::memset(this->_map, true, this->_size.x * this->_size.y);
+		this->_nbPoints = this->_size.x * this->_size.y;
+	}
 
-std::vector<Mimp::Vector2<int>, std::allocator<Mimp::Vector2<int>>>::iterator Mimp::SelectedArea::end()
-{
-	return this->_selectedPoints.end();
+	bool SelectedArea::isAnAreaSelected() const noexcept
+	{
+		return this->_nbPoints;
+	}
+
+	void SelectedArea::add(Vector2<int> point)
+	{
+		this->add(point.x, point.y);
+	}
+
+	void SelectedArea::add(int x, int y)
+	{
+		if (x < 0)
+			return;
+		if (y < 0)
+			return;
+		if (static_cast<unsigned>(x) >= this->_size.x)
+			return;
+		if (static_cast<unsigned>(y) >= this->_size.y)
+			return;
+
+		auto &val = this->_map[x + y * this->_size.x];
+
+		this->_nbPoints += !val;
+		val = true;
+	}
+
+	std::vector<Vector2<int>> SelectedArea::getPoints() const noexcept
+	{
+		int index = 0;
+		std::vector<Vector2<int>> selectedPoints;
+
+		selectedPoints.reserve(this->_nbPoints);
+		for (unsigned y = 0; y < this->_size.y; y++)
+			for (unsigned x = 0; x < this->_size.x; x++)
+				if (this->_map[index++])
+					selectedPoints.emplace_back(x, y);
+		return selectedPoints;
+	}
+
+	void SelectedArea::invert() noexcept
+	{
+		int index = 0;
+
+		this->_nbPoints = this->_size.x * this->_size.y - this->_nbPoints;
+		for (unsigned y = 0; y < this->_size.y; y++)
+			for (unsigned x = 0; x < this->_size.x; x++) {
+				this->_map[index] = !this->_map[index];
+				index++;
+			}
+	}
 }

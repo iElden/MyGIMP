@@ -30,6 +30,13 @@ namespace Mimp
 			realPos.y = pos.y;
 			this->_box.getSelectedTool()->onClick(realPos, MIMP_LEFT_CLICK, *this);
 		});
+		this->onMouseRelease.connect([this](tgui::Vector2f pos){
+			Vector2<int> realPos;
+
+			realPos.x = pos.x;
+			realPos.y = pos.y;
+			this->_box.getSelectedTool()->onMouseRelease(realPos, MIMP_LEFT_CLICK, *this);
+		});
 		this->onRightMousePress.connect([this](tgui::Vector2f pos){
 			Vector2<int> realPos;
 
@@ -38,8 +45,13 @@ namespace Mimp
 			this->_rightMouseDown = true;
 			this->_box.getSelectedTool()->onClick(realPos, MIMP_RIGHT_CLICK, *this);
 		});
-		this->onRightMouseRelease.connect([this](){
+		this->onRightMouseRelease.connect([this](tgui::Vector2f pos){
+			Vector2<int> realPos;
+
+			realPos.x = pos.x;
+			realPos.y = pos.y;
 			this->_rightMouseDown = false;
+			this->_box.getSelectedTool()->onMouseRelease(realPos, MIMP_RIGHT_CLICK, *this);
 		});
 		this->_renderThread = std::thread([this]{
 			while (!this->_destroyed) {
@@ -64,6 +76,13 @@ namespace Mimp
 			realPos.y = pos.y;
 			this->_box.getSelectedTool()->onClick(realPos, MIMP_LEFT_CLICK, *this);
 		});
+		this->onMouseRelease.connect([this](tgui::Vector2f pos){
+			Vector2<int> realPos;
+
+			realPos.x = pos.x;
+			realPos.y = pos.y;
+			this->_box.getSelectedTool()->onMouseRelease(realPos, MIMP_LEFT_CLICK, *this);
+		});
 		this->onRightMousePress.connect([this](tgui::Vector2f pos){
 			Vector2<int> realPos;
 
@@ -72,8 +91,13 @@ namespace Mimp
 			this->_rightMouseDown = true;
 			this->_box.getSelectedTool()->onClick(realPos, MIMP_RIGHT_CLICK, *this);
 		});
-		this->onRightMouseRelease.connect([this](){
+		this->onRightMouseRelease.connect([this](tgui::Vector2f pos){
+			Vector2<int> realPos;
+
+			realPos.x = pos.x;
+			realPos.y = pos.y;
 			this->_rightMouseDown = false;
+			this->_box.getSelectedTool()->onMouseRelease(realPos, MIMP_RIGHT_CLICK, *this);
 		});
 		this->_drawBuffer.create(size.x, size.y);
 		this->_renderThread = std::thread([this]{
@@ -103,7 +127,7 @@ namespace Mimp
 		this->_colorCounter += (this->_counterUp * 2 - 1) * 20;
 		this->_counterUp = (this->_counterUp && this->_colorCounter < 240) || !this->_colorCounter;
 		if (this->selectedArea.isAnAreaSelected())
-			for (auto &pt : this->selectedArea)
+			for (auto &pt : this->selectedArea.getPoints())
 				buffer.drawPixel(pt, color);
 
 		for (unsigned x = 0; x < size.x; x++)

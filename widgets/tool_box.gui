@@ -112,8 +112,7 @@ ScrollablePanel.Panel {
     }
 
     BitmapButton.Tool5 {
-        Enabled = false;
-        Image = "icons/placeholder.png";
+        Image = "icons/select_elipse.png";
         ImageScaling = 0;
         Position = (150, 10);
         Size = (30, 30);
@@ -134,6 +133,24 @@ ScrollablePanel.Panel {
         Image = "icons/bucket_fill.png";
         ImageScaling = 0;
         Position = (50, 50);
+        Size = (30, 30);
+        TextSize = 13;
+        renderer = &1;
+    }
+
+    BitmapButton.Tool8 {
+        Image = "icons/placeholder.png";
+        ImageScaling = 0;
+        Position = (110, 90);
+        Size = (30, 30);
+        TextSize = 13;
+        renderer = &1;
+    }
+
+    BitmapButton.Tool9 {
+        Image = "icons/placeholder.png";
+        ImageScaling = 0;
+        Position = (150, 90);
         Size = (30, 30);
         TextSize = 13;
         renderer = &1;

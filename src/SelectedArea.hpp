@@ -16,26 +16,28 @@ namespace Mimp {
 	//! @brief Class Selected Area
 	class SelectedArea {
 		//! @brief All the points selected, building the selected area
-		std::vector<Vector2<int>> _selectedPoints = {};
-	public:
-		//! @brief The Selected Layer
-		Layer *selectedLayer = nullptr; // TODO: Gérer le fait que la layer puisse être supprimé !
+		Vector2<unsigned> _size;
+		bool *_map;
+		unsigned _nbPoints = 0;
 
-		SelectedArea() = default;
+	public:
+		SelectedArea(unsigned width, unsigned height);
+		SelectedArea(Vector2<unsigned> size);
+		~SelectedArea();
+
 		//! @brief Clears the selected points
 		void clear() noexcept;
+		void fill() noexcept;
 
 		//! @brief Is _selectedPoints not empty ?
 		//! @return bool The result of the verification
 		bool isAnAreaSelected() const noexcept;
+		std::vector<Vector2<int>> getPoints() const noexcept;
 
 		void add(Vector2<int> point);
 		void add(int x, int y);
 
-		//! @brief Iterator begin for vectors of layers
-		std::vector<Vector2<int>>::iterator begin();
-		//! @brief Iterator end for vectors of layers
-		std::vector<Vector2<int>>::iterator end();
+		void invert() noexcept;
 	};
 }
 

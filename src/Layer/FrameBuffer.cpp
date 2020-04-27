@@ -69,13 +69,7 @@ namespace Mimp
 
 	void FrameBuffer::drawPixel(Vector2<int> pos, const Color &color) noexcept
 	{
-		if (pos.x < 0)
-			return;
-		if (pos.y < 0)
-			return;
-		if (static_cast<unsigned>(pos.x) >= this->_size.x)
-			return;
-		if (static_cast<unsigned>(pos.y) >= this->_size.y)
+		if (this->posIsOutOfBound(pos))
 			return;
 		this->_pixelBuffer[pos.x + pos.y * this->_size.x] = this->getPixel(pos) + color;
 	}
@@ -306,7 +300,7 @@ namespace Mimp
 
 		for (unsigned x = 0; x < size.x; x++)
 			for (unsigned y = 0; y < size.x; y++) {
-				result.drawPixel({
+				result.setPixel({
 					static_cast<int>(x),
 					static_cast<int>(y)
 				}, this->getPixel({
@@ -331,8 +325,13 @@ namespace Mimp
 			return true;
 		if (static_cast<unsigned>(pos.x) >= this->_size.x)
 			return true;
-		if (static_cast<unsigned>(pos.y) >= this->_size.y)
-			return true;
-		return false;
+		return static_cast<unsigned>(pos.y) >= this->_size.y;
+	}
+
+	void FrameBuffer::setPixel(Vector2<int> pos, const Color &color) noexcept
+	{
+		if (this->posIsOutOfBound(pos))
+			return;
+		this->_pixelBuffer[pos.x + pos.y * this->_size.x] = color;
 	}
 }

@@ -65,6 +65,10 @@ namespace Mimp
 		//! @param pos Position
 		//! @param color Color of the pixel
 		void drawPixel(Vector2<int> pos, const Color &color) noexcept;
+		//! @brief Set a pixel on the framebuffer
+		//! @param pos Position
+		//! @param color Color of the pixel
+		void setPixel(Vector2<int> pos, const Color &color) noexcept;
 		//! @brief Draw a line of pixels on the framebuffer
 		//! @param pt1 First Position
 		//! @param pt2 Second Position
