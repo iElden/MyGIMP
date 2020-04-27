@@ -9,7 +9,6 @@
 #include "FillSelection.hpp"
 #include "RectSelectTool.hpp"
 #include "SelectByColorTool.hpp"
-#include "SelectByColorTool.hpp"
 #include "ElipseSelectionTool.hpp"
 
 namespace Mimp
