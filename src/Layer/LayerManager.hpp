@@ -34,7 +34,7 @@ namespace Mimp
 				bool locked : 1;
 			} attributes;
 			//! @brief pixels
-			unsigned pixels[0];
+			Color pixels[0];
 		};
 
 		//! @brief Image in Mimp

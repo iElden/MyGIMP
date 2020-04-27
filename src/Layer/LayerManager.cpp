@@ -207,7 +207,7 @@ namespace Mimp
 			image.getSize().x,
 			image.getSize().y
 		};
-		auto pixelBuffer = new unsigned[size.x * size.y];
+		auto pixelBuffer = new Color[size.x * size.y];
 
 		this->_size = size;
 

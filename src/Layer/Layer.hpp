@@ -29,7 +29,7 @@ namespace Mimp
 		//! @brief Constructor of the Layer
 		//! @param size Size of the layer
 		//! @param buffer Framebuffer of the layer
-		Layer(Vector2<unsigned int> size, unsigned *buffer);
+		Layer(Vector2<unsigned int> size, const Color *buffer);
 		//! @brief Constructor of the Layer
 		//! @param size Size of the layer
 		//! @param color Color of the framebuffer

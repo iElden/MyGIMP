@@ -20,10 +20,10 @@ namespace Mimp
 	const Color Color::Transparent = 0x00000000;
 
 	Color::Color(unsigned int color) noexcept :
-		r(color >> 0x18U & 0xFFU),
-		g(color >> 0x10U & 0xFFU),
-		b(color >> 0x08U & 0xFFU),
-		a(color >> 0x00U & 0xFFU)
+		r((color >> 0x18U) & 0xFFU),
+		g((color >> 0x10U) & 0xFFU),
+		b((color >> 0x08U) & 0xFFU),
+		a((color >> 0x00U) & 0xFFU)
 	{
 	}
 
