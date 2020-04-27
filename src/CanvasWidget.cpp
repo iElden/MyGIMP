@@ -172,7 +172,7 @@ namespace Mimp
 		for (unsigned x = 0; x < size.x; x += 10) {
 			dark = x % 20;
 			for (unsigned y = 0; y < size.y; y += 10) {
-				rect.setFillColor(dark ? sf::Color{0x444444FF} : sf::Color::White);
+				rect.setFillColor(dark ? sf::Color{0x888888FF} : sf::Color::White);
 				rect.setPosition(x, y);
 				rect.setSize({
 					static_cast<float>(size.x - x > 10 ? 10 : size.x - x),
@@ -184,6 +184,8 @@ namespace Mimp
 		}
 
 		for (auto &layer : this->_layers) {
+			if (!layer->visible)
+				continue;
 			this->_drawBuffer.create(layer->getSize().x, layer->getSize().y);
 			this->_drawBuffer.update(layer->buffer.getDrawBuffer(), layer->getSize().x, layer->getSize().y, 0, 0);
 			sprite.setTexture(this->_drawBuffer, true);
