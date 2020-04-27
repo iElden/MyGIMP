@@ -7,7 +7,7 @@
 #include "UnselectOperation.hpp"
 
 Mimp::UnselectOperation::UnselectOperation():
-	ImageOperation({"Selection", "Unselect"}, {KEY_A, true, true, false})
+	ImageOperation({"Selection", "Unselect"}, {KEY_D, true, false, false})
 {
 
 }
