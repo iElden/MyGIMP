@@ -28,7 +28,7 @@ namespace Mimp
 		while (nbOfLayer--) {
 			auto &layer = this->_layers.emplace_back(new Layer{size, defaultColor});
 
-			sprintf(layer->name, "Layer %llu", this->_layers.size());
+			sprintf(layer->name, "Layer %lu", this->_layers.size());
 		}
 	}
 
@@ -43,7 +43,7 @@ namespace Mimp
 	{
 		this->_setBusy();
 		auto &layer = this->_layers.emplace_back(new Layer(size, defaultColor));
-		sprintf(layer->name, "Layer %lli", this->_layers.size());
+		sprintf(layer->name, "Layer %lu", this->_layers.size());
 		this->_unsetBusy();
 	}
 

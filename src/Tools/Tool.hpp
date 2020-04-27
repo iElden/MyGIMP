@@ -32,7 +32,7 @@ namespace Mimp
 		virtual void onSelect() {};
 		//! @brief On Unselect, do the following actions
 		virtual void onUnselect() {};
-		virtual void onMouseRelease(Vector2<int> pos, MouseClick click, Image &image) {};
+		virtual void onMouseRelease(Vector2<int>, MouseClick, Image &) {};
 		//! @brief When mouse is dragging, apply the tool to the new position
 		//! @param oldPos Old Pos
 		//! @param newPos New Pos
