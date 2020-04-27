@@ -27,7 +27,8 @@ namespace Mimp {
 
 		//! @brief Clears the selected points
 		void clear() noexcept;
-		void fill() noexcept;
+		void selectAll() noexcept;
+		void fill(Layer &layer, const Color &color);
 
 		//! @brief Is _selectedPoints not empty ?
 		//! @return bool The result of the verification

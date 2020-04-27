@@ -11,7 +11,7 @@
 namespace Mimp
 {
 	class FillSelectionOperation : public ImageOperation {
-	private:
+	protected:
 		static void _fill(Layer &layer, const SelectedArea &area, const Color &color);
 
 	public:

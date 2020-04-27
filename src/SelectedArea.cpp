@@ -33,7 +33,7 @@ namespace Mimp
 		this->_nbPoints = 0;
 	}
 
-	void SelectedArea::fill() noexcept
+	void SelectedArea::selectAll() noexcept
 	{
 		std::memset(this->_map, true, this->_size.x * this->_size.y);
 		this->_nbPoints = this->_size.x * this->_size.y;
@@ -90,4 +90,12 @@ namespace Mimp
 				index++;
 			}
 	}
+
+	void SelectedArea::fill(Layer &layer, const Color &color)
+	{
+		if (this->isAnAreaSelected())
+			for (const auto &pt : this->getPoints())
+				layer.buffer.setPixel(pt, color);
+	}
+
 }

@@ -7,6 +7,7 @@
 #include "Selection/InvertSelectionOperation.hpp"
 #include "Selection/UnselectOperation.hpp"
 #include "Selection/SelectAllOperation.hpp"
+#include "Selection/DelSelectionOperation.hpp"
 
 namespace Mimp
 {
@@ -23,6 +24,9 @@ namespace Mimp
 		[]{
 			return std::make_shared<FillSelectionOperation>();
 		},
+		[]{
+			return std::make_shared<DelSelectionOperation>();
+		}
 
 	};
 
