@@ -9,11 +9,7 @@
 #include "FillSelection.hpp"
 #include "RectSelectTool.hpp"
 #include "SelectByColorTool.hpp"
-#include "SelectByColorTool.hpp"
 #include "ElipseSelectionTool.hpp"
-#include "SelectAll.hpp"
-#include "UnselectAll.hpp"
-#include "InvertSelection.hpp"
 
 namespace Mimp
 {
@@ -38,15 +34,6 @@ namespace Mimp
 		},
 		[](ToolBox &box){
 			return std::make_shared<SelectByColorTool>(box);
-		},
-		[](ToolBox &box){
-			return std::make_shared<InvertSelection>(box);
-		},
-		[](ToolBox &box){
-			return std::make_shared<SelectAll>(box);
-		},
-		[](ToolBox &box){
-			return std::make_shared<UnselectAll>(box);
 		}
 	};
 

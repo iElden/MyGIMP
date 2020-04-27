@@ -27,8 +27,11 @@ namespace Mimp
 			throw InvalidArgumentException("Must add at least a single layer");
 		while (nbOfLayer--) {
 			auto &layer = this->_layers.emplace_back(new Layer{size, defaultColor});
-
+#ifdef _WIN32
+			sprintf(layer->name, "Layer %llu", this->_layers.size());
+#else
 			sprintf(layer->name, "Layer %lu", this->_layers.size());
+#endif
 		}
 	}
 
@@ -43,7 +46,11 @@ namespace Mimp
 	{
 		this->_setBusy();
 		auto &layer = this->_layers.emplace_back(new Layer(size, defaultColor));
+#ifdef _WIN32
+		sprintf(layer->name, "Layer %llu", this->_layers.size());
+#else
 		sprintf(layer->name, "Layer %lu", this->_layers.size());
+#endif
 		this->_unsetBusy();
 	}
 
