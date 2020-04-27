@@ -10,19 +10,25 @@
 namespace Mimp
 {
 
-	FrameBuffer::FrameBuffer(Vector2<unsigned int> size, const unsigned int *buffer) :
+	FrameBuffer::FrameBuffer(Vector2<unsigned int> size, const Color *buffer) :
 		_size(size)
 	{
-		this->_pixelBuffer = new unsigned int[size.x * size.y];
+		this->_drawBuffer = new sf::Color[size.x * size.y];
+		this->_pixelBuffer = new Color[size.x * size.y];
 		std::memcpy(this->_pixelBuffer, buffer, size.x * size.y * sizeof(*this->_pixelBuffer));
+		for (unsigned i = 0; i < size.x * size.y; i++)
+			this->_drawBuffer[i] = this->_pixelBuffer[i];
 	}
 
 	FrameBuffer::FrameBuffer(Vector2<unsigned int> size, const std::vector<Color> &buffer) :
 		_size(size)
 	{
-		this->_pixelBuffer = new unsigned int[size.x * size.y];
-		for (unsigned i = 0; i < size.x * size.y; i++)
+		this->_drawBuffer = new sf::Color[size.x * size.y];
+		this->_pixelBuffer = new Color[size.x * size.y];
+		for (unsigned i = 0; i < size.x * size.y; i++) {
 			this->_pixelBuffer[i] = buffer[i];
+			this->_drawBuffer[i] = this->_pixelBuffer[i];
+		}
 	}
 
 	FrameBuffer::FrameBuffer(const FrameBuffer &other) :
@@ -33,22 +39,26 @@ namespace Mimp
 	FrameBuffer::FrameBuffer(Vector2<unsigned int> size, const Color &defaultColor) :
 		_size(size)
 	{
-		this->_pixelBuffer = new unsigned int[size.x * size.y];
-		for (unsigned i = 0; i < size.x * size.y; i++)
+		this->_drawBuffer = new sf::Color[size.x * size.y];
+		this->_pixelBuffer = new Color[size.x * size.y];
+		for (unsigned i = 0; i < size.x * size.y; i++) {
 			this->_pixelBuffer[i] = defaultColor;
+			this->_drawBuffer[i] = this->_pixelBuffer[i];
+		}
 	}
 
 	FrameBuffer::~FrameBuffer()
 	{
 		delete[] this->_pixelBuffer;
+		delete[] this->_drawBuffer;
 	}
 
-	const unsigned int *FrameBuffer::getBuffer() const
+	const Color *FrameBuffer::getBuffer() const
 	{
 		return this->_pixelBuffer;
 	}
 
-	unsigned int &FrameBuffer::operator[](unsigned int index) const
+	Color FrameBuffer::operator[](unsigned int index) const
 	{
 		if (index >= this->_size.x * this->_size.y)
 			throw OutOfBoundException(std::to_string(index) + " >= " + std::to_string(this->_size.x) + " * " + std::to_string(this->_size.y));
@@ -71,7 +81,7 @@ namespace Mimp
 	{
 		if (this->posIsOutOfBound(pos))
 			return;
-		this->_pixelBuffer[pos.x + pos.y * this->_size.x] = this->getPixel(pos) + color;
+		this->setPixel(pos, this->getPixel(pos) + color);
 	}
 
 	void FrameBuffer::drawLine(Vector2<int> pt1, Vector2<int> pt2, const Color &color) noexcept
@@ -313,8 +323,10 @@ namespace Mimp
 
 	void FrameBuffer::clear(const Color &color) noexcept
 	{
-		for (unsigned i = 0; i < this->_size.x * this->_size.y; i++)
+		for (unsigned i = 0; i < this->_size.x * this->_size.y; i++) {
 			this->_pixelBuffer[i] = color;
+			this->_drawBuffer[i] = color;
+		}
 	}
 
 	bool FrameBuffer::posIsOutOfBound(Vector2<int> pos) const noexcept
@@ -332,6 +344,12 @@ namespace Mimp
 	{
 		if (this->posIsOutOfBound(pos))
 			return;
+		this->_drawBuffer[pos.x + pos.y * this->_size.x] = sf::Color(color);
 		this->_pixelBuffer[pos.x + pos.y * this->_size.x] = color;
+	}
+
+	const sf::Uint8 *FrameBuffer::getDrawBuffer() const
+	{
+		return reinterpret_cast<sf::Uint8 *>(this->_drawBuffer);
 	}
 }

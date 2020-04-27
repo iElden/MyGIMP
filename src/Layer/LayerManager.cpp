@@ -304,4 +304,14 @@ namespace Mimp
 	{
 		return this->_layers.size();
 	}
+
+	std::vector<std::shared_ptr<Layer>>::const_iterator LayerManager::begin() const
+	{
+		return this->_layers.begin();
+	}
+
+	std::vector<std::shared_ptr<Layer>>::const_iterator LayerManager::end() const
+	{
+		return this->_layers.end();
+	}
 }

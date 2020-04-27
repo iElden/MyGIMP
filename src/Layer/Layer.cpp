@@ -8,7 +8,7 @@
 namespace Mimp
 {
 	Layer::Layer(Vector2<unsigned int> size, unsigned *buffer) :
-		buffer(size, buffer)
+		buffer(size, reinterpret_cast<Color *>(buffer))
 	{
 		std::memset(this->name, 0, sizeof(this->name));
 	}

@@ -61,6 +61,6 @@ namespace Mimp
 
 	Color::operator sf::Color() const noexcept
 	{
-		return sf::Color(static_cast<unsigned>(*this));
+		return sf::Color(this->r, this->g, this->b, this->a);
 	}
 }

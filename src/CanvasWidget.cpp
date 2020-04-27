@@ -54,10 +54,10 @@ namespace Mimp
 			this->_box.getSelectedTool()->onMouseRelease(realPos, MIMP_RIGHT_CLICK, *this);
 		});
 		this->_renderThread = std::thread([this]{
-			while (!this->_destroyed) {
+			/*while (!this->_destroyed) {
 				this->_updateInternalBuffer();
 				std::this_thread::sleep_for(std::chrono::milliseconds(10));
-			}
+			}*/
 		});
 		this->_drawBuffer.create(size.x, size.y);
 	}
@@ -101,10 +101,10 @@ namespace Mimp
 		});
 		this->_drawBuffer.create(size.x, size.y);
 		this->_renderThread = std::thread([this]{
-			while (!this->_destroyed) {
+			/*while (!this->_destroyed) {
 				this->_updateInternalBuffer();
 				std::this_thread::sleep_for(std::chrono::milliseconds(10));
-			}
+			}*/
 		});
 	}
 
@@ -168,7 +168,6 @@ namespace Mimp
 
 		states.transform.translate(getPosition());
 
-		target.draw(rect, states);
 		rect.setOutlineThickness(0);
 		for (unsigned x = 0; x < size.x; x += 10) {
 			dark = x % 20;
@@ -183,8 +182,14 @@ namespace Mimp
 				dark = !dark;
 			}
 		}
-		sprite.setTexture(this->_drawBuffer);
-		target.draw(sprite, states);
+
+		for (auto &layer : this->_layers) {
+			this->_drawBuffer.create(layer->getSize().x, layer->getSize().y);
+			this->_drawBuffer.update(layer->buffer.getDrawBuffer(), layer->getSize().x, layer->getSize().y, 0, 0);
+			sprite.setTexture(this->_drawBuffer, true);
+			sprite.setPosition(layer->pos.x, layer->pos.y);
+			target.draw(sprite, states);
+		}
 	}
 
 	CanvasWidget::Ptr CanvasWidget::create(const ToolBox &box, Vector2<unsigned int> size)
