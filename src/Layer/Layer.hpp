@@ -21,7 +21,7 @@ namespace Mimp
 		bool locked = false;
 		//! @brief Is the layer visible on the screen ?
 		bool visible = true;
-		//! @biref Name of the layer
+		//! @brief Name of the layer
 		char name[32];
 		//! @brief Position of the layer
 		Vector2<int> pos = {0, 0};
