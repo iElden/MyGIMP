@@ -19,7 +19,13 @@ namespace Mimp
 		this->_mainWindow.setFramerateLimit(240);
 		this->_gui.loadWidgetsFromFile("widgets/top_menu.gui");
 		this->_setupButtonCallbacks();
-		this->_gui.add(this->_toolBox.getWindow(), "ToolBox");
+
+		auto win = this->_toolBox.getWindow();
+
+		win->connect("Closed", [this, win]{
+			this->_gui.remove(win);
+		});
+		this->_gui.add(win, "ToolBox");
 
 		auto menu = this->_gui.get<tgui::MenuBar>("main_bar");
 
@@ -155,7 +161,11 @@ namespace Mimp
 			});
 		}
 
-		menu->addMenu("Window");
+		menu->addMenuItem({"Window", "Tools"});
+		menu->connectMenuItem({"Window", "Tools"}, [this, menu]{
+			this->_gui.remove(this->_gui.get<tgui::Widget>("ToolBox"));
+			this->_gui.add(this->_toolBox.getWindow(), "ToolBox");
+		});
 		menu->addMenu("Help");
 		menu->connect("MouseEntered", [](tgui::Widget::Ptr bar, const std::string&){
 			bar->moveToFront();
