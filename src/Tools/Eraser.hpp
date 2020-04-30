@@ -16,6 +16,8 @@ namespace Mimp
 	class Eraser : public Tool {
 	private:
 		ToolBox &_box;
+		unsigned short _radius = 5;
+		DrawShape _shape = CIRCLE;
 
 	public:
 		//! @brief Constructor of the Pencil Class

@@ -4,6 +4,7 @@
 
 #include <cstring>
 #include <SFML/Graphics/Color.hpp>
+#include <cmath>
 #include "FrameBuffer.hpp"
 #include "../Exceptions.hpp"
 
@@ -80,7 +81,7 @@ namespace Mimp
 		}
 	}
 
-	void FrameBuffer::drawLine(Vector2<int> pt1, Vector2<int> pt2, const Color &color, DrawStrategy drawStrategy) noexcept
+	void FrameBuffer::drawLine(Vector2<int> pt1, Vector2<int> pt2, const Color &color, unsigned short thickness, DrawShape shape, DrawStrategy drawStrategy) noexcept
 	{
 		int dx = pt2.x - pt1.x;
 		int dy = pt2.y - pt1.y;
@@ -95,7 +96,7 @@ namespace Mimp
 					dx *= 2;
 					dy *= 2 ;  // e est positif
 					while (true) { // déplacements horizontaux
-						this->drawPixel(pt1, color, drawStrategy);
+						this->drawAt(pt1, color, thickness, shape, drawStrategy);
 						pt1.x++;
 						if (pt1.x == pt2.x)
 							break;
@@ -111,7 +112,7 @@ namespace Mimp
 					dy *= 2;
 					dx *= 2;  // e est positif
 					while (true) {  // déplacements verticaux
-						this->drawPixel(pt1, color, drawStrategy);
+						this->drawAt(pt1, color, thickness, shape, drawStrategy);
 						pt1.y++;
 						if (pt1.y == pt2.y)
 							break;
@@ -132,7 +133,7 @@ namespace Mimp
 					dx *= 2;
 					dy *= 2 ;  // e est positif
 					while (true) {  // déplacements horizontaux
-						this->drawPixel(pt1, color, drawStrategy);
+						this->drawAt(pt1, color, thickness, shape, drawStrategy);
 						pt1.x++;
 						if (pt1.x == pt2.x)
 							break;
@@ -147,7 +148,7 @@ namespace Mimp
 					dy *= 2;
 					dx *= 2;  // e est négatif
 					while (true) {  // déplacements verticaux
-						this->drawPixel(pt1, color, drawStrategy);
+						this->drawAt(pt1, color, thickness, shape, drawStrategy);
 						pt1.y--;
 						if (pt1.y == pt2.y)
 							break;
@@ -160,7 +161,7 @@ namespace Mimp
 				}
 			} else { // dy = 0 (et dx > 0)
 				do {
-					this->drawPixel(pt1, color, drawStrategy);
+					this->drawAt(pt1, color, thickness, shape, drawStrategy);
 					pt1.x++;
 				} while (pt2.x != pt1.x);
 			}
@@ -174,7 +175,7 @@ namespace Mimp
 					dx *= 2;
 					dy *= 2;  // e est négatif
 					while (true) {  // déplacements horizontaux
-						this->drawPixel(pt1, color, drawStrategy);
+						this->drawAt(pt1, color, thickness, shape, drawStrategy);
 						pt1.x--;
 						if (pt1.x == pt2.x)
 							break;
@@ -190,7 +191,7 @@ namespace Mimp
 					dy *= 2;
 					dx *= 2;  // e est positif
 					while (true) {  // déplacements verticaux
-						this->drawPixel(pt1, color, drawStrategy);
+						this->drawAt(pt1, color, thickness, shape, drawStrategy);
 						pt1.y++;
 						if (pt1.y == pt2.y)
 							break;
@@ -211,7 +212,7 @@ namespace Mimp
 					dx *= 2;
 					dy *= 2;  // e est négatif
 					while (true) {  // déplacements horizontaux
-						this->drawPixel(pt1, color, drawStrategy);
+						this->drawAt(pt1, color, thickness, shape, drawStrategy);
 						pt1.x--;
 						if (pt1.x == pt2.x)
 							break;
@@ -227,7 +228,7 @@ namespace Mimp
 					dy *= 2;
 					dx *= 2;  // e est négatif
 					while (true) {  // déplacements verticaux
-						this->drawPixel(pt1, color, drawStrategy);
+						this->drawAt(pt1, color, thickness, shape, drawStrategy);
 						pt1.y--;
 						if (pt1.y == pt2.y)
 							break;
@@ -242,7 +243,7 @@ namespace Mimp
 
 				// vecteur horizontal vers la gauche
 				do {
-					this->drawPixel(pt1, color, drawStrategy);
+					this->drawAt(pt1, color, thickness, shape, drawStrategy);
 					pt1.x--;
 				} while (pt2.x != pt1.x);
 
@@ -250,12 +251,12 @@ namespace Mimp
 		} else {  // dx = 0
 			if (dy > 0) {
 				do {
-					this->drawPixel(pt1, color, drawStrategy);
+					this->drawAt(pt1, color, thickness, shape, drawStrategy);
 					pt1.y++;
 				} while (pt1.y != pt2.y);
 			} else if (dy) {
 				do {
-					this->drawPixel(pt1, color, drawStrategy);
+					this->drawAt(pt1, color, thickness, shape, drawStrategy);
 					pt1.y--;
 				} while (pt1.y != pt2.y);
 			}
@@ -319,5 +320,21 @@ namespace Mimp
 		if (this->posIsOutOfBound(pos))
 			return;
 		this->_pixelBuffer[pos.x + pos.y * this->_size.x] = color;
+	}
+
+	void FrameBuffer::drawAt(Vector2<int> pos, const Color &color, unsigned short radius, DrawShape shape,
+							 DrawStrategy drawStrategy) noexcept
+	{
+		int min_x = pos.x - radius;
+		int max_x = pos.x + radius;
+		switch (shape) {
+		case DrawShape::CIRCLE:
+			for (int j = pos.y - radius; j < pos.y + radius; j++)
+				for (int i = min_x; i < max_x; i++)
+					if (std::pow(i - pos.x, 2) / std::pow(radius / 2, 2) + std::pow(j - pos.y, 2) / std::pow(radius / 2, 2) <= 1)
+						this->drawPixel({i, j}, color, drawStrategy);
+		default:
+			return;
+		}
 	}
 }

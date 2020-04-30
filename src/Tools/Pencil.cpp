@@ -16,14 +16,14 @@ namespace Mimp
 	{
 		if (image.getSelectedLayer().isLocked())
 			return;
-		image.getSelectedLayer().buffer.drawLine(oldPos, newPos, this->_box.getSelectedColor(click));
+		image.getSelectedLayer().buffer.drawLine(oldPos, newPos, this->_box.getSelectedColor(click), this->_radius, this->_shape);
 	}
 
 	void Pencil::onClick(Vector2<int> pos, MouseClick click, Image &image)
 	{
 		if (image.getSelectedLayer().isLocked())
 			return;
-		image.getSelectedLayer().buffer.drawPixel(pos, this->_box.getSelectedColor(click));
+		image.getSelectedLayer().buffer.drawAt(pos, this->_box.getSelectedColor(click), this->_radius, this->_shape);
 	}
 
 	tgui::ScrollablePanel::Ptr Pencil::getParametersPanel() const

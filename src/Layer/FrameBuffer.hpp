@@ -9,6 +9,7 @@
 #include <vector>
 #include "../Data/Vector2.hpp"
 #include "../Data/Color.hpp"
+#include "../Enum.hpp"
 
 namespace Mimp
 {
@@ -22,12 +23,6 @@ namespace Mimp
 		unsigned int *_pixelBuffer;
 
 	public:
-
-		enum DrawStrategy {
-			ADD,
-			SET
-		};
-
 		//! @brief Copy Constructor of the framebuffer.
 		//! @param other FrameBuffer to use
 		FrameBuffer(const FrameBuffer &other);
@@ -71,6 +66,7 @@ namespace Mimp
 		//! @param pos Position
 		//! @param color Color of the pixel
 		void drawPixel(Vector2<int> pos, const Color &color, DrawStrategy drawStrategy=ADD) noexcept;
+		void drawAt(Vector2<int> pos, const Color &color, unsigned short radius, DrawShape shape, DrawStrategy drawStrategy=ADD) noexcept;
 		//! @brief Set a pixel on the framebuffer
 		//! @param pos Position
 		//! @param color Color of the pixel
@@ -79,7 +75,7 @@ namespace Mimp
 		//! @param pt1 First Position
 		//! @param pt2 Second Position
 		//! @param color Color of the line
-		void drawLine(Vector2<int> pt1, Vector2<int> pt2, const Color &color, DrawStrategy drawStrategy=ADD) noexcept;
+		void drawLine(Vector2<int> pt1, Vector2<int> pt2, const Color &color, unsigned short thickness, DrawShape shape=CIRCLE, DrawStrategy drawStrategy=ADD) noexcept;
 		//! @brief Draw the framebuffer given in parameter
 		//! @param pos Position of the Framebuffer on the screen
 		//! @param buffer The framebuffer to draw

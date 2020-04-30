@@ -18,6 +18,8 @@ namespace Mimp
 	private:
 		//! @brief Reference of the Toolbox
 		ToolBox &_box;
+		unsigned short _radius = 5;
+		DrawShape _shape = CIRCLE;
 
 	public:
 		//! @brief Constructor of the Pencil Class

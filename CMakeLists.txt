@@ -76,7 +76,7 @@ add_executable(
 	src/ImageOperations/Selection/InvertSelectionOperation.hpp
 	src/ImageOperations/Selection/DelSelectionOperation.cpp
 	src/ImageOperations/Selection/DelSelectionOperation.hpp
-		src/Tools/Eraser.cpp src/Tools/Eraser.hpp)
+		src/Tools/Eraser.cpp src/Tools/Eraser.hpp src/Enum.hpp)
 
 target_link_libraries(
 	MyGimp
