@@ -41,25 +41,25 @@ namespace Mimp
 		Color operator+(const Color &other);
 
 		//! @brief Color Black
-		static const Color Black	  ;
+		static const Color Black;
 		//! @brief Color LightGray
-		static const Color LightGray  ;
+		static const Color LightGray;
 		//! @brief Color DarkGray
-		static const Color DarkGray   ;
+		static const Color DarkGray;
 		//! @brief Color White
-		static const Color White	  ;
+		static const Color White;
 		//! @brief Color Red
-		static const Color Red		;
+		static const Color Red;
 		//! @brief Color Blue
-		static const Color Blue	   ;
+		static const Color Blue;
 		//! @brief Color Green
-		static const Color Green	  ;
+		static const Color Green;
 		//! @brief Color Magenta
-		static const Color Magenta	;
+		static const Color Magenta;
 		//! @brief Color Yellow
-		static const Color Yellow	 ;
+		static const Color Yellow;
 		//! @brief Color Cyan
-		static const Color Cyan	   ;
+		static const Color Cyan;
 		//! @brief Color Transparent
 		static const Color Transparent;
 	};

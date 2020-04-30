@@ -30,9 +30,9 @@ namespace Mimp
 
 		bool _destroyed = false;
 
-		bool _counterUp = true;
+		mutable bool _counterUp = true;
 
-		unsigned char _colorCounter = 0;
+		mutable unsigned char _colorCounter = 0;
 
 		std::thread _renderThread;
 

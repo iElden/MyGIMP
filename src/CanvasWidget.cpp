@@ -165,6 +165,14 @@ namespace Mimp
 		sf::Sprite sprite;
 		bool dark = false;
 		auto size = this->_size;
+		FrameBuffer buffer{size};
+		auto color = Color{this->_colorCounter, this->_colorCounter, this->_colorCounter, 120};
+
+		this->_colorCounter += (this->_counterUp * 2 - 1) * 20;
+		this->_counterUp = (this->_counterUp && this->_colorCounter < 240) || !this->_colorCounter;
+		if (this->selectedArea.isAnAreaSelected())
+			for (auto &pt : this->selectedArea.getPoints())
+				buffer.drawPixel(pt, color, SET);
 
 		states.transform.translate(getPosition());
 
@@ -192,6 +200,11 @@ namespace Mimp
 			sprite.setPosition(layer->pos.x, layer->pos.y);
 			target.draw(sprite, states);
 		}
+		this->_drawBuffer.create(size.x, size.y);
+		this->_drawBuffer.update(buffer.getDrawBuffer(), size.x, size.y, 0, 0);
+		sprite.setTexture(this->_drawBuffer, true);
+		sprite.setPosition(0, 0);
+		target.draw(sprite, states);
 	}
 
 	CanvasWidget::Ptr CanvasWidget::create(const ToolBox &box, Vector2<unsigned int> size)
