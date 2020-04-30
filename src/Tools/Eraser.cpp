@@ -19,14 +19,14 @@ namespace Mimp
 	{
 		if (image.getSelectedLayer().isLocked())
 			return;
-		image.getSelectedLayer().buffer.drawLine(oldPos, newPos, Color::Transparent);
+		image.getSelectedLayer().buffer.drawLine(oldPos, newPos, Color::Transparent, FrameBuffer::DrawStrategy::SET);
 	}
 
 	void Eraser::onClick(Vector2<int> pos, MouseClick, Image &image)
 	{
 		if (image.getSelectedLayer().isLocked())
 			return;
-		image.getSelectedLayer().buffer.drawPixel(pos, Color::Transparent);
+		image.getSelectedLayer().buffer.drawPixel(pos, Color::Transparent, FrameBuffer::DrawStrategy::SET);
 	}
 
 	tgui::ScrollablePanel::Ptr Eraser::getParametersPanel() const

@@ -20,7 +20,7 @@ void Mimp::ElipseSelectionTool::clear()
 	this->_state = 0;
 }
 
-void Mimp::ElipseSelectionTool::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick click, Mimp::Image &image)
+void Mimp::ElipseSelectionTool::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick, Mimp::Image &image)
 {
 	this->_pt1 = pos;
 	this->_pt2 = pos;
@@ -28,7 +28,7 @@ void Mimp::ElipseSelectionTool::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick
 	this->_updateSelectedArea(image); // TODO: Add onMouseRelease event for optimisation
 }
 
-void Mimp::ElipseSelectionTool::onMouseDrag(Mimp::Vector2<int> oldPos, Mimp::Vector2<int> newPos, Mimp::MouseClick click,
+void Mimp::ElipseSelectionTool::onMouseDrag(Mimp::Vector2<int>, Mimp::Vector2<int> newPos, Mimp::MouseClick,
 										 Mimp::Image &image)
 {
 	this->_pt2 = newPos;

@@ -22,6 +22,12 @@ namespace Mimp
 		unsigned int *_pixelBuffer;
 
 	public:
+
+		enum DrawStrategy {
+			ADD,
+			SET
+		};
+
 		//! @brief Copy Constructor of the framebuffer.
 		//! @param other FrameBuffer to use
 		FrameBuffer(const FrameBuffer &other);
@@ -64,7 +70,7 @@ namespace Mimp
 		//! @brief Draw a pixel on the framebuffer
 		//! @param pos Position
 		//! @param color Color of the pixel
-		void drawPixel(Vector2<int> pos, const Color &color) noexcept;
+		void drawPixel(Vector2<int> pos, const Color &color, DrawStrategy drawStrategy=ADD) noexcept;
 		//! @brief Set a pixel on the framebuffer
 		//! @param pos Position
 		//! @param color Color of the pixel
@@ -73,21 +79,11 @@ namespace Mimp
 		//! @param pt1 First Position
 		//! @param pt2 Second Position
 		//! @param color Color of the line
-		void drawLine(Vector2<int> pt1, Vector2<int> pt2, const Color &color) noexcept;
-		//! @brief Draw a rectangle of pixels on the framebuffer
-		//! @param pos Origin of the rectangle (upper left point)
-		//! @param size Size of the rectangle
-		//! @param color Color of the rectangle
-		void drawRect(Vector2<int> pos, Vector2<unsigned> size, const Color &color) noexcept;
-		//! @brief Draw an Ellipsoid of pixels on the framebuffer
-		//! @param pos Origin of the ellipsoid
-		//! @param size Size of the ellipsoid
-		//! @param color Color of the ellipsoid
-		void drawEllipsoid(Vector2<int> pos, Vector2<unsigned> size, const Color &color) noexcept;
+		void drawLine(Vector2<int> pt1, Vector2<int> pt2, const Color &color, DrawStrategy drawStrategy=ADD) noexcept;
 		//! @brief Draw the framebuffer given in parameter
 		//! @param pos Position of the Framebuffer on the screen
 		//! @param buffer The framebuffer to draw
-		void drawFrameBuffer(Vector2<int> pos, const FrameBuffer &buffer) noexcept;
+		void drawFrameBuffer(Vector2<int> pos, const FrameBuffer &buffer, DrawStrategy drawStrategy=ADD) noexcept;
 		//! @brief Get a Framebuffer from the screen
 		//! @param pos Origin of the Framebuffer to get
 		//! @param size Size of the Framebuffer to get

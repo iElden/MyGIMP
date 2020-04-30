@@ -67,14 +67,20 @@ namespace Mimp
 		return this->_size;
 	}
 
-	void FrameBuffer::drawPixel(Vector2<int> pos, const Color &color) noexcept
+	void FrameBuffer::drawPixel(Vector2<int> pos, const Color &color, DrawStrategy drawStrategy) noexcept
 	{
 		if (this->posIsOutOfBound(pos))
 			return;
-		this->_pixelBuffer[pos.x + pos.y * this->_size.x] = this->getPixel(pos) + color;
+		switch (drawStrategy) {
+		case ADD:
+			this->_pixelBuffer[pos.x + pos.y * this->_size.x] = this->getPixel(pos) + color;
+			break;
+		case SET:
+			this->_pixelBuffer[pos.x + pos.y * this->_size.x] = color;
+		}
 	}
 
-	void FrameBuffer::drawLine(Vector2<int> pt1, Vector2<int> pt2, const Color &color) noexcept
+	void FrameBuffer::drawLine(Vector2<int> pt1, Vector2<int> pt2, const Color &color, DrawStrategy drawStrategy) noexcept
 	{
 		int dx = pt2.x - pt1.x;
 		int dy = pt2.y - pt1.y;
@@ -89,7 +95,7 @@ namespace Mimp
 					dx *= 2;
 					dy *= 2 ;  // e est positif
 					while (true) { // déplacements horizontaux
-						this->drawPixel(pt1, color);
+						this->drawPixel(pt1, color, drawStrategy);
 						pt1.x++;
 						if (pt1.x == pt2.x)
 							break;
@@ -105,7 +111,7 @@ namespace Mimp
 					dy *= 2;
 					dx *= 2;  // e est positif
 					while (true) {  // déplacements verticaux
-						this->drawPixel(pt1, color);
+						this->drawPixel(pt1, color, drawStrategy);
 						pt1.y++;
 						if (pt1.y == pt2.y)
 							break;
@@ -126,7 +132,7 @@ namespace Mimp
 					dx *= 2;
 					dy *= 2 ;  // e est positif
 					while (true) {  // déplacements horizontaux
-						this->drawPixel(pt1, color);
+						this->drawPixel(pt1, color, drawStrategy);
 						pt1.x++;
 						if (pt1.x == pt2.x)
 							break;
@@ -141,7 +147,7 @@ namespace Mimp
 					dy *= 2;
 					dx *= 2;  // e est négatif
 					while (true) {  // déplacements verticaux
-						this->drawPixel(pt1, color);
+						this->drawPixel(pt1, color, drawStrategy);
 						pt1.y--;
 						if (pt1.y == pt2.y)
 							break;
@@ -154,7 +160,7 @@ namespace Mimp
 				}
 			} else { // dy = 0 (et dx > 0)
 				do {
-					this->drawPixel(pt1, color) ;
+					this->drawPixel(pt1, color, drawStrategy);
 					pt1.x++;
 				} while (pt2.x != pt1.x);
 			}
@@ -168,7 +174,7 @@ namespace Mimp
 					dx *= 2;
 					dy *= 2;  // e est négatif
 					while (true) {  // déplacements horizontaux
-						this->drawPixel(pt1, color);
+						this->drawPixel(pt1, color, drawStrategy);
 						pt1.x--;
 						if (pt1.x == pt2.x)
 							break;
@@ -184,7 +190,7 @@ namespace Mimp
 					dy *= 2;
 					dx *= 2;  // e est positif
 					while (true) {  // déplacements verticaux
-						this->drawPixel(pt1, color);
+						this->drawPixel(pt1, color, drawStrategy);
 						pt1.y++;
 						if (pt1.y == pt2.y)
 							break;
@@ -205,7 +211,7 @@ namespace Mimp
 					dx *= 2;
 					dy *= 2;  // e est négatif
 					while (true) {  // déplacements horizontaux
-						this->drawPixel(pt1, color);
+						this->drawPixel(pt1, color, drawStrategy);
 						pt1.x--;
 						if (pt1.x == pt2.x)
 							break;
@@ -221,7 +227,7 @@ namespace Mimp
 					dy *= 2;
 					dx *= 2;  // e est négatif
 					while (true) {  // déplacements verticaux
-						this->drawPixel(pt1, color);
+						this->drawPixel(pt1, color, drawStrategy);
 						pt1.y--;
 						if (pt1.y == pt2.y)
 							break;
@@ -236,7 +242,7 @@ namespace Mimp
 
 				// vecteur horizontal vers la gauche
 				do {
-					this->drawPixel(pt1, color);
+					this->drawPixel(pt1, color, drawStrategy);
 					pt1.x--;
 				} while (pt2.x != pt1.x);
 
@@ -244,12 +250,12 @@ namespace Mimp
 		} else {  // dx = 0
 			if (dy > 0) {
 				do {
-					this->drawPixel(pt1, color);
+					this->drawPixel(pt1, color, drawStrategy);
 					pt1.y++;
 				} while (pt1.y != pt2.y);
 			} else if (dy) {
 				do {
-					this->drawPixel(pt1, color);
+					this->drawPixel(pt1, color, drawStrategy);
 					pt1.y--;
 				} while (pt1.y != pt2.y);
 			}
@@ -257,27 +263,7 @@ namespace Mimp
 		//TODO: Implement the above algorithm
 	}
 
-	void FrameBuffer::drawRect(Vector2<int> pos, Vector2<unsigned> size, const Color &color) noexcept
-	{
-		for (unsigned x = 0; x < size.x; x++)
-			this->drawPixel({static_cast<int>(x + pos.x), pos.y}, color);
-		for (unsigned x = 0; x < size.x; x++)
-			this->drawPixel({static_cast<int>(x + pos.x), static_cast<int>(pos.y + size.y - 1)}, color);
-		for (unsigned y = 0; y < size.x; y++)
-			this->drawPixel({pos.x, static_cast<int>(pos.y + y)}, color);
-		for (unsigned y = 0; y < size.x; y++)
-			this->drawPixel({static_cast<int>(pos.x + size.x - 1), static_cast<int>(pos.y + y)}, color);
-	}
-
-	void FrameBuffer::drawEllipsoid(Vector2<int> pos, Vector2<unsigned> size, const Color &color) noexcept
-	{
-		static_cast<void>(pos);
-		static_cast<void>(size);
-		static_cast<void>(color);
-		//TODO: Draw ellipsoid
-	}
-
-	void FrameBuffer::drawFrameBuffer(Vector2<int> pos, const FrameBuffer &buffer) noexcept
+	void FrameBuffer::drawFrameBuffer(Vector2<int> pos, const FrameBuffer &buffer, DrawStrategy drawStrategy) noexcept
 	{
 		auto size = buffer.getSize();
 
@@ -290,7 +276,7 @@ namespace Mimp
 					}, buffer.getPixel({
 						static_cast<int>(x),
 						static_cast<int>(y)
-					})
+					}, drawStrategy)
 				);
 	}
 
