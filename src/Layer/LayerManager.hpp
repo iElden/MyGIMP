@@ -34,7 +34,7 @@ namespace Mimp
 				bool locked : 1;
 			} attributes;
 			//! @brief pixels
-			unsigned pixels[0];
+			Color pixels[0];
 		};
 
 		//! @brief Image in Mimp
@@ -140,6 +140,12 @@ namespace Mimp
 		std::vector<std::shared_ptr<Layer>>::iterator begin();
 		//! @brief Iterator end for vectors of layers
 		std::vector<std::shared_ptr<Layer>>::iterator end();
+
+		//Iterator
+		//! @brief Iterator begin for vectors of layers
+		std::vector<std::shared_ptr<Layer>>::const_iterator begin() const;
+		//! @brief Iterator end for vectors of layers
+		std::vector<std::shared_ptr<Layer>>::const_iterator end() const;
 	};
 }
 

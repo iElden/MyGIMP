@@ -20,7 +20,8 @@ namespace Mimp
 		//! @details Vector2 with a width in x and a height in y
 		Vector2<unsigned int> _size;
 		//! @brief Buffer in an int array.
-		unsigned int *_pixelBuffer;
+		Color *_pixelBuffer;
+		sf::Color *_drawBuffer;
 
 	public:
 		//! @brief Copy Constructor of the framebuffer.
@@ -29,7 +30,7 @@ namespace Mimp
 		//! @brief Constructor of the framebuffer.
 		//! @param size Size of the buffer
 		//! @param buffer Buffer allocated (array)
-		FrameBuffer(Vector2<unsigned int> size, const unsigned int *buffer);
+		FrameBuffer(Vector2<unsigned int> size, const Color *buffer);
 		//! @brief Constructor of the framebuffer.
 		//! @param size Size of the buffer
 		//! @param buffer Buffer as std::vector
@@ -43,11 +44,12 @@ namespace Mimp
 
 		//! @brief Get the buffer
 		//! @return const unsigned int * Contains the buffer in readonly
-		const unsigned int *getBuffer() const;
+		const Color *getBuffer() const;
+		const sf::Uint8 *getDrawBuffer() const;
 		//! @brief Get the value from the framebuffer at the given index.
 		//! @param index Contains the index of the seeked value
-		//! @return unsigned int & The value at the given index.
-		unsigned int &operator[](unsigned int index) const;
+		//! @return Color & The value at the given index.
+		Color operator[](unsigned int index) const;
 		//! @brief Get the color value at the given index in the framebuffer.
 		//! @param pos Position of the pixel
 		//! @oaram fill Fill color if the position wasn't found

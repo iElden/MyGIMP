@@ -54,10 +54,10 @@ namespace Mimp
 			this->_box.getSelectedTool()->onMouseRelease(realPos, MIMP_RIGHT_CLICK, *this);
 		});
 		this->_renderThread = std::thread([this]{
-			while (!this->_destroyed) {
+			/*while (!this->_destroyed) {
 				this->_updateInternalBuffer();
 				std::this_thread::sleep_for(std::chrono::milliseconds(10));
-			}
+			}*/
 		});
 		this->_drawBuffer.create(size.x, size.y);
 	}
@@ -101,10 +101,10 @@ namespace Mimp
 		});
 		this->_drawBuffer.create(size.x, size.y);
 		this->_renderThread = std::thread([this]{
-			while (!this->_destroyed) {
+			/*while (!this->_destroyed) {
 				this->_updateInternalBuffer();
 				std::this_thread::sleep_for(std::chrono::milliseconds(10));
-			}
+			}*/
 		});
 	}
 
@@ -168,12 +168,11 @@ namespace Mimp
 
 		states.transform.translate(getPosition());
 
-		target.draw(rect, states);
 		rect.setOutlineThickness(0);
 		for (unsigned x = 0; x < size.x; x += 10) {
 			dark = x % 20;
 			for (unsigned y = 0; y < size.y; y += 10) {
-				rect.setFillColor(dark ? sf::Color{0x444444FF} : sf::Color::White);
+				rect.setFillColor(dark ? sf::Color{0x888888FF} : sf::Color::White);
 				rect.setPosition(x, y);
 				rect.setSize({
 					static_cast<float>(size.x - x > 10 ? 10 : size.x - x),
@@ -183,8 +182,16 @@ namespace Mimp
 				dark = !dark;
 			}
 		}
-		sprite.setTexture(this->_drawBuffer);
-		target.draw(sprite, states);
+
+		for (auto &layer : this->_layers) {
+			if (!layer->visible)
+				continue;
+			this->_drawBuffer.create(layer->getSize().x, layer->getSize().y);
+			this->_drawBuffer.update(layer->buffer.getDrawBuffer(), layer->getSize().x, layer->getSize().y, 0, 0);
+			sprite.setTexture(this->_drawBuffer, true);
+			sprite.setPosition(layer->pos.x, layer->pos.y);
+			target.draw(sprite, states);
+		}
 	}
 
 	CanvasWidget::Ptr CanvasWidget::create(const ToolBox &box, Vector2<unsigned int> size)

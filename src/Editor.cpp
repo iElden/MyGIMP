@@ -197,7 +197,7 @@ namespace Mimp
 		menu->connectMenuItem({"File", "Save"}, [this, menu] {
 			std::string path = this->_gui.getWidgetName(this->_selectedImageWindow).substr(strlen("Image"));
 
-			if (path.substr(path.find_last_of('.')) != ".mimp")
+			if (path.find_last_of('.') == std::string::npos || path.substr(path.find_last_of('.')) != ".mimp")
 				path = Utils::saveFileDialog("Save MIMP file", path, {{".+[.]mimp", "MIMP image file"}});
 
 			if (path.empty())

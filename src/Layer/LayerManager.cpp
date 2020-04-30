@@ -207,7 +207,7 @@ namespace Mimp
 			image.getSize().x,
 			image.getSize().y
 		};
-		auto pixelBuffer = new unsigned[size.x * size.y];
+		auto pixelBuffer = new Color[size.x * size.y];
 
 		this->_size = size;
 
@@ -303,5 +303,15 @@ namespace Mimp
 	size_t LayerManager::size() const
 	{
 		return this->_layers.size();
+	}
+
+	std::vector<std::shared_ptr<Layer>>::const_iterator LayerManager::begin() const
+	{
+		return this->_layers.begin();
+	}
+
+	std::vector<std::shared_ptr<Layer>>::const_iterator LayerManager::end() const
+	{
+		return this->_layers.end();
 	}
 }

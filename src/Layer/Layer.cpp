@@ -7,7 +7,7 @@
 
 namespace Mimp
 {
-	Layer::Layer(Vector2<unsigned int> size, unsigned *buffer) :
+	Layer::Layer(Vector2<unsigned int> size, const Color *buffer) :
 		buffer(size, buffer)
 	{
 		std::memset(this->name, 0, sizeof(this->name));

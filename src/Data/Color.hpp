@@ -21,7 +21,7 @@ namespace Mimp
 		//! @brief Constructor of the Struct Color
 		//! @details Copy construct the color structure with a color in hexadecimal.
 		//! @param color The color to be copy in hexadecimal.
-		Color(unsigned int color) noexcept;
+		Color(unsigned int color = 0x00000000) noexcept;
 		//! @brief Constructor of the Struct Color
 		//! @details Copy construct the color structure with rgba values.
 		//! @param r Hexadecimal value for red.

@@ -36,7 +36,7 @@ namespace Mimp
 
 		std::thread _renderThread;
 
-		sf::Texture _drawBuffer;
+		mutable sf::Texture _drawBuffer;
 
 		//! @details Private Constructor of the Canvas Widget class
 		//! @param box ToolBox
