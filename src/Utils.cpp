@@ -124,12 +124,64 @@ namespace Mimp::Utils
 
 	int	dispMsg(const std::string &title, const std::string &content, int variate)
 	{
-#ifdef _WIN32
-		return (MessageBox(nullptr, content.c_str(), title.c_str(), variate));
-#else
-//		sf::RenderWindow win{{700, 220}, title, sf::Style::Titlebar | sf::Style::Close};
-//		tgui::Gui gui{win};
-#endif
+		auto button = tgui::Button::create("OK");
+		auto text = tgui::TextBox::create();
+		tgui::Gui gui;
+		auto font = tgui::getGlobalFont();
+		const auto startWidth = button->getSize().x + 92;
+		unsigned width = startWidth;
+		unsigned height = button->getSize().y + 60;
+		unsigned currentWidth = startWidth;
+		auto size = text->getTextSize();
+
+		for (char c : content) {
+			currentWidth += font.getGlyph(c, size, false).advance;
+			width = std::max(currentWidth, width);
+			if (c == '\n' || c == '\r')
+				currentWidth = startWidth;
+			if (c == '\n' || c == '\v')
+				height += size;
+		}
+
+		sf::RenderWindow win{{std::min(700U, width), std::min(220U, height)}, title, sf::Style::Titlebar | sf::Style::Close};
+		auto pic = tgui::Picture::create("icons/error.png");
+		sf::Event event;
+
+		gui.setTarget(win);
+		gui.add(button, "ok");
+		gui.add(text);
+
+		button->setPosition("&.w - w - 10", "&.h - h - 10");
+		button->connect("Pressed", [&win]{
+			win.close();
+		});
+
+		text->setText(content);
+		text->setPosition(52, 10);
+		text->setSize("ok.x - 62", "ok.y - 20");
+		text->setReadOnly();
+		text->getRenderer()->setBorderColor("transparent");
+		text->getRenderer()->setBackgroundColor("transparent");
+
+		pic->setPosition(10, 10);
+		pic->setSize(32, 32);
+
+		if (variate & MB_ICONERROR)
+			gui.add(pic);
+
+		while (win.isOpen()) {
+			while (win.pollEvent(event)) {
+				if (event.type == sf::Event::Closed)
+					win.close();
+				gui.handleEvent(event);
+			}
+
+			win.clear({230, 230, 230, 255});
+			gui.draw();
+			win.display();
+		}
+
+		return 0;
 	}
 
 	static void _makeFolders(
