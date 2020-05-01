@@ -316,11 +316,14 @@ namespace Mimp::Utils
 		});
 		gui.get<tgui::Button>("Open")->connect("Clicked", open);
 
+		if (overWriteWarning)
+			gui.get<tgui::Button>("Open")->setText("Save");
+
 		for (auto &pair : patterns)
 			box->addItem(pair.second, pair.first);
 		box->addItem("All files", ".*");
 		box->setSelectedItemByIndex(0);
-		box->connect("ItemSelected", [&currentPath, &panel, &file, &path, &box, &open]{
+		box->connect("ItemSelected", [&currentPath, &panel, &file, &box, &open]{
 			_makeFolders(currentPath, panel, file, open, std::regex(box->getSelectedItemId().toAnsiString(), std::regex_constants::icase));
 		});
 
