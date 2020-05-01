@@ -22,7 +22,7 @@ namespace Mimp
 
 		auto win = this->_toolBox.getWindow();
 
-		win->connect("Closed", [this, win]{
+		win->connect("Closed", [this, win] {
 			this->_gui.remove(win);
 		});
 		this->_gui.add(win, "ToolBox");
@@ -55,7 +55,7 @@ namespace Mimp
 
 	void Editor::setSelectedImage(tgui::ChildWindow::Ptr canvas)
 	{
-		this->_selectedImageWindow = canvas;
+		this->_selectImage(canvas);
 	}
 
 	tgui::ChildWindow::Ptr Editor::getSelectedImage() const
@@ -126,6 +126,15 @@ namespace Mimp
 			this->_unselectImage();
 			canvas->disableRendering();
 			this->_gui.remove(window);
+			for (auto &name : this->_gui.getWidgetNames()) {
+				if (name.substring(0, strlen("Image")) == "Image") {
+					this->setSelectedImage(this->_gui.get<tgui::ChildWindow>(name));
+					break;
+				}
+			}
+		});
+		window->connect("Focused", [this, window]{
+			this->setSelectedImage(window);
 		});
 		window->setPosition(0, 30);
 
