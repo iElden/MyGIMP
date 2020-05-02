@@ -405,4 +405,64 @@ namespace Mimp::Utils
 	{
 		return openFileDialog(title, basePath, patterns, true, false);
 	}
+
+	tgui::ChildWindow::Ptr makeColorPickWindow(tgui::Gui &gui, const std::function<void(Color color)> &onFinish)
+	{
+		auto panel = tgui::Panel::create({"100%", "100%"});
+
+		panel->getRenderer()->setBackgroundColor({0, 0, 0, 175});
+		gui.add(panel);
+
+		auto window = tgui::ChildWindow::create();
+		window->setSize(271, 182);
+		window->setPosition("(&.w - w) / 2", "(&.h - h) / 2");
+		gui.add(window);
+
+		window->setFocused(true);
+
+		const bool tabUsageEnabled = gui.isTabKeyUsageEnabled();
+		auto closeWindow = [&gui, window, panel, tabUsageEnabled]{
+			gui.remove(window);
+			gui.remove(panel);
+			gui.setTabKeyUsageEnabled(tabUsageEnabled);
+		};
+
+		panel->connect("Clicked", closeWindow);
+		window->connect({"Closed", "EscapeKeyPressed"}, closeWindow);
+		window->loadWidgetsFromFile("widgets/color.gui");
+
+		auto red = window->get<tgui::Slider>("Red");
+		auto green = window->get<tgui::Slider>("Green");
+		auto blue = window->get<tgui::Slider>("Blue");
+		auto preview = window->get<tgui::TextBox>("Preview");
+		auto sliderCallback = [red, green, blue, preview]{
+			tgui::Color bufferColor{
+				static_cast<unsigned char>(red->getValue()),
+				static_cast<unsigned char>(green->getValue()),
+				static_cast<unsigned char>(blue->getValue())
+			};
+
+			preview->getRenderer()->setBackgroundColor(bufferColor);
+		};
+
+		red->connect("ValueChanged", sliderCallback);
+		green->connect("ValueChanged", sliderCallback);
+		blue->connect("ValueChanged", sliderCallback);
+		preview->getRenderer()->setBackgroundColor({0, 0, 0, 255});
+		window->get<tgui::Button>("Cancel")->connect("Clicked", [window]{
+			window->close();
+		});
+		window->get<tgui::Button>("OK")->connect("Clicked", [onFinish, red, green, blue, window]{
+			Color bufferColor{
+				static_cast<unsigned char>(red->getValue()),
+				static_cast<unsigned char>(green->getValue()),
+				static_cast<unsigned char>(blue->getValue())
+			};
+
+			if (onFinish)
+				onFinish(bufferColor);
+			window->close();
+		});
+		return window;
+	}
 }
