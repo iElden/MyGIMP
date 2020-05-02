@@ -435,6 +435,7 @@ namespace Mimp::Utils
 		auto green = window->get<tgui::Slider>("Green");
 		auto blue = window->get<tgui::Slider>("Blue");
 		auto preview = window->get<tgui::TextBox>("Preview");
+		auto edit = window->get<tgui::EditBox>("Edit");
 		auto sliderCallback = [red, green, blue, preview]{
 			tgui::Color bufferColor{
 				static_cast<unsigned char>(red->getValue()),
@@ -445,6 +446,21 @@ namespace Mimp::Utils
 			preview->getRenderer()->setBackgroundColor(bufferColor);
 		};
 
+		edit->connect("TextChanged", [red, green, blue, edit]{
+			std::string text = edit->getText();
+
+			if (text.size() > 7) {
+				edit->setText(text.substr(0, 7));
+				return;
+			} else if (text.size() != 7)
+				return;
+
+			tgui::Color color{edit->getText()};
+
+			red->setValue(color.getRed());
+			green->setValue(color.getGreen());
+			blue->setValue(color.getBlue());
+		});
 		red->connect("ValueChanged", sliderCallback);
 		green->connect("ValueChanged", sliderCallback);
 		blue->connect("ValueChanged", sliderCallback);
