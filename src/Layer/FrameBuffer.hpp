@@ -23,6 +23,10 @@ namespace Mimp
 		Color *_pixelBuffer;
 		sf::Color *_drawBuffer;
 
+		void _drawCircleAt(Vector2<int> pos, const Color &color, unsigned short radius, DrawStrategy drawStrategy) noexcept;
+		void _drawSquareAt(Vector2<int> pos, const Color &color, unsigned short radius, DrawStrategy drawStrategy) noexcept;
+		void _drawDiamondAt(Vector2<int> pos, const Color &color, unsigned short radius, DrawStrategy drawStrategy) noexcept;
+
 	public:
 		//! @brief Copy Constructor of the framebuffer.
 		//! @param other FrameBuffer to use

@@ -338,18 +338,47 @@ namespace Mimp
 	void FrameBuffer::drawAt(Vector2<int> pos, const Color &color, unsigned short radius, DrawShape shape,
 							 DrawStrategy drawStrategy) noexcept
 	{
-		int min_x = pos.x - radius;
-		int max_x = pos.x + radius;
 		switch (shape) {
 		case DrawShape::CIRCLE:
-			for (int j = pos.y - radius; j < pos.y + radius; j++)
-				for (int i = min_x; i < max_x; i++)
-					if (std::pow(i - pos.x, 2) / std::pow(radius / 2, 2) +
-						std::pow(j - pos.y, 2) / std::pow(radius / 2, 2) <= 1)
-						this->drawPixel({i, j}, color, drawStrategy);
+			this->_drawCircleAt(pos, color, radius, drawStrategy);
 		default:
 			return;
 		}
+	}
+
+	void FrameBuffer::_drawCircleAt(Vector2<int> pos, const Color &color, unsigned short radius,
+									DrawStrategy drawStrategy) noexcept
+	{
+		int min_x = pos.x - radius / 2;
+		int max_x = pos.x + radius / 2;
+		for (int j = pos.y - radius; j < pos.y + radius; j++)
+			for (int i = min_x; i < max_x; i++)
+				if (std::pow(i - pos.x, 2) / std::pow(radius / 2, 2) +
+					std::pow(j - pos.y, 2) / std::pow(radius / 2, 2) <= 1)
+					this->drawPixel({i, j}, color, drawStrategy);
+	}
+
+	void FrameBuffer::_drawSquareAt(Vector2<int> pos, const Color &color, unsigned short radius,
+									DrawStrategy drawStrategy) noexcept
+	{
+		int min_x = pos.x - radius / 2;
+		int max_x = pos.x + radius / 2;
+		for (int j = pos.y - radius; j < pos.y + radius; j++)
+			for (int i = min_x; i < max_x; i++)
+				this->drawPixel({i, j}, color, drawStrategy);
+	}
+
+	void FrameBuffer::_drawDiamondAt(Vector2<int> pos, const Color &color, unsigned short radius,
+									 DrawStrategy drawStrategy) noexcept
+	{
+		this->drawPixel(pos, color, drawStrategy);
+		if (radius > 2) {
+			this->_drawDiamondAt({pos.x - 1, pos.y}, color, radius - 2, drawStrategy);
+			this->_drawDiamondAt({pos.x + 1, pos.y}, color, radius - 2, drawStrategy);
+			this->_drawDiamondAt({pos.x, pos.y - 1}, color, radius - 2, drawStrategy);
+			this->_drawDiamondAt({pos.x, pos.y + 1}, color, radius - 2, drawStrategy);
+		}
+
 	}
 
 	const sf::Uint8 *FrameBuffer::getDrawBuffer() const
