@@ -436,14 +436,17 @@ namespace Mimp::Utils
 		auto blue = window->get<tgui::Slider>("Blue");
 		auto preview = window->get<tgui::TextBox>("Preview");
 		auto edit = window->get<tgui::EditBox>("Edit");
-		auto sliderCallback = [red, green, blue, preview]{
+		auto sliderCallback = [red, green, blue, preview, edit]{
+			char buffer[8];
 			tgui::Color bufferColor{
 				static_cast<unsigned char>(red->getValue()),
 				static_cast<unsigned char>(green->getValue()),
 				static_cast<unsigned char>(blue->getValue())
 			};
 
+			sprintf(buffer, "#%02X%02X%02X", bufferColor.getRed(), bufferColor.getGreen(), bufferColor.getBlue());
 			preview->getRenderer()->setBackgroundColor(bufferColor);
+			edit->setText(buffer);
 		};
 
 		edit->connect("TextChanged", [red, green, blue, edit]{
