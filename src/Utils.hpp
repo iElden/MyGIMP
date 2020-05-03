@@ -14,6 +14,8 @@
 #define MB_ICONERROR 1
 #else
 #include <windows.h>
+#include "Data/Color.hpp"
+
 #endif
 
 
@@ -50,18 +52,20 @@ namespace Mimp::Utils
 	//! @param str String to convert in UTF-8
 	//! @return std::string Converted String
 	std::string wstringToUtf8(const std::wstring &str);
-    //! @brief Convert a UTF-8 into a wstring
-    //! @param str String to convert in wstring
-    //! @return std::wstring Converted String
+	//! @brief Convert a UTF-8 into a wstring
+	//! @param str String to convert in wstring
+	//! @return std::wstring Converted String
 	std::wstring utf8ToWstring(const std::string &str);
-    //! @brief Convert a std::filesystem::path to string UTF-8
-    //! @param path filesystem path to convert
-    //! @return std::string Converted Path in String
+	//! @brief Convert a std::filesystem::path to string UTF-8
+	//! @param path filesystem path to convert
+	//! @return std::string Converted Path in String
 	std::string pathToString(const std::filesystem::path &path);
-    //! @brief clean the . and .. in relative paths
-    //! @param path filesystem path to clean
-    //! @return std::string Converted Path in String
+	//! @brief clean the . and .. in relative paths
+	//! @param path filesystem path to clean
+	//! @return std::string Converted Path in String
 	std::string cleanPath(const std::string &path);
+
+	tgui::ChildWindow::Ptr makeColorPickWindow(tgui::Gui &gui, const std::function<void(Color color)> &onFinish);
 }
 
 

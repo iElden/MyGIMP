@@ -124,12 +124,64 @@ namespace Mimp::Utils
 
 	int	dispMsg(const std::string &title, const std::string &content, int variate)
 	{
-#ifdef _WIN32
-		return (MessageBox(nullptr, content.c_str(), title.c_str(), variate));
-#else
-//		sf::RenderWindow win{{700, 220}, title, sf::Style::Titlebar | sf::Style::Close};
-//		tgui::Gui gui{win};
-#endif
+		auto button = tgui::Button::create("OK");
+		auto text = tgui::TextBox::create();
+		tgui::Gui gui;
+		auto font = tgui::getGlobalFont();
+		const auto startWidth = button->getSize().x + 92;
+		unsigned width = startWidth;
+		unsigned height = button->getSize().y + 60;
+		unsigned currentWidth = startWidth;
+		auto size = text->getTextSize();
+
+		for (char c : content) {
+			currentWidth += font.getGlyph(c, size, false).advance;
+			width = std::max(currentWidth, width);
+			if (c == '\n' || c == '\r')
+				currentWidth = startWidth;
+			if (c == '\n' || c == '\v')
+				height += size;
+		}
+
+		sf::RenderWindow win{{std::min(700U, width), std::min(220U, height)}, title, sf::Style::Titlebar | sf::Style::Close};
+		auto pic = tgui::Picture::create("icons/error.png");
+		sf::Event event;
+
+		gui.setTarget(win);
+		gui.add(button, "ok");
+		gui.add(text);
+
+		button->setPosition("&.w - w - 10", "&.h - h - 10");
+		button->connect("Pressed", [&win]{
+			win.close();
+		});
+
+		text->setText(content);
+		text->setPosition(52, 10);
+		text->setSize("ok.x - 62", "ok.y - 20");
+		text->setReadOnly();
+		text->getRenderer()->setBorderColor("transparent");
+		text->getRenderer()->setBackgroundColor("transparent");
+
+		pic->setPosition(10, 10);
+		pic->setSize(32, 32);
+
+		if (variate & MB_ICONERROR)
+			gui.add(pic);
+
+		while (win.isOpen()) {
+			while (win.pollEvent(event)) {
+				if (event.type == sf::Event::Closed)
+					win.close();
+				gui.handleEvent(event);
+			}
+
+			win.clear({230, 230, 230, 255});
+			gui.draw();
+			win.display();
+		}
+
+		return 0;
 	}
 
 	static void _makeFolders(
@@ -316,11 +368,14 @@ namespace Mimp::Utils
 		});
 		gui.get<tgui::Button>("Open")->connect("Clicked", open);
 
+		if (overWriteWarning)
+			gui.get<tgui::Button>("Open")->setText("Save");
+
 		for (auto &pair : patterns)
 			box->addItem(pair.second, pair.first);
 		box->addItem("All files", ".*");
 		box->setSelectedItemByIndex(0);
-		box->connect("ItemSelected", [&currentPath, &panel, &file, &path, &box, &open]{
+		box->connect("ItemSelected", [&currentPath, &panel, &file, &box, &open]{
 			_makeFolders(currentPath, panel, file, open, std::regex(box->getSelectedItemId().toAnsiString(), std::regex_constants::icase));
 		});
 
@@ -349,5 +404,81 @@ namespace Mimp::Utils
 	std::string saveFileDialog(const std::string &title, const std::string &basePath, const std::vector<std::pair<std::string, std::string>> &patterns)
 	{
 		return openFileDialog(title, basePath, patterns, true, false);
+	}
+
+	tgui::ChildWindow::Ptr makeColorPickWindow(tgui::Gui &gui, const std::function<void(Color color)> &onFinish)
+	{
+		auto panel = tgui::Panel::create({"100%", "100%"});
+
+		panel->getRenderer()->setBackgroundColor({0, 0, 0, 175});
+		gui.add(panel);
+
+		auto window = tgui::ChildWindow::create();
+		window->setSize(271, 182);
+		window->setPosition("(&.w - w) / 2", "(&.h - h) / 2");
+		gui.add(window);
+
+		window->setFocused(true);
+
+		const bool tabUsageEnabled = gui.isTabKeyUsageEnabled();
+		auto closeWindow = [&gui, window, panel, tabUsageEnabled]{
+			gui.remove(window);
+			gui.remove(panel);
+			gui.setTabKeyUsageEnabled(tabUsageEnabled);
+		};
+
+		panel->connect("Clicked", closeWindow);
+		window->connect({"Closed", "EscapeKeyPressed"}, closeWindow);
+		window->loadWidgetsFromFile("widgets/color.gui");
+
+		auto red = window->get<tgui::Slider>("Red");
+		auto green = window->get<tgui::Slider>("Green");
+		auto blue = window->get<tgui::Slider>("Blue");
+		auto preview = window->get<tgui::TextBox>("Preview");
+		auto edit = window->get<tgui::EditBox>("Edit");
+		auto sliderCallback = [red, green, blue, preview]{
+			tgui::Color bufferColor{
+				static_cast<unsigned char>(red->getValue()),
+				static_cast<unsigned char>(green->getValue()),
+				static_cast<unsigned char>(blue->getValue())
+			};
+
+			preview->getRenderer()->setBackgroundColor(bufferColor);
+		};
+
+		edit->connect("TextChanged", [red, green, blue, edit]{
+			std::string text = edit->getText();
+
+			if (text.size() > 7) {
+				edit->setText(text.substr(0, 7));
+				return;
+			} else if (text.size() != 7)
+				return;
+
+			tgui::Color color{edit->getText()};
+
+			red->setValue(color.getRed());
+			green->setValue(color.getGreen());
+			blue->setValue(color.getBlue());
+		});
+		red->connect("ValueChanged", sliderCallback);
+		green->connect("ValueChanged", sliderCallback);
+		blue->connect("ValueChanged", sliderCallback);
+		preview->getRenderer()->setBackgroundColor({0, 0, 0, 255});
+		window->get<tgui::Button>("Cancel")->connect("Clicked", [window]{
+			window->close();
+		});
+		window->get<tgui::Button>("OK")->connect("Clicked", [onFinish, red, green, blue, window]{
+			Color bufferColor{
+				static_cast<unsigned char>(red->getValue()),
+				static_cast<unsigned char>(green->getValue()),
+				static_cast<unsigned char>(blue->getValue())
+			};
+
+			if (onFinish)
+				onFinish(bufferColor);
+			window->close();
+		});
+		return window;
 	}
 }

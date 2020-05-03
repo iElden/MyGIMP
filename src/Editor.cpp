@@ -19,7 +19,13 @@ namespace Mimp
 		this->_mainWindow.setFramerateLimit(240);
 		this->_gui.loadWidgetsFromFile("widgets/top_menu.gui");
 		this->_setupButtonCallbacks();
-		this->_gui.add(this->_toolBox.getWindow(), "ToolBox");
+
+		auto win = this->_toolBox.getWindow();
+
+		win->connect("Closed", [this, win] {
+			this->_gui.remove(win);
+		});
+		this->_gui.add(win, "ToolBox");
 
 		auto menu = this->_gui.get<tgui::MenuBar>("main_bar");
 
@@ -49,7 +55,7 @@ namespace Mimp
 
 	void Editor::setSelectedImage(tgui::ChildWindow::Ptr canvas)
 	{
-		this->_selectedImageWindow = canvas;
+		this->_selectImage(canvas);
 	}
 
 	tgui::ChildWindow::Ptr Editor::getSelectedImage() const
@@ -120,6 +126,15 @@ namespace Mimp
 			this->_unselectImage();
 			canvas->disableRendering();
 			this->_gui.remove(window);
+			for (auto &name : this->_gui.getWidgetNames()) {
+				if (name.substring(0, strlen("Image")) == "Image") {
+					this->setSelectedImage(this->_gui.get<tgui::ChildWindow>(name));
+					break;
+				}
+			}
+		});
+		window->connect("Focused", [this, window]{
+			this->setSelectedImage(window);
 		});
 		window->setPosition(0, 30);
 
@@ -155,7 +170,11 @@ namespace Mimp
 			});
 		}
 
-		menu->addMenu("Window");
+		menu->addMenuItem({"Window", "Tools"});
+		menu->connectMenuItem({"Window", "Tools"}, [this, menu]{
+			this->_gui.remove(this->_gui.get<tgui::Widget>("ToolBox"));
+			this->_gui.add(this->_toolBox.getWindow(), "ToolBox");
+		});
 		menu->addMenu("Help");
 		menu->connect("MouseEntered", [](tgui::Widget::Ptr bar, const std::string&){
 			bar->moveToFront();

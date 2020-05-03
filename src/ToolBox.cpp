@@ -7,6 +7,7 @@
 #include "ToolBox.hpp"
 #include "Tools/ToolFactory.hpp"
 #include "Exceptions.hpp"
+#include "Utils.hpp"
 
 namespace Mimp
 {
@@ -31,62 +32,8 @@ namespace Mimp
 	void ToolBox::_generateGuiWindow(tgui::Gui &gui)
 	{
 		auto callback = [this, &gui](tgui::Button::Ptr button, Color *color){
-			auto panel = tgui::Panel::create({"100%", "100%"});
-
-			panel->getRenderer()->setBackgroundColor({0, 0, 0, 175});
-			gui.add(panel);
-
-			auto window = tgui::ChildWindow::create();
-			window->setSize(271, 182);
-			window->setPosition("(&.w - w) / 2", "(&.h - h) / 2");
-			gui.add(window);
-
-			window->setFocused(true);
-
-			const bool tabUsageEnabled = gui.isTabKeyUsageEnabled();
-			auto closeWindow = [&gui, window, panel, tabUsageEnabled]{
-				gui.remove(window);
-				gui.remove(panel);
-				gui.setTabKeyUsageEnabled(tabUsageEnabled);
-			};
-
-			panel->connect("Clicked", closeWindow);
-			window->connect({"Closed", "EscapeKeyPressed"}, closeWindow);
-			window->loadWidgetsFromFile("widgets/color.gui");
-
-			auto red = window->get<tgui::Slider>("Red");
-			auto green = window->get<tgui::Slider>("Green");
-			auto blue = window->get<tgui::Slider>("Blue");
-			auto preview = window->get<tgui::TextBox>("Preview");
-			auto sliderCallback = [red, green, blue, preview]{
-				tgui::Color bufferColor{
-					static_cast<unsigned char>(red->getValue()),
-					static_cast<unsigned char>(green->getValue()),
-					static_cast<unsigned char>(blue->getValue())
-				};
-
-				preview->getRenderer()->setBackgroundColor(bufferColor);
-			};
-
-			red->setValue(color->r);
-			red->connect("ValueChanged", sliderCallback);
-			green->setValue(color->g);
-			green->connect("ValueChanged", sliderCallback);
-			blue->setValue(color->b);
-			blue->connect("ValueChanged", sliderCallback);
-			preview->getRenderer()->setBackgroundColor({color->r, color->g, color->b, 255});
-			window->get<tgui::Button>("Cancel")->connect("Clicked", [window]{
-				window->close();
-			});
-			window->get<tgui::Button>("OK")->connect("Clicked", [this, red, green, blue, window, button, color]{
-				Color bufferColor{
-					static_cast<unsigned char>(red->getValue()),
-					static_cast<unsigned char>(green->getValue()),
-					static_cast<unsigned char>(blue->getValue())
-				};
-
-				this->_changeSelectedColor(button, color, bufferColor);
-				window->close();
+			Utils::makeColorPickWindow(gui, [this, button, &color](Color col){
+				this->_changeSelectedColor(button, color, col);
 			});
 		};
 
