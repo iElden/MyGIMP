@@ -42,6 +42,7 @@ namespace Mimp
 
 		auto panel = this->_window->get<tgui::ScrollablePanel>("Panel");
 
+		panel->setSize(panel->getSize().x * 2, panel->getSize().y);
 		this->_colorButtons.first = this->_window->get<tgui::Button>("Color1");
 		this->_colorButtons.second = this->_window->get<tgui::Button>("Color2");
 
@@ -55,7 +56,7 @@ namespace Mimp
 		this->_colorButtons.second->getRenderer()->setBackgroundColorDown({this->_selectedColor.second.r, this->_selectedColor.second.g, this->_selectedColor.second.b, 255});
 		this->_colorButtons.second->connect("Clicked", callback, this->_colorButtons.second, &this->_selectedColor.second);
 
-		this->_window->setSize(panel->getSize());
+		this->_window->setSize(panel->getSize().x, panel->getSize().y + 300);
 		this->_window->setTitle("Tools");
 		this->_window->connect("Closed", [this, &gui]{
 			this->_generateGuiWindow(gui);
@@ -72,9 +73,10 @@ namespace Mimp
 						throw CorruptedGuiFileException("Tool index out of range");
 
 					widget->setToolTip(tgui::Label::create(this->_tools[index]->getName()));
-					widget->connect("Pressed", [this, index]{
+					widget->connect("Pressed", [this, index, panel]{
 						this->getSelectedTool()->onUnselect();
 						this->_selectedTool = index;
+						this->_addSelectedToolConfigPanel(panel);
 						this->getSelectedTool()->onSelect();
 					});
 				} catch (std::out_of_range &e) {
@@ -84,6 +86,7 @@ namespace Mimp
 				}
 			}
 		}
+		this->_addSelectedToolConfigPanel(panel);
 	}
 
 	Color ToolBox::getSelectedColor(MouseClick click)
@@ -109,5 +112,15 @@ namespace Mimp
 			this->_changeSelectedColor(this->_colorButtons.first, &this->_selectedColor.first, newColor);
 		else if (click == MIMP_RIGHT_CLICK)
 			this->_changeSelectedColor(this->_colorButtons.second, &this->_selectedColor.second, newColor);
+	}
+
+	void ToolBox::_addSelectedToolConfigPanel(tgui::Panel::Ptr pan)
+	{
+		auto panel = this->getSelectedTool()->getParametersPanel();
+
+		this->_window->remove(this->_window->get<tgui::Widget>("cfg"));
+		panel->setPosition(10, pan->getSize().y + 10);
+		panel->setSize(pan->getSize().x - 20, 280);
+		this->_window->add(panel, "cfg");
 	}
 }

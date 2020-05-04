@@ -3,6 +3,7 @@
 //
 
 #include <TGUI/TGUI.hpp>
+#include <iostream>
 #include "Pencil.hpp"
 #include "../Utils.hpp"
 
@@ -36,18 +37,21 @@ namespace Mimp
 
 		auto radiusSlider = panel->get<tgui::Slider>("Radius");
 		auto shapeBox = panel->get<tgui::ComboBox>("Shape");
+		auto radiusPreview = panel->get<tgui::TextBox>("RadiusPreview");
 
+		radiusPreview->setText(std::to_string(this->_radius));
 		radiusSlider->setValue(this->_radius);
 		shapeBox->removeAllItems();
 		for (int i = 0; i < NB_OF_SHAPES; i++)
 			shapeBox->addItem(Utils::DrawShapeToString(static_cast<DrawShape>(i)));
 		shapeBox->setSelectedItemByIndex(CIRCLE);
 
-		radiusSlider->connect("ValueChanged", [this, radiusSlider]{
+		radiusSlider->connect("ValueChanged", [radiusPreview, this, radiusSlider]{
 			this->_radius = radiusSlider->getValue();
+			radiusPreview->setText(std::to_string(this->_radius));
 		});
-		shapeBox->connect("ItemSelected", [this](int index){
-			this->_shape = static_cast<DrawShape>(index);
+		shapeBox->connect("ItemSelected", [this, shapeBox]{
+			this->_shape = static_cast<DrawShape>(shapeBox->getSelectedItemIndex());
 		});
 		return panel;
 	}

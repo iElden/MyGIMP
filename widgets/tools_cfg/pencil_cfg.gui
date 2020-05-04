@@ -11,8 +11,8 @@ Slider.Radius {
     InvertedDirection = false;
     Maximum = 200;
     Minimum = 1;
-    Position = (80, 10);
-    Size = (200, 16);
+    Position = (60, 10);
+    Size = (190, 16);
     Step = 1;
     Value = 5;
 
@@ -57,9 +57,9 @@ ComboBox.Shape {
     Items = [Circle, Square, Diamond];
     ItemsToDisplay = 0;
     MaximumItems = 0;
-    Position = (80, 40);
+    Position = (60, 40);
     SelectedItemIndex = 0;
-    Size = (200, 22);
+    Size = (230, 22);
     TextSize = 13;
 
     Renderer {
@@ -75,5 +75,37 @@ ComboBox.Shape {
         texturearrow = None;
         texturearrowhover = None;
         texturebackground = None;
+    }
+}
+
+TextBox.RadiusPreview {
+    HorizontalScrollbarPolicy = Never;
+    MaximumCharacters = 0;
+    Position = (250, 10.5121);
+    ReadOnly = true;
+    Size = (38, 23.2335);
+    Text = 1;
+    TextSize = 13;
+
+    Renderer {
+        backgroundcolor = transparent;
+        bordercolor = transparent;
+        borders = (1, 1, 1, 1);
+        caretcolor = rgba(255, 255, 255, 215);
+        selectedtextbackgroundcolor = rgba(0, 110, 200, 130);
+        selectedtextcolor = rgba(255, 255, 255, 245);
+        textcolor = black;
+        texturebackground = None;
+
+        scrollbar {
+            arrowbackgroundcolor = rgba(160, 160, 160, 215);
+            arrowbackgroundcolorhover = rgba(170, 170, 170, 215);
+            arrowcolor = rgba(200, 200, 200, 215);
+            arrowcolorhover = rgba(225, 225, 225, 215);
+            thumbcolor = rgba(185, 185, 185, 215);
+            thumbcolorhover = rgba(195, 195, 195, 215);
+            trackcolor = rgba(160, 160, 160, 215);
+            trackcolorhover = rgba(170, 170, 170, 215);
+        }
     }
 }

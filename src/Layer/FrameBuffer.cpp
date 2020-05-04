@@ -340,8 +340,12 @@ namespace Mimp
 	{
 		switch (shape) {
 		case DrawShape::CIRCLE:
-			this->_drawCircleAt(pos, color, radius, drawStrategy);
-		default:
+			return this->_drawCircleAt(pos, color, radius, drawStrategy);
+		case DrawShape::SQUARE:
+			return this->_drawSquareAt(pos, color, radius, drawStrategy);
+		case DrawShape::DIAMOND:
+			return this->_drawDiamondAt(pos, color, radius, drawStrategy);
+		case DrawShape::NB_OF_SHAPES:
 			return;
 		}
 	}

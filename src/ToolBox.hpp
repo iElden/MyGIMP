@@ -38,6 +38,8 @@ namespace Mimp
 		//! @param color Color used
 		//! @param newColor Color to use
 		void _changeSelectedColor(tgui::Button::Ptr button, Color *color, Color newColor);
+
+		void _addSelectedToolConfigPanel(tgui::Panel::Ptr pan);
 	public:
 		//! @brief Constructor of ToolBox Class
 		ToolBox(tgui::Gui &gui);
