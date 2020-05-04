@@ -9,13 +9,13 @@
 #include <string>
 #include <vector>
 #include <filesystem>
+#include "Data/Color.hpp"
+#include "Enum.hpp"
 
 #ifndef _WIN32
 #define MB_ICONERROR 1
 #else
 #include <windows.h>
-#include "Data/Color.hpp"
-
 #endif
 
 
@@ -66,6 +66,8 @@ namespace Mimp::Utils
 	std::string cleanPath(const std::string &path);
 
 	tgui::ChildWindow::Ptr makeColorPickWindow(tgui::Gui &gui, const std::function<void(Color color)> &onFinish);
+	std::string DrawShapeToString(DrawShape shape);
+	DrawShape DrawShapeFromString(const std::string &str);
 }
 
 

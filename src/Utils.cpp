@@ -13,6 +13,7 @@
 #include <numeric>
 #include "Utils.hpp"
 #include "Exceptions.hpp"
+#include "Enum.hpp"
 
 namespace Mimp::Utils
 {
@@ -483,5 +484,15 @@ namespace Mimp::Utils
 			window->close();
 		});
 		return window;
+	}
+
+	std::string DrawShapeToString(DrawShape shape)
+	{
+
+	}
+
+	DrawShape DrawShapeFromString(const std::string &str)
+	{
+
 	}
 }

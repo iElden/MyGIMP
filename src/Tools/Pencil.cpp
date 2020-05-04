@@ -2,6 +2,8 @@
 // Created by Gegel85 on 07/04/2020.
 //
 
+#include <TGUI/Widgets/Slider.hpp>
+#include <TGUI/Widgets/ComboBox.hpp>
 #include "Pencil.hpp"
 
 namespace Mimp
@@ -28,6 +30,15 @@ namespace Mimp
 
 	tgui::ScrollablePanel::Ptr Pencil::getParametersPanel() const
 	{
-		return tgui::ScrollablePanel::create({0, 0});
+		auto panel = tgui::ScrollablePanel::create();
+
+		panel->loadWidgetsFromFile("widgets/tools_cfg/pencil_cfg.gui");
+
+		auto radiusSlider = panel->get<tgui::Slider>("Radius");
+		auto shapeBox = panel->get<tgui::ComboBox>("Shape");
+
+		radiusSlider->setValue(this->_radius);
+
+		return panel;
 	}
 }

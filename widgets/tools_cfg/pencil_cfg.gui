@@ -1,0 +1,79 @@
+Renderer.1 {
+    backgroundcolor = transparent;
+    bordercolor = #3C3C3C;
+    borders = (0, 0, 0, 0);
+    textcolor = #3C3C3C;
+    texturebackground = None;
+}
+
+Slider.Radius {
+    ChangeValueOnScroll = true;
+    InvertedDirection = false;
+    Maximum = 200;
+    Minimum = 1;
+    Position = (80, 10);
+    Size = (200, 16);
+    Step = 1;
+    Value = 5;
+
+    Renderer {
+        bordercolor = #3C3C3C;
+        bordercolorhover = black;
+        borders = (1, 1, 1, 1);
+        texturethumb = None;
+        texturethumbhover = None;
+        texturetrack = None;
+        texturetrackhover = None;
+        thumbcolor = #F5F5F5;
+        thumbcolorhover = white;
+        trackcolor = #F5F5F5;
+        trackcolorhover = white;
+    }
+}
+
+Label.Label1 {
+    AutoSize = true;
+    Position = (10, 10);
+    ScrollbarPolicy = Never;
+    Size = (46.2, 18);
+    Text = Radius;
+    TextSize = 13;
+    renderer = &1;
+}
+
+Label.Label2 {
+    AutoSize = true;
+    Position = (10, 42);
+    ScrollbarPolicy = Never;
+    Size = (43.2, 18);
+    Text = Shape;
+    TextSize = 13;
+    renderer = &1;
+}
+
+ComboBox.Shape {
+    ChangeItemOnScroll = true;
+    ExpandDirection = Down;
+    Items = [Circle, Square, Diamond];
+    ItemsToDisplay = 0;
+    MaximumItems = 0;
+    Position = (80, 40);
+    SelectedItemIndex = 0;
+    Size = (200, 22);
+    TextSize = 13;
+
+    Renderer {
+        arrowbackgroundcolor = #F5F5F5;
+        arrowbackgroundcolorhover = white;
+        arrowcolor = #3C3C3C;
+        arrowcolorhover = black;
+        backgroundcolor = #F5F5F5;
+        bordercolor = black;
+        borders = (1, 1, 1, 1);
+        padding = (0, 0, 0, 0);
+        textcolor = #3C3C3C;
+        texturearrow = None;
+        texturearrowhover = None;
+        texturebackground = None;
+    }
+}
