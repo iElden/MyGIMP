@@ -27,7 +27,7 @@ namespace Mimp
 		Pencil(ToolBox &);
 		void onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Image &image) override;
 		void onClick(Vector2<int> pos, MouseClick click, Image &image) override;
-		tgui::ScrollablePanel::Ptr getParametersPanel() const override;
+		tgui::ScrollablePanel::Ptr getParametersPanel() override;
 	};
 }
 

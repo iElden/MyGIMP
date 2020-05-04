@@ -17,7 +17,8 @@ namespace Mimp {
 	enum DrawShape {
 		CIRCLE,
 		SQUARE,
-		DIAMOND
+		DIAMOND,
+		NB_OF_SHAPES
 	};
 }
 

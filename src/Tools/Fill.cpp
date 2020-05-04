@@ -54,7 +54,7 @@ void Mimp::Fill::_spread_color(Vector2<int> pos, Layer &layer, Color target_colo
 	}
 }
 
-tgui::ScrollablePanel::Ptr Mimp::Fill::getParametersPanel() const
+tgui::ScrollablePanel::Ptr Mimp::Fill::getParametersPanel()
 {
 	return tgui::ScrollablePanel::create({0, 0});
 }

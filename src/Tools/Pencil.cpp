@@ -2,9 +2,9 @@
 // Created by Gegel85 on 07/04/2020.
 //
 
-#include <TGUI/Widgets/Slider.hpp>
-#include <TGUI/Widgets/ComboBox.hpp>
+#include <TGUI/TGUI.hpp>
 #include "Pencil.hpp"
+#include "../Utils.hpp"
 
 namespace Mimp
 {
@@ -28,7 +28,7 @@ namespace Mimp
 		image.getSelectedLayer().buffer.drawAt(pos, this->_box.getSelectedColor(click), this->_radius, this->_shape);
 	}
 
-	tgui::ScrollablePanel::Ptr Pencil::getParametersPanel() const
+	tgui::ScrollablePanel::Ptr Pencil::getParametersPanel()
 	{
 		auto panel = tgui::ScrollablePanel::create();
 
@@ -38,7 +38,17 @@ namespace Mimp
 		auto shapeBox = panel->get<tgui::ComboBox>("Shape");
 
 		radiusSlider->setValue(this->_radius);
+		shapeBox->removeAllItems();
+		for (int i = 0; i < NB_OF_SHAPES; i++)
+			shapeBox->addItem(Utils::DrawShapeToString(static_cast<DrawShape>(i)));
+		shapeBox->setSelectedItemByIndex(CIRCLE);
 
+		radiusSlider->connect("ValueChanged", [this, radiusSlider]{
+			this->_radius = radiusSlider->getValue();
+		});
+		shapeBox->connect("ItemSelected", [this](int index){
+			this->_shape = static_cast<DrawShape>(index);
+		});
 		return panel;
 	}
 }

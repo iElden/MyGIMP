@@ -86,6 +86,15 @@ namespace Mimp
 			BaseException(static_cast<const std::string &&>(msg))
 		{};
 	};
+
+	class InvalidDrawShapeException : public BaseException {
+	public:
+		//! @brief Function to print
+		//! @param msg Message of the Exception
+		explicit InvalidDrawShapeException(const std::string &&msg) :
+			BaseException(static_cast<const std::string &&>(msg))
+		{};
+	};
 }
 
 

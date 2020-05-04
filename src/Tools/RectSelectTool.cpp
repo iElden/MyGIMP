@@ -44,7 +44,7 @@ void Mimp::RectSelectTool::_updateSelectedArea(Image &image)
 			image.selectedArea.add(i, j);
 }
 
-tgui::ScrollablePanel::Ptr Mimp::RectSelectTool::getParametersPanel() const
+tgui::ScrollablePanel::Ptr Mimp::RectSelectTool::getParametersPanel()
 {
 	return tgui::ScrollablePanel::create({0, 0});
 }

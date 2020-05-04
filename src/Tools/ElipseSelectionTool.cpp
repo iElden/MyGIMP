@@ -36,7 +36,7 @@ void Mimp::ElipseSelectionTool::onMouseDrag(Mimp::Vector2<int>, Mimp::Vector2<in
 	this->_updateSelectedArea(image); // TODO: Add onMouseRelease event for optimisation
 }
 
-tgui::ScrollablePanel::Ptr Mimp::ElipseSelectionTool::getParametersPanel() const
+tgui::ScrollablePanel::Ptr Mimp::ElipseSelectionTool::getParametersPanel()
 {
 	return tgui::ScrollablePanel::create({0, 0});
 }

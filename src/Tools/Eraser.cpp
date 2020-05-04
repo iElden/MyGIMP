@@ -29,7 +29,7 @@ namespace Mimp
 		image.getSelectedLayer().buffer.drawAt(pos, Color::Transparent, this->_radius, this->_shape, DrawStrategy::SET);
 	}
 
-	tgui::ScrollablePanel::Ptr Eraser::getParametersPanel() const
+	tgui::ScrollablePanel::Ptr Eraser::getParametersPanel()
 	{
 		return tgui::ScrollablePanel::create({0, 0});
 	}

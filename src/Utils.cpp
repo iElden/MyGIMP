@@ -488,11 +488,27 @@ namespace Mimp::Utils
 
 	std::string DrawShapeToString(DrawShape shape)
 	{
-
+		switch (shape) {
+		case CIRCLE:
+			return "Circle";
+		case SQUARE:
+			return "Square";
+		case DIAMOND:
+			return "Diamond";
+		case NB_OF_SHAPES:
+			throw InvalidDrawShapeException("Invalid DrawShape");
+		}
 	}
 
 	DrawShape DrawShapeFromString(const std::string &str)
 	{
-
+		if (str == "Circle") {
+			return CIRCLE;
+		} else if (str == "Square") {
+			return SQUARE;
+		} else if (str == "Diamond") {
+			return DIAMOND;
+		}
+		throw InvalidDrawShapeException(str + " is not a valid DrawShape");
 	}
 }
