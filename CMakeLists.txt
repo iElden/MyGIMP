@@ -87,3 +87,29 @@ target_link_libraries(
 	pthread
 	stdc++fs
 )
+
+# --------------
+
+include_directories(tst/include)
+include_directories(.)
+
+add_executable(
+    MyGimp_test
+    tst/main.cpp
+    tst/Vector.cpp
+    src/Data/Color.cpp tst/Color.cpp
+    src/Utils.cpp src/Utils.hpp tst/Utils.cpp
+)
+
+find_library(GTEST gtest PATHS ${PROJECT_SOURCE_DIR}/tst/lib)
+
+target_link_libraries(
+	MyGimp_test
+	tgui
+	sfml-graphics
+	sfml-window
+	sfml-system
+	pthread
+	stdc++fs
+    ${GTEST}
+)
