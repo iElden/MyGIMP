@@ -1,5 +1,4 @@
 #include "gtest/gtest.h"
-#include <TGUI/TGUI.hpp>
 #include "src/Utils.hpp"
 
 TEST(PathManipulation, trimCurrentPath1)

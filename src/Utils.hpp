@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 #include <filesystem>
+#include <TGUI/TGUI.hpp>
 #include "Data/Color.hpp"
 #include "Enum.hpp"
 

@@ -8,7 +8,6 @@
 #include <regex>
 #include <codecvt>
 #include <SFML/Graphics.hpp>
-#include <TGUI/TGUI.hpp>
 #include <iostream>
 #include <numeric>
 #include "Utils.hpp"
