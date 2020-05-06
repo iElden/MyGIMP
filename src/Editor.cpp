@@ -207,7 +207,7 @@ namespace Mimp
 				win->close();
 			});
 		});
-		menu->connectMenuItem({"File", "Open", "Local file"}, [this, menu]{
+		menu->connectMenuItem({"File", "Open"}, [this, menu]{
 			std::string path = Utils::openFileDialog("Load MIMP file", ".", {{".+[.]mimp", "MIMP image file"}});
 
 			if (path.empty())
@@ -271,7 +271,10 @@ namespace Mimp
 		menu->connectMenuItem({"File", "Quit"}, [this]{
 			this->_mainWindow.close();
 		});
-		menu->connectMenuItem({"File", "Import"}, [this, menu] {
+		menu->connectMenuItem({"File", "Import", "Link"}, []{
+
+		});
+		menu->connectMenuItem({"File", "Import", "Local file"}, [this, menu] {
 			std::string path = Utils::openFileDialog("Load MIMP file", ".", {
 				{".+[.]png", "Portable Network Graphics (PNG)"},
 				{".+[.]jpg", "Joint Photographic Experts Group (JPEG)"},
@@ -285,7 +288,7 @@ namespace Mimp
 
 				auto widget = CanvasWidget::create(this->_toolBox, Vector2<unsigned>{0, 0});
 
-				widget->importImage(path);
+				widget->importImageFromFile(path);
 
 				auto window = _makeImagePanel(widget);
 

@@ -81,7 +81,10 @@ namespace Mimp
 		void setSize(const tgui::Layout2d& size) override;
 		//! @brief Import an image
 		//! @param path Path of the image
-		void importImage(const std::string &path);
+		void importImageFromFile(const std::string &path);
+		//! @brief Import an image
+		//! @param data Data
+		void importImageFromMemory(const std::string &data);
 	};
 }
 

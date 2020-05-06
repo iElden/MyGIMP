@@ -21,14 +21,6 @@ MenuBar.main_bar {
 
         Menu {
             Text = "Open";
-	    
-	    Menu {
-		Text = "Local file";
-	    }
-	    
-	    Menu {
-		Text = "Link";
-	    }
         }
 
         Menu {
@@ -48,6 +40,14 @@ MenuBar.main_bar {
 
         Menu {
             Text = "Import";
+	    
+	    Menu {
+		Text = "Local file";
+	    }
+	    
+	    Menu {
+		Text = "Link";
+	    }
         }
 
         Menu {

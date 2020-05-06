@@ -2,10 +2,10 @@
 // Created by jmartin on 4/19/20.
 //
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include <zconf.h>
-#include "src/Image.hpp"
-#include "src/Data/Vector2.hpp"
+#include "../src/Image.hpp"
+#include "../src/Data/Vector2.hpp"
 
 TEST(Image, GetSelectedLayerTest)
 {

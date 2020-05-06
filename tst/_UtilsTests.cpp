@@ -2,10 +2,10 @@
 // Created by jmartin on 4/15/20.
 //
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include <zconf.h>
-#include "src/Utils.hpp"
-#include "src/Exceptions.hpp"
+#include "../src/Utils.hpp"
+#include "../src/Exceptions.hpp"
 
 TEST(Utils, GetLastExceptionTest)
 {

@@ -1,5 +1,5 @@
-#include "gtest/gtest.h"
-#include "src/Utils.hpp"
+#include <gtest/gtest.h>
+#include "../src/Utils.hpp"
 
 TEST(PathManipulation, trimCurrentPath1)
 {

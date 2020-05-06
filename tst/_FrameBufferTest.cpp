@@ -3,9 +3,9 @@
 //
 
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include <zconf.h>
-#include "src/Layer/FrameBuffer.hpp"
+#include "../src/Layer/FrameBuffer.hpp"
 
 TEST(FrameBuffer, GetBufferTest)
 {

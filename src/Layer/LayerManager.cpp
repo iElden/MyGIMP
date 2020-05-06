@@ -193,7 +193,40 @@ namespace Mimp
 		delete[] buffer;
 	}
 
-	void LayerManager::importImage(const std::string &path)
+	void LayerManager::importImageFromMemory(const std::string &data)
+	{
+		sf::Image image;
+
+		if (!image.loadFromMemory(data.c_str(), data.size()))
+			throw InvalidImageException("Failed to load image from memory");
+
+		this->_setBusy();
+		this->_layers.clear();
+
+		Vector2<unsigned> size{
+			image.getSize().x,
+			image.getSize().y
+		};
+		auto pixelBuffer = new Color[size.x * size.y];
+
+		this->_size = size;
+
+		for (unsigned x = 0; x < size.x; x++)
+			for (unsigned y = 0; y < size.y; y++)
+				pixelBuffer[x + y * size.x] = Color{
+					image.getPixel(x, y).r,
+					image.getPixel(x, y).g,
+					image.getPixel(x, y).b,
+					image.getPixel(x, y).a
+				};
+		auto &layer = this->_layers.emplace_back(new Layer{size, pixelBuffer});
+
+		std::strcpy(layer->name, "Layer 1");
+		delete[] pixelBuffer;
+		this->_unsetBusy();
+	}
+
+	void LayerManager::importImageFromFile(const std::string &path)
 	{
 		sf::Image image;
 

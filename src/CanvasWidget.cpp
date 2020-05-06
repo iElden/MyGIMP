@@ -217,9 +217,23 @@ namespace Mimp
 		return std::make_shared<CanvasWidget>(box, path);
 	}
 
-	void CanvasWidget::importImage(const std::string &path)
+	void CanvasWidget::importImageFromFile(const std::string &path)
 	{
-		this->_layers.importImage(path);
+		this->_layers.importImageFromFile(path);
+		this->_size = {
+			this->_layers.getSize().x,
+			this->_layers.getSize().y
+		};
+		this->m_size = {
+			this->_size.x,
+			this->_size.y
+		};
+		this->_drawBuffer.create(this->_size.x, this->_size.y);
+	}
+
+	void CanvasWidget::importImageFromMemory(const std::string &path)
+	{
+		this->_layers.importImageFromMemory(path);
 		this->_size = {
 			this->_layers.getSize().x,
 			this->_layers.getSize().y
