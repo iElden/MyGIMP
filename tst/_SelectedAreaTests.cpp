@@ -9,7 +9,7 @@
 
 TEST(ToolBox, AddTest)
 {
-	Mimp::SelectedArea selectedArea;
+	Mimp::SelectedArea selectedArea(10, 10);
 
 	selectedArea.add(5, 5);
 	selectedArea.add({10, 10});
@@ -19,7 +19,7 @@ TEST(ToolBox, AddTest)
 
 TEST(ToolBox, clearTest)
 {
-	Mimp::SelectedArea selectedArea;
+	Mimp::SelectedArea selectedArea(10, 10);
 
 	selectedArea.add(5, 5);
 	selectedArea.add({10, 10});

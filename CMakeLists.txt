@@ -163,7 +163,7 @@ add_executable(
     tst/_LayerTest.cpp
     tst/_LayerManagerTest.cpp
     tst/_ImageTests.cpp
-    #tst/_SelectedAreaTests.cpp // Problème de construction.
+    tst/_SelectedAreaTests.cpp
     tst/_ToolBoxTests.cpp
 )
 
