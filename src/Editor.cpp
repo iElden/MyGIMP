@@ -180,12 +180,27 @@ namespace Mimp
 			bar->moveToFront();
 		});
 		menu->connectMenuItem({"File", "New"}, [this, menu]{
-			auto widget = CanvasWidget::create(this->_toolBox, Vector2<unsigned>{640, 480});
-			auto window = _makeImagePanel(widget);
+			auto win = Utils::openWindowWithFocus(this->_gui, 200, 110);
 
-			window->setTitle("Untitled " + std::to_string(++this->_lastUntitled));
-			this->_gui.add(window, "ImageUntitled " + std::to_string(this->_lastUntitled));
-			this->_selectImage(window);
+			win->loadWidgetsFromFile("widgets/new.gui");
+			win->setTitle("New image");
+
+			auto ok = win->get<tgui::Button>("OK");
+			auto cancel = win->get<tgui::Button>("Cancel");
+
+			cancel->connect("Pressed", [win]{ win->close(); });
+			ok->connect("Pressed", [this, win] {
+				auto widget = CanvasWidget::create(this->_toolBox, Vector2<unsigned>{
+					std::stoul(static_cast<std::string>(win->get<tgui::EditBox>("Width")->getText())),
+					std::stoul(static_cast<std::string>(win->get<tgui::EditBox>("Height")->getText()))
+				});
+				auto window = _makeImagePanel(widget);
+
+				window->setTitle("Untitled " + std::to_string(++this->_lastUntitled));
+				this->_gui.add(window, "ImageUntitled " + std::to_string(this->_lastUntitled));
+				this->_selectImage(window);
+				win->close();
+			});
 		});
 		menu->connectMenuItem({"File", "Open"}, [this, menu]{
 			std::string path = Utils::openFileDialog("Load MIMP file", ".", {{".+[.]mimp", "MIMP image file"}});

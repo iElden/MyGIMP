@@ -407,7 +407,7 @@ namespace Mimp::Utils
 		return openFileDialog(title, basePath, patterns, true, false);
 	}
 
-	tgui::ChildWindow::Ptr makeColorPickWindow(tgui::Gui &gui, const std::function<void(Color color)> &onFinish)
+	tgui::ChildWindow::Ptr openWindowWithFocus(tgui::Gui &gui, tgui::Layout width, tgui::Layout height)
 	{
 		auto panel = tgui::Panel::create({"100%", "100%"});
 
@@ -415,7 +415,7 @@ namespace Mimp::Utils
 		gui.add(panel);
 
 		auto window = tgui::ChildWindow::create();
-		window->setSize(271, 182);
+		window->setSize(width, height);
 		window->setPosition("(&.w - w) / 2", "(&.h - h) / 2");
 		gui.add(window);
 
@@ -430,6 +430,12 @@ namespace Mimp::Utils
 
 		panel->connect("Clicked", closeWindow);
 		window->connect({"Closed", "EscapeKeyPressed"}, closeWindow);
+		return window;
+	}
+
+	tgui::ChildWindow::Ptr makeColorPickWindow(tgui::Gui &gui, const std::function<void(Color color)> &onFinish)
+	{
+		auto window = openWindowWithFocus(gui, 271, 182);
 		window->loadWidgetsFromFile("widgets/color.gui");
 
 		auto red = window->get<tgui::Slider>("Red");

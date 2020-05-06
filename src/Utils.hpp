@@ -65,6 +65,7 @@ namespace Mimp::Utils
 	//! @return std::string Converted Path in String
 	std::string cleanPath(const std::string &path);
 
+	tgui::ChildWindow::Ptr openWindowWithFocus(tgui::Gui &gui, tgui::Layout width, tgui::Layout height);
 	tgui::ChildWindow::Ptr makeColorPickWindow(tgui::Gui &gui, const std::function<void(Color color)> &onFinish);
 	std::string DrawShapeToString(DrawShape shape);
 	DrawShape DrawShapeFromString(const std::string &str);
