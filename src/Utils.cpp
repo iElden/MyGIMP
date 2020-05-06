@@ -552,11 +552,6 @@ namespace Mimp::Utils
 		if (response.returnCode / 100 == 3)
 			throw NotImplementedException();
 
-		std::ofstream stream{"test.png", std::ofstream::binary};
-
-		stream << response.body;
-		stream.close();
-
 		return response.body;
 	}
 
