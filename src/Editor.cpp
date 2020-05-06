@@ -190,10 +190,15 @@ namespace Mimp
 
 			cancel->connect("Pressed", [win]{ win->close(); });
 			ok->connect("Pressed", [this, win] {
-				auto widget = CanvasWidget::create(this->_toolBox, Vector2<unsigned>{
-					std::stoul(static_cast<std::string>(win->get<tgui::EditBox>("Width")->getText())),
-					std::stoul(static_cast<std::string>(win->get<tgui::EditBox>("Height")->getText()))
-				});
+				std::string width = win->get<tgui::EditBox>("Width")->getText();
+				std::string height = win->get<tgui::EditBox>("Height")->getText();
+
+				if (width.empty() || height.empty())
+					return;
+
+				auto w = std::stoul(width);
+				auto h = std::stoul(height);
+				auto widget = CanvasWidget::create(this->_toolBox, Vector2<unsigned>{w, h});
 				auto window = _makeImagePanel(widget);
 
 				window->setTitle("Untitled " + std::to_string(++this->_lastUntitled));
@@ -256,7 +261,11 @@ namespace Mimp
 
 			if (path.empty())
 				return;
-			this->_getSelectedCanvas()->exportImage(path);
+			try {
+				this->_getSelectedCanvas()->exportImage(path);
+			} catch (std::exception &e) {
+				Utils::dispMsg("Save error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
+			}
 		});
 		menu->connectMenuItem({"File", "Close"}, [this]{
 			this->_selectedImageWindow->close();

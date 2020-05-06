@@ -142,6 +142,10 @@ namespace Mimp::Utils
 				currentWidth = startWidth;
 			if (c == '\n' || c == '\v')
 				height += size;
+			if (currentWidth > 700U) {
+				currentWidth = startWidth;
+				height += size;
+			}
 		}
 
 		sf::RenderWindow win{{std::min(700U, width), std::min(220U, height)}, title, sf::Style::Titlebar | sf::Style::Close};
@@ -502,8 +506,9 @@ namespace Mimp::Utils
 		case DIAMOND:
 			return "Diamond";
 		case NB_OF_SHAPES:
-			throw InvalidDrawShapeException("Invalid DrawShape");
+			throw InvalidDrawShapeException("NB_OF_SHAPES is not a DrawShape");
 		}
+		throw InvalidDrawShapeException("Invalid DrawShape");
 	}
 
 	DrawShape DrawShapeFromString(const std::string &str)
