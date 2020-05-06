@@ -272,6 +272,7 @@ namespace Mimp::Utils
 			} else if (item != "." && !item.empty())
 				files.push_back(item);
 
+#ifdef _WIN32
 		return std::accumulate(
 			files.begin() + 1,
 			files.end(),
@@ -280,6 +281,16 @@ namespace Mimp::Utils
 				return a + static_cast<char>(std::filesystem::path::preferred_separator) + b;
 			}
 		);
+#else
+		return std::accumulate(
+			files.begin() + 1,
+			files.end(),
+			static_cast<char>(std::filesystem::path::preferred_separator) + files[0],
+			[](const std::string &a, const std::string &b){
+				return a + static_cast<char>(std::filesystem::path::preferred_separator) + b;
+			}
+		);
+#endif
 	}
 
 	std::string openFileDialog(const std::string &title, const std::string &basePath, const std::vector<std::pair<std::string, std::string>> &patterns, bool overWriteWarning, bool mustExist)
