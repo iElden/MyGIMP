@@ -1,5 +1,5 @@
-#include "gtest/gtest.h"
-#include "src/Data/Color.hpp"
+#include <gtest/gtest.h>
+#include "../src/Data/Color.hpp"
 
 TEST(ColorManipulation, addition1)
 {

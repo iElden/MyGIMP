@@ -2,10 +2,10 @@
 // Created by jmartin on 4/22/20.
 //
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include <iostream>
 #include <zconf.h>
-#include "src/SelectedArea.hpp"
+#include "../src/SelectedArea.hpp"
 
 TEST(ToolBox, AddTest)
 {

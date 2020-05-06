@@ -2,11 +2,11 @@
 // Created by jmartin on 4/15/20.
 //
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include <iostream>
 #include <zconf.h>
 #include <TGUI/TGUI.hpp>
-#include "src/ToolBox.hpp"
+#include "../src/ToolBox.hpp"
 
 TEST(ToolBox, GetSelectedToolTest)
 {

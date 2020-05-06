@@ -2,10 +2,10 @@
 // Created by jmartin on 4/20/20.
 //
 
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 #include <zconf.h>
-#include "src/Layer/LayerManager.hpp"
-#include "src/Data/Vector2.hpp"
+#include "../src/Layer/LayerManager.hpp"
+#include "../src/Data/Vector2.hpp"
 
 TEST(LayerManager, GetSizeTest)
 {
