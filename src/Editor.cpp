@@ -271,8 +271,40 @@ namespace Mimp
 		menu->connectMenuItem({"File", "Quit"}, [this]{
 			this->_mainWindow.close();
 		});
-		menu->connectMenuItem({"File", "Import", "Link"}, []{
+		menu->connectMenuItem({"File", "Import", "Link"}, [this]{
+			auto win = Utils::openWindowWithFocus(this->_gui, 210, 70);
 
+			win->loadWidgetsFromFile("widgets/import_link.gui");
+			win->setTitle("Import image");
+
+			auto ok = win->get<tgui::Button>("OK");
+			auto cancel = win->get<tgui::Button>("Cancel");
+
+			cancel->connect("Pressed", [win]{ win->close(); });
+			ok->connect("Pressed", [this, win] {
+				auto link = win->get<tgui::EditBox>("Link");
+
+				try {
+					std::string path = link->getText();
+
+					if (path.empty())
+						return;
+
+					auto widget = CanvasWidget::create(this->_toolBox, Vector2<unsigned>{0, 0});
+
+					widget->importImageFromMemory(Utils::resolveUrl(path));
+
+					auto window = _makeImagePanel(widget);
+
+					window->setTitle(path);
+					this->_gui.add(window, "Image" + path);
+					this->_selectImage(window);
+
+					win->close();
+				} catch (std::exception &e) {
+					Utils::dispMsg("Import error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
+				}
+			});
 		});
 		menu->connectMenuItem({"File", "Import", "Local file"}, [this, menu] {
 			std::string path = Utils::openFileDialog("Load MIMP file", ".", {

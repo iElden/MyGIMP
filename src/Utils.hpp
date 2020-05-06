@@ -12,6 +12,7 @@
 #include <TGUI/TGUI.hpp>
 #include "Data/Color.hpp"
 #include "Enum.hpp"
+#include "Network/Socket.hpp"
 
 #ifndef _WIN32
 #define MB_ICONERROR 1
@@ -70,6 +71,7 @@ namespace Mimp::Utils
 	tgui::ChildWindow::Ptr makeColorPickWindow(tgui::Gui &gui, const std::function<void(Color color)> &onFinish);
 	std::string DrawShapeToString(DrawShape shape);
 	DrawShape DrawShapeFromString(const std::string &str);
+	std::string resolveUrl(const std::string &url);
 }
 
 

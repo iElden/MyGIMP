@@ -10,6 +10,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <numeric>
+#include <fstream>
 #include "Utils.hpp"
 #include "Exceptions.hpp"
 #include "Enum.hpp"
@@ -531,5 +532,59 @@ namespace Mimp::Utils
 			return DIAMOND;
 		}
 		throw InvalidDrawShapeException(str + " is not a valid DrawShape");
+	}
+
+	static std::string handleHttpRequest(Socket &socket, const std::string &url)
+	{
+
+	}
+
+	static std::string fileProtocol(const std::string &path)
+	{
+		std::ifstream stream{path, std::ifstream::binary};
+
+		if (stream.fail())
+			throw FileNotFoundException(path);
+
+		std::string content;
+
+		stream.seekg(0, std::ios::end);
+		content.reserve(stream.tellg());
+		stream.seekg(0, std::ios::beg);
+		content.assign(std::istreambuf_iterator<char>{stream}, {});
+		return content;
+	}
+
+	static std::string httpProtocol(const std::string &path)
+	{
+		throw NotImplementedException();
+	}
+
+	static std::string httpsProtocol(const std::string &path)
+	{
+		throw NotImplementedException();
+	}
+
+	static const std::map<std::string, std::function<std::string (const std::string &path)>> _protocols{
+		{"file", fileProtocol},
+		{"http", httpProtocol},
+		{"https", httpsProtocol}
+	};
+
+	std::string resolveUrl(const std::string &url)
+	{
+		std::string protocol;
+		auto pos = url.find_first_of("://");
+
+		if (pos == std::string::npos)
+			protocol = "http";
+		else
+			protocol = url.substr(0, pos);
+
+		try {
+			return _protocols.at(protocol)(url.substr(pos + 3));
+		} catch (std::out_of_range &) {
+			throw UnsupportedProtocolException(protocol + "://  is not a supported protocol");
+		}
 	}
 }
