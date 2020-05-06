@@ -207,7 +207,7 @@ namespace Mimp
 				win->close();
 			});
 		});
-		menu->connectMenuItem({"File", "Open"}, [this, menu]{
+		menu->connectMenuItem({"File", "Open", "Local file"}, [this, menu]{
 			std::string path = Utils::openFileDialog("Load MIMP file", ".", {{".+[.]mimp", "MIMP image file"}});
 
 			if (path.empty())
