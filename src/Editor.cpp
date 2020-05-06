@@ -220,17 +220,7 @@ namespace Mimp
 				this->_gui.add(window, "Image" + path);
 				this->_selectImage(window);
 			} catch (std::exception &e) {
-				auto window = tgui::ChildWindow::create("Loading error");
-				auto label = tgui::Label::create(
-					"Cannot load file " + path + "\n" +
-					Utils::getLastExceptionName() + ":\n" + e.what()
-				);
-
-				window->setPosition(16, 16);
-				window->add(label);
-				window->getRenderer()->setBackgroundColor(tgui::Color("white"));
-				window->setSize(label->getSize());
-				this->_gui.add(window);
+				Utils::dispMsg("Loading error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
 			}
 		});
 		menu->connectMenuItem({"File", "Save"}, [this, menu] {
@@ -245,7 +235,11 @@ namespace Mimp
 			this->_selectedImageWindow->setTitle(path);
 			this->_gui.remove(this->_selectedImageWindow);
 			this->_gui.add(this->_selectedImageWindow, "Image" + path);
-			this->_getSelectedCanvas()->getLayers().save(path);
+			try {
+				this->_getSelectedCanvas()->getLayers().save(path);
+			} catch (std::exception &e) {
+				Utils::dispMsg("Save error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
+			}
 		});
 		menu->connectMenuItem({"File", "Save as"}, [this, menu] {
 			std::string name = this->_gui.getWidgetName(this->_selectedImageWindow).substr(strlen("Image"));
@@ -253,7 +247,11 @@ namespace Mimp
 
 			if (path.empty())
 				return;
-			this->_getSelectedCanvas()->getLayers().save(path);
+			try {
+				this->_getSelectedCanvas()->getLayers().save(path);
+			} catch (std::exception &e) {
+				Utils::dispMsg("Save error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
+			}
 		});
 		menu->connectMenuItem({"File", "Export"}, [this, menu] {
 			std::string name = this->_gui.getWidgetName(this->_selectedImageWindow).substr(strlen("Image"));
@@ -264,7 +262,7 @@ namespace Mimp
 			try {
 				this->_getSelectedCanvas()->exportImage(path);
 			} catch (std::exception &e) {
-				Utils::dispMsg("Save error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
+				Utils::dispMsg("Export error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
 			}
 		});
 		menu->connectMenuItem({"File", "Close"}, [this]{
@@ -295,17 +293,7 @@ namespace Mimp
 				this->_gui.add(window, "Image" + path);
 				this->_selectImage(window);
 			} catch (std::exception &e) {
-				auto window = tgui::ChildWindow::create("Loading error");
-				auto label = tgui::Label::create(
-					"Cannot load file " + path + "\n" +
-					Utils::getLastExceptionName() + ":\n" + e.what()
-				);
-
-				window->setPosition(16, 16);
-				window->add(label);
-				window->getRenderer()->setBackgroundColor(tgui::Color("white"));
-				window->setSize(label->getSize());
-				this->_gui.add(window);
+				Utils::dispMsg("Import error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
 			}
 		});
 	}

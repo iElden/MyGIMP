@@ -129,20 +129,20 @@ namespace Mimp::Utils
 		auto text = tgui::TextBox::create();
 		tgui::Gui gui;
 		auto font = tgui::getGlobalFont();
-		const auto startWidth = button->getSize().x + 92;
+		const auto startWidth = button->getSize().x + 102;
 		unsigned width = startWidth;
 		unsigned height = button->getSize().y + 60;
-		unsigned currentWidth = startWidth;
+		float currentWidth = startWidth;
 		auto size = text->getTextSize();
 
 		for (char c : content) {
 			currentWidth += font.getGlyph(c, size, false).advance;
-			width = std::max(currentWidth, width);
+			width = std::max(static_cast<unsigned>(currentWidth), width);
 			if (c == '\n' || c == '\r')
 				currentWidth = startWidth;
 			if (c == '\n' || c == '\v')
 				height += size;
-			if (currentWidth > 700U) {
+			if (currentWidth >= 700) {
 				currentWidth = startWidth;
 				height += size;
 			}
