@@ -76,17 +76,39 @@ add_executable(
     src/ImageOperations/Selection/InvertSelectionOperation.hpp
     src/ImageOperations/Selection/DelSelectionOperation.cpp
     src/ImageOperations/Selection/DelSelectionOperation.hpp
-    src/Tools/Eraser.cpp src/Tools/Eraser.hpp src/Enum.hpp)
-
-target_link_libraries(
-    MyGimp
-    tgui
-    sfml-graphics
-    sfml-window
-    sfml-system
-    pthread
-    stdc++fs
+    src/Tools/Eraser.cpp
+    src/Tools/Eraser.hpp
+    src/Enum.hpp
+    src/Network/SecuredSocket.cpp
+    src/Network/SecuredSocket.hpp
+    src/Network/Socket.cpp
+    src/Network/Socket.hpp
 )
+
+if (WIN32)
+    target_link_libraries(
+        MyGimp
+        tgui
+        sfml-graphics
+        sfml-window
+        sfml-system
+        pthread
+        stdc++fs
+        ssl
+        ws2_32
+    )
+else ()
+    target_link_libraries(
+        MyGimp
+        tgui
+        sfml-graphics
+        sfml-window
+        sfml-system
+        pthread
+        stdc++fs
+        ssl
+    )
+endif ()
 
 # --------------
 
