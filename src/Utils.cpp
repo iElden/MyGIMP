@@ -269,7 +269,7 @@ namespace Mimp::Utils
 			if (item == "..") {
 				if (files.size() > 1)
 					files.pop_back();
-			} else if (item != ".")
+			} else if (item != "." && !item.empty())
 				files.push_back(item);
 
 		return std::accumulate(
