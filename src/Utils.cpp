@@ -14,6 +14,7 @@
 #include "Utils.hpp"
 #include "Exceptions.hpp"
 #include "Enum.hpp"
+#include "Network/SecuredSocket.hpp"
 
 namespace Mimp::Utils
 {
@@ -534,9 +535,29 @@ namespace Mimp::Utils
 		throw InvalidDrawShapeException(str + " is not a valid DrawShape");
 	}
 
-	static std::string handleHttpRequest(Socket &socket, const std::string &url)
+	static std::string handleHttpRequest(Socket &socket, const std::string &url, unsigned short port)
 	{
+		auto pos = url.find_first_of('/');
+		std::string host = pos == std::string::npos ? url : url.substr(0, pos);
+		Socket::HttpRequest request{
+			"",
+			"GET",
+			host,
+			port,
+			{},
+			pos == std::string::npos ? "/" : url.substr(host.size())
+		};
+		auto response = socket.makeHttpRequest(request);
 
+		if (response.returnCode / 100 == 3)
+			throw NotImplementedException();
+
+		std::ofstream stream{"test.png", std::ofstream::binary};
+
+		stream << response.body;
+		stream.close();
+
+		return response.body;
 	}
 
 	static std::string fileProtocol(const std::string &path)
@@ -557,12 +578,16 @@ namespace Mimp::Utils
 
 	static std::string httpProtocol(const std::string &path)
 	{
-		throw NotImplementedException();
+		Socket socket;
+
+		return handleHttpRequest(socket, path, 80);
 	}
 
 	static std::string httpsProtocol(const std::string &path)
 	{
-		throw NotImplementedException();
+		SecuredSocket socket;
+
+		return handleHttpRequest(socket, path, 443);
 	}
 
 	static const std::map<std::string, std::function<std::string (const std::string &path)>> _protocols{
@@ -581,10 +606,13 @@ namespace Mimp::Utils
 		else
 			protocol = url.substr(0, pos);
 
+		std::function<std::string (const std::string &)> fct;
+
 		try {
-			return _protocols.at(protocol)(url.substr(pos + 3));
+			fct = _protocols.at(protocol);
 		} catch (std::out_of_range &) {
 			throw UnsupportedProtocolException(protocol + "://  is not a supported protocol");
 		}
+		return fct(pos == std::string::npos ? url : url.substr(pos + 3));
 	}
 }

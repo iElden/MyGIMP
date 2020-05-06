@@ -67,22 +67,24 @@ namespace Mimp
 
 	std::string	SecuredSocket::read(int size)
 	{
-		std::stringstream	stream;
-		char	buffer[1024];
+		size_t totalSize = 0;
+		char *result = nullptr;
+		char  buffer[1024];
 
 		while (size != 0) {
-			int bytes = SSL_read(this->_connection, buffer, (static_cast<unsigned>(size) >= sizeof(buffer) - 1) ? (sizeof(buffer) - 1) : (size));
+			int bytes = SSL_read(this->_connection, buffer, (static_cast<unsigned>(size) >= sizeof(buffer)) ? sizeof(buffer) : size);
 
 			if (bytes <= 0) {
 				if (size < 0)
 					break;
 				throw EOFException(strerror(errno));
 			}
-			buffer[bytes] = 0;
-			stream << buffer;
+			result = reinterpret_cast<char *>(std::realloc(result, totalSize + bytes));
+			std::memcpy(&result[totalSize], buffer, bytes);
+			totalSize += bytes;
 			size -= bytes;
 		}
-		return stream.str();
+		return {result, totalSize};
 	}
 
 	std::string	SecuredSocket::readUntilEOF()

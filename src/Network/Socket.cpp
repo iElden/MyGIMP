@@ -81,9 +81,10 @@ namespace Mimp
 		while (std::getline(response, str) && str.length() > 2) {
 			std::size_t	pos = str.find(':');
 
-			request.header[str.substr(0, pos)] = str.substr(pos + 2, str.size() - pos);
+			request.header[str.substr(0, pos)] = str.substr(pos + 2, str.size() - pos - 2);
 		}
-		request.body = response.str().substr(response.tellg());
+
+		request.body = respon.substr(response.tellg());
 		return request;
 	}
 
@@ -144,22 +145,24 @@ namespace Mimp
 
 	std::string Socket::read(int size)
 	{
-		std::stringstream	stream;
-		char	buffer[1024];
+		size_t totalSize = 0;
+		char *result = nullptr;
+		char  buffer[1024];
 
 		while (size != 0) {
-			int bytes = recv(this->_sockfd, buffer, (static_cast<unsigned>(size) >= sizeof(buffer) - 1) ? (sizeof(buffer) - 1) : (size), 0);
+			int bytes = recv(this->_sockfd, buffer, (static_cast<unsigned>(size) >= sizeof(buffer)) ? sizeof(buffer) : size, 0);
 
 			if (bytes <= 0) {
 				if (size < 0)
 					break;
 				throw EOFException(strerror(errno));
 			}
-			buffer[bytes] = 0;
-			stream << buffer;
+			result = reinterpret_cast<char *>(std::realloc(result, totalSize + bytes));
+			std::memcpy(&result[totalSize], buffer, bytes);
+			totalSize += bytes;
 			size -= bytes;
 		}
-		return stream.str();
+		return {result, totalSize};
 	}
 
 	void Socket::send(const std::string &msg)

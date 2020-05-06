@@ -295,9 +295,10 @@ namespace Mimp
 					widget->importImageFromMemory(Utils::resolveUrl(path));
 
 					auto window = _makeImagePanel(widget);
+					auto pos = path.find_last_of('/');
 
 					window->setTitle(path);
-					this->_gui.add(window, "Image" + path);
+					this->_gui.add(window, "Image" + (pos == std::string::npos ? "index.png" : path.substr(pos)));
 					this->_selectImage(window);
 
 					win->close();
