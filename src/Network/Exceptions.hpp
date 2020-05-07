@@ -3,6 +3,7 @@
 
 
 #include <string>
+#include "./Socket.hpp"
 #include "../Exceptions.hpp"
 
 namespace Mimp
