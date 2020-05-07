@@ -81,7 +81,7 @@ namespace Mimp
 		while (std::getline(response, str) && str.length() > 2) {
 			std::size_t	pos = str.find(':');
 
-			request.header[str.substr(0, pos)] = str.substr(pos + 2, str.size() - pos - 2);
+			request.header[str.substr(0, pos)] = str.substr(pos + 2, str.size() - pos - 3);
 		}
 
 		request.body = respon.substr(response.tellg());

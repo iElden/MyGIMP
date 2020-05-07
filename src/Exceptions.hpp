@@ -123,6 +123,19 @@ namespace Mimp
 			BaseException(path + ": " + strerror(errno))
 		{};
 	};
+
+	class TooMuchRecursionException : public BaseException {
+	public:
+		//! @brief Function to print
+		//! @param msg Message of the Exception
+		explicit TooMuchRecursionException(const std::string &&msg) :
+			BaseException(static_cast<const std::string &&>(msg))
+		{};
+
+		explicit TooMuchRecursionException(TooMuchRecursionException &e, const std::string &&msg) :
+			BaseException(static_cast<const std::string &&>(msg) + "\n" + e.what())
+		{};
+	};
 }
 
 

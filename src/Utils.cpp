@@ -136,6 +136,7 @@ namespace Mimp::Utils
 		float currentWidth = startWidth;
 		auto size = text->getTextSize();
 
+		std::cerr << title << std::endl << content << std::endl;
 		for (char c : content) {
 			currentWidth += font.getGlyph(c, size, false).advance;
 			width = std::max(static_cast<unsigned>(currentWidth), width);
@@ -535,7 +536,7 @@ namespace Mimp::Utils
 		throw InvalidDrawShapeException(str + " is not a valid DrawShape");
 	}
 
-	static std::string handleHttpRequest(Socket &socket, const std::string &url, unsigned short port)
+	static std::string handleHttpRequest(Socket &socket, const std::string &url, unsigned short port, unsigned recurseLimit)
 	{
 		auto pos = url.find_first_of('/');
 		std::string host = pos == std::string::npos ? url : url.substr(0, pos);
@@ -550,12 +551,16 @@ namespace Mimp::Utils
 		auto response = socket.makeHttpRequest(request);
 
 		if (response.returnCode / 100 == 3)
-			throw NotImplementedException();
+			try {
+				return resolveUrl(response.header["Location"], recurseLimit - 1);
+			} catch (TooMuchRecursionException &e) {
+				throw TooMuchRecursionException(e, url + ": " + std::to_string(response.returnCode) + " (" + response.codeName + ")");
+			}
 
 		return response.body;
 	}
 
-	static std::string fileProtocol(const std::string &path)
+	static std::string fileProtocol(const std::string &path, unsigned)
 	{
 		std::ifstream stream{path, std::ifstream::binary};
 
@@ -571,28 +576,32 @@ namespace Mimp::Utils
 		return content;
 	}
 
-	static std::string httpProtocol(const std::string &path)
+	static std::string httpProtocol(const std::string &path, unsigned recurseLimit)
 	{
 		Socket socket;
 
-		return handleHttpRequest(socket, path, 80);
+		return handleHttpRequest(socket, path, 80, recurseLimit);
 	}
 
-	static std::string httpsProtocol(const std::string &path)
+	static std::string httpsProtocol(const std::string &path, unsigned recurseLimit)
 	{
 		SecuredSocket socket;
 
-		return handleHttpRequest(socket, path, 443);
+		return handleHttpRequest(socket, path, 443, recurseLimit);
 	}
 
-	static const std::map<std::string, std::function<std::string (const std::string &path)>> _protocols{
+	static const std::map<std::string, std::function<std::string (const std::string &path, unsigned)>> _protocols{
 		{"file", fileProtocol},
 		{"http", httpProtocol},
 		{"https", httpsProtocol}
 	};
 
-	std::string resolveUrl(const std::string &url)
+	std::string resolveUrl(const std::string &url, unsigned recurseLimit)
 	{
+		std::cout << "Resolve URL " << url << std::endl;
+		if (recurseLimit == 0)
+			throw TooMuchRecursionException(url + ": Recurse limit is 0");
+
 		std::string protocol;
 		auto pos = url.find_first_of("://");
 
@@ -601,13 +610,13 @@ namespace Mimp::Utils
 		else
 			protocol = url.substr(0, pos);
 
-		std::function<std::string (const std::string &)> fct;
+		std::function<std::string (const std::string &, unsigned)> fct;
 
 		try {
 			fct = _protocols.at(protocol);
 		} catch (std::out_of_range &) {
 			throw UnsupportedProtocolException(protocol + "://  is not a supported protocol");
 		}
-		return fct(pos == std::string::npos ? url : url.substr(pos + 3));
+		return fct(pos == std::string::npos ? url : url.substr(pos + 3), recurseLimit);
 	}
 }

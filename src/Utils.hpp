@@ -71,7 +71,7 @@ namespace Mimp::Utils
 	tgui::ChildWindow::Ptr makeColorPickWindow(tgui::Gui &gui, const std::function<void(Color color)> &onFinish);
 	std::string DrawShapeToString(DrawShape shape);
 	DrawShape DrawShapeFromString(const std::string &str);
-	std::string resolveUrl(const std::string &url);
+	std::string resolveUrl(const std::string &url, unsigned recurseLimit = 10);
 }
 
 
