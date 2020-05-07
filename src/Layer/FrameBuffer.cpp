@@ -367,7 +367,7 @@ namespace Mimp
 	{
 		int min_x = pos.x - radius / 2;
 		int max_x = pos.x + radius / 2;
-		for (int j = pos.y - radius; j < pos.y + radius; j++)
+		for (int j = pos.y - radius / 2; j < pos.y + radius / 2; j++)
 			for (int i = min_x; i < max_x; i++)
 				this->drawPixel({i, j}, color, drawStrategy);
 	}
