@@ -42,6 +42,11 @@ namespace Mimp
 		explicit EOFException(const std::string &&msg) : NetworkException(static_cast<const std::string &&>(msg)) {};
 	};
 
+	class InvalidHTTPAnswerException : public NetworkException {
+	public:
+		explicit InvalidHTTPAnswerException(const std::string &&msg) : NetworkException(static_cast<const std::string &&>(msg)) {};
+	};
+
 	class HTTPErrorException : public NetworkException {
 	private:
 		Socket::HttpResponse _response;

@@ -76,6 +76,10 @@ namespace Mimp
 
 		response >> request.httpVer;
 		response >> request.returnCode;
+
+		if (response.fail())
+			throw InvalidHTTPAnswerException("Invalid HTTP response");
+
 		std::getline(response, request.codeName);
 		request.codeName = request.codeName.substr(1, request.codeName.length() - 2);
 		while (std::getline(response, str) && str.length() > 2) {
