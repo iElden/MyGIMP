@@ -32,7 +32,7 @@ namespace Mimp
 	void ToolBox::_generateGuiWindow(tgui::Gui &gui)
 	{
 		auto callback = [this, &gui](tgui::Button::Ptr button, Color *color){
-			Utils::makeColorPickWindow(gui, [this, button, &color](Color col){
+			Utils::makeColorPickWindow(gui, [this, button, color](Color col){
 				this->_changeSelectedColor(button, color, col);
 			});
 		};
