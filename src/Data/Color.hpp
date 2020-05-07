@@ -29,6 +29,7 @@ namespace Mimp
 		//! @param b Hexadecimal value for blue.
 		//! @param a Hexadecimal value for alpha. Default value is 255.
 		Color(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255) noexcept;
+		unsigned diff(const Color &other, bool include_alpha=true) const noexcept;
 		//! @brief Implicit Operator cast in unsigned int
 		//! @details Converts a color to unsigned int using assignation (unsigned int = Color)
 		operator unsigned int() const noexcept;

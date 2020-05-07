@@ -63,4 +63,12 @@ namespace Mimp
 	{
 		return sf::Color(this->r, this->g, this->b, this->a);
 	}
+
+	unsigned Color::diff(const Color &other, bool include_alpha) const noexcept
+	{
+		if (*this == other)  // Because the color has 70% chance of being the same, this is for optimisation.
+			return 0;
+		return std::abs(this->r - other.r) + std::abs(this->g - other.g) + std::abs(this->b - other.b)
+		     + (include_alpha ? std::abs(this->a - other.a) : 0);
+	}
 }

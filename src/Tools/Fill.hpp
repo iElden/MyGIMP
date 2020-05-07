@@ -19,6 +19,8 @@ namespace Mimp
 		//! @brief Reference of the Toolbox
 		ToolBox &_box;
 
+		unsigned _tolerance;
+
 		//! @brief Apply the fill tool
 		//! @param pos Position of the fill application
 		//! @param layer Layer where the fill tool is used
