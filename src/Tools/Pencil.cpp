@@ -44,7 +44,7 @@ namespace Mimp
 		shapeBox->removeAllItems();
 		for (int i = 0; i < NB_OF_SHAPES; i++)
 			shapeBox->addItem(Utils::DrawShapeToString(static_cast<DrawShape>(i)));
-		shapeBox->setSelectedItemByIndex(CIRCLE);
+		shapeBox->setSelectedItemByIndex(this->_shape);
 
 		radiusSlider->connect("ValueChanged", [radiusPreview, this, radiusSlider]{
 			this->_radius = radiusSlider->getValue();
