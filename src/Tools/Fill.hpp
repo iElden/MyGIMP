@@ -20,7 +20,7 @@ namespace Mimp
 		ToolBox &_box;
 
 		unsigned _tolerance;
-
+		bool _alpha_in_tolerance;
 		//! @brief Apply the fill tool
 		//! @param pos Position of the fill application
 		//! @param layer Layer where the fill tool is used

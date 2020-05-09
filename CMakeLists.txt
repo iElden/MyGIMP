@@ -88,7 +88,7 @@ add_executable(
 
     src/main.cpp
     ${MIMP_SRCS}
-)
+        src/ImageOperations/Selection/ExpandSelection.cpp src/ImageOperations/Selection/ExpandSelection.hpp)
 
 if (WIN32)
     target_link_libraries(

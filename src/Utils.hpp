@@ -11,6 +11,7 @@
 #include <filesystem>
 #include <TGUI/TGUI.hpp>
 #include "Data/Color.hpp"
+#include "Data/Vector2.hpp"
 #include "Enum.hpp"
 #include "Network/Socket.hpp"
 
@@ -72,6 +73,7 @@ namespace Mimp::Utils
 	std::string DrawShapeToString(DrawShape shape);
 	DrawShape DrawShapeFromString(const std::string &str);
 	std::string resolveUrl(const std::string &url);
+	bool isOutOfBound(Mimp::Vector2<int> pt, Mimp::Vector2<unsigned> size);
 }
 
 

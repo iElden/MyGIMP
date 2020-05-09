@@ -17,6 +17,10 @@ namespace Mimp {
 	class SelectedArea {
 		//! @brief All the points selected, building the selected area
 		Vector2<unsigned> _size;
+	public:
+		const Vector2<unsigned int> &getSize() const;
+
+	private:
 		bool *_map;
 		unsigned _nbPoints = 0;
 
@@ -39,6 +43,11 @@ namespace Mimp {
 		void add(int x, int y);
 
 		void invert() noexcept;
+
+		bool pointInMap(Vector2<int> point);
+		bool pointInMap(int x, int y);
+		SelectedArea* copy();
+		void _update_bool_array(const bool *bool_array);
 	};
 }
 

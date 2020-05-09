@@ -7,6 +7,7 @@
 #include <cstring>
 #include <thread>
 #include "SelectedArea.hpp"
+#include "Utils.hpp"
 
 namespace Mimp
 {
@@ -51,13 +52,7 @@ namespace Mimp
 
 	void SelectedArea::add(int x, int y)
 	{
-		if (x < 0)
-			return;
-		if (y < 0)
-			return;
-		if (static_cast<unsigned>(x) >= this->_size.x)
-			return;
-		if (static_cast<unsigned>(y) >= this->_size.y)
+		if (Utils::isOutOfBound({x, y}, this->_size))
 			return;
 
 		auto &val = this->_map[x + y * this->_size.x];
@@ -98,4 +93,31 @@ namespace Mimp
 				layer.buffer.setPixel(pt, color);
 	}
 
+	bool SelectedArea::pointInMap(Vector2<int> point)
+	{
+		return this->pointInMap(point.x, point.y);
+	}
+
+	bool SelectedArea::pointInMap(int x, int y)
+	{
+		return this->_map[x + y * this->_size.x];
+	}
+
+	SelectedArea* SelectedArea::copy()
+	{
+		SelectedArea *new_sa = new SelectedArea(this->_size);
+		new_sa->_update_bool_array(this->_map);
+		return new_sa;
+	}
+
+	void SelectedArea::_update_bool_array(const bool *bool_array)
+	{
+		for (unsigned i = 0; i < this->_size.x * this->_size.y; i++)
+			this->_map[i] = bool_array[i];
+	}
+
+	const Vector2<unsigned int> &SelectedArea::getSize() const
+	{
+		return _size;
+	}
 }
