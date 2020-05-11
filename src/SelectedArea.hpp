@@ -25,8 +25,9 @@ namespace Mimp {
 		unsigned _nbPoints = 0;
 
 	public:
+		SelectedArea(const SelectedArea &);
 		SelectedArea(unsigned width, unsigned height);
-		SelectedArea(Vector2<unsigned> size);
+		SelectedArea(Vector2<unsigned> size, const bool *buffer = nullptr);
 		~SelectedArea();
 
 		//! @brief Clears the selected points
@@ -46,8 +47,6 @@ namespace Mimp {
 
 		bool pointInMap(Vector2<int> point);
 		bool pointInMap(int x, int y);
-		SelectedArea* copy();
-		void _update_bool_array(const bool *bool_array);
 	};
 }
 

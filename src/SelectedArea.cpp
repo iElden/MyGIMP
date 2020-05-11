@@ -16,11 +16,18 @@ namespace Mimp
 	{
 	}
 
-	SelectedArea::SelectedArea(Vector2<unsigned> size) :
+	SelectedArea::SelectedArea(Vector2<unsigned> size, const bool *map) :
 		_size(size),
 		_map(new bool[size.x * size.y])
 	{
 		this->clear();
+		if (map)
+			std::memcpy(this->_map, map, size.x * size.y);
+	}
+
+	SelectedArea::SelectedArea(const SelectedArea &other) :
+		SelectedArea(other.getSize(), other._map)
+	{
 	}
 
 	SelectedArea::~SelectedArea()
@@ -100,20 +107,9 @@ namespace Mimp
 
 	bool SelectedArea::pointInMap(int x, int y)
 	{
+		if (Utils::isOutOfBound({x, y}, this->_size))
+			return false;
 		return this->_map[x + y * this->_size.x];
-	}
-
-	SelectedArea* SelectedArea::copy()
-	{
-		SelectedArea *new_sa = new SelectedArea(this->_size);
-		new_sa->_update_bool_array(this->_map);
-		return new_sa;
-	}
-
-	void SelectedArea::_update_bool_array(const bool *bool_array)
-	{
-		for (unsigned i = 0; i < this->_size.x * this->_size.y; i++)
-			this->_map[i] = bool_array[i];
 	}
 
 	const Vector2<unsigned int> &SelectedArea::getSize() const
