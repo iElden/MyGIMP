@@ -619,4 +619,17 @@ namespace Mimp::Utils
 		}
 		return fct(pos == std::string::npos ? url : url.substr(pos + 3), recurseLimit);
 	}
+
+	bool isOutOfBound(Mimp::Vector2<int> pt, Mimp::Vector2<unsigned> size)
+	{
+		if (pt.x < 0)
+			return true;
+		if (pt.y < 0)
+			return true;
+		if (static_cast<unsigned>(pt.x) >= size.x)
+			return true;
+		if (static_cast<unsigned>(pt.y) >= size.y)
+			return true;
+		return false;
+	}
 }

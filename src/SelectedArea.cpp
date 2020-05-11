@@ -7,6 +7,7 @@
 #include <cstring>
 #include <thread>
 #include "SelectedArea.hpp"
+#include "Utils.hpp"
 
 namespace Mimp
 {
@@ -15,11 +16,18 @@ namespace Mimp
 	{
 	}
 
-	SelectedArea::SelectedArea(Vector2<unsigned> size) :
+	SelectedArea::SelectedArea(Vector2<unsigned> size, const bool *map) :
 		_size(size),
 		_map(new bool[size.x * size.y])
 	{
 		this->clear();
+		if (map)
+			std::memcpy(this->_map, map, size.x * size.y);
+	}
+
+	SelectedArea::SelectedArea(const SelectedArea &other) :
+		SelectedArea(other.getSize(), other._map)
+	{
 	}
 
 	SelectedArea::~SelectedArea()
@@ -51,13 +59,7 @@ namespace Mimp
 
 	void SelectedArea::add(int x, int y)
 	{
-		if (x < 0)
-			return;
-		if (y < 0)
-			return;
-		if (static_cast<unsigned>(x) >= this->_size.x)
-			return;
-		if (static_cast<unsigned>(y) >= this->_size.y)
+		if (Utils::isOutOfBound({x, y}, this->_size))
 			return;
 
 		auto &val = this->_map[x + y * this->_size.x];
@@ -98,4 +100,20 @@ namespace Mimp
 				layer.buffer.setPixel(pt, color);
 	}
 
+	bool SelectedArea::pointInMap(Vector2<int> point)
+	{
+		return this->pointInMap(point.x, point.y);
+	}
+
+	bool SelectedArea::pointInMap(int x, int y)
+	{
+		if (Utils::isOutOfBound({x, y}, this->_size))
+			return false;
+		return this->_map[x + y * this->_size.x];
+	}
+
+	const Vector2<unsigned int> &SelectedArea::getSize() const
+	{
+		return _size;
+	}
 }
