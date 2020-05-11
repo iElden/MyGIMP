@@ -100,12 +100,12 @@ namespace Mimp
 				layer.buffer.setPixel(pt, color);
 	}
 
-	bool SelectedArea::pointInMap(Vector2<int> point)
+	bool SelectedArea::pointInMap(Vector2<int> point) const
 	{
 		return this->pointInMap(point.x, point.y);
 	}
 
-	bool SelectedArea::pointInMap(int x, int y)
+	bool SelectedArea::pointInMap(int x, int y) const
 	{
 		if (Utils::isOutOfBound({x, y}, this->_size))
 			return false;

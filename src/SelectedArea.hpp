@@ -45,8 +45,8 @@ namespace Mimp {
 
 		void invert() noexcept;
 
-		bool pointInMap(Vector2<int> point);
-		bool pointInMap(int x, int y);
+		bool pointInMap(Vector2<int> point) const;
+		bool pointInMap(int x, int y) const;
 	};
 }
 

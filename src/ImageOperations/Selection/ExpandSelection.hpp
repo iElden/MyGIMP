@@ -12,7 +12,7 @@
 namespace Mimp {
 	class ExpandSelection : public ImageOperation {
 	private:
-		void _addPointIfPointNearby(int i, int j, Mimp::Image &image, SelectedArea area) const noexcept;
+		void _addPointIfPointNearby(unsigned i, unsigned j, Mimp::Image &image, const SelectedArea &area) const noexcept;
 	public:
 		ExpandSelection();
 		void click(tgui::Gui &gui, Image &image) const override;
