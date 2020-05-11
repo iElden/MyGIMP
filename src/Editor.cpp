@@ -366,6 +366,7 @@ namespace Mimp
 		auto down = panel->get<tgui::Button>("Down");
 		auto resize = panel->get<tgui::Button>("Resize");
 		auto deleteLayer = panel->get<tgui::Button>("Delete");
+		auto move = panel->get<tgui::Button>("Move");
 
 		if (layers.size() == 1)
 			deleteLayer->setEnabled(false);
@@ -411,6 +412,60 @@ namespace Mimp
 		down->connect("Pressed", [&layers, index, this, win, canvas]{
 			layers.setLayerIndex(index, index - 1);
 			this->_makeLayersPanel(win, canvas);
+		});
+		resize->connect("Pressed", [&layer, this, win, canvas]{
+			auto win = Utils::openWindowWithFocus(this->_gui, 200, 110);
+
+			win->loadWidgetsFromFile("widgets/new.gui");
+			win->setTitle("New image");
+
+			auto ok = win->get<tgui::Button>("OK");
+			auto cancel = win->get<tgui::Button>("Cancel");
+			auto width = win->get<tgui::EditBox>("Width");
+			auto height = win->get<tgui::EditBox>("Height");
+
+			width->setText(std::to_string(layer.getSize().x));
+			height->setText(std::to_string(layer.getSize().y));
+			cancel->connect("Pressed", [win]{ win->close(); });
+			ok->connect("Pressed", [this, win, &layer, width, height] {
+				std::string wid = width->getText();
+				std::string hei = height->getText();
+
+				if (wid.empty() || hei.empty())
+					return;
+
+				auto w = std::stoul(wid);
+				auto h = std::stoul(hei);
+
+				layer.buffer = layer.buffer.getRectFromBuffer({0, 0}, {w, h});
+			});
+		});
+		move->connect("Pressed", [&layer, this, win, canvas]{
+			auto win = Utils::openWindowWithFocus(this->_gui, 200, 110);
+
+			win->loadWidgetsFromFile("widgets/new.gui");
+			win->setTitle("New image");
+
+			auto ok = win->get<tgui::Button>("OK");
+			auto cancel = win->get<tgui::Button>("Cancel");
+			auto width = win->get<tgui::EditBox>("Width");
+			auto height = win->get<tgui::EditBox>("Height");
+
+			width->setText(std::to_string(layer.pos.x));
+			height->setText(std::to_string(layer.pos.y));
+			cancel->connect("Pressed", [win]{ win->close(); });
+			ok->connect("Pressed", [this, win, &layer, width, height] {
+				std::string wid = width->getText();
+				std::string hei = height->getText();
+
+				if (wid.empty() || hei.empty())
+					return;
+
+				auto w = std::stoul(wid);
+				auto h = std::stoul(hei);
+
+				layer.pos = Vector2<int>(w, h);
+			});
 		});
 		return panel;
 	}

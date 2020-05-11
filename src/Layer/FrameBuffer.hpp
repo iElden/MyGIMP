@@ -46,6 +46,7 @@ namespace Mimp
 		//! @brief Destructor
 		~FrameBuffer();
 
+		FrameBuffer &operator=(const FrameBuffer &other);
 		//! @brief Get the buffer
 		//! @return const unsigned int * Contains the buffer in readonly
 		const Color *getBuffer() const;

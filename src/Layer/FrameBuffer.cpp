@@ -37,6 +37,27 @@ namespace Mimp
 	{
 	}
 
+	FrameBuffer &FrameBuffer::operator=(const FrameBuffer &other)
+	{
+		auto size = other.getSize();
+		auto buffer = other.getBuffer();
+
+		auto drawBuffer = new sf::Color[size.x * size.y];
+		auto pixelBuffer = new Color[size.x * size.y];
+
+		std::memcpy(pixelBuffer, buffer, size.x * size.y * sizeof(*pixelBuffer));
+		for (unsigned i = 0; i < size.x * size.y; i++)
+			drawBuffer[i] = pixelBuffer[i];
+
+		delete[] this->_drawBuffer;
+		delete[] this->_pixelBuffer;
+
+		this->_size = size;
+		this->_drawBuffer = drawBuffer;
+		this->_pixelBuffer = pixelBuffer;
+		return *this;
+	}
+
 	FrameBuffer::FrameBuffer(Vector2<unsigned int> size, const Color &defaultColor) :
 		_size(size)
 	{
