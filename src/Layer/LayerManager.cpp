@@ -35,14 +35,17 @@ namespace Mimp
 		}
 	}
 
-	void LayerManager::addLayer(const Layer &layer)
+	Layer &LayerManager::addLayer(const Layer &layer)
 	{
 		this->_setBusy();
-		this->_layers.emplace_back(new Layer(layer));
+
+		auto &lay = this->_layers.emplace_back(new Layer(layer));
+
 		this->_unsetBusy();
+		return *lay;
 	}
 
-	void LayerManager::addLayer(Vector2<unsigned> size, const Color &defaultColor)
+	Layer &LayerManager::addLayer(Vector2<unsigned> size, const Color &defaultColor)
 	{
 		this->_setBusy();
 		auto &layer = this->_layers.emplace_back(new Layer(size, defaultColor));
@@ -52,6 +55,7 @@ namespace Mimp
 		sprintf(layer->name, "Layer %lu", this->_layers.size());
 #endif
 		this->_unsetBusy();
+		return *layer;
 	}
 
 	Layer &LayerManager::operator[](unsigned int index)

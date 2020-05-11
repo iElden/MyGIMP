@@ -348,7 +348,7 @@ namespace Mimp
 		return panel;
 	}
 
-	tgui::Panel::Ptr Editor::_getLayerPanelRightClickPanel(tgui::ChildWindow::Ptr win, CanvasWidget::Ptr canvas, tgui::Widget::Ptr, tgui::Label::Ptr, Layer &layer, unsigned index)
+	tgui::Panel::Ptr Editor::_getLayerPanelRightClickPanel(tgui::ChildWindow::Ptr win, CanvasWidget::Ptr canvas, tgui::Panel::Ptr layersPanel, Layer &layer, unsigned index)
 	{
 		auto &layers = canvas->getLayers();
 		auto panel = tgui::Panel::create({110, 230});
@@ -378,12 +378,14 @@ namespace Mimp
 			up->setEnabled(false);
 
 		visible->setText(layer.visible ? "Hide" : "Show");
-		visible->connect("Pressed", [&layer, visible]{
+		visible->connect("Pressed", [&layer, visible, index, layersPanel]{
 			layer.visible = !layer.visible;
+			layersPanel->get<tgui::Widget>("VisibleCancel" + std::to_string(index))->setVisible(!layer.visible);
 		});
 		locked->setText(layer.locked ? "Unlock" : "Lock");
-		locked->connect("Pressed", [&layer, locked]{
+		locked->connect("Pressed", [&layer, locked, index, layersPanel]{
 			layer.locked = !layer.locked;
+			layersPanel->get<tgui::Widget>("LockedCancel" + std::to_string(index))->setVisible(!layer.locked);
 		});
 		newLayer->connect("Pressed", [this, locked, win, canvas, index, &layers]{
 			layers.addLayer(layers.getSize());
@@ -391,7 +393,10 @@ namespace Mimp
 			this->_makeLayersPanel(win, canvas);
 		});
 		duplicate->connect("Pressed", [this, &layer, locked, win, canvas, index, &layers]{
-			layers.addLayer(layer);
+			auto &lay = layers.addLayer(layer);
+
+			lay.visible = true;
+			lay.locked = false;
 			layers.setLayerIndex(layers.size() - 1, index + 1);
 			this->_makeLayersPanel(win, canvas);
 		});
@@ -483,8 +488,34 @@ namespace Mimp
 
 		for (size_t i = 0; i < size; i++) {
 			auto &layer = layers[i];
+			auto visible = tgui::BitmapButton::create();
+			auto locked = tgui::BitmapButton::create();
+			auto visibleCancel = tgui::Picture::create("icons/cancel.png");
+			auto lockedCancel = tgui::Picture::create("icons/cancel.png");
 			auto widget = tgui::Button::create();
 			auto label = tgui::Label::create(layer.name);
+
+			locked->setImage("icons/locked.png");
+			locked->setSize(18, 18);
+			locked->setPosition(2 + 66, (size - i - 1) * 66 + 2);
+			locked->connect("Pressed", [lockedCancel, &layer]{
+				layer.locked = !layer.locked;
+				lockedCancel->setVisible(!layer.locked);
+			});
+			lockedCancel->ignoreMouseEvents();
+			lockedCancel->setVisible(!layer.locked);
+			lockedCancel->setPosition(2 + 66 + 1, (size - i - 1) * 66 + 2 + 1);
+
+			visible->setSize(18, 18);
+			visible->setPosition(2 + 66 + 18, (size - i - 1) * 66 + 2);
+			visible->setImage("icons/visible.png");
+			visible->connect("Pressed", [visibleCancel, &layer]{
+				layer.visible = !layer.visible;
+				visibleCancel->setVisible(!layer.visible);
+			});
+			visibleCancel->ignoreMouseEvents();
+			visibleCancel->setVisible(!layer.visible);
+			visibleCancel->setPosition(2 + 66 + 18 + 1, (size - i - 1) * 66 + 2 + 1);
 
 			widget->setSize(64, 64);
 			widget->setPosition(2, (size - i - 1) * 66 + 2);
@@ -493,7 +524,7 @@ namespace Mimp
 			});
 			widget->connect("RightClicked", [this, win, panel, widget, label, &layer, i, canvas](tgui::Vector2f pos){
 				auto fakePanel = tgui::Panel::create({"100%", "100%"});
-				auto pan = this->_getLayerPanelRightClickPanel(win, canvas, widget, label, layer, i);
+				auto pan = this->_getLayerPanelRightClickPanel(win, canvas, panel, layer, i);
 
 				fakePanel->getRenderer()->setBackgroundColor({0, 0, 0, 0});
 				fakePanel->connect("Clicked", [this, pan, fakePanel]{
@@ -516,6 +547,10 @@ namespace Mimp
 
 			panel->add(widget, "Widget" + std::to_string(i));
 			panel->add(label, "Label" + std::to_string(i));
+			panel->add(visible, "Visible" + std::to_string(i));
+			panel->add(locked, "Locked" + std::to_string(i));
+			panel->add(visibleCancel, "VisibleCancel" + std::to_string(i));
+			panel->add(lockedCancel, "LockedCancel" + std::to_string(i));
 		}
 		return panel;
 	}

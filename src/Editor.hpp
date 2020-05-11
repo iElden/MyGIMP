@@ -47,7 +47,7 @@ namespace Mimp
 		CanvasWidget::Ptr _getSelectedCanvas();
 
 		tgui::Panel::Ptr _getLayerRightClickPanel();
-		tgui::Panel::Ptr _getLayerPanelRightClickPanel(tgui::ChildWindow::Ptr win, CanvasWidget::Ptr canvas, tgui::Widget::Ptr widget, tgui::Label::Ptr label, Layer &layer, unsigned index);
+		tgui::Panel::Ptr _getLayerPanelRightClickPanel(tgui::ChildWindow::Ptr win, CanvasWidget::Ptr canvas, tgui::Panel::Ptr layersPanel, Layer &layer, unsigned index);
 		tgui::Panel::Ptr _makeLayersPanel(tgui::ChildWindow::Ptr win, CanvasWidget::Ptr canvas);
 
 	public:
