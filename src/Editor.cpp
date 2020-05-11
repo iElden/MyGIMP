@@ -341,14 +341,7 @@ namespace Mimp
 		return this->_selectedImageWindow->get<tgui::ScrollablePanel>("Canvas")->get<CanvasWidget>("Canvas");
 	}
 
-	tgui::Panel::Ptr Editor::_getLayerRightClickPanel()
-	{
-		auto panel = tgui::Panel::create();
-
-		return panel;
-	}
-
-	tgui::Panel::Ptr Editor::_getLayerPanelRightClickPanel(tgui::ChildWindow::Ptr win, CanvasWidget::Ptr canvas, tgui::Panel::Ptr layersPanel, Layer &layer, unsigned index)
+	tgui::Panel::Ptr Editor::_getLayerPanelRightClickPanel(const tgui::ChildWindow::Ptr &win, const CanvasWidget::Ptr& canvas, const tgui::Panel::Ptr &layersPanel, Layer &layer, unsigned index)
 	{
 		auto &layers = canvas->getLayers();
 		auto panel = tgui::Panel::create({110, 230});
@@ -418,11 +411,11 @@ namespace Mimp
 			layers.setLayerIndex(index, index - 1);
 			this->_makeLayersPanel(win, canvas);
 		});
-		resize->connect("Pressed", [&layer, this, win, canvas]{
+		resize->connect("Pressed", [&layer, this, canvas]{
 			auto win = Utils::openWindowWithFocus(this->_gui, 200, 110);
 
 			win->loadWidgetsFromFile("widgets/new.gui");
-			win->setTitle("New image");
+			win->setTitle("Resize layer");
 
 			auto ok = win->get<tgui::Button>("OK");
 			auto cancel = win->get<tgui::Button>("Cancel");
@@ -432,7 +425,7 @@ namespace Mimp
 			width->setText(std::to_string(layer.getSize().x));
 			height->setText(std::to_string(layer.getSize().y));
 			cancel->connect("Pressed", [win]{ win->close(); });
-			ok->connect("Pressed", [this, win, &layer, width, height] {
+			ok->connect("Pressed", [win, &layer, width, height] {
 				std::string wid = width->getText();
 				std::string hei = height->getText();
 
@@ -443,13 +436,14 @@ namespace Mimp
 				auto h = std::stoul(hei);
 
 				layer.buffer = layer.buffer.getRectFromBuffer({0, 0}, {w, h});
+				win->close();
 			});
 		});
-		move->connect("Pressed", [&layer, this, win, canvas]{
-			auto win = Utils::openWindowWithFocus(this->_gui, 200, 110);
+		move->connect("Pressed", [&layer, this, canvas]{
+			auto win = Utils::openWindowWithFocus(this->_gui, 200, 780);
 
 			win->loadWidgetsFromFile("widgets/new.gui");
-			win->setTitle("New image");
+			win->setTitle("Move layer");
 
 			auto ok = win->get<tgui::Button>("OK");
 			auto cancel = win->get<tgui::Button>("Cancel");
@@ -459,7 +453,7 @@ namespace Mimp
 			width->setText(std::to_string(layer.pos.x));
 			height->setText(std::to_string(layer.pos.y));
 			cancel->connect("Pressed", [win]{ win->close(); });
-			ok->connect("Pressed", [this, win, &layer, width, height] {
+			ok->connect("Pressed", [win, &layer, width, height] {
 				std::string wid = width->getText();
 				std::string hei = height->getText();
 
@@ -470,6 +464,29 @@ namespace Mimp
 				auto h = std::stoul(hei);
 
 				layer.pos = Vector2<int>(w, h);
+				win->close();
+			});
+		});
+		rename->connect("Pressed", [layersPanel, &layer, this, canvas, index]{
+			auto win = Utils::openWindowWithFocus(this->_gui, 200, 80);
+
+			win->loadWidgetsFromFile("widgets/rename.gui");
+			win->setTitle("Rename layer");
+
+			auto ok = win->get<tgui::Button>("OK");
+			auto cancel = win->get<tgui::Button>("Cancel");
+			auto name = win->get<tgui::EditBox>("Name");
+
+			name->setText(std::string(layer.name, strnlen(layer.name, sizeof(layer.name))));
+			name->setMaximumCharacters(sizeof(layer.name));
+			cancel->connect("Pressed", [win]{ win->close(); });
+			ok->connect("Pressed", [layersPanel, win, &layer, name, index] {
+				auto newName = name->getText().toAnsiString();
+				auto size = strnlen(layer.name, sizeof(layer.name));
+
+				std::memcpy(layer.name, newName.c_str(), newName.size());
+				layersPanel->get<tgui::Label>("Label" + std::to_string(index))->setText(std::string(layer.name, size));
+				win->close();
 			});
 		});
 		return panel;
@@ -493,7 +510,7 @@ namespace Mimp
 			auto visibleCancel = tgui::Picture::create("icons/cancel.png");
 			auto lockedCancel = tgui::Picture::create("icons/cancel.png");
 			auto widget = tgui::Button::create();
-			auto label = tgui::Label::create(layer.name);
+			auto label = tgui::Label::create(std::string(layer.name, strnlen(layer.name, sizeof(layer.name))));
 
 			locked->setImage("icons/locked.png");
 			locked->setSize(18, 18);
