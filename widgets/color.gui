@@ -109,14 +109,14 @@ Label.Label3 {
 }
 
 Button.OK {
-    Position = (160, 150);
+    Position = (160, 140);
     Text = OK;
     TextSize = 13;
     renderer = &1;
 }
 
 Button.Cancel {
-    Position = (200, 150);
+    Position = (200, 140);
     Text = Cancel;
     TextSize = 13;
     renderer = &1;
@@ -125,9 +125,9 @@ Button.Cancel {
 TextBox.Preview {
     HorizontalScrollbarPolicy = Never;
     MaximumCharacters = 0;
-    Position = (10, 109.167);
+    Position = (90, 110);
     ReadOnly = true;
-    Size = (248, 25.8333);
+    Size = (168, 25);
     Text = "";
     TextSize = 13;
 
@@ -142,5 +142,35 @@ TextBox.Preview {
         selectedtextcolor = white;
         textcolor = #3C3C3C;
         texturebackground = None;
+    }
+}
+
+EditBox.Edit {
+    InputValidator = "#[0-9A-Fa-f]*";
+    Position = (10, 110);
+    Size = (70, 25);
+    Text = "#000000";
+    TextSize = 13;
+
+    Renderer {
+        backgroundcolor = #F5F5F5;
+        backgroundcolordisabled = #E6E6E6;
+        backgroundcolorhover = white;
+        bordercolor = #3C3C3C;
+        bordercolordisabled = #7D7D7D;
+        bordercolorhover = black;
+        borders = (1, 1, 1, 1);
+        caretcolor = black;
+        caretwidth = 1;
+        defaulttextcolor = #A0A0A0;
+        padding = (0, 0, 0, 0);
+        selectedtextbackgroundcolor = #006EFF;
+        selectedtextcolor = white;
+        textcolor = #3C3C3C;
+        textcolordisabled = #7D7D7D;
+        texture = None;
+        texturedisabled = None;
+        texturefocused = None;
+        texturehover = None;
     }
 }

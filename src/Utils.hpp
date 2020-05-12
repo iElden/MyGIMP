@@ -9,6 +9,11 @@
 #include <string>
 #include <vector>
 #include <filesystem>
+#include <TGUI/TGUI.hpp>
+#include "Data/Color.hpp"
+#include "Data/Vector2.hpp"
+#include "Enum.hpp"
+#include "Network/Socket.hpp"
 
 #ifndef _WIN32
 #define MB_ICONERROR 1
@@ -50,18 +55,25 @@ namespace Mimp::Utils
 	//! @param str String to convert in UTF-8
 	//! @return std::string Converted String
 	std::string wstringToUtf8(const std::wstring &str);
-    //! @brief Convert a UTF-8 into a wstring
-    //! @param str String to convert in wstring
-    //! @return std::wstring Converted String
+	//! @brief Convert a UTF-8 into a wstring
+	//! @param str String to convert in wstring
+	//! @return std::wstring Converted String
 	std::wstring utf8ToWstring(const std::string &str);
-    //! @brief Convert a std::filesystem::path to string UTF-8
-    //! @param path filesystem path to convert
-    //! @return std::string Converted Path in String
+	//! @brief Convert a std::filesystem::path to string UTF-8
+	//! @param path filesystem path to convert
+	//! @return std::string Converted Path in String
 	std::string pathToString(const std::filesystem::path &path);
-    //! @brief clean the . and .. in relative paths
-    //! @param path filesystem path to clean
-    //! @return std::string Converted Path in String
+	//! @brief clean the . and .. in relative paths
+	//! @param path filesystem path to clean
+	//! @return std::string Converted Path in String
 	std::string cleanPath(const std::string &path);
+
+	tgui::ChildWindow::Ptr openWindowWithFocus(tgui::Gui &gui, tgui::Layout width, tgui::Layout height);
+	tgui::ChildWindow::Ptr makeColorPickWindow(tgui::Gui &gui, const std::function<void(Color color)> &onFinish);
+	std::string DrawShapeToString(DrawShape shape);
+	DrawShape DrawShapeFromString(const std::string &str);
+	bool isOutOfBound(Mimp::Vector2<int> pt, Mimp::Vector2<unsigned> size);
+	std::string resolveUrl(const std::string &url, unsigned recurseLimit = 10);
 }
 
 

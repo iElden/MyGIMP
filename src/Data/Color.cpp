@@ -20,10 +20,10 @@ namespace Mimp
 	const Color Color::Transparent = 0x00000000;
 
 	Color::Color(unsigned int color) noexcept :
-		r(color >> 0x18U & 0xFFU),
-		g(color >> 0x10U & 0xFFU),
-		b(color >> 0x08U & 0xFFU),
-		a(color >> 0x00U & 0xFFU)
+		r((color >> 0x18U) & 0xFFU),
+		g((color >> 0x10U) & 0xFFU),
+		b((color >> 0x08U) & 0xFFU),
+		a((color >> 0x00U) & 0xFFU)
 	{
 	}
 
@@ -61,6 +61,14 @@ namespace Mimp
 
 	Color::operator sf::Color() const noexcept
 	{
-		return sf::Color(static_cast<unsigned>(*this));
+		return sf::Color(this->r, this->g, this->b, this->a);
+	}
+
+	unsigned Color::diff(const Color &other, bool include_alpha) const noexcept
+	{
+		if (*this == other)  // Because the color has 70% chance of being the same, this is for optimisation.
+			return 0;
+		return std::abs(this->r - other.r) + std::abs(this->g - other.g) + std::abs(this->b - other.b)
+		     + (include_alpha ? std::abs(this->a - other.a) : 0);
 	}
 }

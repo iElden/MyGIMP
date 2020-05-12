@@ -14,5 +14,5 @@ Mimp::SelectAllOperation::SelectAllOperation():
 
 void Mimp::SelectAllOperation::click(tgui::Gui &, Image &image) const
 {
-	image.selectedArea.fill();
+	image.selectedArea.selectAll();
 }

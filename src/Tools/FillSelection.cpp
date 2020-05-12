@@ -18,7 +18,7 @@ void Mimp::FillSelection::onClick(Mimp::Vector2<int>, Mimp::MouseClick click, Mi
 			image.getSelectedLayer().buffer.drawPixel(pt, this->_toolBox.getSelectedColor(click));
 }
 
-tgui::ScrollablePanel::Ptr Mimp::FillSelection::getParametersPanel() const
+tgui::ScrollablePanel::Ptr Mimp::FillSelection::getParametersPanel()
 {
 	return tgui::ScrollablePanel::create({0, 0});
 }

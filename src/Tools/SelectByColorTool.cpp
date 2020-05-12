@@ -29,7 +29,7 @@ void Mimp::SelectByColorTool::_updateSelectedArea(Image &image, const Color &tar
 				image.selectedArea.add(i, j);
 }
 
-tgui::ScrollablePanel::Ptr Mimp::SelectByColorTool::getParametersPanel() const
+tgui::ScrollablePanel::Ptr Mimp::SelectByColorTool::getParametersPanel()
 {
 	return tgui::ScrollablePanel::create({0, 0});
 }

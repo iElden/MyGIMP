@@ -64,7 +64,7 @@ ScrollablePanel.Panel {
     BitmapButton.Tool1 {
         Image = "icons/bucket.png";
         ImageScaling = 0;
-        Position = (50, 10);
+        Position = (10, 50);
         Size = (30, 30);
         TextSize = 13;
         renderer = &1;
@@ -87,7 +87,7 @@ ScrollablePanel.Panel {
     BitmapButton.Tool2 {
         Image = "icons/color_pick.png";
         ImageScaling = 0;
-        Position = (10, 50);
+        Position = (10, 90);
         Size = (30, 30);
         TextSize = 13;
         renderer = &1;
@@ -124,6 +124,15 @@ ScrollablePanel.Panel {
         Image = "icons/bucket_fill.png";
         ImageScaling = 0;
         Position = (50, 50);
+        Size = (30, 30);
+        TextSize = 13;
+        renderer = &1;
+    }
+
+    BitmapButton.Tool7 {
+        Image = "icons/eraser.png";
+        ImageScaling = 0;
+        Position = (50, 10);
         Size = (30, 30);
         TextSize = 13;
         renderer = &1;

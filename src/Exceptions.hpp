@@ -8,6 +8,7 @@
 
 #include <exception>
 #include <string>
+#include <cstring>
 
 namespace Mimp
 {
@@ -84,6 +85,55 @@ namespace Mimp
 		//! @param msg Message of the Exception
 		explicit ExportErrorException(const std::string &&msg) :
 			BaseException(static_cast<const std::string &&>(msg))
+		{};
+	};
+
+	class InvalidDrawShapeException : public BaseException {
+	public:
+		//! @brief Function to print
+		//! @param msg Message of the Exception
+		explicit InvalidDrawShapeException(const std::string &&msg) :
+			BaseException(static_cast<const std::string &&>(msg))
+		{};
+	};
+
+	class UnsupportedProtocolException : public BaseException {
+	public:
+		//! @brief Function to print
+		//! @param msg Message of the Exception
+		explicit UnsupportedProtocolException(const std::string &&msg) :
+			BaseException(static_cast<const std::string &&>(msg))
+		{};
+	};
+
+	class NotImplementedException : public BaseException {
+	public:
+		//! @brief Function to print
+		//! @param msg Message of the Exception
+		explicit NotImplementedException() :
+			BaseException("Not implemented")
+		{};
+	};
+
+	class FileNotFoundException : public BaseException {
+	public:
+		//! @brief Function to print
+		//! @param msg Message of the Exception
+		explicit FileNotFoundException(const std::string &path) :
+			BaseException(path + ": " + strerror(errno))
+		{};
+	};
+
+	class TooMuchRecursionException : public BaseException {
+	public:
+		//! @brief Function to print
+		//! @param msg Message of the Exception
+		explicit TooMuchRecursionException(const std::string &&msg) :
+			BaseException(static_cast<const std::string &&>(msg))
+		{};
+
+		explicit TooMuchRecursionException(TooMuchRecursionException &e, const std::string &&msg) :
+			BaseException(static_cast<const std::string &&>(msg) + "\n" + e.what())
 		{};
 	};
 }

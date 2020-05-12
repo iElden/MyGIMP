@@ -30,13 +30,13 @@ namespace Mimp
 
 		bool _destroyed = false;
 
-		bool _counterUp = true;
+		mutable bool _counterUp = true;
 
-		unsigned char _colorCounter = 0;
+		mutable unsigned char _colorCounter = 0;
 
 		std::thread _renderThread;
 
-		sf::Texture _drawBuffer;
+		mutable sf::Texture _drawBuffer;
 
 		//! @details Private Constructor of the Canvas Widget class
 		//! @param box ToolBox
@@ -81,7 +81,10 @@ namespace Mimp
 		void setSize(const tgui::Layout2d& size) override;
 		//! @brief Import an image
 		//! @param path Path of the image
-		void importImage(const std::string &path);
+		void importImageFromFile(const std::string &path);
+		//! @brief Import an image
+		//! @param data Data
+		void importImageFromMemory(const std::string &data);
 	};
 }
 

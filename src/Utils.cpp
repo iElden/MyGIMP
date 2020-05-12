@@ -8,11 +8,13 @@
 #include <regex>
 #include <codecvt>
 #include <SFML/Graphics.hpp>
-#include <TGUI/TGUI.hpp>
 #include <iostream>
 #include <numeric>
+#include <fstream>
 #include "Utils.hpp"
 #include "Exceptions.hpp"
+#include "Enum.hpp"
+#include "Network/SecuredSocket.hpp"
 
 namespace Mimp::Utils
 {
@@ -124,12 +126,69 @@ namespace Mimp::Utils
 
 	int	dispMsg(const std::string &title, const std::string &content, int variate)
 	{
-#ifdef _WIN32
-		return (MessageBox(nullptr, content.c_str(), title.c_str(), variate));
-#else
-//		sf::RenderWindow win{{700, 220}, title, sf::Style::Titlebar | sf::Style::Close};
-//		tgui::Gui gui{win};
-#endif
+		auto button = tgui::Button::create("OK");
+		auto text = tgui::TextBox::create();
+		tgui::Gui gui;
+		auto font = tgui::getGlobalFont();
+		const auto startWidth = button->getSize().x + 102;
+		unsigned width = startWidth;
+		unsigned height = button->getSize().y + 60;
+		float currentWidth = startWidth;
+		auto size = text->getTextSize();
+
+		std::cerr << title << std::endl << content << std::endl;
+		for (char c : content) {
+			currentWidth += font.getGlyph(c, size, false).advance;
+			width = std::max(static_cast<unsigned>(currentWidth), width);
+			if (c == '\n' || c == '\r')
+				currentWidth = startWidth;
+			if (c == '\n' || c == '\v')
+				height += size;
+			if (currentWidth >= 700) {
+				currentWidth = startWidth;
+				height += size;
+			}
+		}
+
+		sf::RenderWindow win{{std::min(700U, width), std::min(220U, height)}, title, sf::Style::Titlebar | sf::Style::Close};
+		auto pic = tgui::Picture::create("icons/error.png");
+		sf::Event event;
+
+		gui.setTarget(win);
+		gui.add(button, "ok");
+		gui.add(text);
+
+		button->setPosition("&.w - w - 10", "&.h - h - 10");
+		button->connect("Pressed", [&win]{
+			win.close();
+		});
+
+		text->setText(content);
+		text->setPosition(52, 10);
+		text->setSize("ok.x - 62", "ok.y - 20");
+		text->setReadOnly();
+		text->getRenderer()->setBorderColor("transparent");
+		text->getRenderer()->setBackgroundColor("transparent");
+
+		pic->setPosition(10, 10);
+		pic->setSize(32, 32);
+
+		if (variate & MB_ICONERROR)
+			gui.add(pic);
+
+		while (win.isOpen()) {
+			while (win.pollEvent(event)) {
+				if (event.type == sf::Event::Closed)
+					win.close();
+				gui.handleEvent(event);
+			}
+
+			win.clear({230, 230, 230, 255});
+			gui.draw();
+			win.display();
+		}
+
+		return 0;
 	}
 
 	static void _makeFolders(
@@ -213,9 +272,10 @@ namespace Mimp::Utils
 			if (item == "..") {
 				if (files.size() > 1)
 					files.pop_back();
-			} else if (item != ".")
+			} else if (item != "." && !item.empty())
 				files.push_back(item);
 
+#ifdef _WIN32
 		return std::accumulate(
 			files.begin() + 1,
 			files.end(),
@@ -224,6 +284,16 @@ namespace Mimp::Utils
 				return a + static_cast<char>(std::filesystem::path::preferred_separator) + b;
 			}
 		);
+#else
+		return std::accumulate(
+			files.begin() + 1,
+			files.end(),
+			static_cast<char>(std::filesystem::path::preferred_separator) + files[0],
+			[](const std::string &a, const std::string &b){
+				return a + static_cast<char>(std::filesystem::path::preferred_separator) + b;
+			}
+		);
+#endif
 	}
 
 	std::string openFileDialog(const std::string &title, const std::string &basePath, const std::vector<std::pair<std::string, std::string>> &patterns, bool overWriteWarning, bool mustExist)
@@ -316,11 +386,14 @@ namespace Mimp::Utils
 		});
 		gui.get<tgui::Button>("Open")->connect("Clicked", open);
 
+		if (overWriteWarning)
+			gui.get<tgui::Button>("Open")->setText("Save");
+
 		for (auto &pair : patterns)
 			box->addItem(pair.second, pair.first);
 		box->addItem("All files", ".*");
 		box->setSelectedItemByIndex(0);
-		box->connect("ItemSelected", [&currentPath, &panel, &file, &path, &box, &open]{
+		box->connect("ItemSelected", [&currentPath, &panel, &file, &box, &open]{
 			_makeFolders(currentPath, panel, file, open, std::regex(box->getSelectedItemId().toAnsiString(), std::regex_constants::icase));
 		});
 
@@ -349,5 +422,214 @@ namespace Mimp::Utils
 	std::string saveFileDialog(const std::string &title, const std::string &basePath, const std::vector<std::pair<std::string, std::string>> &patterns)
 	{
 		return openFileDialog(title, basePath, patterns, true, false);
+	}
+
+	tgui::ChildWindow::Ptr openWindowWithFocus(tgui::Gui &gui, tgui::Layout width, tgui::Layout height)
+	{
+		auto panel = tgui::Panel::create({"100%", "100%"});
+
+		panel->getRenderer()->setBackgroundColor({0, 0, 0, 175});
+		gui.add(panel);
+
+		auto window = tgui::ChildWindow::create();
+		window->setSize(width, height);
+		window->setPosition("(&.w - w) / 2", "(&.h - h) / 2");
+		gui.add(window);
+
+		window->setFocused(true);
+
+		const bool tabUsageEnabled = gui.isTabKeyUsageEnabled();
+		auto closeWindow = [&gui, window, panel, tabUsageEnabled]{
+			gui.remove(window);
+			gui.remove(panel);
+			gui.setTabKeyUsageEnabled(tabUsageEnabled);
+		};
+
+		panel->connect("Clicked", closeWindow);
+		window->connect({"Closed", "EscapeKeyPressed"}, closeWindow);
+		return window;
+	}
+
+	tgui::ChildWindow::Ptr makeColorPickWindow(tgui::Gui &gui, const std::function<void(Color color)> &onFinish)
+	{
+		auto window = openWindowWithFocus(gui, 271, 182);
+		window->loadWidgetsFromFile("widgets/color.gui");
+
+		auto red = window->get<tgui::Slider>("Red");
+		auto green = window->get<tgui::Slider>("Green");
+		auto blue = window->get<tgui::Slider>("Blue");
+		auto preview = window->get<tgui::TextBox>("Preview");
+		auto edit = window->get<tgui::EditBox>("Edit");
+		auto sliderCallback = [red, green, blue, preview, edit]{
+			char buffer[8];
+			tgui::Color bufferColor{
+				static_cast<unsigned char>(red->getValue()),
+				static_cast<unsigned char>(green->getValue()),
+				static_cast<unsigned char>(blue->getValue())
+			};
+
+			sprintf(buffer, "#%02X%02X%02X", bufferColor.getRed(), bufferColor.getGreen(), bufferColor.getBlue());
+			preview->getRenderer()->setBackgroundColor(bufferColor);
+			edit->setText(buffer);
+		};
+
+		edit->connect("TextChanged", [red, green, blue, edit]{
+			std::string text = edit->getText();
+
+			if (text.size() > 7) {
+				edit->setText(text.substr(0, 7));
+				return;
+			} else if (text.size() != 7)
+				return;
+
+			tgui::Color color{edit->getText()};
+
+			red->setValue(color.getRed());
+			green->setValue(color.getGreen());
+			blue->setValue(color.getBlue());
+		});
+		red->connect("ValueChanged", sliderCallback);
+		green->connect("ValueChanged", sliderCallback);
+		blue->connect("ValueChanged", sliderCallback);
+		preview->getRenderer()->setBackgroundColor({0, 0, 0, 255});
+		window->get<tgui::Button>("Cancel")->connect("Clicked", [window]{
+			window->close();
+		});
+		window->get<tgui::Button>("OK")->connect("Clicked", [onFinish, red, green, blue, window]{
+			Color bufferColor{
+				static_cast<unsigned char>(red->getValue()),
+				static_cast<unsigned char>(green->getValue()),
+				static_cast<unsigned char>(blue->getValue())
+			};
+
+			if (onFinish)
+				onFinish(bufferColor);
+			window->close();
+		});
+		return window;
+	}
+
+	std::string DrawShapeToString(DrawShape shape)
+	{
+		switch (shape) {
+		case CIRCLE:
+			return "Circle";
+		case SQUARE:
+			return "Square";
+		case DIAMOND:
+			return "Diamond";
+		case NB_OF_SHAPES:
+			throw InvalidDrawShapeException("NB_OF_SHAPES is not a DrawShape");
+		}
+		throw InvalidDrawShapeException("Invalid DrawShape");
+	}
+
+	DrawShape DrawShapeFromString(const std::string &str)
+	{
+		if (str == "Circle") {
+			return CIRCLE;
+		} else if (str == "Square") {
+			return SQUARE;
+		} else if (str == "Diamond") {
+			return DIAMOND;
+		}
+		throw InvalidDrawShapeException(str + " is not a valid DrawShape");
+	}
+
+	static std::string handleHttpRequest(Socket &socket, const std::string &url, unsigned short port, unsigned recurseLimit)
+	{
+		auto pos = url.find_first_of('/');
+		std::string host = pos == std::string::npos ? url : url.substr(0, pos);
+		Socket::HttpRequest request{
+			"",
+			"GET",
+			host,
+			port,
+			{},
+			pos == std::string::npos ? "/" : url.substr(host.size())
+		};
+		auto response = socket.makeHttpRequest(request);
+
+		if (response.returnCode / 100 == 3)
+			try {
+				return resolveUrl(response.header["Location"], recurseLimit - 1);
+			} catch (TooMuchRecursionException &e) {
+				throw TooMuchRecursionException(e, url + ": " + std::to_string(response.returnCode) + " (" + response.codeName + ")");
+			}
+
+		return response.body;
+	}
+
+	static std::string fileProtocol(const std::string &path, unsigned)
+	{
+		std::ifstream stream{path, std::ifstream::binary};
+
+		if (stream.fail())
+			throw FileNotFoundException(path);
+
+		std::string content;
+
+		stream.seekg(0, std::ios::end);
+		content.reserve(stream.tellg());
+		stream.seekg(0, std::ios::beg);
+		content.assign(std::istreambuf_iterator<char>{stream}, {});
+		return content;
+	}
+
+	static std::string httpProtocol(const std::string &path, unsigned recurseLimit)
+	{
+		Socket socket;
+
+		return handleHttpRequest(socket, path, 80, recurseLimit);
+	}
+
+	static std::string httpsProtocol(const std::string &path, unsigned recurseLimit)
+	{
+		SecuredSocket socket;
+
+		return handleHttpRequest(socket, path, 443, recurseLimit);
+	}
+
+	static const std::map<std::string, std::function<std::string (const std::string &path, unsigned)>> _protocols{
+		{"file", fileProtocol},
+		{"http", httpProtocol},
+		{"https", httpsProtocol}
+	};
+
+	std::string resolveUrl(const std::string &url, unsigned recurseLimit)
+	{
+		std::cout << "Resolve URL " << url << std::endl;
+		if (recurseLimit == 0)
+			throw TooMuchRecursionException(url + ": Recurse limit is 0");
+
+		std::string protocol;
+		auto pos = url.find_first_of("://");
+
+		if (pos == std::string::npos)
+			protocol = "http";
+		else
+			protocol = url.substr(0, pos);
+
+		std::function<std::string (const std::string &, unsigned)> fct;
+
+		try {
+			fct = _protocols.at(protocol);
+		} catch (std::out_of_range &) {
+			throw UnsupportedProtocolException(protocol + ":// is not a supported protocol");
+		}
+		return fct(pos == std::string::npos ? url : url.substr(pos + 3), recurseLimit);
+	}
+
+	bool isOutOfBound(Mimp::Vector2<int> pt, Mimp::Vector2<unsigned> size)
+	{
+		if (pt.x < 0)
+			return true;
+		if (pt.y < 0)
+			return true;
+		if (static_cast<unsigned>(pt.x) >= size.x)
+			return true;
+		if (static_cast<unsigned>(pt.y) >= size.y)
+			return true;
+		return false;
 	}
 }

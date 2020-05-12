@@ -19,6 +19,8 @@ namespace Mimp
 		//! @brief Reference of the Toolbox
 		ToolBox &_box;
 
+		unsigned _tolerance;
+		bool _alpha_in_tolerance;
 		//! @brief Apply the fill tool
 		//! @param pos Position of the fill application
 		//! @param layer Layer where the fill tool is used
@@ -37,7 +39,7 @@ namespace Mimp
 		Fill(Mimp::ToolBox &toolBox);
 		void onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Image &image) override;
 		void onClick(Vector2<int> pos, MouseClick click, Image &image) override;
-		tgui::ScrollablePanel::Ptr getParametersPanel() const override;
+		tgui::ScrollablePanel::Ptr getParametersPanel() override;
 	};
 }
 

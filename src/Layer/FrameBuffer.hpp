@@ -9,6 +9,7 @@
 #include <vector>
 #include "../Data/Vector2.hpp"
 #include "../Data/Color.hpp"
+#include "../Enum.hpp"
 
 namespace Mimp
 {
@@ -19,7 +20,12 @@ namespace Mimp
 		//! @details Vector2 with a width in x and a height in y
 		Vector2<unsigned int> _size;
 		//! @brief Buffer in an int array.
-		unsigned int *_pixelBuffer;
+		Color *_pixelBuffer;
+		sf::Color *_drawBuffer;
+
+		void _drawCircleAt(Vector2<int> pos, const Color &color, unsigned short radius, DrawStrategy drawStrategy) noexcept;
+		void _drawSquareAt(Vector2<int> pos, const Color &color, unsigned short radius, DrawStrategy drawStrategy) noexcept;
+		void _drawDiamondAt(Vector2<int> pos, const Color &color, unsigned short radius, DrawStrategy drawStrategy) noexcept;
 
 	public:
 		//! @brief Copy Constructor of the framebuffer.
@@ -28,7 +34,7 @@ namespace Mimp
 		//! @brief Constructor of the framebuffer.
 		//! @param size Size of the buffer
 		//! @param buffer Buffer allocated (array)
-		FrameBuffer(Vector2<unsigned int> size, const unsigned int *buffer);
+		FrameBuffer(Vector2<unsigned int> size, const Color *buffer);
 		//! @brief Constructor of the framebuffer.
 		//! @param size Size of the buffer
 		//! @param buffer Buffer as std::vector
@@ -40,13 +46,15 @@ namespace Mimp
 		//! @brief Destructor
 		~FrameBuffer();
 
+		FrameBuffer &operator=(const FrameBuffer &other);
 		//! @brief Get the buffer
 		//! @return const unsigned int * Contains the buffer in readonly
-		const unsigned int *getBuffer() const;
+		const Color *getBuffer() const;
+		const sf::Uint8 *getDrawBuffer() const;
 		//! @brief Get the value from the framebuffer at the given index.
 		//! @param index Contains the index of the seeked value
-		//! @return unsigned int & The value at the given index.
-		unsigned int &operator[](unsigned int index) const;
+		//! @return Color & The value at the given index.
+		Color operator[](unsigned int index) const;
 		//! @brief Get the color value at the given index in the framebuffer.
 		//! @param pos Position of the pixel
 		//! @oaram fill Fill color if the position wasn't found
@@ -64,7 +72,8 @@ namespace Mimp
 		//! @brief Draw a pixel on the framebuffer
 		//! @param pos Position
 		//! @param color Color of the pixel
-		void drawPixel(Vector2<int> pos, const Color &color) noexcept;
+		void drawPixel(Vector2<int> pos, const Color &color, DrawStrategy drawStrategy=ADD) noexcept;
+		void drawAt(Vector2<int> pos, const Color &color, unsigned short radius, DrawShape shape, DrawStrategy drawStrategy=ADD) noexcept;
 		//! @brief Set a pixel on the framebuffer
 		//! @param pos Position
 		//! @param color Color of the pixel
@@ -73,21 +82,11 @@ namespace Mimp
 		//! @param pt1 First Position
 		//! @param pt2 Second Position
 		//! @param color Color of the line
-		void drawLine(Vector2<int> pt1, Vector2<int> pt2, const Color &color) noexcept;
-		//! @brief Draw a rectangle of pixels on the framebuffer
-		//! @param pos Origin of the rectangle (upper left point)
-		//! @param size Size of the rectangle
-		//! @param color Color of the rectangle
-		void drawRect(Vector2<int> pos, Vector2<unsigned> size, const Color &color) noexcept;
-		//! @brief Draw an Ellipsoid of pixels on the framebuffer
-		//! @param pos Origin of the ellipsoid
-		//! @param size Size of the ellipsoid
-		//! @param color Color of the ellipsoid
-		void drawEllipsoid(Vector2<int> pos, Vector2<unsigned> size, const Color &color) noexcept;
+		void drawLine(Vector2<int> pt1, Vector2<int> pt2, const Color &color, unsigned short thickness, DrawShape shape=CIRCLE, DrawStrategy drawStrategy=ADD) noexcept;
 		//! @brief Draw the framebuffer given in parameter
 		//! @param pos Position of the Framebuffer on the screen
 		//! @param buffer The framebuffer to draw
-		void drawFrameBuffer(Vector2<int> pos, const FrameBuffer &buffer) noexcept;
+		void drawFrameBuffer(Vector2<int> pos, const FrameBuffer &buffer, DrawStrategy drawStrategy=ADD) noexcept;
 		//! @brief Get a Framebuffer from the screen
 		//! @param pos Origin of the Framebuffer to get
 		//! @param size Size of the Framebuffer to get

@@ -35,14 +35,17 @@ namespace Mimp
 		}
 	}
 
-	void LayerManager::addLayer(const Layer &layer)
+	Layer &LayerManager::addLayer(const Layer &layer)
 	{
 		this->_setBusy();
-		this->_layers.emplace_back(new Layer(layer));
+
+		auto &lay = this->_layers.emplace_back(new Layer(layer));
+
 		this->_unsetBusy();
+		return *lay;
 	}
 
-	void LayerManager::addLayer(Vector2<unsigned> size, const Color &defaultColor)
+	Layer &LayerManager::addLayer(Vector2<unsigned> size, const Color &defaultColor)
 	{
 		this->_setBusy();
 		auto &layer = this->_layers.emplace_back(new Layer(size, defaultColor));
@@ -52,6 +55,7 @@ namespace Mimp
 		sprintf(layer->name, "Layer %lu", this->_layers.size());
 #endif
 		this->_unsetBusy();
+		return *layer;
 	}
 
 	Layer &LayerManager::operator[](unsigned int index)
@@ -193,7 +197,40 @@ namespace Mimp
 		delete[] buffer;
 	}
 
-	void LayerManager::importImage(const std::string &path)
+	void LayerManager::importImageFromMemory(const std::string &data)
+	{
+		sf::Image image;
+
+		if (!image.loadFromMemory(data.c_str(), data.size()))
+			throw InvalidImageException("Failed to load image from memory");
+
+		this->_setBusy();
+		this->_layers.clear();
+
+		Vector2<unsigned> size{
+			image.getSize().x,
+			image.getSize().y
+		};
+		auto pixelBuffer = new Color[size.x * size.y];
+
+		this->_size = size;
+
+		for (unsigned x = 0; x < size.x; x++)
+			for (unsigned y = 0; y < size.y; y++)
+				pixelBuffer[x + y * size.x] = Color{
+					image.getPixel(x, y).r,
+					image.getPixel(x, y).g,
+					image.getPixel(x, y).b,
+					image.getPixel(x, y).a
+				};
+		auto &layer = this->_layers.emplace_back(new Layer{size, pixelBuffer});
+
+		std::strcpy(layer->name, "Layer 1");
+		delete[] pixelBuffer;
+		this->_unsetBusy();
+	}
+
+	void LayerManager::importImageFromFile(const std::string &path)
 	{
 		sf::Image image;
 
@@ -207,7 +244,7 @@ namespace Mimp
 			image.getSize().x,
 			image.getSize().y
 		};
-		auto pixelBuffer = new unsigned[size.x * size.y];
+		auto pixelBuffer = new Color[size.x * size.y];
 
 		this->_size = size;
 
@@ -303,5 +340,15 @@ namespace Mimp
 	size_t LayerManager::size() const
 	{
 		return this->_layers.size();
+	}
+
+	std::vector<std::shared_ptr<Layer>>::const_iterator LayerManager::begin() const
+	{
+		return this->_layers.begin();
+	}
+
+	std::vector<std::shared_ptr<Layer>>::const_iterator LayerManager::end() const
+	{
+		return this->_layers.end();
 	}
 }

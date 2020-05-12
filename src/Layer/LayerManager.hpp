@@ -34,7 +34,7 @@ namespace Mimp
 				bool locked : 1;
 			} attributes;
 			//! @brief pixels
-			unsigned pixels[0];
+			Color pixels[0];
 		};
 
 		//! @brief Image in Mimp
@@ -79,11 +79,13 @@ namespace Mimp
 		LayerManager(Vector2<unsigned> size, unsigned int nbOfLayer = 1, const Color &defaultColor = Color::Transparent);
 		//! @brief Function to add a layer to the layer manager
 		//! @param layer Layer to add to the layer manager
-		void addLayer(const Layer &layer);
+		//! @return The created Layer
+		Layer &addLayer(const Layer &layer);
 		//! @brief Function to add a layer to the layer manager
 		//! @param size Size of the layer
 		//! @param defaultColor Color of the layer to add
-		void addLayer(Vector2<unsigned> size, const Color &defaultColor = Color::Transparent);
+		//! @return The created Layer
+		Layer &addLayer(Vector2<unsigned> size, const Color &defaultColor = Color::Transparent);
 		//! @brief Operator to get a specific layer in the layer manager
 		//! @param index Index of the layer to get
 		//! @return Layer Returned layer
@@ -128,7 +130,10 @@ namespace Mimp
 		void loadMimpImage(const std::string &path);
 		//! @brief Import an image from a path
 		//! @param path Path of the Mimp image to import
-		void importImage(const std::string &path);
+		void importImageFromFile(const std::string &path);
+		//! @brief Import an image from a path
+		//! @param data Data of the image.
+		void importImageFromMemory(const std::string &data);
 
 		//! @brief Is the Mimp Image Valid ?
 		//! @param stream Stream of the image to verify
@@ -140,6 +145,12 @@ namespace Mimp
 		std::vector<std::shared_ptr<Layer>>::iterator begin();
 		//! @brief Iterator end for vectors of layers
 		std::vector<std::shared_ptr<Layer>>::iterator end();
+
+		//Iterator
+		//! @brief Iterator begin for vectors of layers
+		std::vector<std::shared_ptr<Layer>>::const_iterator begin() const;
+		//! @brief Iterator end for vectors of layers
+		std::vector<std::shared_ptr<Layer>>::const_iterator end() const;
 	};
 }
 

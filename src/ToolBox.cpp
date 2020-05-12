@@ -7,6 +7,7 @@
 #include "ToolBox.hpp"
 #include "Tools/ToolFactory.hpp"
 #include "Exceptions.hpp"
+#include "Utils.hpp"
 
 namespace Mimp
 {
@@ -31,62 +32,8 @@ namespace Mimp
 	void ToolBox::_generateGuiWindow(tgui::Gui &gui)
 	{
 		auto callback = [this, &gui](tgui::Button::Ptr button, Color *color){
-			auto panel = tgui::Panel::create({"100%", "100%"});
-
-			panel->getRenderer()->setBackgroundColor({0, 0, 0, 175});
-			gui.add(panel);
-
-			auto window = tgui::ChildWindow::create();
-			window->setSize(271, 182);
-			window->setPosition("(&.w - w) / 2", "(&.h - h) / 2");
-			gui.add(window);
-
-			window->setFocused(true);
-
-			const bool tabUsageEnabled = gui.isTabKeyUsageEnabled();
-			auto closeWindow = [&gui, window, panel, tabUsageEnabled]{
-				gui.remove(window);
-				gui.remove(panel);
-				gui.setTabKeyUsageEnabled(tabUsageEnabled);
-			};
-
-			panel->connect("Clicked", closeWindow);
-			window->connect({"Closed", "EscapeKeyPressed"}, closeWindow);
-			window->loadWidgetsFromFile("widgets/color.gui");
-
-			auto red = window->get<tgui::Slider>("Red");
-			auto green = window->get<tgui::Slider>("Green");
-			auto blue = window->get<tgui::Slider>("Blue");
-			auto preview = window->get<tgui::TextBox>("Preview");
-			auto sliderCallback = [red, green, blue, preview]{
-				tgui::Color bufferColor{
-					static_cast<unsigned char>(red->getValue()),
-					static_cast<unsigned char>(green->getValue()),
-					static_cast<unsigned char>(blue->getValue())
-				};
-
-				preview->getRenderer()->setBackgroundColor(bufferColor);
-			};
-
-			red->setValue(color->r);
-			red->connect("ValueChanged", sliderCallback);
-			green->setValue(color->g);
-			green->connect("ValueChanged", sliderCallback);
-			blue->setValue(color->b);
-			blue->connect("ValueChanged", sliderCallback);
-			preview->getRenderer()->setBackgroundColor({color->r, color->g, color->b, 255});
-			window->get<tgui::Button>("Cancel")->connect("Clicked", [window]{
-				window->close();
-			});
-			window->get<tgui::Button>("OK")->connect("Clicked", [this, red, green, blue, window, button, color]{
-				Color bufferColor{
-					static_cast<unsigned char>(red->getValue()),
-					static_cast<unsigned char>(green->getValue()),
-					static_cast<unsigned char>(blue->getValue())
-				};
-
-				this->_changeSelectedColor(button, color, bufferColor);
-				window->close();
+			Utils::makeColorPickWindow(gui, [this, button, color](Color col){
+				this->_changeSelectedColor(button, color, col);
 			});
 		};
 
@@ -95,6 +42,7 @@ namespace Mimp
 
 		auto panel = this->_window->get<tgui::ScrollablePanel>("Panel");
 
+		panel->setSize(panel->getSize().x * 2, panel->getSize().y);
 		this->_colorButtons.first = this->_window->get<tgui::Button>("Color1");
 		this->_colorButtons.second = this->_window->get<tgui::Button>("Color2");
 
@@ -108,7 +56,7 @@ namespace Mimp
 		this->_colorButtons.second->getRenderer()->setBackgroundColorDown({this->_selectedColor.second.r, this->_selectedColor.second.g, this->_selectedColor.second.b, 255});
 		this->_colorButtons.second->connect("Clicked", callback, this->_colorButtons.second, &this->_selectedColor.second);
 
-		this->_window->setSize(panel->getSize());
+		this->_window->setSize(panel->getSize().x, panel->getSize().y + 300);
 		this->_window->setTitle("Tools");
 		this->_window->connect("Closed", [this, &gui]{
 			this->_generateGuiWindow(gui);
@@ -125,9 +73,10 @@ namespace Mimp
 						throw CorruptedGuiFileException("Tool index out of range");
 
 					widget->setToolTip(tgui::Label::create(this->_tools[index]->getName()));
-					widget->connect("Pressed", [this, index]{
+					widget->connect("Pressed", [this, index, panel]{
 						this->getSelectedTool()->onUnselect();
 						this->_selectedTool = index;
+						this->_addSelectedToolConfigPanel(panel);
 						this->getSelectedTool()->onSelect();
 					});
 				} catch (std::out_of_range &e) {
@@ -137,6 +86,7 @@ namespace Mimp
 				}
 			}
 		}
+		this->_addSelectedToolConfigPanel(panel);
 	}
 
 	Color ToolBox::getSelectedColor(MouseClick click)
@@ -162,5 +112,15 @@ namespace Mimp
 			this->_changeSelectedColor(this->_colorButtons.first, &this->_selectedColor.first, newColor);
 		else if (click == MIMP_RIGHT_CLICK)
 			this->_changeSelectedColor(this->_colorButtons.second, &this->_selectedColor.second, newColor);
+	}
+
+	void ToolBox::_addSelectedToolConfigPanel(tgui::Panel::Ptr pan)
+	{
+		auto panel = this->getSelectedTool()->getParametersPanel();
+
+		this->_window->remove(this->_window->get<tgui::Widget>("cfg"));
+		panel->setPosition(10, pan->getSize().y + 10);
+		panel->setSize(pan->getSize().x - 20, 280);
+		this->_window->add(panel, "cfg");
 	}
 }

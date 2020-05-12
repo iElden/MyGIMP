@@ -46,7 +46,7 @@ namespace Mimp
 		virtual void onClick(Vector2<int> pos, MouseClick click, Image &image) = 0;
 		//! @brief Get the Parameters Panel Pointer
 		//! @return tgui::ScrollablePanel::Ptr Pointer containing the parameters panel
-		virtual tgui::ScrollablePanel::Ptr getParametersPanel() const = 0;
+		virtual tgui::ScrollablePanel::Ptr getParametersPanel() = 0;
 	};
 }
 

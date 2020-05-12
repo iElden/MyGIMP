@@ -2,7 +2,10 @@
 // Created by Gegel85 on 07/04/2020.
 //
 
+#include <TGUI/TGUI.hpp>
+#include <iostream>
 #include "Pencil.hpp"
+#include "../Utils.hpp"
 
 namespace Mimp
 {
@@ -16,18 +19,40 @@ namespace Mimp
 	{
 		if (image.getSelectedLayer().isLocked())
 			return;
-		image.getSelectedLayer().buffer.drawLine(oldPos, newPos, this->_box.getSelectedColor(click));
+		image.getSelectedLayer().buffer.drawLine(oldPos, newPos, this->_box.getSelectedColor(click), this->_radius, this->_shape);
 	}
 
 	void Pencil::onClick(Vector2<int> pos, MouseClick click, Image &image)
 	{
 		if (image.getSelectedLayer().isLocked())
 			return;
-		image.getSelectedLayer().buffer.drawPixel(pos, this->_box.getSelectedColor(click));
+		image.getSelectedLayer().buffer.drawAt(pos, this->_box.getSelectedColor(click), this->_radius, this->_shape);
 	}
 
-	tgui::ScrollablePanel::Ptr Pencil::getParametersPanel() const
+	tgui::ScrollablePanel::Ptr Pencil::getParametersPanel()
 	{
-		return tgui::ScrollablePanel::create({0, 0});
+		auto panel = tgui::ScrollablePanel::create();
+
+		panel->loadWidgetsFromFile("widgets/tools_cfg/pencil_cfg.gui");
+
+		auto radiusSlider = panel->get<tgui::Slider>("Radius");
+		auto shapeBox = panel->get<tgui::ComboBox>("Shape");
+		auto radiusPreview = panel->get<tgui::TextBox>("RadiusPreview");
+
+		radiusPreview->setText(std::to_string(this->_radius));
+		radiusSlider->setValue(this->_radius);
+		shapeBox->removeAllItems();
+		for (int i = 0; i < NB_OF_SHAPES; i++)
+			shapeBox->addItem(Utils::DrawShapeToString(static_cast<DrawShape>(i)));
+		shapeBox->setSelectedItemByIndex(this->_shape);
+
+		radiusSlider->connect("ValueChanged", [radiusPreview, this, radiusSlider]{
+			this->_radius = radiusSlider->getValue();
+			radiusPreview->setText(std::to_string(this->_radius));
+		});
+		shapeBox->connect("ItemSelected", [this, shapeBox]{
+			this->_shape = static_cast<DrawShape>(shapeBox->getSelectedItemIndex());
+		});
+		return panel;
 	}
 }

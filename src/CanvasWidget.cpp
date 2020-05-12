@@ -54,10 +54,10 @@ namespace Mimp
 			this->_box.getSelectedTool()->onMouseRelease(realPos, MIMP_RIGHT_CLICK, *this);
 		});
 		this->_renderThread = std::thread([this]{
-			while (!this->_destroyed) {
+			/*while (!this->_destroyed) {
 				this->_updateInternalBuffer();
 				std::this_thread::sleep_for(std::chrono::milliseconds(10));
-			}
+			}*/
 		});
 		this->_drawBuffer.create(size.x, size.y);
 	}
@@ -101,10 +101,10 @@ namespace Mimp
 		});
 		this->_drawBuffer.create(size.x, size.y);
 		this->_renderThread = std::thread([this]{
-			while (!this->_destroyed) {
+			/*while (!this->_destroyed) {
 				this->_updateInternalBuffer();
 				std::this_thread::sleep_for(std::chrono::milliseconds(10));
-			}
+			}*/
 		});
 	}
 
@@ -165,15 +165,22 @@ namespace Mimp
 		sf::Sprite sprite;
 		bool dark = false;
 		auto size = this->_size;
+		FrameBuffer buffer{size};
+		auto color = Color{this->_colorCounter, this->_colorCounter, this->_colorCounter, 120};
+
+		this->_colorCounter += (this->_counterUp * 2 - 1) * 20;
+		this->_counterUp = (this->_counterUp && this->_colorCounter < 240) || !this->_colorCounter;
+		if (this->selectedArea.isAnAreaSelected())
+			for (auto &pt : this->selectedArea.getPoints())
+				buffer.drawPixel(pt, color, SET);
 
 		states.transform.translate(getPosition());
 
-		target.draw(rect, states);
 		rect.setOutlineThickness(0);
 		for (unsigned x = 0; x < size.x; x += 10) {
 			dark = x % 20;
 			for (unsigned y = 0; y < size.y; y += 10) {
-				rect.setFillColor(dark ? sf::Color{0x444444FF} : sf::Color::White);
+				rect.setFillColor(dark ? sf::Color{0x888888FF} : sf::Color::White);
 				rect.setPosition(x, y);
 				rect.setSize({
 					static_cast<float>(size.x - x > 10 ? 10 : size.x - x),
@@ -183,7 +190,20 @@ namespace Mimp
 				dark = !dark;
 			}
 		}
-		sprite.setTexture(this->_drawBuffer);
+
+		for (auto &layer : this->_layers) {
+			if (!layer->visible)
+				continue;
+			this->_drawBuffer.create(layer->getSize().x, layer->getSize().y);
+			this->_drawBuffer.update(layer->buffer.getDrawBuffer(), layer->getSize().x, layer->getSize().y, 0, 0);
+			sprite.setTexture(this->_drawBuffer, true);
+			sprite.setPosition(layer->pos.x, layer->pos.y);
+			target.draw(sprite, states);
+		}
+		this->_drawBuffer.create(size.x, size.y);
+		this->_drawBuffer.update(buffer.getDrawBuffer(), size.x, size.y, 0, 0);
+		sprite.setTexture(this->_drawBuffer, true);
+		sprite.setPosition(0, 0);
 		target.draw(sprite, states);
 	}
 
@@ -197,9 +217,23 @@ namespace Mimp
 		return std::make_shared<CanvasWidget>(box, path);
 	}
 
-	void CanvasWidget::importImage(const std::string &path)
+	void CanvasWidget::importImageFromFile(const std::string &path)
 	{
-		this->_layers.importImage(path);
+		this->_layers.importImageFromFile(path);
+		this->_size = {
+			this->_layers.getSize().x,
+			this->_layers.getSize().y
+		};
+		this->m_size = {
+			this->_size.x,
+			this->_size.y
+		};
+		this->_drawBuffer.create(this->_size.x, this->_size.y);
+	}
+
+	void CanvasWidget::importImageFromMemory(const std::string &path)
+	{
+		this->_layers.importImageFromMemory(path);
 		this->_size = {
 			this->_layers.getSize().x,
 			this->_layers.getSize().y

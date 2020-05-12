@@ -21,7 +21,7 @@ void Mimp::ColorPick::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick click, Mi
 void Mimp::ColorPick::onMouseDrag(Mimp::Vector2<int>, Mimp::Vector2<int>, Mimp::MouseClick, Mimp::Image &)
 {}
 
-tgui::ScrollablePanel::Ptr Mimp::ColorPick::getParametersPanel() const
+tgui::ScrollablePanel::Ptr Mimp::ColorPick::getParametersPanel()
 {
 	return tgui::ScrollablePanel::create({0, 0});
 }

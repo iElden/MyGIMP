@@ -4,7 +4,9 @@
 ** File description:
 ** Fill.cpp
 */
+
 #include "Fill.hpp"
+#include <TGUI/TGUI.hpp>
 
 Mimp::Fill::Fill(Mimp::ToolBox &toolBox):
 		Tool("Fill color"),
@@ -45,7 +47,7 @@ void Mimp::Fill::_spread_color(Vector2<int> pos, Layer &layer, Color target_colo
 		for (auto pt : points)
 			for (auto sp : spread_pos) {
 				auto new_pos = pt + sp;
-				if (!layer.buffer.posIsOutOfBound(new_pos) && layer.buffer.getPixel(new_pos) == target_color) {
+				if (!layer.buffer.posIsOutOfBound(new_pos) && layer.buffer.getPixel(new_pos).diff(target_color, this->_alpha_in_tolerance) <= this->_tolerance) {
 					layer.buffer.drawPixel(new_pos, fill_color);
 					new_points.push_back(new_pos);
 				}
@@ -54,8 +56,24 @@ void Mimp::Fill::_spread_color(Vector2<int> pos, Layer &layer, Color target_colo
 	}
 }
 
-tgui::ScrollablePanel::Ptr Mimp::Fill::getParametersPanel() const
+tgui::ScrollablePanel::Ptr Mimp::Fill::getParametersPanel()
 {
-	return tgui::ScrollablePanel::create({0, 0});
+	auto panel = tgui::ScrollablePanel::create();
+
+	panel->loadWidgetsFromFile("widgets/tools_cfg/fill_cfg.gui");
+
+	auto toleranceSlider = panel->get<tgui::Slider>("Tolerance");
+	auto alpha = panel->get<tgui::CheckBox>("Alpha");
+	auto tolerancePreview = panel->get<tgui::TextBox>("TolerancePreview");
+
+	tolerancePreview->setText(std::to_string(this->_tolerance));
+	toleranceSlider->setValue(this->_tolerance);
+	alpha->setChecked(true);
+
+	toleranceSlider->connect("ValueChanged", [tolerancePreview, this, toleranceSlider]{
+		this->_tolerance = toleranceSlider->getValue();
+		tolerancePreview->setText(std::to_string(this->_tolerance));
+	});
+	return panel;
 }
 

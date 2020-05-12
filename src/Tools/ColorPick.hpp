@@ -23,7 +23,7 @@ namespace Mimp {
 		ColorPick(ToolBox &toolBox);
 		void onClick(Vector2<int> pos, MouseClick click, Image &layer) override;
 		void onMouseDrag(Vector2<int>, Vector2<int>, MouseClick, Image &) override;
-		tgui::ScrollablePanel::Ptr getParametersPanel() const override;
+		tgui::ScrollablePanel::Ptr getParametersPanel() override;
 	};
 }
 
