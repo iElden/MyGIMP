@@ -83,7 +83,7 @@ set(MIMP_SRCS
     src/Network/Socket.hpp
     src/ImageOperations/Selection/ExpandSelection.cpp
     src/ImageOperations/Selection/ExpandSelection.hpp
-)
+        src/ImageOperations/Selection/ExpandMoreSelection.cpp src/ImageOperations/Selection/ExpandMoreSelection.hpp)
 
 add_executable(
     MyGimp
