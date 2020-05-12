@@ -77,18 +77,28 @@ TEST(Utils, stringToDrawshape) {
     }
 }
 
+
+inline std::string PATH(const std::string &path){
+    std::string newPath;
+    for (auto &c : path)
+        newPath += c == '/' ? std::filesystem::path::preferred_separator : c;
+    return newPath;
+}
+
+
 TEST(Utils, cleanPathParent1) {
-    ASSERT_EQ(Mimp::Utils::cleanPath(".././test1/test2/.."), "../.././test1");
+
+    ASSERT_EQ(Mimp::Utils::cleanPath(PATH(".././test1/test2/..")), PATH("/test1"));
 }
 
 TEST(Utils, cleanPathParent2) {
-    ASSERT_EQ(Mimp::Utils::cleanPath(".././test1/./test2/.."), "../.././test1");
+    ASSERT_EQ(Mimp::Utils::cleanPath(PATH(".././test1/./test2/..")), PATH("/test1"));
 }
 
 TEST(Utils, cleanPathParent3) {
-    ASSERT_EQ(Mimp::Utils::cleanPath("test1/test2/.."), "test1");
+    ASSERT_EQ(Mimp::Utils::cleanPath(PATH("test1/test2/..")), PATH("/test1"));
 }
 
 TEST(Utils, cleanPathParent4) {
-    ASSERT_EQ(Mimp::Utils::cleanPath("test1/./test2/.."), "test1");
+    ASSERT_EQ(Mimp::Utils::cleanPath(PATH("test1/./test2/..")), PATH("/test1"));
 }
