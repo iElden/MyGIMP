@@ -43,6 +43,19 @@ TEST(Utils, resolveUrlBadFile) {
     }
 }
 
+TEST(Utils, resolveValidUrl) {
+    auto body = Mimp::Utils::resolveUrl("https://www.google.com");
+
+    ASSERT_NE(body.size(), 0);
+}
+
+TEST(Utils, resolveExistingFile) {
+    std::string testFilePath = std::filesystem::current_path().string() + "/tst/TestFile";
+    auto content = Mimp::Utils::resolveUrl("file://" + testFilePath);
+
+    ASSERT_NE(content.size(), 0);
+}
+
 TEST(Utils, drawshapeToString) {
     ASSERT_EQ(Mimp::Utils::DrawShapeToString(Mimp::DrawShape::CIRCLE), "Circle");
     ASSERT_EQ(Mimp::Utils::DrawShapeToString(Mimp::DrawShape::SQUARE), "Square");
@@ -85,7 +98,6 @@ inline std::string PATH(const std::string &path){
     return newPath;
 }
 
-
 TEST(Utils, cleanPathParent1) {
 
     ASSERT_EQ(Mimp::Utils::cleanPath(PATH(".././test1/test2/..")), PATH("/test1"));
@@ -101,4 +113,36 @@ TEST(Utils, cleanPathParent3) {
 
 TEST(Utils, cleanPathParent4) {
     ASSERT_EQ(Mimp::Utils::cleanPath(PATH("test1/./test2/..")), PATH("/test1"));
+}
+
+TEST(Utils, getLastException1) {
+#ifdef __GNUG__
+    ASSERT_EQ(Mimp::Utils::getLastExceptionName(), "No exception");
+#else
+    ASSERT_EQ(Mimp::Utils::getLastExceptionName(), "Unknown exception");
+#endif
+}
+
+TEST(Utils, getLastException2) {
+#ifdef __GNUG__
+    try {
+        throw Mimp::FileNotFoundException("file");
+    } catch (std::exception &e) {
+        ASSERT_EQ(Mimp::Utils::getLastExceptionName(), "Mimp::FileNotFoundException");
+    }
+#else
+    ASSERT_EQ(Mimp::Utils::getLastExceptionName(), "Unknown exception");
+#endif
+}
+
+TEST(Utils, isOutOfBounds) {
+    Mimp::Vector2<int> ptXNeg = {-1, 0};
+    Mimp::Vector2<int> ptYNeg = {0, -1};
+    Mimp::Vector2<int> pt = {2, 9};
+
+    ASSERT_TRUE(Mimp::Utils::isOutOfBound(ptXNeg, {0, 0}));
+    ASSERT_TRUE(Mimp::Utils::isOutOfBound(ptYNeg, {0, 0}));
+
+    ASSERT_TRUE(Mimp::Utils::isOutOfBound(pt, {1, 10}));
+    ASSERT_TRUE(Mimp::Utils::isOutOfBound(pt, {6, 8}));
 }

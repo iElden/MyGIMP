@@ -135,7 +135,7 @@ add_executable(
         tst/LayerManager.cpp
         tst/SelectedArea.cpp
         tst/ToolBox.cpp
-)
+        tst/Socket.cpp tst/SecuredSocket.cpp)
 
 if (WIN32)
     target_link_libraries(
