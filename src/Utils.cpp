@@ -615,7 +615,7 @@ namespace Mimp::Utils
 		try {
 			fct = _protocols.at(protocol);
 		} catch (std::out_of_range &) {
-			throw UnsupportedProtocolException(protocol + "://  is not a supported protocol");
+			throw UnsupportedProtocolException(protocol + ":// is not a supported protocol");
 		}
 		return fct(pos == std::string::npos ? url : url.substr(pos + 3), recurseLimit);
 	}

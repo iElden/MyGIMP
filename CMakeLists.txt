@@ -118,6 +118,8 @@ endif ()
 
 # --------------
 
+add_compile_options(--coverage)
+
 add_executable(
         MyGimp_test
 
@@ -133,7 +135,7 @@ add_executable(
         tst/LayerManager.cpp
         tst/SelectedArea.cpp
         tst/ToolBox.cpp
-)
+        tst/Socket.cpp tst/SecuredSocket.cpp)
 
 if (WIN32)
     target_link_libraries(
@@ -147,6 +149,7 @@ if (WIN32)
             ssl
             ws2_32
             gtest
+            gcov
     )
 else ()
     target_link_libraries(
@@ -159,5 +162,6 @@ else ()
             stdc++fs
             ssl
             gtest
+            gcov
     )
 endif ()

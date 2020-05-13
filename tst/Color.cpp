@@ -31,15 +31,42 @@ TEST(ColorManipulation, basicColors) {
     ASSERT_EQ(b.a, 0xFF);
 }
 
-TEST(ColorManipulation, addition) {
+TEST(ColorManipulation, addition1) {
     Mimp::Color c1 = Mimp::Color::Blue;
-    Mimp::Color c2 = Mimp::Color::Green;
-    Mimp::Color c3 = Mimp::Color::Yellow;
+    Mimp::Color c2 = Mimp::Color::Yellow;
+    Mimp::Color c3 = Mimp::Color::Green;
 
     auto c4 = c1 + c2;
     ASSERT_EQ(c4.r, c3.r);
     ASSERT_EQ(c4.g, c3.g);
     ASSERT_EQ(c4.b, c3.b);
     ASSERT_EQ(c4.a, c3.a);
+}
 
+TEST(ColorManipulation, addition2) {
+    Mimp::Color c1 = Mimp::Color::Blue;
+    Mimp::Color c2 = Mimp::Color::Green;
+
+    c2.a = 0x00;
+    auto c4 = c1 + c2;
+    ASSERT_EQ(c4.r, c1.r);
+    ASSERT_EQ(c4.g, c1.g);
+    ASSERT_EQ(c4.b, c1.b);
+    ASSERT_EQ(c4.a, c1.a);
+}
+
+TEST(ColorManipulation, diff1) {
+    Mimp::Color c1 = Mimp::Color::Blue;
+    Mimp::Color c2 = Mimp::Color::Blue;
+
+    auto diff = c1.diff(c2);
+    ASSERT_EQ(diff, 0);
+}
+
+TEST(ColorManipulation, diff2) {
+    Mimp::Color c1 = Mimp::Color::Blue;
+    Mimp::Color c2 = Mimp::Color::Red;
+
+    auto diff = c1.diff(c2);
+    ASSERT_NE(diff, 0);
 }
