@@ -500,7 +500,7 @@ namespace Mimp
 			});
 		});
 		move->connect("Pressed", [&layer, this, canvas]{
-			auto win = Utils::openWindowWithFocus(this->_gui, 200, 780);
+			auto win = Utils::openWindowWithFocus(this->_gui, 200, 110);
 
 			win->loadWidgetsFromFile("widgets/new.gui");
 			win->setTitle("Move layer");
