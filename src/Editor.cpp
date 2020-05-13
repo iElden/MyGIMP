@@ -594,10 +594,24 @@ namespace Mimp
 			visibleCancel->setVisible(!layer.visible);
 			visibleCancel->setPosition(2 + 66 + 18 + 1, (size - i - 1) * 66 + 2 + 1);
 
+			if (i == layers.getSelectedLayerIndex()){
+				widget->getRenderer()->setBackgroundColor("#888888");
+				widget->getRenderer()->setBackgroundColorHover("#AAAAAA");
+			} else {
+				widget->getRenderer()->setBackgroundColor("#EFEFEF");
+				widget->getRenderer()->setBackgroundColorHover("#FFFFFF");
+			}
+
 			widget->setSize(64, 64);
 			widget->setPosition(2, (size - i - 1) * 66 + 2);
-			widget->connect("Clicked", [&layers, i]{
+			widget->connect("Clicked", [&layers, i, widget, panel]{
+				auto other = panel->get<tgui::Button>("Widget" + std::to_string(layers.getSelectedLayerIndex()));
+
+				other->getRenderer()->setBackgroundColor("#EFEFEF");
+				other->getRenderer()->setBackgroundColorHover("#FFFFFF");
 				layers.selectLayer(i);
+				widget->getRenderer()->setBackgroundColor("#888888");
+				widget->getRenderer()->setBackgroundColorHover("#AAAAAA");
 			});
 			widget->connect("RightClicked", [this, win, panel, widget, label, &layer, i, canvas](tgui::Vector2f pos){
 				auto fakePanel = tgui::Panel::create({"100%", "100%"});

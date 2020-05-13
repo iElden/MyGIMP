@@ -351,4 +351,9 @@ namespace Mimp
 	{
 		return this->_layers.end();
 	}
+
+	unsigned LayerManager::getSelectedLayerIndex() noexcept
+	{
+		return this->_selectedLayer;
+	}
 }
