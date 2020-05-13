@@ -142,8 +142,8 @@ namespace Mimp
 	{
 		Vector2<int> realPos;
 
-		realPos.x = pos.x;
-		realPos.y = pos.y;
+		realPos.x = pos.x - this->getPosition().x;
+		realPos.y = pos.y - this->getPosition().y;
 		if (this->m_mouseDown)
 			this->_box.getSelectedTool()->onMouseDrag(this->_mousePos, realPos, MIMP_LEFT_CLICK, *this);
 		if (this->_rightMouseDown)

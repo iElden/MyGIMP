@@ -113,11 +113,16 @@ namespace Mimp
 	tgui::ChildWindow::Ptr Editor::_makeImagePanel(CanvasWidget::Ptr canvas)
 	{
 		auto menu = this->_gui.get<tgui::MenuBar>("main_bar");
-		auto window = tgui::ChildWindow::create("Unnamed");
+		auto window = tgui::ChildWindow::create("Untitled");
 		auto layersPanel = this->_makeLayersPanel(window, canvas);
-		auto canvasPanel = tgui::ScrollablePanel::create({400, 400});
+		auto canvasPanel = tgui::ScrollablePanel::create({"&.w - 200", "&.h - 20"});
 
-		canvasPanel->getRenderer()->setBackgroundColor("transparent");
+		window->setMinimumSize({
+			300,
+			100
+		});
+		window->setResizable(true);
+		window->setTitleButtons(tgui::ChildWindow::Close | tgui::ChildWindow::Maximize | tgui::ChildWindow::Minimize);
 		window->setSize({
 			600,
 			420
@@ -132,6 +137,59 @@ namespace Mimp
 					break;
 				}
 			}
+			this->_minimizedWindows.erase(this->_minimizedWindows.find(window));
+		});
+		window->connect("Minimized", [window, this]{
+			window->setTitleButtons(tgui::ChildWindow::Close | tgui::ChildWindow::Maximize);
+
+			auto it = this->_minimizedWindows.find(window);
+			unsigned index = 0;
+
+			if (it == this->_minimizedWindows.end()) {
+				window->setResizable(false);
+				this->_minimizedWindows[window] = {
+					{window->getPosition().x, window->getPosition().y},
+					{window->getSize().x, window->getSize().y},
+				};
+				window->setSize(160, 0);
+
+				for (auto &elem : this->_minimizedWindows) {
+					elem.first->setPosition(index * 160, "&.h - " + std::to_string(window->getFullSize().y));
+					index++;
+				}
+			} else {
+				auto oldElems = it->second;
+
+				this->_minimizedWindows.erase(it);
+				window->setPosition(oldElems.x.x, oldElems.x.y);
+				window->setSize(oldElems.y.x, oldElems.y.y);
+				window->setResizable(true);
+
+				for (auto &elem : this->_minimizedWindows) {
+					elem.first->setPosition(index * 160, "&.h - " + std::to_string(window->getFullSize().y));
+					index++;
+				}
+			}
+		});
+		window->connect("Maximized", [window, this]{
+			window->setTitleButtons(tgui::ChildWindow::Close | tgui::ChildWindow::Maximize | tgui::ChildWindow::Minimize);
+			auto it = this->_minimizedWindows.find(window);
+			unsigned index = 0;
+
+			if (it != this->_minimizedWindows.end()) {
+				auto oldElems = it->second;
+
+				this->_minimizedWindows.erase(it);
+
+				for (auto &elem : this->_minimizedWindows) {
+					elem.first->setPosition(index * 160, "&.h - " + std::to_string(window->getFullSize().y));
+					index++;
+				}
+
+				window->setPosition(oldElems.x.x, oldElems.x.y);
+				window->setSize(oldElems.y.x, oldElems.y.y);
+			} else {
+			}
 		});
 		window->connect("Focused", [this, window]{
 			this->setSelectedImage(window);
@@ -142,8 +200,10 @@ namespace Mimp
 		window->add(layersPanel, "Layers");
 
 		canvasPanel->setPosition(190, 10);
+		canvasPanel->getRenderer()->setBackgroundColor("transparent");
 		canvasPanel->add(canvas, "Canvas");
 		window->add(canvasPanel, "Canvas");
+
 		return window;
 	}
 
@@ -499,7 +559,7 @@ namespace Mimp
 		auto size = layers.size();
 
 		if (!panel)
-			panel = tgui::ScrollablePanel::create({170, 400});
+			panel = tgui::ScrollablePanel::create({170, "&.h - 20"});
 		else
 			panel->removeAllWidgets();
 

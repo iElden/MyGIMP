@@ -32,6 +32,7 @@ namespace Mimp
 		std::map<KeyCombination, std::shared_ptr<ImageOperation>> _keysImgOps;
 		//! @brief Selected Image
 		tgui::ChildWindow::Ptr _selectedImageWindow;
+		std::map<tgui::ChildWindow::Ptr, Vector2<Vector2<float>>> _minimizedWindows;
 
 		//! @brief Setup Button Callbacks
 		void _setupButtonCallbacks();
