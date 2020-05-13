@@ -374,33 +374,52 @@ namespace Mimp
 	void FrameBuffer::_drawCircleAt(Vector2<int> pos, const Color &color, unsigned short radius,
 									DrawStrategy drawStrategy) noexcept
 	{
-		int min_x = pos.x - radius / 2;
-		int max_x = pos.x + radius / 2;
-		for (int j = pos.y - radius; j < pos.y + radius; j++)
-			for (int i = min_x; i < max_x; i++)
-				if (std::pow(i - pos.x, 2) / std::pow(radius / 2, 2) +
-					std::pow(j - pos.y, 2) / std::pow(radius / 2, 2) <= 1)
-					this->drawPixel({i, j}, color, drawStrategy);
+		if (radius == 1)
+			return this->drawPixel(pos, color, drawStrategy);
+
+		float realRadius = radius / 2.f;
+		float minX = pos.x - realRadius;
+		float maxX = pos.x + realRadius;
+		float minY = pos.y - realRadius;
+		float maxY = pos.y + realRadius;
+
+		for (float j = minY; j < maxY; j++)
+			for (float i = minX; i < maxX; i++)
+				if (std::pow(i - pos.x, 2) / std::pow(realRadius, 2) +
+					std::pow(j - pos.y, 2) / std::pow(realRadius, 2) <= 1)
+					this->drawPixel({
+						static_cast<int>(std::ceil(i)),
+						static_cast<int>(std::ceil(j))
+					}, color, drawStrategy);
 	}
 
 	void FrameBuffer::_drawSquareAt(Vector2<int> pos, const Color &color, unsigned short radius,
 									DrawStrategy drawStrategy) noexcept
 	{
-		int min_x = pos.x - radius / 2;
-		int max_x = pos.x + radius / 2;
-		for (int j = pos.y - radius / 2; j < pos.y + radius / 2; j++)
-			for (int i = min_x; i < max_x; i++)
-				this->drawPixel({i, j}, color, drawStrategy);
+		float realRadius = radius / 2.f;
+		float minX = pos.x - realRadius;
+		float maxX = pos.x + realRadius;
+		float minY = pos.y - realRadius;
+		float maxY = pos.y + realRadius;
+
+		for (float j = minY; j < maxY; j++)
+			for (float i = minX; i < maxX; i++)
+				this->drawPixel({
+					static_cast<int>(std::ceil(i)),
+					static_cast<int>(std::ceil(j))
+				}, color, drawStrategy);
 	}
 
 	void FrameBuffer::_drawDiamondAt(Vector2<int> pos, const Color &color, unsigned short radius,
 									 DrawStrategy drawStrategy) noexcept
 	{
 		this->drawPixel(pos, color, drawStrategy);
-		if (radius > 2) {
-			this->_drawDiamondAt({pos.x - 1, pos.y}, color, radius - 2, drawStrategy);
+		if (radius > 1) {
+			if (radius > 2) {
+				this->_drawDiamondAt({pos.x, pos.y - 1}, color, radius - 2, drawStrategy);
+				this->_drawDiamondAt({pos.x - 1, pos.y}, color, radius - 2, drawStrategy);
+			}
 			this->_drawDiamondAt({pos.x + 1, pos.y}, color, radius - 2, drawStrategy);
-			this->_drawDiamondAt({pos.x, pos.y - 1}, color, radius - 2, drawStrategy);
 			this->_drawDiamondAt({pos.x, pos.y + 1}, color, radius - 2, drawStrategy);
 		}
 
