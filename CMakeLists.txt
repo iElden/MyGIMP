@@ -83,6 +83,8 @@ set(MIMP_SRCS
     src/Network/Socket.hpp
     src/ImageOperations/Selection/ExpandSelection.cpp
     src/ImageOperations/Selection/ExpandSelection.hpp
+    src/LayerWidget.cpp
+    src/LayerWidget.hpp
 )
 
 add_executable(

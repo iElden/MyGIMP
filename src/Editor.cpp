@@ -7,6 +7,7 @@
 #include "Editor.hpp"
 #include "Utils.hpp"
 #include "ImageOperations/ImageOperationFactory.hpp"
+#include "LayerWidget.hpp"
 
 namespace Mimp
 {
@@ -570,7 +571,11 @@ namespace Mimp
 			auto visibleCancel = tgui::Picture::create("icons/cancel.png");
 			auto lockedCancel = tgui::Picture::create("icons/cancel.png");
 			auto widget = tgui::Button::create();
+			auto preview = LayerWidget::create(layer, {48, 48});
 			auto label = tgui::Label::create(std::string(layer.name, strnlen(layer.name, sizeof(layer.name))));
+
+			preview->ignoreMouseEvent();
+			preview->setPosition(10, (size - i - 1) * 66 + 10);
 
 			locked->setImage("icons/locked.png");
 			locked->setSize(18, 18);
@@ -637,6 +642,7 @@ namespace Mimp
 			label->setPosition(66, (size - i - 1) * 66 + 26);
 
 			panel->add(widget, "Widget" + std::to_string(i));
+			panel->add(preview, "Preview" + std::to_string(i));
 			panel->add(label, "Label" + std::to_string(i));
 			panel->add(visible, "Visible" + std::to_string(i));
 			panel->add(locked, "Locked" + std::to_string(i));
