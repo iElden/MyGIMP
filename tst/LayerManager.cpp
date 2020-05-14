@@ -2,6 +2,7 @@
 #include "../src/Data/Vector2.hpp"
 #include "../src/Layer/LayerManager.hpp"
 #include "../src/Exceptions.hpp"
+#include "../src/Utils.hpp"
 
 TEST(LayerManager, createBasicLayerManager) {
     Mimp::LayerManager lm(Mimp::Vector2<unsigned>{800, 600});
@@ -182,3 +183,33 @@ TEST(LayerManager, iterators) {
     }
     ASSERT_TRUE(test == 3);
 }
+
+TEST(LayerManager, noLayer) {
+    try {
+        Mimp::LayerManager lm({123, 456}, 0);
+    } catch (Mimp::InvalidArgumentException &e) {
+        ASSERT_EQ(std::string(e.what()), "Must add at least a single layer");
+    }
+}
+
+TEST(LayerManager, addLayer) {
+    Mimp::LayerManager lm(Mimp::Vector2<unsigned >{123, 456});
+    Mimp::Layer l({456, 123});
+
+    ASSERT_EQ(lm.size(), 1);
+    lm.addLayer(l);
+    ASSERT_EQ(lm.size(), 2);
+}
+
+TEST(LayerManager, fromInvalidPath) {
+    try {
+        Mimp::LayerManager lm("../invalidfile");
+    } catch (Mimp::InvalidImageException &e) {
+        ASSERT_EQ(std::string(e.what()), "Cannot open file ../invalidfile: No such file or directory");
+    }
+}
+
+// save
+// importImageFromMemory
+// loadMimpImage
+// isValidMimpImage (non utilisé)

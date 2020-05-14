@@ -3,7 +3,7 @@
 #include "../src/Network/Exceptions.hpp"
 
 
-TEST(SecuredSocketManipulation, sslDisconnection) {
+TEST(SecuredSocket, sslDisconnection) {
     Mimp::SecuredSocket s;
 
     try {
@@ -14,7 +14,7 @@ TEST(SecuredSocketManipulation, sslDisconnection) {
 }
 
 
-TEST(SecuredSocketManipulaion, sslConnection1) {
+TEST(SecuredSocket, sslConnection1) {
     Mimp::SecuredSocket s;
 
     s.connect("8.8.8.8", 443);
@@ -26,7 +26,7 @@ TEST(SecuredSocketManipulaion, sslConnection1) {
     }
 }
 
-TEST(SecuredSocketManipulaion, sslConnection2) {
+TEST(SecuredSocket, sslConnection2) {
     Mimp::SecuredSocket s;
 
     s.connect("8.8.8.8", 443);

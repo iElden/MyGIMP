@@ -3,7 +3,7 @@
 #include "../src/Utils.hpp"
 #include "../src/Image.hpp"
 
-TEST(ImageManipulation, getSize)
+TEST(Image, getSize)
 {
     Mimp::Image i({300, 800});
 
@@ -11,14 +11,14 @@ TEST(ImageManipulation, getSize)
     ASSERT_EQ(i.getImageSize().y, 800);
 }
 
-TEST(ImageManipulation, noLayerAtConstruction)
+TEST(Image, noLayerAtConstruction)
 {
     Mimp::Image i({300, 800});
 
     ASSERT_EQ(i.getLayers().size(), 1);
 }
 
-TEST(ImageManipulation, layerAtConstruction)
+TEST(Image, layerAtConstruction)
 {
     Mimp::LayerManager l(Mimp::Vector2<unsigned>{800, 600});
     Mimp::Image i({300, 60}, l);
@@ -28,7 +28,7 @@ TEST(ImageManipulation, layerAtConstruction)
     ASSERT_EQ(i.getLayers()[0].getSize().y, 600);
 }
 
-TEST(ImageManipulation, exportNullPath)
+TEST(Image, exportNullPath)
 {
     Mimp::Image i({300, 60});
 
@@ -39,7 +39,7 @@ TEST(ImageManipulation, exportNullPath)
     }
 }
 
-TEST(ImageManipulation, exportCurrentFolder)
+TEST(Image, exportCurrentFolder)
 {
     Mimp::Image i({300, 60});
 
@@ -50,7 +50,7 @@ TEST(ImageManipulation, exportCurrentFolder)
     }
 }
 
-TEST(ImageManipulation, exportParentFolder)
+TEST(Image, exportParentFolder)
 {
     Mimp::Image i({300, 60});
 
@@ -59,4 +59,12 @@ TEST(ImageManipulation, exportParentFolder)
     } catch (Mimp::ExportErrorException &e) {
         ASSERT_EQ(std::string(e.what()), "Cannot export to file ..");
     }
+}
+
+TEST(Image, getLayer) {
+    Mimp::Image i({300, 400});
+
+    auto l = i.getSelectedLayer();
+    ASSERT_EQ(l.getSize().x, 300);
+    ASSERT_EQ(l.getSize().y, 400);
 }

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "../src/Data/Vector2.hpp"
 
-TEST(VectorManipulation, addition)
+TEST(Vector, addition)
 {
     Mimp::Vector2<int> v1 = {1, 1};
     Mimp::Vector2<int> v2 = {2, 6};
@@ -12,7 +12,7 @@ TEST(VectorManipulation, addition)
     ASSERT_EQ(v4.y, v3.y);
 }
 
-TEST(VectorManipulation, substraction)
+TEST(Vector, substraction)
 {
     Mimp::Vector2<int> v1 = {-1, 1};
     Mimp::Vector2<int> v2 = {2, -6};
@@ -23,7 +23,7 @@ TEST(VectorManipulation, substraction)
     ASSERT_EQ(v4.y, v3.y);
 }
 
-TEST(VectorManipulation, additionInPlace)
+TEST(Vector, additionInPlace)
 {
     Mimp::Vector2<int> v1 = {-1, 1};
     Mimp::Vector2<int> v2 = {2, -6};
@@ -34,7 +34,7 @@ TEST(VectorManipulation, additionInPlace)
     ASSERT_EQ(v1.y, v3.y);
 }
 
-TEST(VectorManipulation, substractionInPlace)
+TEST(Vector, substractionInPlace)
 {
     Mimp::Vector2<int> v1 = {-1, 1};
     Mimp::Vector2<int> v2 = {2, -6};
@@ -45,7 +45,7 @@ TEST(VectorManipulation, substractionInPlace)
     ASSERT_EQ(v1.y, v3.y);
 }
 
-TEST(VectorManipulation, comparison1)
+TEST(Vector, comparison1)
 {
     Mimp::Vector2<int> v1 = {-1, 1};
     Mimp::Vector2<int> v2 = {2, -6};
@@ -53,7 +53,7 @@ TEST(VectorManipulation, comparison1)
     ASSERT_EQ(v1 == v2, 0);
 }
 
-TEST(VectorManipulation, comparison2)
+TEST(Vector, comparison2)
 {
     Mimp::Vector2<int> v1 = {-1, 1};
     Mimp::Vector2<int> v2 = {-1, 1};
@@ -61,7 +61,7 @@ TEST(VectorManipulation, comparison2)
     ASSERT_EQ(v1 == v2, 1);
 }
 
-TEST(VectorManipulation, multiplication)
+TEST(Vector, multiplication)
 {
     Mimp::Vector2<int> v1 = {3, -6};
     Mimp::Vector2<int> v3 = {21, -42};

@@ -1,9 +1,8 @@
 #include <gtest/gtest.h>
 #include "../src/Network/Socket.hpp"
 #include "../src/Network/Exceptions.hpp"
-#include "../src/Utils.hpp"
 
-TEST(SocketManipulation, socketDisconnection) {
+TEST(Socket, socketDisconnection) {
     Mimp::Socket s;
 
     try {
@@ -37,7 +36,7 @@ TEST(SocketManipulaion, socketConnection2) {
     }
 }
 
-TEST(SocketManipulation, socketMakeHttpRequest) {
+TEST(Socket, socketMakeHttpRequest) {
     Mimp::Socket s;
     Mimp::Socket::HttpRequest request;
 
@@ -49,14 +48,14 @@ TEST(SocketManipulation, socketMakeHttpRequest) {
     }
 }
 
-//TEST(SocketManipulation, socketRead) {
+//TEST(Socket, socketRead) {
 //    Mimp::Socket s;
 //
 //    s.connect("8.8.8.8", 443);
 //    ASSERT_TRUE(s.read(0).size() != 0);
 //}
 
-TEST(SocketManipulation, openedSocket) {
+TEST(Socket, openedSocket) {
     Mimp::Socket s;
 
     ASSERT_FALSE(s.isOpen());

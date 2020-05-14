@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "../src/Data/Color.hpp"
 
-TEST(ColorManipulation, basicColors) {
+TEST(Color, basicColors) {
     Mimp::Color black = Mimp::Color::Black;
 
     ASSERT_EQ(black.r, 0x00);
@@ -31,7 +31,7 @@ TEST(ColorManipulation, basicColors) {
     ASSERT_EQ(b.a, 0xFF);
 }
 
-TEST(ColorManipulation, addition1) {
+TEST(Color, addition1) {
     Mimp::Color c1 = Mimp::Color::Blue;
     Mimp::Color c2 = Mimp::Color::Yellow;
     Mimp::Color c3 = Mimp::Color::Yellow;
@@ -43,7 +43,7 @@ TEST(ColorManipulation, addition1) {
     ASSERT_EQ(c4.a, c3.a);
 }
 
-TEST(ColorManipulation, addition2) {
+TEST(Color, addition2) {
     Mimp::Color c1 = Mimp::Color::Blue;
     Mimp::Color c2 = Mimp::Color::Green;
 
@@ -55,7 +55,7 @@ TEST(ColorManipulation, addition2) {
     ASSERT_EQ(c4.a, c1.a);
 }
 
-TEST(ColorManipulation, diff1) {
+TEST(Color, diff1) {
     Mimp::Color c1 = Mimp::Color::Blue;
     Mimp::Color c2 = Mimp::Color::Blue;
 
@@ -63,7 +63,7 @@ TEST(ColorManipulation, diff1) {
     ASSERT_EQ(diff, 0);
 }
 
-TEST(ColorManipulation, diff2) {
+TEST(Color, diff2) {
     Mimp::Color c1 = Mimp::Color::Blue;
     Mimp::Color c2 = Mimp::Color::Red;
 
