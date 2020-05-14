@@ -15,13 +15,17 @@ Mimp::Fill::Fill(Mimp::ToolBox &toolBox):
 
 void Mimp::Fill::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick click, Mimp::Image &image)
 {
-	this->apply(pos, image.getSelectedLayer(), click);
+	auto &layer = image.getSelectedLayer();
+
+	this->apply(pos - layer.pos, layer, click);
 }
 
 void Mimp::Fill::onMouseDrag(Mimp::Vector2<int>, Mimp::Vector2<int> newPos, Mimp::MouseClick click,
 							 Mimp::Image &image)
 {
-	this->apply(newPos, image.getSelectedLayer(), click);
+	auto &layer = image.getSelectedLayer();
+
+	this->apply(newPos - layer.pos, layer, click);
 }
 
 void Mimp::Fill::apply(Mimp::Vector2<int> pos, Mimp::Layer &layer, MouseClick &click)

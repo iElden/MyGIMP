@@ -13,9 +13,11 @@ Mimp::FillSelection::FillSelection(Mimp::ToolBox &toolBox):
 
 void Mimp::FillSelection::onClick(Mimp::Vector2<int>, Mimp::MouseClick click, Mimp::Image &image)
 {
+	auto &layer = image.getSelectedLayer();
+
 	if (image.selectedArea.isAnAreaSelected())
 		for (Vector2<int> pt : image.selectedArea.getPoints())
-			image.getSelectedLayer().buffer.drawPixel(pt, this->_toolBox.getSelectedColor(click));
+			layer.buffer.drawPixel(pt, this->_toolBox.getSelectedColor(click));
 }
 
 tgui::ScrollablePanel::Ptr Mimp::FillSelection::getParametersPanel()
