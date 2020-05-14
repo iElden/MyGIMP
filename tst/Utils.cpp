@@ -51,9 +51,9 @@ TEST(Utils, resolveValidUrl) {
 
 TEST(Utils, resolveExistingFile) {
 #ifdef _WIN32
-    std::string testFilePath = std::filesystem::current_path().string() + "/MyGimp_test.exe";
+    std::string testFilePath = std::filesystem::current_path().string() + "/tst/TestFile";
 #else
-    std::string testFilePath = std::filesystem::current_path().string() + "/MyGimp_test";
+    std::string testFilePath = std::filesystem::current_path().string() + "/tst/TestFile";
 #endif
     auto content = Mimp::Utils::resolveUrl("file://" + testFilePath);
 
@@ -95,7 +95,7 @@ TEST(Utils, stringToDrawshape) {
 }
 
 
-inline std::string PATH(const std::string &path){
+inline std::string PATH(const std::string &path) {
     std::string newPath;
     for (auto &c : path)
         newPath += c == '/' ? std::filesystem::path::preferred_separator : c;
