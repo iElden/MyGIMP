@@ -14,6 +14,7 @@ namespace Mimp
 	{
 		this->_size = this->_layers.getSize();
 		this->m_size = {this->_size.x, this->_size.y};
+		this->selectedArea.setSize(this->_size);
 	}
 
 	CanvasWidget::CanvasWidget(const ToolBox &box, Vector2<unsigned int> size, const LayerManager &layers):
@@ -229,6 +230,7 @@ namespace Mimp
 			this->_size.y
 		};
 		this->_drawBuffer.create(this->_size.x, this->_size.y);
+		this->selectedArea.setSize(this->_size);
 	}
 
 	void CanvasWidget::importImageFromMemory(const std::string &path)
@@ -243,6 +245,7 @@ namespace Mimp
 			this->_size.y
 		};
 		this->_drawBuffer.create(this->_size.x, this->_size.y);
+		this->selectedArea.setSize(this->_size);
 	}
 
 	CanvasWidget::~CanvasWidget()
