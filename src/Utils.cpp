@@ -278,7 +278,11 @@ namespace Mimp::Utils
 		return std::accumulate(
 			files.begin() + 1,
 			files.end(),
+#ifdef _WIN32
+			files[0],
+#else
 			static_cast<char>(std::filesystem::path::preferred_separator) + files[0],
+#endif
 			[](const std::string &a, const std::string &b){
 				return a + static_cast<char>(std::filesystem::path::preferred_separator) + b;
 			}
