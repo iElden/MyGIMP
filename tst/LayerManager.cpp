@@ -26,7 +26,7 @@ TEST(LayerManager, selectInvalidLayer1) {
     try {
         lm.selectLayer(6);
     } catch (Mimp::InvalidArgumentException &e) {
-        ASSERT_EQ(std::string(e.what()), "Cannot select layer 3 because there is only 1 layer.");
+        ASSERT_EQ(std::string(e.what()), "Cannot select layer 6 because there is only 1 layer.");
     }
 }
 
@@ -193,7 +193,7 @@ TEST(LayerManager, noLayer) {
 }
 
 TEST(LayerManager, addLayer) {
-    Mimp::LayerManager lm(Mimp::Vector2<unsigned >{123, 456});
+    Mimp::LayerManager lm(Mimp::Vector2<unsigned>{123, 456});
     Mimp::Layer l({456, 123});
 
     ASSERT_EQ(lm.size(), 1);
