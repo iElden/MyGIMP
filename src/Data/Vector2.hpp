@@ -63,6 +63,15 @@ namespace Mimp
 			return *this;
 		}
 
+		template <typename type2>
+		auto operator*(type2 other)
+		{
+			return Vector2<decltype(this->x * other)>{
+				this->x * other,
+				this->y * other
+			};
+		}
+
 		//! @brief Operator ==
 		//! @details Is the Vector2 in parameter equal to the first Vector2
 		//! @param other The other Vector2 to sub

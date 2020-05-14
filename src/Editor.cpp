@@ -75,11 +75,10 @@ namespace Mimp
 			while (this->_mainWindow.pollEvent(event)) {
 				if (event.type == sf::Event::Closed)
 					this->_mainWindow.close();
-				if (event.type == sf::Event::Resized) {
+				else if (event.type == sf::Event::Resized) {
 					this->_mainWindow.setView(sf::View{sf::FloatRect(0, 0, event.size.width, event.size.height)});
 					this->_gui.setView(sf::View{sf::FloatRect(0, 0, event.size.width, event.size.height)});
-				}
-				if (event.type == sf::Event::KeyPressed && this->_selectedImageWindow) {
+				} else if (event.type == sf::Event::KeyPressed && this->_selectedImageWindow) {
 					KeyCombination comb{
 						Editor::SFMLKeyToKey(event.key.code),
 						event.key.control,
@@ -90,6 +89,16 @@ namespace Mimp
 					try {
 						this->_keysImgOps.at(comb)->click(this->_gui, *this->_getSelectedCanvas());
 					} catch (std::out_of_range &) {}
+				} else if (event.type == sf::Event::MouseWheelScrolled) {
+					auto canvas = this->_getSelectedCanvas();
+
+					if (canvas) {
+						if (event.mouseWheelScroll.delta > 0)
+							canvas->setZoomLevel(canvas->getZoomLevel() * 2);
+						else
+							canvas->setZoomLevel(canvas->getZoomLevel() / 2);
+					}
+					continue;
 				}
 				this->_gui.handleEvent(event);
 			}

@@ -117,6 +117,7 @@ namespace Mimp
 		int dx = pt2.x - pt1.x;
 		int dy = pt2.y - pt1.y;
 
+		this->drawAt(pt2, color, thickness, shape, drawStrategy);
 		if (dx > 0) {
 			if (dy > 0) {
 				// vecteur oblique dans le 1er quadran
@@ -292,7 +293,6 @@ namespace Mimp
 				} while (pt1.y != pt2.y);
 			}
 		}
-		//TODO: Implement the above algorithm
 	}
 
 	void FrameBuffer::drawFrameBuffer(Vector2<int> pos, const FrameBuffer &buffer, DrawStrategy drawStrategy) noexcept

@@ -27,30 +27,30 @@ namespace Mimp
 		this->onMousePress.connect([this](tgui::Vector2f pos){
 			Vector2<int> realPos;
 
-			realPos.x = pos.x;
-			realPos.y = pos.y;
+			realPos.x = pos.x / this->_zoom;
+			realPos.y = pos.y / this->_zoom;
 			this->_box.getSelectedTool()->onClick(realPos, MIMP_LEFT_CLICK, *this);
 		});
 		this->onMouseRelease.connect([this](tgui::Vector2f pos){
 			Vector2<int> realPos;
 
-			realPos.x = pos.x;
-			realPos.y = pos.y;
+			realPos.x = pos.x / this->_zoom;
+			realPos.y = pos.y / this->_zoom;
 			this->_box.getSelectedTool()->onMouseRelease(realPos, MIMP_LEFT_CLICK, *this);
 		});
 		this->onRightMousePress.connect([this](tgui::Vector2f pos){
 			Vector2<int> realPos;
 
-			realPos.x = pos.x;
-			realPos.y = pos.y;
+			realPos.x = pos.x / this->_zoom;
+			realPos.y = pos.y / this->_zoom;
 			this->_rightMouseDown = true;
 			this->_box.getSelectedTool()->onClick(realPos, MIMP_RIGHT_CLICK, *this);
 		});
 		this->onRightMouseRelease.connect([this](tgui::Vector2f pos){
 			Vector2<int> realPos;
 
-			realPos.x = pos.x;
-			realPos.y = pos.y;
+			realPos.x = pos.x / this->_zoom;
+			realPos.y = pos.y / this->_zoom;
 			this->_rightMouseDown = false;
 			this->_box.getSelectedTool()->onMouseRelease(realPos, MIMP_RIGHT_CLICK, *this);
 		});
@@ -73,30 +73,30 @@ namespace Mimp
 		this->onMousePress.connect([this](tgui::Vector2f pos){
 			Vector2<int> realPos;
 
-			realPos.x = pos.x;
-			realPos.y = pos.y;
+			realPos.x = pos.x / this->_zoom;
+			realPos.y = pos.y / this->_zoom;
 			this->_box.getSelectedTool()->onClick(realPos, MIMP_LEFT_CLICK, *this);
 		});
 		this->onMouseRelease.connect([this](tgui::Vector2f pos){
 			Vector2<int> realPos;
 
-			realPos.x = pos.x;
-			realPos.y = pos.y;
+			realPos.x = pos.x / this->_zoom;
+			realPos.y = pos.y / this->_zoom;
 			this->_box.getSelectedTool()->onMouseRelease(realPos, MIMP_LEFT_CLICK, *this);
 		});
 		this->onRightMousePress.connect([this](tgui::Vector2f pos){
 			Vector2<int> realPos;
 
-			realPos.x = pos.x;
-			realPos.y = pos.y;
+			realPos.x = pos.x / this->_zoom;
+			realPos.y = pos.y / this->_zoom;
 			this->_rightMouseDown = true;
 			this->_box.getSelectedTool()->onClick(realPos, MIMP_RIGHT_CLICK, *this);
 		});
 		this->onRightMouseRelease.connect([this](tgui::Vector2f pos){
 			Vector2<int> realPos;
 
-			realPos.x = pos.x;
-			realPos.y = pos.y;
+			realPos.x = pos.x / this->_zoom;
+			realPos.y = pos.y / this->_zoom;
 			this->_rightMouseDown = false;
 			this->_box.getSelectedTool()->onMouseRelease(realPos, MIMP_RIGHT_CLICK, *this);
 		});
@@ -143,8 +143,8 @@ namespace Mimp
 	{
 		Vector2<int> realPos;
 
-		realPos.x = pos.x - this->getPosition().x;
-		realPos.y = pos.y - this->getPosition().y;
+		realPos.x = (pos.x - this->getPosition().x) / this->_zoom;
+		realPos.y = (pos.y - this->getPosition().y) / this->_zoom;
 		if (this->m_mouseDown)
 			this->_box.getSelectedTool()->onMouseDrag(this->_mousePos, realPos, MIMP_LEFT_CLICK, *this);
 		if (this->_rightMouseDown)
@@ -157,14 +157,11 @@ namespace Mimp
 		return std::shared_ptr<CanvasWidget>(new CanvasWidget(this->_box, this->_size, this->_layers));
 	}
 
-	void CanvasWidget::setSize(const tgui::Layout2d &)
-	{}
-
 	void CanvasWidget::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	{
 		sf::RectangleShape rect;
 		sf::Sprite sprite;
-		bool dark = false;
+		bool dark;
 		auto size = this->_size;
 		FrameBuffer buffer{size};
 		auto color = Color{this->_colorCounter, this->_colorCounter, this->_colorCounter, 120};
@@ -177,15 +174,26 @@ namespace Mimp
 
 		states.transform.translate(getPosition());
 
+		auto realSize = size * this->_zoom;
+
+		if (this->m_parent) {
+			auto parentSize = this->m_parent->getSize();
+
+			parentSize.x -= this->getPosition().x;
+			parentSize.y -= this->getPosition().y;
+			realSize.x = std::min(parentSize.x, realSize.x);
+			realSize.y = std::min(parentSize.y, realSize.y);
+		}
+
 		rect.setOutlineThickness(0);
-		for (unsigned x = 0; x < size.x; x += 10) {
+		for (unsigned x = 0; x < realSize.x; x += 10) {
 			dark = x % 20;
-			for (unsigned y = 0; y < size.y; y += 10) {
+			for (unsigned y = 0; y < realSize.y; y += 10) {
 				rect.setFillColor(dark ? sf::Color{0x888888FF} : sf::Color::White);
 				rect.setPosition(x, y);
 				rect.setSize({
-					static_cast<float>(size.x - x > 10 ? 10 : size.x - x),
-					static_cast<float>(size.y - y > 10 ? 10 : size.y - y)
+					(size.x * this->_zoom) - x > 10 ? 10 : (size.x * this->_zoom) - x,
+					(size.y * this->_zoom) - y > 10 ? 10 : (size.y * this->_zoom) - y
 				});
 				target.draw(rect, states);
 				dark = !dark;
@@ -198,13 +206,15 @@ namespace Mimp
 			this->_drawBuffer.create(layer->getSize().x, layer->getSize().y);
 			this->_drawBuffer.update(layer->buffer.getDrawBuffer(), layer->getSize().x, layer->getSize().y, 0, 0);
 			sprite.setTexture(this->_drawBuffer, true);
-			sprite.setPosition(layer->pos.x, layer->pos.y);
+			sprite.setPosition(layer->pos.x * this->_zoom, layer->pos.y * this->_zoom);
+			sprite.setScale(this->_zoom, this->_zoom);
 			target.draw(sprite, states);
 		}
 		this->_drawBuffer.create(size.x, size.y);
 		this->_drawBuffer.update(buffer.getDrawBuffer(), size.x, size.y, 0, 0);
 		sprite.setTexture(this->_drawBuffer, true);
 		sprite.setPosition(0, 0);
+		sprite.setScale(this->_zoom, this->_zoom);
 		target.draw(sprite, states);
 	}
 
@@ -260,5 +270,19 @@ namespace Mimp
 		this->_destroyed = true;
 		if (this->_renderThread.joinable())
 			this->_renderThread.join();
+	}
+
+	void CanvasWidget::setZoomLevel(float zoom)
+	{
+		this->_zoom = zoom;
+		this->setSize({
+			this->_size.x * zoom,
+			this->_size.y * zoom,
+		});
+	}
+
+	float CanvasWidget::getZoomLevel() const
+	{
+		return this->_zoom;
 	}
 }

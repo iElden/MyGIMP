@@ -32,6 +32,8 @@ namespace Mimp
 
 		mutable bool _counterUp = true;
 
+		float _zoom = 1.f;
+
 		mutable unsigned char _colorCounter = 0;
 
 		std::thread _renderThread;
@@ -73,12 +75,13 @@ namespace Mimp
 		//! @return CanvasWidget::Ptr
 		static CanvasWidget::Ptr create(const ToolBox &box, const std::string &path);
 
+		void setZoomLevel(float zoom);
+		float getZoomLevel() const;
 		//! @brief Disable the rendering by joining the render thread
 		void disableRendering();
 		void mouseMoved(tgui::Vector2f pos) override;
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 		Widget::Ptr clone() const override;
-		void setSize(const tgui::Layout2d& size) override;
 		//! @brief Import an image
 		//! @param path Path of the image
 		void importImageFromFile(const std::string &path);
