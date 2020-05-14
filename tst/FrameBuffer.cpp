@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "../src/Layer/FrameBuffer.hpp"
+#include "../src/Exceptions.hpp"
 
 TEST(FrameBuffer, getBufferTest) {
     Mimp::Vector2<unsigned> size{500, 500};
@@ -106,7 +107,7 @@ TEST(FrameBuffer, outOfBoundException) {
 
     try {
         auto px = fb[10000];
-    } catch (std::exception &e) {
+    } catch (Mimp::OutOfBoundException &e) {
         ASSERT_EQ(std::string(e.what()), "10000 >= 10 * 10");
     }
 }

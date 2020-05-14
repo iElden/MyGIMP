@@ -1,12 +1,14 @@
 #include <gtest/gtest.h>
 #include "../src/Network/Socket.hpp"
+#include "../src/Network/Exceptions.hpp"
+#include "../src/Utils.hpp"
 
 TEST(SocketManipulation, socketDisconnection) {
     Mimp::Socket s;
 
     try {
         s.disconnect();
-    } catch (std::exception &e) {
+    } catch (Mimp::NotConnectedException &e) {
         ASSERT_EQ(std::string(e.what()), "This socket is not opened");
     }
 }
@@ -18,7 +20,7 @@ TEST(SocketManipulaion, socketConnection1) {
 
     try {
         s.connect("8.8.8.8", 443);
-    } catch (std::exception &e) {
+    } catch (Mimp::AlreadyOpenedException &e) {
         ASSERT_EQ(std::string(e.what()), "This socket is already opened");
     }
 }
@@ -30,7 +32,7 @@ TEST(SocketManipulaion, socketConnection2) {
 
     try {
         s.connect(8888, 443);
-    } catch (std::exception &e) {
+    } catch (Mimp::AlreadyOpenedException &e) {
         ASSERT_EQ(std::string(e.what()), "This socket is already opened");
     }
 }
@@ -42,7 +44,7 @@ TEST(SocketManipulation, socketMakeHttpRequest) {
     s.connect("8.8.8.8", 443);
     try {
         s.makeHttpRequest(request);
-    } catch (std::exception &e) {
+    } catch (Mimp::AlreadyOpenedException &e) {
         ASSERT_EQ(std::string(e.what()), "This socket is already opened");
     }
 }
