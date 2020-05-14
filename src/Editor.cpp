@@ -138,7 +138,11 @@ namespace Mimp
 					break;
 				}
 			}
-			this->_minimizedWindows.erase(this->_minimizedWindows.find(window));
+
+			auto it = this->_minimizedWindows.find(window);
+
+			if (it != this->_minimizedWindows.end())
+				this->_minimizedWindows.erase(it);
 		});
 		window->connect("Minimized", [window, this]{
 			window->setTitleButtons(tgui::ChildWindow::Close | tgui::ChildWindow::Maximize);
