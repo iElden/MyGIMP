@@ -625,8 +625,10 @@ namespace Mimp
 			widget->connect("Clicked", [&layers, i, widget, panel]{
 				auto other = panel->get<tgui::Button>("Widget" + std::to_string(layers.getSelectedLayerIndex()));
 
-				other->getRenderer()->setBackgroundColor("#EFEFEF");
-				other->getRenderer()->setBackgroundColorHover("#FFFFFF");
+				if (other) {
+					other->getRenderer()->setBackgroundColor("#EFEFEF");
+					other->getRenderer()->setBackgroundColorHover("#FFFFFF");
+				}
 				layers.selectLayer(i);
 				widget->getRenderer()->setBackgroundColor("#888888");
 				widget->getRenderer()->setBackgroundColorHover("#AAAAAA");
