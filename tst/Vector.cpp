@@ -60,3 +60,11 @@ TEST(VectorManipulation, comparison2)
 
     ASSERT_EQ(v1 == v2, 1);
 }
+
+TEST(VectorManipulation, multiplication)
+{
+    Mimp::Vector2<int> v1 = {3, -6};
+    Mimp::Vector2<int> v3 = {21, -42};
+
+    ASSERT_TRUE(v1 * 7 == v3);
+}

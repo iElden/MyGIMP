@@ -91,9 +91,9 @@ TEST(FrameBuffer, createFbWithVector) {
 TEST(FrameBuffer, createFromExisting) {
     Mimp::Vector2<unsigned> size{500, 500};
     const Mimp::FrameBuffer fb{size, Mimp::Color::Cyan};
-    Mimp::FrameBuffer fb2 = fb;
+    Mimp::FrameBuffer fb2{{7, 8}, Mimp::Color::Red};
 
-    ASSERT_TRUE(0);
+    fb2 = fb;
 
     for (unsigned int i = 0; i < size.x * size.y; i += 1) {
         ASSERT_EQ(fb[i], fb2[i]);
@@ -114,16 +114,16 @@ TEST(FrameBuffer, outOfBoundException) {
 TEST(FrameBuffer, setPixel1) {
     Mimp::Vector2<unsigned> size = {10, 5};
     Mimp::FrameBuffer fb(size, Mimp::Color::Green);
-    Mimp::Vector2<int> pos = {5, 5};
+    Mimp::Vector2<int> pos = {5, 4};
 
     fb.drawPixel(pos, Mimp::Color::Yellow, Mimp::SET);
 
     for (unsigned int i = 0; i < size.x; i += 1) {
         for (unsigned int j = 0; j < size.y; j += 1) {
             if (i == pos.x && j == pos.y) {
-                ASSERT_TRUE(fb[i * size.y + j] == Mimp::Color::Yellow);
+                ASSERT_TRUE(fb[i + size.y * j] == Mimp::Color::Yellow);
             } else {
-                ASSERT_TRUE(fb[i * size.y + j] == Mimp::Color::Green);
+                ASSERT_TRUE(fb[i + size.y * j] == Mimp::Color::Green);
             }
         }
     }
@@ -182,9 +182,9 @@ TEST(FrameBuffer, drawSquare) {
         for (unsigned int j = 0; j < size.y; j += 1) {
             if (i >= xmin && i < xmax &&
                 j >= ymin && j < ymax) {
-                ASSERT_TRUE(fb[i * size.y + j] == Mimp::Color::Yellow);
+                ASSERT_TRUE(fb[i + size.x * j] == Mimp::Color::Yellow);
             } else {
-                ASSERT_TRUE(fb[i * size.y + j] == Mimp::Color::Green);
+                ASSERT_TRUE(fb[i + size.x * j] == Mimp::Color::Green);
             }
         }
     }
@@ -212,4 +212,30 @@ TEST(FrameBuffer, drawDiamond) {
     ASSERT_TRUE(0);
     fb.drawAt(pos, Mimp::Color::Yellow, radius, Mimp::DIAMOND);
 
+}
+
+TEST(FrameBuffer, drawNoShape) {
+    Mimp::Vector2<unsigned> size = {10, 10};
+    Mimp::FrameBuffer fb(size, Mimp::Color::Green);
+
+    Mimp::Vector2<int> pos = {5, 5};
+    unsigned short radius = 4;
+
+    fb.drawAt(pos, Mimp::Color::Yellow, radius, Mimp::NB_OF_SHAPES);
+
+    for (unsigned int i = 0; i < size.x * size.y; i += 1) {
+        ASSERT_EQ(fb[i], Mimp::Color::Green);
+    }
+}
+
+TEST(FrameBuffer, getDrawBuffer) {
+    Mimp::FrameBuffer fb{{10, 10}, Mimp::Color::Red};
+    auto buffer = fb.getDrawBuffer();
+
+    for (int i = 0; i < 400; i += 4) {
+        ASSERT_EQ(buffer[i + 0], 0xFF);
+        ASSERT_EQ(buffer[i + 1], 0x00);
+        ASSERT_EQ(buffer[i + 2], 0x00);
+        ASSERT_EQ(buffer[i + 3], 0xFF);
+    }
 }

@@ -34,7 +34,7 @@ TEST(ColorManipulation, basicColors) {
 TEST(ColorManipulation, addition1) {
     Mimp::Color c1 = Mimp::Color::Blue;
     Mimp::Color c2 = Mimp::Color::Yellow;
-    Mimp::Color c3 = Mimp::Color::Green;
+    Mimp::Color c3 = Mimp::Color::Yellow;
 
     auto c4 = c1 + c2;
     ASSERT_EQ(c4.r, c3.r);
