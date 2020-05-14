@@ -7,7 +7,7 @@ TEST(SecuredSocketManipulation, sslDisconnection) {
     try {
         s.disconnect();
     } catch (std::exception &e) {
-        ASSERT_EQ(std::string(e.what()), "This socket is not opened");
+        ASSERT_EQ(std::string(e.what()), "This socket is not connected to a server");
     }
 }
 

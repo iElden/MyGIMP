@@ -50,7 +50,11 @@ TEST(Utils, resolveValidUrl) {
 }
 
 TEST(Utils, resolveExistingFile) {
-    std::string testFilePath = std::filesystem::current_path().string() + "/tst/TestFile";
+#ifdef _WIN32
+    std::string testFilePath = std::filesystem::current_path().string() + "/MyGimp_test.exe";
+#else
+    std::string testFilePath = std::filesystem::current_path().string() + "/MyGimp_test";
+#endif
     auto content = Mimp::Utils::resolveUrl("file://" + testFilePath);
 
     ASSERT_NE(content.size(), 0);
