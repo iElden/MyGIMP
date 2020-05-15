@@ -154,11 +154,11 @@ namespace Mimp
 			600,
 			420
 		});
-		window->connect("Closed", [this, common] {
-			this->_checkSaved(this->_selectedImageWindow->getTitle(), this->_getSelectedCanvas(), [common]{
+		window->connect("Closed", [this, common, window] {
+			this->_checkSaved(window->getTitle(), window->get<tgui::ScrollablePanel>("Canvas")->get<CanvasWidget>("Canvas"), [common]{
 				common();
-			}, [this, common]{
-				if (this->_saveImage(this->_selectedImageWindow))
+			}, [this, common, window]{
+				if (this->_saveImage(window))
 					common();
 			});
 		});
@@ -348,6 +348,9 @@ namespace Mimp
 				if (this->_saveImage(this->_selectedImageWindow))
 					this->_selectedImageWindow->close();
 			});
+		});
+		menu->connectMenuItem({"File", "Close All"}, [this]{
+			this->_checkClose([]{});
 		});
 		menu->connectMenuItem({"File", "Quit"}, [this]{
 			this->_checkClose([this]{
@@ -806,7 +809,9 @@ namespace Mimp
 
 	void Editor::_checkClose(const std::function<void()> &handler)
 	{
-		for (auto &name : this->_gui.getWidgetNames()) {
+		auto names = this->_gui.getWidgetNames();
+
+		for (auto &name : names) {
 			if (name.substring(0, strlen("Image")) == "Image") {
 				auto win = this->_gui.get<tgui::ChildWindow>(name);
 				auto canvas = win->get<tgui::ScrollablePanel>("Canvas")->get<CanvasWidget>("Canvas");
@@ -824,7 +829,8 @@ namespace Mimp
 						}
 					});
 					return;
-				}
+				} else
+					win->close();
 			}
 		}
 		handler();
