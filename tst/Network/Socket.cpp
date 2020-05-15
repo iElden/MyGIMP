@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "../src/Network/Socket.hpp"
-#include "../src/Network/Exceptions.hpp"
+#include "../../src/Network/Socket.hpp"
+#include "../../src/Network/Exceptions.hpp"
 
 TEST(Socket, socketDisconnection) {
     Mimp::Socket s;
