@@ -115,3 +115,22 @@ TEST(FillSelection, fillWhenLayerIsLocked) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
     }
 }
+
+TEST(FillSelection, fillDrag) {
+    tgui::Gui gui{};
+    Mimp::ToolBox toolbox{gui};
+    Mimp::FillSelection fs{toolbox};
+    Mimp::LayerManager lm({10, 10}, 1, Mimp::Color::Red);
+    Mimp::Image image({10, 10}, lm);
+
+    ASSERT_TRUE(image.getLayers().size() == 1);
+    auto buffer = image.getLayers()[0].buffer.getBuffer();
+    for (int i = 0; i < 100; i += 1) {
+        ASSERT_TRUE(buffer[i] == Mimp::Color::Red);
+    }
+
+    fs.onMouseDrag({0, 0}, {10, 10}, Mimp::MIMP_LEFT_CLICK, image);
+    for (int i = 0; i < 100; i += 1) {
+        ASSERT_TRUE(buffer[i] == Mimp::Color::Red);
+    }
+}
