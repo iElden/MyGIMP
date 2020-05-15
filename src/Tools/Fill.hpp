@@ -19,7 +19,7 @@ namespace Mimp
 		//! @brief Reference of the Toolbox
 		ToolBox &_box;
 
-		unsigned _tolerance;
+		unsigned _tolerance = 0;
 		bool _alpha_in_tolerance;
 		//! @brief Apply the fill tool
 		//! @param pos Position of the fill application

@@ -127,17 +127,22 @@ add_executable(
 
         tst/main.cpp
         ${MIMP_SRCS}
-        tst/Vector.cpp
-        tst/Color.cpp
+        tst/Data/Vector.cpp
+        tst/Data/Color.cpp
         tst/Utils.cpp
-        tst/FrameBuffer.cpp
+        tst/Layer/FrameBuffer.cpp
         #tst/Exceptions.cpp
         tst/Image.cpp
-        tst/Layer.cpp
-        tst/LayerManager.cpp
+        tst/Layer/Layer.cpp
+        tst/Layer/LayerManager.cpp
         tst/SelectedArea.cpp
         tst/ToolBox.cpp
-        tst/Socket.cpp tst/SecuredSocket.cpp)
+        tst/Network/Socket.cpp
+        tst/Network/SecuredSocket.cpp
+        tst/ImageOperations/ImageOperation.cpp
+        tst/ImageOperations/ImageOperationFactory.cpp
+        tst/Tools/Fill.cpp
+        tst/Tools/ColorPick.cpp)
 
 if (WIN32)
     target_link_libraries(

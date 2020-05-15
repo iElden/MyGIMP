@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../src/Data/Vector2.hpp"
+#include "../../src/Data/Vector2.hpp"
 
 TEST(Vector, addition)
 {

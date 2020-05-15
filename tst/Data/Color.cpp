@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../src/Data/Color.hpp"
+#include "../../src/Data/Color.hpp"
 
 TEST(Color, basicColors) {
     Mimp::Color black = Mimp::Color::Black;

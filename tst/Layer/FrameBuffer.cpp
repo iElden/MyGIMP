@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "../src/Layer/FrameBuffer.hpp"
-#include "../src/Exceptions.hpp"
+#include "../../src/Layer/FrameBuffer.hpp"
+#include "../../src/Exceptions.hpp"
 
 TEST(FrameBuffer, getBufferTest) {
     Mimp::Vector2<unsigned> size{500, 500};

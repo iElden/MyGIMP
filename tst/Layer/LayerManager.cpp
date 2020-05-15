@@ -1,8 +1,7 @@
 #include <gtest/gtest.h>
-#include "../src/Data/Vector2.hpp"
-#include "../src/Layer/LayerManager.hpp"
-#include "../src/Exceptions.hpp"
-#include "../src/Utils.hpp"
+#include "../../src/Data/Vector2.hpp"
+#include "../../src/Layer/LayerManager.hpp"
+#include "../../src/Exceptions.hpp"
 
 TEST(LayerManager, createBasicLayerManager) {
     Mimp::LayerManager lm(Mimp::Vector2<unsigned>{800, 600});

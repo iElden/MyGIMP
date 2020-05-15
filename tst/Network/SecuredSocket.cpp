@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
-#include "../src/Network/SecuredSocket.hpp"
-#include "../src/Network/Exceptions.hpp"
+#include "../../src/Network/SecuredSocket.hpp"
+#include "../../src/Network/Exceptions.hpp"
 
 
 TEST(SecuredSocket, sslDisconnection) {

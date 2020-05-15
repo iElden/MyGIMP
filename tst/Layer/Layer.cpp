@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../src/Layer/Layer.hpp"
+#include "../../src/Layer/Layer.hpp"
 
 TEST(Layer, getSizeTest) {
     Mimp::Layer layer{{500, 500}, Mimp::Color::Transparent};
