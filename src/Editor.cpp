@@ -729,7 +729,7 @@ namespace Mimp
 			if (key)
 				hierarchy.back() += " (" + key->toString() + ")";
 
-			menu->setMenuItemEnabled(hierarchy, true);
+			menu->setMenuItemEnabled(hierarchy, false);
 		}
 
 		this->_selectedImageWindow = nullptr;
