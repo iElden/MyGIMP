@@ -52,7 +52,7 @@ void Mimp::Fill::_spread_color(Vector2<int> pos, Layer &layer, Color target_colo
 			for (auto sp : spread_pos) {
 				auto new_pos = pt + sp;
 				if (!layer.buffer.posIsOutOfBound(new_pos) && layer.buffer.getPixel(new_pos).diff(target_color, this->_alpha_in_tolerance) <= this->_tolerance) {
-					layer.buffer.drawPixel(new_pos, fill_color);
+					layer.buffer.drawPixel(new_pos, fill_color, SET);
 					new_points.push_back(new_pos);
 				}
 			}
