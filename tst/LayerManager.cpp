@@ -26,7 +26,7 @@ TEST(LayerManager, selectInvalidLayer1) {
     try {
         lm.selectLayer(6);
     } catch (Mimp::InvalidArgumentException &e) {
-        ASSERT_EQ(std::string(e.what()), "Cannot select layer 6 because there is only 1 layer.");
+        ASSERT_EQ(std::string(e.what()), "Cannot select layer 6 because there are only 1 layers.");
     }
 }
 
@@ -76,7 +76,7 @@ TEST(LayerManager, deleteLayer1) {
     try {
         lm.deleteLayer(5);
     } catch (Mimp::OutOfBoundException &e) {
-        ASSERT_EQ(std::string(e.what()), "Cannot delete layer 5 because there is only 1 layer.");
+        ASSERT_EQ(std::string(e.what()), "Cannot delete layer 5 because there are only 1 layers.");
     }
 }
 
@@ -99,7 +99,7 @@ TEST(LayerManager, deleteLayer3) {
     try {
         lm.deleteLayer(0);
     } catch (Mimp::InvalidArgumentException &e) {
-        ASSERT_EQ(std::string(e.what()), "Cannot delete layer because there is only a single layer.");
+        ASSERT_EQ(std::string(e.what()), "Cannot delete layer because there are only a single layer.");
     }
 }
 
@@ -124,7 +124,7 @@ TEST(LayerManager, moveLayer1) {
     try {
         lm.setLayerIndex(0, 6);
     } catch (Mimp::OutOfBoundException &e) {
-        ASSERT_EQ(std::string(e.what()), "Cannot move layer 0 to location 6 because there are only 3 layers.");
+        ASSERT_EQ(std::string(e.what()), "Cannot move layer 0 to location 6 because there are only 3 layers");
     }
 }
 
@@ -138,7 +138,7 @@ TEST(LayerManager, moveLayer2) {
     try {
         lm.setLayerIndex(8, 6);
     } catch (Mimp::OutOfBoundException &e) {
-        ASSERT_EQ(std::string(e.what()), "Cannot move layer 8 to location 6 because there are only 3 layers.");
+        ASSERT_EQ(std::string(e.what()), "Cannot move layer 8 to location 6 because there are only 3 layers");
     }
 }
 

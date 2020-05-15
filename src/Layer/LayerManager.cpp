@@ -111,7 +111,7 @@ namespace Mimp
 			throw OutOfBoundException(
 				"Cannot move layer " + std::to_string(layerOldIndex) +
 				" to location " + std::to_string(layerNewIndex) +
-				" because there are only " + std::to_string(this->_layers.size()) + "layers");
+				" because there are only " + std::to_string(this->_layers.size()) + " layers");
 
 		auto layerIt = this->_layers.begin() + layerOldIndex;
 		auto layer = *layerIt;
