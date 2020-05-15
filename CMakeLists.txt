@@ -141,7 +141,8 @@ add_executable(
         tst/Network/SecuredSocket.cpp
         tst/ImageOperations/ImageOperation.cpp
         tst/ImageOperations/ImageOperationFactory.cpp
-        tst/Tools/Fill.cpp)
+        tst/Tools/Fill.cpp
+        tst/Tools/ColorPick.cpp)
 
 if (WIN32)
     target_link_libraries(

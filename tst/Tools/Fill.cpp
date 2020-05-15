@@ -96,3 +96,28 @@ TEST(Fill, fillBlankImage4) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
     }
 }
+
+// Infinite loop at 'fill.onClick({3, 3}, Mimp::MIMP_RIGHT_CLICK, image);'
+/*
+TEST(Fill, fillWithTransparentColor) {
+    tgui::Gui gui{};
+    Mimp::ToolBox toolbox{gui};
+    Mimp::Fill fill{toolbox};
+    Mimp::LayerManager lm({10, 10}, 1, Mimp::Color::Red);
+    Mimp::Image image({10, 10}, lm);
+    Mimp::Color c(0xFFFFFF00);
+
+    ASSERT_EQ(image.getLayers().size(), 1);
+    auto buffer = image.getLayers()[0].buffer.getBuffer();
+    for (int i = 0; i < 100; i += 1) {
+        ASSERT_TRUE(buffer[i] == Mimp::Color::Red);
+    }
+
+    toolbox.setSelectedColor(Mimp::MIMP_RIGHT_CLICK, c);
+    fill.onClick({3, 3}, Mimp::MIMP_RIGHT_CLICK, image);
+    buffer = image.getLayers()[0].buffer.getBuffer();
+    for (int i = 0; i < 100; i += 1) {
+        ASSERT_TRUE(buffer[i] == Mimp::Color::Red);
+    }
+}
+*/
