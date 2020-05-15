@@ -140,7 +140,8 @@ add_executable(
         tst/Network/Socket.cpp
         tst/Network/SecuredSocket.cpp
         tst/ImageOperations/ImageOperation.cpp
-        tst/ImageOperations/ImageOperationFactory.cpp)
+        tst/ImageOperations/ImageOperationFactory.cpp
+        tst/Tools/Fill.cpp)
 
 if (WIN32)
     target_link_libraries(
