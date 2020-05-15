@@ -17,7 +17,7 @@ TEST(Fill, getDefaultPanelValues) {
     ASSERT_TRUE(tolerancePreview->getText() == "0");
 }
 
-TEST(Fill, fillBlankImage1) {
+TEST(Fill, fillBlankImageClick) {
     tgui::Gui gui{};
     Mimp::ToolBox toolbox{gui};
     Mimp::Fill fill{toolbox};
@@ -37,7 +37,7 @@ TEST(Fill, fillBlankImage1) {
     }
 }
 
-TEST(Fill, fillBlankImage2) {
+TEST(Fill, fillBlankImageClickOutOfBound) {
     tgui::Gui gui{};
     Mimp::ToolBox toolbox{gui};
     Mimp::Fill fill{toolbox};
@@ -57,7 +57,7 @@ TEST(Fill, fillBlankImage2) {
     }
 }
 
-TEST(Fill, fillBlankImage3) {
+TEST(Fill, fillBlankImageClickSameColor) {
     tgui::Gui gui{};
     Mimp::ToolBox toolbox{gui};
     Mimp::Fill fill{toolbox};
@@ -77,7 +77,7 @@ TEST(Fill, fillBlankImage3) {
     }
 }
 
-TEST(Fill, fillBlankImage4) {
+TEST(Fill, fillBlankImageDrag) {
     tgui::Gui gui{};
     Mimp::ToolBox toolbox{gui};
     Mimp::Fill fill{toolbox};
@@ -97,15 +97,13 @@ TEST(Fill, fillBlankImage4) {
     }
 }
 
-// Infinite loop at 'fill.onClick({3, 3}, Mimp::MIMP_RIGHT_CLICK, image);'
-/*
 TEST(Fill, fillWithTransparentColor) {
     tgui::Gui gui{};
     Mimp::ToolBox toolbox{gui};
     Mimp::Fill fill{toolbox};
     Mimp::LayerManager lm({10, 10}, 1, Mimp::Color::Red);
     Mimp::Image image({10, 10}, lm);
-    Mimp::Color c(0xFFFFFF00);
+    Mimp::Color c(0x11223300);
 
     ASSERT_EQ(image.getLayers().size(), 1);
     auto buffer = image.getLayers()[0].buffer.getBuffer();
@@ -117,7 +115,6 @@ TEST(Fill, fillWithTransparentColor) {
     fill.onClick({3, 3}, Mimp::MIMP_RIGHT_CLICK, image);
     buffer = image.getLayers()[0].buffer.getBuffer();
     for (int i = 0; i < 100; i += 1) {
-        ASSERT_TRUE(buffer[i] == Mimp::Color::Red);
+        ASSERT_TRUE(buffer[i] == c);
     }
 }
-*/

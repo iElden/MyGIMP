@@ -18,7 +18,7 @@ TEST(LayerManager, testLayerSelectionByIndex) {
 
 }
 
-TEST(LayerManager, selectInvalidLayer1) {
+TEST(LayerManager, selectInvalidLayerOneLayer) {
     Mimp::LayerManager lm(Mimp::Vector2<unsigned>{800, 600});
 
     ASSERT_EQ(lm.size(), 1);
@@ -29,7 +29,7 @@ TEST(LayerManager, selectInvalidLayer1) {
     }
 }
 
-TEST(LayerManager, selectInvalidLayer2) {
+TEST(LayerManager, selectInvalidLayerIndexTooHigh) {
     Mimp::LayerManager lm(Mimp::Vector2<unsigned>{800, 600});
 
     lm.addLayer({700, 4});
@@ -68,7 +68,7 @@ TEST(LayerManager, selectLayer) {
         ASSERT_EQ(l1.buffer[i], l2.buffer[i]);
 }
 
-TEST(LayerManager, deleteLayer1) {
+TEST(LayerManager, deleteLayerOneLayer) {
     Mimp::LayerManager lm(Mimp::Vector2<unsigned>{800, 600});
 
     ASSERT_NE(lm.size(), 5);
@@ -79,7 +79,7 @@ TEST(LayerManager, deleteLayer1) {
     }
 }
 
-TEST(LayerManager, deleteLayer2) {
+TEST(LayerManager, deleteLayerIndexTooHigh) {
     Mimp::LayerManager lm(Mimp::Vector2<unsigned>{800, 600});
 
     lm.addLayer({700, 4});
@@ -91,7 +91,7 @@ TEST(LayerManager, deleteLayer2) {
     }
 }
 
-TEST(LayerManager, deleteLayer3) {
+TEST(LayerManager, deleteRootLayerOneLayer) {
     Mimp::LayerManager lm(Mimp::Vector2<unsigned>{800, 600});
 
     ASSERT_EQ(lm.size(), 1);
@@ -102,7 +102,7 @@ TEST(LayerManager, deleteLayer3) {
     }
 }
 
-TEST(LayerManager, deleteLayer4) {
+TEST(LayerManager, deleteRootLayerMultipleLayer) {
     Mimp::LayerManager lm(Mimp::Vector2<unsigned>{800, 600});
 
     lm.addLayer({700, 4});
@@ -113,7 +113,7 @@ TEST(LayerManager, deleteLayer4) {
     ASSERT_EQ(lm.size(), 2);
 }
 
-TEST(LayerManager, moveLayer1) {
+TEST(LayerManager, moveLayerNewIndexTooHigh) {
     Mimp::LayerManager lm(Mimp::Vector2<unsigned>{800, 600});
 
     lm.addLayer({700, 4});
@@ -127,7 +127,7 @@ TEST(LayerManager, moveLayer1) {
     }
 }
 
-TEST(LayerManager, moveLayer2) {
+TEST(LayerManager, moveLayerOldIndexTooHigh) {
     Mimp::LayerManager lm(Mimp::Vector2<unsigned>{800, 600});
 
     lm.addLayer({700, 4});
@@ -142,7 +142,7 @@ TEST(LayerManager, moveLayer2) {
 }
 
 
-TEST(LayerManager, moveLayer3) {
+TEST(LayerManager, moveLayerCorrectIndexes) {
     Mimp::LayerManager lm(Mimp::Vector2<unsigned>{800, 600});
 
     lm.addLayer({700, 4});

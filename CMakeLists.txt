@@ -142,7 +142,11 @@ add_executable(
         tst/ImageOperations/ImageOperation.cpp
         tst/ImageOperations/ImageOperationFactory.cpp
         tst/Tools/Fill.cpp
-        tst/Tools/ColorPick.cpp)
+        tst/Tools/ColorPick.cpp
+        tst/Tools/FillSelection.cpp
+        tst/Tools/Eraser.cpp
+        tst/Tools/Pencil.cpp
+)
 
 if (WIN32)
     target_link_libraries(

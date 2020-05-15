@@ -45,7 +45,7 @@ TEST(Vector, substractionInPlace)
     ASSERT_EQ(v1.y, v3.y);
 }
 
-TEST(Vector, comparison1)
+TEST(Vector, compareDifferentVectors)
 {
     Mimp::Vector2<int> v1 = {-1, 1};
     Mimp::Vector2<int> v2 = {2, -6};
@@ -53,7 +53,7 @@ TEST(Vector, comparison1)
     ASSERT_EQ(v1 == v2, 0);
 }
 
-TEST(Vector, comparison2)
+TEST(Vector, compareSameVectors)
 {
     Mimp::Vector2<int> v1 = {-1, 1};
     Mimp::Vector2<int> v2 = {-1, 1};

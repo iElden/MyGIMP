@@ -14,7 +14,7 @@ TEST(SecuredSocket, sslDisconnection) {
 }
 
 
-TEST(SecuredSocket, sslConnection1) {
+TEST(SecuredSocket, sslConnectionHostAlreadyOpened) {
     Mimp::SecuredSocket s;
 
     s.connect("8.8.8.8", 443);
@@ -26,7 +26,7 @@ TEST(SecuredSocket, sslConnection1) {
     }
 }
 
-TEST(SecuredSocket, sslConnection2) {
+TEST(SecuredSocket, sslConnectionIpAlreadyOpened) {
     Mimp::SecuredSocket s;
 
     s.connect("8.8.8.8", 443);

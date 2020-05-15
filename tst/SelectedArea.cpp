@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "../src/SelectedArea.hpp"
 
-TEST(SelectedArea, AddTest) {
+TEST(SelectedArea, addPointInsideArea) {
     Mimp::SelectedArea selectedArea(10, 10);
 
     selectedArea.add(5, 5);
@@ -10,7 +10,7 @@ TEST(SelectedArea, AddTest) {
     ASSERT_EQ(selectedArea.isAnAreaSelected(), true);
 }
 
-TEST(SelectedArea, clearTest) {
+TEST(SelectedArea, addPointInsideAreaAndClear) {
     Mimp::SelectedArea selectedArea(10, 10);
 
     selectedArea.add(5, 5);
@@ -81,28 +81,28 @@ TEST(SelectedArea, fillWholeSelection) {
     }
 }
 
-TEST(SelectedArea, testIfPointIsInMap1) {
+TEST(SelectedArea, pointsOutsideSelectedArea) {
     Mimp::SelectedArea selectedArea(10, 10);
 
     ASSERT_FALSE(selectedArea.pointInMap(11, 10));
     ASSERT_FALSE(selectedArea.pointInMap(10, 11));
 }
 
-TEST(SelectedArea, testIfPointIsInMap2) {
+TEST(SelectedArea, pointsInsideSelectedArea) {
     Mimp::SelectedArea selectedArea(10, 10);
 
     selectedArea.add(5, 8);
     ASSERT_TRUE(selectedArea.pointInMap(5, 8));
 }
 
-TEST(SelectedArea, testIfPointIsInMap13) {
+TEST(SelectedArea, vectorPointOutsiteSelectedArea) {
     Mimp::SelectedArea selectedArea(10, 10);
 
     ASSERT_FALSE(selectedArea.pointInMap({11, 10}));
     ASSERT_FALSE(selectedArea.pointInMap({10, 11}));
 }
 
-TEST(SelectedArea, testIfPointIsInMap4) {
+TEST(SelectedArea, vectorPointInsiteSelectedArea) {
     Mimp::SelectedArea selectedArea(10, 10);
 
     selectedArea.add({5, 8});

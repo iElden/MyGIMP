@@ -31,7 +31,7 @@ TEST(Color, basicColors) {
     ASSERT_EQ(b.a, 0xFF);
 }
 
-TEST(Color, addition1) {
+TEST(Color, addOpaqueColor) {
     Mimp::Color c1 = Mimp::Color::Blue;
     Mimp::Color c2 = Mimp::Color::Yellow;
     Mimp::Color c3 = Mimp::Color::Yellow;
@@ -43,7 +43,7 @@ TEST(Color, addition1) {
     ASSERT_EQ(c4.a, c3.a);
 }
 
-TEST(Color, addition2) {
+TEST(Color, addTransparentColor) {
     Mimp::Color c1 = Mimp::Color::Blue;
     Mimp::Color c2 = Mimp::Color::Green;
 
@@ -55,7 +55,7 @@ TEST(Color, addition2) {
     ASSERT_EQ(c4.a, c1.a);
 }
 
-TEST(Color, diff1) {
+TEST(Color, differenceBetweenSameColor) {
     Mimp::Color c1 = Mimp::Color::Blue;
     Mimp::Color c2 = Mimp::Color::Blue;
 
@@ -63,7 +63,7 @@ TEST(Color, diff1) {
     ASSERT_EQ(diff, 0);
 }
 
-TEST(Color, diff2) {
+TEST(Color, differenceBetweenDifferentColor) {
     Mimp::Color c1 = Mimp::Color::Blue;
     Mimp::Color c2 = Mimp::Color::Red;
 
