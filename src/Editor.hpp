@@ -47,6 +47,9 @@ namespace Mimp
 
 		CanvasWidget::Ptr _getSelectedCanvas();
 
+		void _checkClose(const std::function<void()> &handler);
+		bool _checkSaved(std::string fileName, CanvasWidget::Ptr canvas, const std::function<void()> &handler);
+
 		tgui::Panel::Ptr _getLayerPanelRightClickPanel(const tgui::ChildWindow::Ptr& win, const CanvasWidget::Ptr& canvas, const tgui::Panel::Ptr& layersPanel, Layer &layer, unsigned index);
 		tgui::Panel::Ptr _makeLayersPanel(tgui::ChildWindow::Ptr win, CanvasWidget::Ptr canvas);
 

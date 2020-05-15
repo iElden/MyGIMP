@@ -74,7 +74,9 @@ namespace Mimp
 
 			while (this->_mainWindow.pollEvent(event)) {
 				if (event.type == sf::Event::Closed)
-					this->_mainWindow.close();
+					this->_checkClose([this]{
+						this->_mainWindow.close();
+					});
 				else if (event.type == sf::Event::Resized) {
 					this->_mainWindow.setView(sf::View{sf::FloatRect(0, 0, event.size.width, event.size.height)});
 					this->_gui.setView(sf::View{sf::FloatRect(0, 0, event.size.width, event.size.height)});
@@ -138,6 +140,7 @@ namespace Mimp
 			420
 		});
 		window->connect("Closed", [this, menu, window, canvas] {
+
 			this->_unselectImage();
 			canvas->disableRendering();
 			this->_gui.remove(window);
@@ -290,7 +293,7 @@ namespace Mimp
 				auto widget = CanvasWidget::create(this->_toolBox, path);
 				auto window = _makeImagePanel(widget);
 
-				window->setTitle(path);
+				window->setTitle(std::filesystem::path(path).filename().string());
 				this->_gui.add(window, "Image" + path);
 				this->_selectImage(window);
 			} catch (std::exception &e) {
@@ -306,14 +309,17 @@ namespace Mimp
 			if (path.empty())
 				return;
 
-			this->_selectedImageWindow->setTitle(path);
-			this->_gui.remove(this->_selectedImageWindow);
-			this->_gui.add(this->_selectedImageWindow, "Image" + path);
 			try {
-				this->_getSelectedCanvas()->getLayers().save(path);
+				auto canvas = this->_getSelectedCanvas();
+
+				canvas->getLayers().save(path);
+				canvas->setEdited(false);
 			} catch (std::exception &e) {
 				Utils::dispMsg("Save error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
 			}
+			this->_selectedImageWindow->setTitle(std::filesystem::path(path).filename().string());
+			this->_gui.remove(this->_selectedImageWindow);
+			this->_gui.add(this->_selectedImageWindow, "Image" + path);
 		});
 		menu->connectMenuItem({"File", "Save as"}, [this, menu] {
 			std::string name = this->_gui.getWidgetName(this->_selectedImageWindow).substr(strlen("Image"));
@@ -322,10 +328,14 @@ namespace Mimp
 			if (path.empty())
 				return;
 			try {
-				this->_getSelectedCanvas()->getLayers().save(path);
+				auto canvas = this->_getSelectedCanvas();
+
+				canvas->getLayers().save(path);
+				canvas->setEdited(false);
 			} catch (std::exception &e) {
 				Utils::dispMsg("Save error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
 			}
+			this->_selectedImageWindow->setTitle(std::filesystem::path(path).filename().string());
 		});
 		menu->connectMenuItem({"File", "Export"}, [this, menu] {
 			std::string name = this->_gui.getWidgetName(this->_selectedImageWindow).substr(strlen("Image"));
@@ -333,17 +343,25 @@ namespace Mimp
 
 			if (path.empty())
 				return;
+
 			try {
-				this->_getSelectedCanvas()->exportImage(path);
+				auto canvas = this->_getSelectedCanvas();
+
+				canvas->exportImage(path);
+				canvas->setEdited(false);
 			} catch (std::exception &e) {
 				Utils::dispMsg("Export error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
 			}
 		});
 		menu->connectMenuItem({"File", "Close"}, [this]{
-			this->_selectedImageWindow->close();
+			this->_checkSaved(this->_selectedImageWindow->getTitle(), this->_getSelectedCanvas(), [this]{
+				this->_selectedImageWindow->close();
+			});
 		});
 		menu->connectMenuItem({"File", "Quit"}, [this]{
-			this->_mainWindow.close();
+			this->_checkClose([this]{
+				this->_mainWindow.close();
+			});
 		});
 		menu->connectMenuItem({"File", "Import", "Link"}, [this]{
 			auto win = Utils::openWindowWithFocus(this->_gui, 210, 70);
@@ -370,8 +388,12 @@ namespace Mimp
 
 					auto window = _makeImagePanel(widget);
 					auto pos = path.find_last_of('/');
+					auto name = std::filesystem::path(path).filename().string();
 
-					window->setTitle(path);
+					if (name.find_first_of('?') != std::string::npos)
+						name = name.substr(0, name.find_first_of('?'));
+
+					window->setTitle(name);
 					this->_gui.add(window, "Image" + (pos == std::string::npos ? "index.png" : path.substr(pos)));
 					this->_selectImage(window);
 
@@ -789,5 +811,51 @@ namespace Mimp
 		default:
 			return KEY_UNKNOWN;
 		}
+	}
+
+	void Editor::_checkClose(const std::function<void()> &handler)
+	{
+		handler();
+		//for ()
+	}
+
+	bool Editor::_checkSaved(std::string fileName, CanvasWidget::Ptr canvas, const std::function<void()> &handler)
+	{
+		if (!canvas->isEdited())
+			return handler(), true;
+
+		auto &gui = this->_gui;
+		auto pan = tgui::Panel::create({"100%", "100%"});
+		pan->getRenderer()->setBackgroundColor({0, 0, 0, 175});
+		gui.add(pan);
+
+		auto win = tgui::ChildWindow::create();
+		win->setPosition("(&.w - w) / 2", "(&.h - h) / 2");
+		gui.add(win);
+
+		win->setFocused(true);
+
+		const bool tabUsageEnabled = gui.isTabKeyUsageEnabled();
+		auto closeWindow = [&gui, win, pan, tabUsageEnabled]{
+			gui.remove(win);
+			gui.remove(pan);
+			gui.setTabKeyUsageEnabled(tabUsageEnabled);
+		};
+
+		pan->connect("Clicked", closeWindow);
+		win->connect({"Closed", "EscapeKeyPressed"}, closeWindow);
+		win->loadWidgetsFromFile("widgets/overwrite_warning.gui");
+
+		auto label = win->get<tgui::Label>("Label");
+
+		label->setText(fileName + label->getText());
+		win->setSize(label->getSize().x + 20, 100);
+		win->get<tgui::Button>("Yes")->connect("Clicked", [&handler]{
+			handler();
+		});
+		win->get<tgui::Button>("No")->connect("Clicked", [win]{
+			win->close();
+		});
+		return false;
 	}
 }

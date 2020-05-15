@@ -32,6 +32,7 @@ namespace Mimp
 
 		mutable bool _counterUp = true;
 
+		bool _edited = false;
 		float _zoom = 1.f;
 
 		mutable unsigned char _colorCounter = 0;
@@ -74,6 +75,9 @@ namespace Mimp
 		//! @param path Path of the canva
 		//! @return CanvasWidget::Ptr
 		static CanvasWidget::Ptr create(const ToolBox &box, const std::string &path);
+
+		bool isEdited() const;
+		void setEdited(bool edited = true);
 
 		void setZoomLevel(float zoom);
 		float getZoomLevel() const;

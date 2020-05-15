@@ -29,6 +29,7 @@ namespace Mimp
 
 			realPos.x = pos.x / this->_zoom;
 			realPos.y = pos.y / this->_zoom;
+			this->_edited = true;
 			this->_box.getSelectedTool()->onClick(realPos, MIMP_LEFT_CLICK, *this);
 		});
 		this->onMouseRelease.connect([this](tgui::Vector2f pos){
@@ -36,6 +37,7 @@ namespace Mimp
 
 			realPos.x = pos.x / this->_zoom;
 			realPos.y = pos.y / this->_zoom;
+			this->_edited = true;
 			this->_box.getSelectedTool()->onMouseRelease(realPos, MIMP_LEFT_CLICK, *this);
 		});
 		this->onRightMousePress.connect([this](tgui::Vector2f pos){
@@ -44,6 +46,7 @@ namespace Mimp
 			realPos.x = pos.x / this->_zoom;
 			realPos.y = pos.y / this->_zoom;
 			this->_rightMouseDown = true;
+			this->_edited = true;
 			this->_box.getSelectedTool()->onClick(realPos, MIMP_RIGHT_CLICK, *this);
 		});
 		this->onRightMouseRelease.connect([this](tgui::Vector2f pos){
@@ -52,6 +55,7 @@ namespace Mimp
 			realPos.x = pos.x / this->_zoom;
 			realPos.y = pos.y / this->_zoom;
 			this->_rightMouseDown = false;
+			this->_edited = true;
 			this->_box.getSelectedTool()->onMouseRelease(realPos, MIMP_RIGHT_CLICK, *this);
 		});
 		this->_renderThread = std::thread([this]{
@@ -75,6 +79,7 @@ namespace Mimp
 
 			realPos.x = pos.x / this->_zoom;
 			realPos.y = pos.y / this->_zoom;
+			this->_edited = true;
 			this->_box.getSelectedTool()->onClick(realPos, MIMP_LEFT_CLICK, *this);
 		});
 		this->onMouseRelease.connect([this](tgui::Vector2f pos){
@@ -82,6 +87,7 @@ namespace Mimp
 
 			realPos.x = pos.x / this->_zoom;
 			realPos.y = pos.y / this->_zoom;
+			this->_edited = true;
 			this->_box.getSelectedTool()->onMouseRelease(realPos, MIMP_LEFT_CLICK, *this);
 		});
 		this->onRightMousePress.connect([this](tgui::Vector2f pos){
@@ -90,6 +96,7 @@ namespace Mimp
 			realPos.x = pos.x / this->_zoom;
 			realPos.y = pos.y / this->_zoom;
 			this->_rightMouseDown = true;
+			this->_edited = true;
 			this->_box.getSelectedTool()->onClick(realPos, MIMP_RIGHT_CLICK, *this);
 		});
 		this->onRightMouseRelease.connect([this](tgui::Vector2f pos){
@@ -98,6 +105,7 @@ namespace Mimp
 			realPos.x = pos.x / this->_zoom;
 			realPos.y = pos.y / this->_zoom;
 			this->_rightMouseDown = false;
+			this->_edited = true;
 			this->_box.getSelectedTool()->onMouseRelease(realPos, MIMP_RIGHT_CLICK, *this);
 		});
 		this->_drawBuffer.create(size.x, size.y);
@@ -143,6 +151,7 @@ namespace Mimp
 	{
 		Vector2<int> realPos;
 
+		this->_edited = true;
 		realPos.x = (pos.x - this->getPosition().x) / this->_zoom;
 		realPos.y = (pos.y - this->getPosition().y) / this->_zoom;
 		if (this->m_mouseDown)
@@ -284,5 +293,15 @@ namespace Mimp
 	float CanvasWidget::getZoomLevel() const
 	{
 		return this->_zoom;
+	}
+
+	bool CanvasWidget::isEdited() const
+	{
+		return this->_edited;
+	}
+
+	void CanvasWidget::setEdited(bool edited)
+	{
+		this->_edited = edited;
 	}
 }
