@@ -41,7 +41,7 @@ namespace Mimp
 	{
 		Vector2<int> realPos;
 
-		this->_edited = true;
+		this->_edited |= this->m_mouseDown || this->_rightMouseDown;
 		realPos.x = (pos.x - this->getPosition().x) / this->_zoom;
 		realPos.y = (pos.y - this->getPosition().y) / this->_zoom;
 		if (this->m_mouseDown)
