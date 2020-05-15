@@ -23,41 +23,6 @@ namespace Mimp
 	{
 		this->m_size = {size.x, size.y};
 		this->m_type = "Canvas";
-
-		this->onMousePress.connect([this](tgui::Vector2f pos){
-			Vector2<int> realPos;
-
-			realPos.x = pos.x / this->_zoom;
-			realPos.y = pos.y / this->_zoom;
-			this->_edited = true;
-			this->_box.getSelectedTool()->onClick(realPos, MIMP_LEFT_CLICK, *this);
-		});
-		this->onMouseRelease.connect([this](tgui::Vector2f pos){
-			Vector2<int> realPos;
-
-			realPos.x = pos.x / this->_zoom;
-			realPos.y = pos.y / this->_zoom;
-			this->_edited = true;
-			this->_box.getSelectedTool()->onMouseRelease(realPos, MIMP_LEFT_CLICK, *this);
-		});
-		this->onRightMousePress.connect([this](tgui::Vector2f pos){
-			Vector2<int> realPos;
-
-			realPos.x = pos.x / this->_zoom;
-			realPos.y = pos.y / this->_zoom;
-			this->_rightMouseDown = true;
-			this->_edited = true;
-			this->_box.getSelectedTool()->onClick(realPos, MIMP_RIGHT_CLICK, *this);
-		});
-		this->onRightMouseRelease.connect([this](tgui::Vector2f pos){
-			Vector2<int> realPos;
-
-			realPos.x = pos.x / this->_zoom;
-			realPos.y = pos.y / this->_zoom;
-			this->_rightMouseDown = false;
-			this->_edited = true;
-			this->_box.getSelectedTool()->onMouseRelease(realPos, MIMP_RIGHT_CLICK, *this);
-		});
 		this->_renderThread = std::thread([this]{
 			/*while (!this->_destroyed) {
 				this->_updateInternalBuffer();
@@ -65,6 +30,7 @@ namespace Mimp
 			}*/
 		});
 		this->_drawBuffer.create(size.x, size.y);
+		this->_makeCallbacks();
 	}
 
 	CanvasWidget::CanvasWidget(const ToolBox &box, Vector2<unsigned int> size):
@@ -73,41 +39,6 @@ namespace Mimp
 	{
 		this->m_size = {size.x, size.y};
 		this->m_type = "Canvas";
-
-		this->onMousePress.connect([this](tgui::Vector2f pos){
-			Vector2<int> realPos;
-
-			realPos.x = pos.x / this->_zoom;
-			realPos.y = pos.y / this->_zoom;
-			this->_edited = true;
-			this->_box.getSelectedTool()->onClick(realPos, MIMP_LEFT_CLICK, *this);
-		});
-		this->onMouseRelease.connect([this](tgui::Vector2f pos){
-			Vector2<int> realPos;
-
-			realPos.x = pos.x / this->_zoom;
-			realPos.y = pos.y / this->_zoom;
-			this->_edited = true;
-			this->_box.getSelectedTool()->onMouseRelease(realPos, MIMP_LEFT_CLICK, *this);
-		});
-		this->onRightMousePress.connect([this](tgui::Vector2f pos){
-			Vector2<int> realPos;
-
-			realPos.x = pos.x / this->_zoom;
-			realPos.y = pos.y / this->_zoom;
-			this->_rightMouseDown = true;
-			this->_edited = true;
-			this->_box.getSelectedTool()->onClick(realPos, MIMP_RIGHT_CLICK, *this);
-		});
-		this->onRightMouseRelease.connect([this](tgui::Vector2f pos){
-			Vector2<int> realPos;
-
-			realPos.x = pos.x / this->_zoom;
-			realPos.y = pos.y / this->_zoom;
-			this->_rightMouseDown = false;
-			this->_edited = true;
-			this->_box.getSelectedTool()->onMouseRelease(realPos, MIMP_RIGHT_CLICK, *this);
-		});
 		this->_drawBuffer.create(size.x, size.y);
 		this->_renderThread = std::thread([this]{
 			/*while (!this->_destroyed) {
@@ -115,6 +46,7 @@ namespace Mimp
 				std::this_thread::sleep_for(std::chrono::milliseconds(10));
 			}*/
 		});
+		this->_makeCallbacks();
 	}
 
 	void CanvasWidget::_updateInternalBuffer()
@@ -303,5 +235,41 @@ namespace Mimp
 	void CanvasWidget::setEdited(bool edited)
 	{
 		this->_edited = edited;
+	}
+
+	void CanvasWidget::_makeCallbacks()
+	{
+		this->onMousePress.connect([this](tgui::Vector2f pos){
+			Vector2<int> realPos;
+
+			realPos.x = pos.x / this->_zoom;
+			realPos.y = pos.y / this->_zoom;
+			this->_edited = true;
+			this->_box.getSelectedTool()->onClick(realPos, MIMP_LEFT_CLICK, *this);
+		});
+		this->onMouseRelease.connect([this](tgui::Vector2f pos){
+			Vector2<int> realPos;
+
+			realPos.x = pos.x / this->_zoom;
+			realPos.y = pos.y / this->_zoom;
+			this->_box.getSelectedTool()->onMouseRelease(realPos, MIMP_LEFT_CLICK, *this);
+		});
+		this->onRightMousePress.connect([this](tgui::Vector2f pos){
+			Vector2<int> realPos;
+
+			realPos.x = pos.x / this->_zoom;
+			realPos.y = pos.y / this->_zoom;
+			this->_rightMouseDown = true;
+			this->_edited = true;
+			this->_box.getSelectedTool()->onClick(realPos, MIMP_RIGHT_CLICK, *this);
+		});
+		this->onRightMouseRelease.connect([this](tgui::Vector2f pos){
+			Vector2<int> realPos;
+
+			realPos.x = pos.x / this->_zoom;
+			realPos.y = pos.y / this->_zoom;
+			this->_rightMouseDown = false;
+			this->_box.getSelectedTool()->onMouseRelease(realPos, MIMP_RIGHT_CLICK, *this);
+		});
 	}
 }

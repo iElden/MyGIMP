@@ -48,6 +48,7 @@ namespace Mimp
 		CanvasWidget(const ToolBox &box, Vector2<unsigned int> size, const LayerManager &layers);
 
 		void _updateInternalBuffer();
+		void _makeCallbacks();
 
 	public:
 		//! @brief Shared widget pointer
