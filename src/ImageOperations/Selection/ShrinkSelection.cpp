@@ -11,7 +11,7 @@ Mimp::ShrinkSelection::ShrinkSelection():
 {}
 
 void Mimp::ShrinkSelection::_removePointIfNoPointNearby(unsigned i, unsigned j, Mimp::Image &image,
-												   const Mimp::SelectedArea &area, int range) const noexcept
+												   const Mimp::SelectedArea &area, int range) noexcept
 {
 	for (int a = -range; a <= range; a++)
 		for (int b = -range; b <= range; b++)
@@ -19,7 +19,7 @@ void Mimp::ShrinkSelection::_removePointIfNoPointNearby(unsigned i, unsigned j, 
 				return image.selectedArea.remove(i, j);
 }
 
-void Mimp::ShrinkSelection::_run(Mimp::Image &image, int range) const noexcept
+void Mimp::ShrinkSelection::_run(Mimp::Image &image, int range) noexcept
 {
 	auto selectedArea = image.selectedArea;
 	for (auto pt : image.selectedArea.getPoints())

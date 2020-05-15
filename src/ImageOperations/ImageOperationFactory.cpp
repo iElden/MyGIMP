@@ -11,6 +11,7 @@
 #include "Selection/ExpandSelection.hpp"
 #include "Selection/ExpandMoreSelection.hpp"
 #include "Selection/ShrinkSelection.hpp"
+#include "Selection/ShrinkMoreSelection.hpp"
 
 namespace Mimp
 {
@@ -38,6 +39,9 @@ namespace Mimp
 		},
 		[]{
 			return std::make_shared<ShrinkSelection>();
+		},
+		[]{
+			return std::make_shared<ShrinkMoreSelection>();
 		}
 
 	};
