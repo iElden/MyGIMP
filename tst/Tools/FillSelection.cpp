@@ -93,3 +93,25 @@ TEST(FillSelection, fillWithCustomLeftColorWholeLayer) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::Magenta);
     }
 }
+
+TEST(FillSelection, fillWhenLayerIsLocked) {
+    tgui::Gui gui{};
+    Mimp::ToolBox toolbox{gui};
+    Mimp::FillSelection fs{toolbox};
+    Mimp::LayerManager lm({10, 10}, 1, Mimp::Color::White);
+    Mimp::Image image({10, 10}, lm);
+
+    image.selectedArea.selectAll();
+
+    ASSERT_TRUE(image.getLayers().size() == 1);
+    image.getLayers()[0].locked = true;
+    auto buffer = image.getLayers()[0].buffer.getBuffer();
+    for (int i = 0; i < 100; i += 1) {
+        ASSERT_TRUE(buffer[i] == Mimp::Color::White);
+    }
+
+    fs.onClick({0, 0}, Mimp::MIMP_LEFT_CLICK, image);
+    for (int i = 0; i < 100; i += 1) {
+        ASSERT_TRUE(buffer[i] == Mimp::Color::White);
+    }
+}
