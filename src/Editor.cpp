@@ -806,8 +806,28 @@ namespace Mimp
 
 	void Editor::_checkClose(const std::function<void()> &handler)
 	{
+		for (auto &name : this->_gui.getWidgetNames()) {
+			if (name.substring(0, strlen("Image")) == "Image") {
+				auto win = this->_gui.get<tgui::ChildWindow>(name);
+				auto canvas = win->get<tgui::ScrollablePanel>("Canvas")->get<CanvasWidget>("Canvas");
+
+				if (canvas->isEdited()) {
+					this->_checkSaved(name.substring(strlen("Image")), canvas, [win, canvas, this, handler]{
+						canvas->setEdited(false);
+						win->close();
+						this->_checkClose(handler);
+					}, [win, canvas, this, handler]{
+						if (this->_saveImage(win)) {
+							canvas->setEdited(false);
+							win->close();
+							this->_checkClose(handler);
+						}
+					});
+					return;
+				}
+			}
+		}
 		handler();
-		//for ()
 	}
 
 	bool Editor::_checkSaved(std::string fileName, CanvasWidget::Ptr canvas, const std::function<void()> &noHandler, const std::function<void()> &yesHandler)
