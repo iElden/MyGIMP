@@ -12,7 +12,7 @@ Mimp::ExpandSelection::ExpandSelection():
 		ImageOperation({"Selection", "Expand Selection"}, {KEY_I, true, true, false})
 {}
 
-void Mimp::ExpandSelection::_addPointIfPointNearby(unsigned i, unsigned j, Mimp::Image &image, const SelectedArea &area, int range) const noexcept
+void Mimp::ExpandSelection::_addPointIfPointNearby(unsigned i, unsigned j, Mimp::Image &image, const SelectedArea &area, int range) noexcept
 {
 	for (int a = -range; a <= range; a++)
 		for (int b = -range; b <= range; b++)
@@ -20,19 +20,19 @@ void Mimp::ExpandSelection::_addPointIfPointNearby(unsigned i, unsigned j, Mimp:
 				return image.selectedArea.add(i, j);
 }
 
-void Mimp::ExpandSelection::_run(Mimp::Image &image, int range) const noexcept
+void Mimp::ExpandSelection::_run(Mimp::Image &image, int range) noexcept
 {
 	auto size = image.getImageSize();
 	SelectedArea selectedArea = image.selectedArea;
 
 	for (unsigned j = 0; j < size.y; j++) {
 		for (unsigned i = 0; i < size.x; i++) {
-			this->_addPointIfPointNearby(i, j, image, selectedArea, range);
+			ExpandSelection::_addPointIfPointNearby(i, j, image, selectedArea, range);
 		}
 	}
 }
 
 void Mimp::ExpandSelection::click(tgui::Gui &, Mimp::Image &image) const
 {
-	this->_run(image);
+	ExpandSelection::_run(image);
 }

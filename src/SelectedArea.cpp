@@ -68,6 +68,22 @@ namespace Mimp
 		val = true;
 	}
 
+	void SelectedArea::remove(Vector2<int> point)
+	{
+		this->add(point.x, point.y);
+	}
+
+	void SelectedArea::remove(int x, int y)
+	{
+		if (Utils::isOutOfBound({x, y}, this->_size))
+			return;
+
+		auto &val = this->_map[x + y * this->_size.x];
+
+		this->_nbPoints -= val;
+		val = false;
+	}
+
 	std::vector<Vector2<int>> SelectedArea::getPoints() const noexcept
 	{
 		int index = 0;

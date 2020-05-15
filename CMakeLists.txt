@@ -89,7 +89,7 @@ add_executable(
     MyGimp
     src/main.cpp
     ${MIMP_SRCS}
-)
+        src/ImageOperations/Selection/ShrinkSelection.cpp src/ImageOperations/Selection/ShrinkSelection.hpp)
 
 if (WIN32)
     target_link_libraries(

@@ -43,6 +43,9 @@ namespace Mimp {
 		void add(Vector2<int> point);
 		void add(int x, int y);
 
+		void remove(Vector2<int> point);
+		void remove(int x, int y);
+
 		void invert() noexcept;
 
 		bool pointInMap(Vector2<int> point) const;

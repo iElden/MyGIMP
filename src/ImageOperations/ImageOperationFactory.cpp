@@ -9,6 +9,8 @@
 #include "Selection/SelectAllOperation.hpp"
 #include "Selection/DelSelectionOperation.hpp"
 #include "Selection/ExpandSelection.hpp"
+#include "Selection/ExpandMoreSelection.hpp"
+#include "Selection/ShrinkSelection.hpp"
 
 namespace Mimp
 {
@@ -30,6 +32,12 @@ namespace Mimp
 		},
 		[]{
 			return std::make_shared<ExpandSelection>();
+		},
+		[]{
+			return std::make_shared<ExpandMoreSelection>();
+		},
+		[]{
+			return std::make_shared<ShrinkSelection>();
 		}
 
 	};
