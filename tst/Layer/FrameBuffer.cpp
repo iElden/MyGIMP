@@ -119,12 +119,12 @@ TEST(FrameBuffer, setPixel1) {
 
     fb.drawPixel(pos, Mimp::Color::Yellow, Mimp::SET);
 
-    for (unsigned int i = 0; i < size.x; i += 1) {
-        for (unsigned int j = 0; j < size.y; j += 1) {
-            if (i == pos.x && j == pos.y) {
-                ASSERT_TRUE(fb[i + size.y * j] == Mimp::Color::Yellow);
+    for (unsigned int i = 0; i < size.y; i += 1) {
+        for (unsigned int j = 0; j < size.x; j += 1) {
+            if (i == pos.y && j == pos.x) {
+                ASSERT_TRUE(fb[i * size.x + j] == Mimp::Color::Yellow);
             } else {
-                ASSERT_TRUE(fb[i + size.y * j] == Mimp::Color::Green);
+                ASSERT_TRUE(fb[i * size.x + j] == Mimp::Color::Green);
             }
         }
     }
@@ -169,7 +169,7 @@ TEST(FrameBuffer, drawSquare) {
     Mimp::Vector2<unsigned> size = {10, 10};
     Mimp::FrameBuffer fb(size, Mimp::Color::Green);
 
-    Mimp::Vector2<int> pos = {5, 5};
+    Mimp::Vector2<int> pos = {5, 4};
     unsigned short radius = 4;
 
     fb.drawAt(pos, Mimp::Color::Yellow, radius, Mimp::SQUARE);
@@ -179,8 +179,8 @@ TEST(FrameBuffer, drawSquare) {
     unsigned int ymin = pos.y - (radius / 2);
     unsigned int ymax = pos.y + (radius / 2);
 
-    for (unsigned int i = 0; i < size.x; i += 1) {
-        for (unsigned int j = 0; j < size.y; j += 1) {
+    for (unsigned int i = 0; i < size.y; i += 1) {
+        for (unsigned int j = 0; j < size.x; j += 1) {
             if (i >= xmin && i < xmax &&
                 j >= ymin && j < ymax) {
                 ASSERT_TRUE(fb[i + size.x * j] == Mimp::Color::Yellow);
