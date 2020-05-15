@@ -19,7 +19,7 @@ TEST(Utils, resolveUrlBadProtocol) {
     }
 }
 
-TEST(Utils, resolveUrlBadHost1) {
+TEST(Utils, resolveHttpBadHost) {
     try {
         Mimp::Utils::resolveUrl("http://www.mygimp.fr");
     } catch (Mimp::HostNotFoundException &e) {
@@ -27,7 +27,7 @@ TEST(Utils, resolveUrlBadHost1) {
     }
 }
 
-TEST(Utils, resolveUrlBadHost2) {
+TEST(Utils, resolveHttpsBadHost) {
     try {
         Mimp::Utils::resolveUrl("https://www.mygimp.fr");
     } catch (Mimp::HostNotFoundException &e) {
@@ -119,7 +119,7 @@ TEST(Utils, cleanPathParent4) {
     ASSERT_EQ(Mimp::Utils::cleanPath(PATH("test1/./test2/..")), PATH("/test1"));
 }
 
-TEST(Utils, getLastException1) {
+TEST(Utils, getLastExceptionNoException) {
 #ifdef __GNUG__
     ASSERT_EQ(Mimp::Utils::getLastExceptionName(), "No exception");
 #else
@@ -127,7 +127,7 @@ TEST(Utils, getLastException1) {
 #endif
 }
 
-TEST(Utils, getLastException2) {
+TEST(Utils, getLastExceptionFileNotFound) {
 #ifdef __GNUG__
     try {
         throw Mimp::FileNotFoundException("file");

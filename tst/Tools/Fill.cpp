@@ -17,7 +17,7 @@ TEST(Fill, getDefaultPanelValues) {
     ASSERT_TRUE(tolerancePreview->getText() == "0");
 }
 
-TEST(Fill, fillBlankImage1) {
+TEST(Fill, fillBlankImageClick) {
     tgui::Gui gui{};
     Mimp::ToolBox toolbox{gui};
     Mimp::Fill fill{toolbox};
@@ -37,7 +37,7 @@ TEST(Fill, fillBlankImage1) {
     }
 }
 
-TEST(Fill, fillBlankImage2) {
+TEST(Fill, fillBlankImageClickOutOfBound) {
     tgui::Gui gui{};
     Mimp::ToolBox toolbox{gui};
     Mimp::Fill fill{toolbox};
@@ -57,7 +57,7 @@ TEST(Fill, fillBlankImage2) {
     }
 }
 
-TEST(Fill, fillBlankImage3) {
+TEST(Fill, fillBlankImageClickSameColor) {
     tgui::Gui gui{};
     Mimp::ToolBox toolbox{gui};
     Mimp::Fill fill{toolbox};
@@ -77,7 +77,7 @@ TEST(Fill, fillBlankImage3) {
     }
 }
 
-TEST(Fill, fillBlankImage4) {
+TEST(Fill, fillBlankImageDrag) {
     tgui::Gui gui{};
     Mimp::ToolBox toolbox{gui};
     Mimp::Fill fill{toolbox};

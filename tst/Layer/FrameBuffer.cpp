@@ -2,7 +2,7 @@
 #include "../../src/Layer/FrameBuffer.hpp"
 #include "../../src/Exceptions.hpp"
 
-TEST(FrameBuffer, getBufferTest) {
+TEST(FrameBuffer, getBuffer) {
     Mimp::Vector2<unsigned> size{500, 500};
     Mimp::FrameBuffer fb{size, Mimp::Color::Cyan};
 
@@ -12,7 +12,7 @@ TEST(FrameBuffer, getBufferTest) {
     }
 }
 
-TEST(FrameBuffer, getPixelTest) {
+TEST(FrameBuffer, getPixel) {
     Mimp::Vector2<unsigned> size{500, 500};
     Mimp::FrameBuffer fb{size, Mimp::Color::Cyan};
     Mimp::Vector2<int> pos{378, 321};
@@ -20,7 +20,7 @@ TEST(FrameBuffer, getPixelTest) {
     ASSERT_EQ(fb.getPixel(pos), Mimp::Color::Cyan);
 }
 
-TEST(FrameBuffer, getPixelTest2) {
+TEST(FrameBuffer, getPixelOutOfBound) {
     Mimp::Vector2<unsigned> size{500, 500};
     Mimp::FrameBuffer fb{size, Mimp::Color::Cyan};
     Mimp::Vector2<int> pos{750, 321};
@@ -28,7 +28,7 @@ TEST(FrameBuffer, getPixelTest2) {
     ASSERT_EQ(fb.getPixel(pos), Mimp::Color::Transparent);
 }
 
-TEST(FrameBuffer, getSizeTest) {
+TEST(FrameBuffer, getSize) {
     Mimp::Vector2<unsigned> size{500, 500};
     Mimp::FrameBuffer fb{size, Mimp::Color::Cyan};
     Mimp::Vector2<unsigned> expected{500, 500};
@@ -36,7 +36,7 @@ TEST(FrameBuffer, getSizeTest) {
     ASSERT_EQ(fb.getSize() == expected, 1);
 }
 
-TEST(FrameBuffer, posIsOutOfBoundTest) {
+TEST(FrameBuffer, posIsOutOfBound) {
     Mimp::Vector2<unsigned> size{500, 500};
     Mimp::FrameBuffer fb{size, Mimp::Color::Cyan};
     Mimp::Vector2<int> out{500, 500};
@@ -50,7 +50,7 @@ TEST(FrameBuffer, posIsOutOfBoundTest) {
     ASSERT_EQ(fb.posIsOutOfBound(in), false);
 }
 
-TEST(FrameBuffer, getRectFromBufferTest) {
+TEST(FrameBuffer, getRectFromBuffer) {
     Mimp::Vector2<unsigned> size{500, 500};
     Mimp::FrameBuffer fb{size, Mimp::Color::Cyan};
     Mimp::Vector2<int> pos{-1, 10};
@@ -112,7 +112,7 @@ TEST(FrameBuffer, outOfBoundException) {
     }
 }
 
-TEST(FrameBuffer, setPixel1) {
+TEST(FrameBuffer, setPixelInsideBounds) {
     Mimp::Vector2<unsigned> size = {10, 5};
     Mimp::FrameBuffer fb(size, Mimp::Color::Green);
     Mimp::Vector2<int> pos = {5, 4};
@@ -130,7 +130,7 @@ TEST(FrameBuffer, setPixel1) {
     }
 }
 
-TEST(FrameBuffer, setPixel2) {
+TEST(FrameBuffer, setPixelOutOfBounds) {
     Mimp::Vector2<unsigned> size = {10, 10};
     Mimp::FrameBuffer fb(size, Mimp::Color::Green);
     Mimp::Vector2<int> pos = {13, 5};
@@ -152,7 +152,7 @@ TEST(FrameBuffer, OutOfBoundPixel) {
     ASSERT_TRUE(fb.posIsOutOfBound(pos2));
 }
 
-TEST(FrameBuffer, clearFb) {
+TEST(FrameBuffer, clearFrameBuffer) {
     Mimp::Vector2<unsigned> size = {10, 10};
     Mimp::FrameBuffer fb(size, Mimp::Color::Green);
 

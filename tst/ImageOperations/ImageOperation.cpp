@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include "../../src/ImageOperations/ImageOperation.hpp"
 
-TEST(ImageOperation, checkKeyValue) {
+TEST(ImageOperation, checkKeyValues) {
     ASSERT_TRUE(Mimp::KeyToString(Mimp::Key::KEY_A) == "A");
     ASSERT_TRUE(Mimp::KeyToString(Mimp::Key::KEY_B) == "B");
     ASSERT_TRUE(Mimp::KeyToString(Mimp::Key::KEY_C) == "C");
@@ -57,26 +57,26 @@ private:
     void click(tgui::Gui &, Mimp::Image &) const override {};
 };
 
-TEST(ImageOperation, testKeyStroke1) {
+TEST(ImageOperation, noKeyStroke) {
     IOTest io({"test1", "test2"});
 
     ASSERT_FALSE(io.getKeyStroke());
 }
 
-TEST(ImageOperation, testKeyStroke2) {
+TEST(ImageOperation, strokeOnlyA) {
     IOTest io({"test1", "test2"}, {Mimp::Key::KEY_A, false, false, false});
 
     ASSERT_TRUE(io.getKeyStroke());
     ASSERT_TRUE(io.getKeyStroke()->toString() == "A");
 }
 
-TEST(ImageOperation, testHierarchy1) {
+TEST(ImageOperation, noHierarchy) {
     IOTest io({});
 
     ASSERT_TRUE(io.getMenuHierarchy().size() == 0);
 }
 
-TEST(ImageOperation, testHierarchy2) {
+TEST(ImageOperation, hasHierarchy) {
     IOTest io({"test1", "test2"});
 
     ASSERT_TRUE(io.getMenuHierarchy().size() == 2);

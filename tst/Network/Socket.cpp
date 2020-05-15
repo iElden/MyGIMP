@@ -12,7 +12,7 @@ TEST(Socket, socketDisconnection) {
     }
 }
 
-TEST(SocketManipulaion, socketConnection1) {
+TEST(SocketManipulaion, socketConnectionHostAlreadyOpened) {
     Mimp::Socket s;
 
     s.connect("8.8.8.8", 443);
@@ -24,7 +24,7 @@ TEST(SocketManipulaion, socketConnection1) {
     }
 }
 
-TEST(SocketManipulaion, socketConnection2) {
+TEST(SocketManipulaion, socketConnectionIpAlreadyOpened) {
     Mimp::Socket s;
 
     s.connect("8.8.8.8", 443);
