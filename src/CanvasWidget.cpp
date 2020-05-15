@@ -23,12 +23,6 @@ namespace Mimp
 	{
 		this->m_size = {size.x, size.y};
 		this->m_type = "Canvas";
-		this->_renderThread = std::thread([this]{
-			/*while (!this->_destroyed) {
-				this->_updateInternalBuffer();
-				std::this_thread::sleep_for(std::chrono::milliseconds(10));
-			}*/
-		});
 		this->_drawBuffer.create(size.x, size.y);
 		this->_makeCallbacks();
 	}
@@ -40,43 +34,7 @@ namespace Mimp
 		this->m_size = {size.x, size.y};
 		this->m_type = "Canvas";
 		this->_drawBuffer.create(size.x, size.y);
-		this->_renderThread = std::thread([this]{
-			/*while (!this->_destroyed) {
-				this->_updateInternalBuffer();
-				std::this_thread::sleep_for(std::chrono::milliseconds(10));
-			}*/
-		});
 		this->_makeCallbacks();
-	}
-
-	void CanvasWidget::_updateInternalBuffer()
-	{
-		FrameBuffer buffer(
-			{
-				static_cast<unsigned>(this->getSize().x),
-				static_cast<unsigned>(this->getSize().y)
-			},
-			Color::Transparent
-		);
-		auto size = buffer.getSize();
-
-		this->_layers.render(buffer);
-
-		auto pixelArray = new sf::Color[size.x * size.y];
-		auto color = Color{this->_colorCounter, this->_colorCounter, this->_colorCounter, 120};
-
-		this->_colorCounter += (this->_counterUp * 2 - 1) * 20;
-		this->_counterUp = (this->_counterUp && this->_colorCounter < 240) || !this->_colorCounter;
-		if (this->selectedArea.isAnAreaSelected())
-			for (auto &pt : this->selectedArea.getPoints())
-				buffer.drawPixel(pt, color);
-
-		for (unsigned x = 0; x < size.x; x++)
-			for (unsigned y = 0; y < size.y; y++)
-				pixelArray[x + y * size.x] = buffer.getPixel({static_cast<int>(x), static_cast<int>(y)});
-		this->_drawBuffer.create(size.x, size.y);
-		this->_drawBuffer.update(reinterpret_cast<const sf::Uint8 *>(pixelArray), buffer.getSize().x, buffer.getSize().y, 0, 0);
-		delete[] pixelArray;
 	}
 
 	void CanvasWidget::mouseMoved(tgui::Vector2f pos)
@@ -197,20 +155,6 @@ namespace Mimp
 		};
 		this->_drawBuffer.create(this->_size.x, this->_size.y);
 		this->selectedArea.setSize(this->_size);
-	}
-
-	CanvasWidget::~CanvasWidget()
-	{
-		this->_destroyed = true;
-		if (this->_renderThread.joinable())
-			this->_renderThread.join();
-	}
-
-	void CanvasWidget::disableRendering()
-	{
-		this->_destroyed = true;
-		if (this->_renderThread.joinable())
-			this->_renderThread.join();
 	}
 
 	void CanvasWidget::setZoomLevel(float zoom)

@@ -28,16 +28,12 @@ namespace Mimp
 		//! @details Mouse Right Click State
 		bool _rightMouseDown = false;
 
-		bool _destroyed = false;
-
 		mutable bool _counterUp = true;
 
 		bool _edited = false;
 		float _zoom = 1.f;
 
 		mutable unsigned char _colorCounter = 0;
-
-		std::thread _renderThread;
 
 		mutable sf::Texture _drawBuffer;
 
@@ -47,7 +43,6 @@ namespace Mimp
 		//! @param layers LayerManager of the canvas
 		CanvasWidget(const ToolBox &box, Vector2<unsigned int> size, const LayerManager &layers);
 
-		void _updateInternalBuffer();
 		void _makeCallbacks();
 
 	public:
@@ -64,7 +59,7 @@ namespace Mimp
 		//! @param box ToolBox
 		//! @param path Path of the Canvas file
 		CanvasWidget(const ToolBox &box, const std::string &path);
-		~CanvasWidget() override;
+		~CanvasWidget() override = default;
 
 		//! @brief create a new Canvas pointer
 		//! @param box ToolBox
@@ -82,8 +77,6 @@ namespace Mimp
 
 		void setZoomLevel(float zoom);
 		float getZoomLevel() const;
-		//! @brief Disable the rendering by joining the render thread
-		void disableRendering();
 		void mouseMoved(tgui::Vector2f pos) override;
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 		Widget::Ptr clone() const override;

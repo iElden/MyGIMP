@@ -130,7 +130,6 @@ namespace Mimp
 		auto canvasPanel = tgui::ScrollablePanel::create({"&.w - 200", "&.h - 20"});
 		auto common = [this, menu, window, canvas]{
 			this->_unselectImage();
-			canvas->disableRendering();
 			this->_gui.remove(window);
 			for (auto &name : this->_gui.getWidgetNames()) {
 				if (name.substring(0, strlen("Image")) == "Image") {
