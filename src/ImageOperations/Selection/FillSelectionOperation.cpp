@@ -17,7 +17,7 @@ namespace Mimp
 	{
 		Utils::makeColorPickWindow(gui, [&image](Color color){
 			FillSelectionOperation::_fill(image.getSelectedLayer(), image.selectedArea, color);
-		});
+		}, Color::Black);
 	}
 
 	void FillSelectionOperation::_fill(Layer &layer, const SelectedArea &area, const Color &color)

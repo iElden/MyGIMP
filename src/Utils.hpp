@@ -69,7 +69,7 @@ namespace Mimp::Utils
 	std::string cleanPath(const std::string &path);
 
 	tgui::ChildWindow::Ptr openWindowWithFocus(tgui::Gui &gui, tgui::Layout width, tgui::Layout height);
-	tgui::ChildWindow::Ptr makeColorPickWindow(tgui::Gui &gui, const std::function<void(Color color)> &onFinish);
+	tgui::ChildWindow::Ptr makeColorPickWindow(tgui::Gui &gui, const std::function<void(Color color)> &onFinish, Color startColor);
 	std::string DrawShapeToString(DrawShape shape);
 	DrawShape DrawShapeFromString(const std::string &str);
 	bool isOutOfBound(Mimp::Vector2<int> pt, Mimp::Vector2<unsigned> size);
