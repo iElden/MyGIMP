@@ -2,6 +2,7 @@
 // Created by Gegel85 on 06/04/2020.
 //
 
+#include <filesystem>
 #include <TGUI/TGUI.hpp>
 #include <iostream>
 #include <fstream>
@@ -32,41 +33,102 @@ namespace Mimp
 		auto menu = this->_gui.get<tgui::MenuBar>("main_bar");
 
 		for (auto &image : images) {
-			try {
-				auto widget = CanvasWidget::create(this->_toolBox, image);
-				auto window = _makeImagePanel(widget);
+			if (image.substr(image.find_last_of('.')) != ".mimp")
+				try {
+					auto widget = CanvasWidget::create(this->_toolBox, image);
+					auto window = _makeImagePanel(widget);
 
-				window->setTitle(image);
-				this->_gui.add(window, "Image" + image);
-				this->_selectedImageWindow = window;
-				menu->setMenuItemEnabled({"File", "Save"}, true);
-				menu->setMenuItemEnabled({"File", "Save as"}, true);
-				menu->setMenuItemEnabled({"File", "Export"}, true);
-				menu->setMenuItemEnabled({"File", "Close"}, true);
-				menu->setMenuItemEnabled({"File", "Close All"}, true);
-			} catch (std::exception &e) {
-				Utils::dispMsg(
-					"Error",
-					"Cannot load " + image + "\n\n" +
-					Utils::getLastExceptionName() + ":\n" + e.what(),
-					MB_ICONERROR
-				);
-			}
+					window->setTitle(std::filesystem::path(image).filename().string());
+					this->_gui.add(window, "Image" + image);
+					this->_selectImage(window);
+				} catch (std::exception &e) {
+					Utils::dispMsg("Loading error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
+				}
+			else
+				try {
+					auto widget = CanvasWidget::create(this->_toolBox, Vector2<unsigned>{0, 0});
+
+					widget->importImageFromFile(image);
+
+					auto window = _makeImagePanel(widget);
+
+					window->setTitle(image);
+					this->_gui.add(window, "Image" + image);
+					this->_selectImage(window);
+				} catch (std::exception &e) {
+					Utils::dispMsg("Import error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
+				}
 		}
 
-		std::ifstream stream{"state.txt"};
+		std::ifstream stream{"state.dat"};
 
 		if (stream.fail())
 			return;
 
 		stream >> this->_lastSize.x >> this->_lastSize.y;
+
+		std::string path;
+		unsigned long len;
+
+		std::getline(stream, path, '\0');
+		try {
+			len = std::stoul(path);
+		} catch (...) {
+			return;
+		}
+
+		while (len--) {
+			std::getline(stream, path, '\0');
+			if (path.find_last_of('.') == std::string::npos || path.substr(path.find_last_of('.')) == ".mimp")
+				try {
+					auto widget = CanvasWidget::create(this->_toolBox, path);
+					auto window = _makeImagePanel(widget);
+
+					window->setTitle(std::filesystem::path(path).filename().string());
+					this->_gui.add(window, "Image" + path);
+					this->_selectImage(window);
+				} catch (std::exception &e) {
+					Utils::dispMsg("Loading error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
+				}
+			else
+				try {
+					auto widget = CanvasWidget::create(this->_toolBox, Vector2<unsigned>{0, 0});
+
+					widget->importImageFromFile(path);
+
+					auto window = _makeImagePanel(widget);
+
+					window->setTitle(std::filesystem::path(path).filename().string());
+					this->_gui.add(window, "Image" + path);
+					this->_selectImage(window);
+				} catch (std::exception &e) {
+					Utils::dispMsg("Import error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
+				}
+		}
 	}
 
 	Editor::~Editor()
 	{
-		std::ofstream stream{"state.txt"};
+		std::ofstream stream{"state.dat"};
 
 		stream << this->_lastSize.x << " " << this->_lastSize.y;
+
+		auto names = this->_gui.getWidgetNames();
+		std::vector<std::string> paths;
+
+		for (auto &name : names) {
+			if (name.substring(0, strlen("Image")) == "Image") {
+				std::string path = name.substring(strlen("Image"));
+
+				if (path.find_last_of(std::filesystem::path::preferred_separator) == std::string::npos)
+					continue;
+				paths.push_back(path);
+			}
+		}
+
+		stream << " " << paths.size() << '\0';
+		for (auto &p : paths)
+			stream << p << '\0';
 	}
 
 	void Editor::setSelectedImage(tgui::ChildWindow::Ptr canvas)
@@ -369,8 +431,8 @@ namespace Mimp
 					this->_selectedImageWindow->close();
 			});
 		});
-		menu->connectMenuItem({"File", "Close All"}, [this]{
-			this->_checkClose([]{});
+		menu->connectMenuItem({"File", "Close All"}, [this] {
+			this->_checkClose([] {}, [](tgui::ChildWindow::Ptr win) {win->close();});
 		});
 		menu->connectMenuItem({"File", "Quit"}, [this]{
 			this->_checkClose([this]{
@@ -435,7 +497,7 @@ namespace Mimp
 
 				auto window = _makeImagePanel(widget);
 
-				window->setTitle(path);
+				window->setTitle(std::filesystem::path(path).filename().string());
 				this->_gui.add(window, "Image" + path);
 				this->_selectImage(window);
 			} catch (std::exception &e) {
@@ -827,7 +889,7 @@ namespace Mimp
 		}
 	}
 
-	void Editor::_checkClose(const std::function<void()> &handler)
+	void Editor::_checkClose(const std::function<void()> &endHandler, const std::function<void(tgui::ChildWindow::Ptr)> &handler)
 	{
 		auto names = this->_gui.getWidgetNames();
 
@@ -837,23 +899,30 @@ namespace Mimp
 				auto canvas = win->get<tgui::ScrollablePanel>("Canvas")->get<CanvasWidget>("Canvas");
 
 				if (canvas->isEdited()) {
-					this->_checkSaved(name.substring(strlen("Image")), canvas, [win, canvas, this, handler]{
-						canvas->setEdited(false);
-						win->close();
-						this->_checkClose(handler);
-					}, [win, canvas, this, handler]{
-						if (this->_saveImage(win)) {
+					this->_checkSaved(
+						win->getTitle(),
+						canvas,
+						[win, canvas, this, handler, endHandler]{
 							canvas->setEdited(false);
-							win->close();
-							this->_checkClose(handler);
+							if (handler)
+								handler(win);
+							this->_checkClose(endHandler);
+						},
+						[win, canvas, this, handler, endHandler]{
+							if (this->_saveImage(win)) {
+								canvas->setEdited(false);
+								if (handler)
+									handler(win);
+								this->_checkClose(endHandler);
+							}
 						}
-					});
+					);
 					return;
-				} else
-					win->close();
+				} else if (handler)
+					handler(win);
 			}
 		}
-		handler();
+		endHandler();
 	}
 
 	bool Editor::_checkSaved(std::string fileName, CanvasWidget::Ptr canvas, const std::function<void()> &noHandler, const std::function<void()> &yesHandler)

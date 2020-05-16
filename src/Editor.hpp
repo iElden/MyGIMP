@@ -50,7 +50,7 @@ namespace Mimp
 		CanvasWidget::Ptr _getSelectedCanvas();
 
 		bool _saveImage(tgui::ChildWindow::Ptr win);
-		void _checkClose(const std::function<void()> &handler);
+		void _checkClose(const std::function<void()> &endHandler, const std::function<void(tgui::ChildWindow::Ptr)> &handler = {});
 		bool _checkSaved(std::string fileName, CanvasWidget::Ptr canvas, const std::function<void()> &noHandler, const std::function<void()> &yesHandler);
 
 		tgui::Panel::Ptr _getLayerPanelRightClickPanel(const tgui::ChildWindow::Ptr& win, const CanvasWidget::Ptr& canvas, const tgui::Panel::Ptr& layersPanel, Layer &layer, unsigned index);
