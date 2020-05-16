@@ -4,6 +4,7 @@
 
 #include <TGUI/TGUI.hpp>
 #include <iostream>
+#include <fstream>
 #include "Editor.hpp"
 #include "Utils.hpp"
 #include "ImageOperations/ImageOperationFactory.hpp"
@@ -52,11 +53,20 @@ namespace Mimp
 				);
 			}
 		}
+
+		std::ifstream stream{"state.txt"};
+
+		if (stream.fail())
+			return;
+
+		stream >> this->_lastSize.x >> this->_lastSize.y;
 	}
 
 	Editor::~Editor()
 	{
+		std::ofstream stream{"state.txt"};
 
+		stream << this->_lastSize.x << " " << this->_lastSize.y;
 	}
 
 	void Editor::setSelectedImage(tgui::ChildWindow::Ptr canvas)
