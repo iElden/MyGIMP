@@ -54,6 +54,11 @@ namespace Mimp
 		}
 	}
 
+	Editor::~Editor()
+	{
+
+	}
+
 	void Editor::setSelectedImage(tgui::ChildWindow::Ptr canvas)
 	{
 		this->_selectImage(canvas);
@@ -270,20 +275,25 @@ namespace Mimp
 
 			auto ok = win->get<tgui::Button>("OK");
 			auto cancel = win->get<tgui::Button>("Cancel");
+			auto width = win->get<tgui::EditBox>("Width");
+			auto height = win->get<tgui::EditBox>("Height");
 
+			width->setText(std::to_string(this->_lastSize.x));
+			height->setText(std::to_string(this->_lastSize.y));
 			cancel->connect("Pressed", [win]{ win->close(); });
-			ok->connect("Pressed", [this, win] {
-				std::string width = win->get<tgui::EditBox>("Width")->getText();
-				std::string height = win->get<tgui::EditBox>("Height")->getText();
+			ok->connect("Pressed", [this, win, width, height] {
+				std::string wtxt = width->getText();
+				std::string htxt = height->getText();
 
-				if (width.empty() || height.empty())
+				if (wtxt.empty() || htxt.empty())
 					return;
 
-				auto w = std::stoul(width);
-				auto h = std::stoul(height);
+				auto w = std::stoul(wtxt);
+				auto h = std::stoul(htxt);
 				auto widget = CanvasWidget::create(this->_toolBox, Vector2<unsigned>{w, h});
 				auto window = _makeImagePanel(widget);
 
+				this->_lastSize = Vector2<unsigned>{w, h};
 				window->setTitle("Untitled " + std::to_string(++this->_lastUntitled));
 				this->_gui.add(window, "ImageUntitled " + std::to_string(this->_lastUntitled));
 				this->_selectImage(window);
