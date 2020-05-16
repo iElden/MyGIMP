@@ -13,8 +13,8 @@ Mimp::FillSelection::FillSelection(Mimp::ToolBox &toolBox):
 
 void Mimp::FillSelection::onClick(Mimp::Vector2<int>, Mimp::MouseClick click, Mimp::Image &image)
 {
-    if (image.getSelectedLayer().isLocked())
-        return;
+	if (image.getSelectedLayer().isLocked())
+		return;
 
 	auto &layer = image.getSelectedLayer();
 

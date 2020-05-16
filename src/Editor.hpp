@@ -33,6 +33,8 @@ namespace Mimp
 		//! @brief Selected Image
 		tgui::ChildWindow::Ptr _selectedImageWindow;
 		std::map<tgui::ChildWindow::Ptr, Vector2<Vector2<float>>> _minimizedWindows;
+		std::vector<std::string> _recents;
+		Vector2<unsigned> _lastSize = {640, 480};
 
 		//! @brief Setup Button Callbacks
 		void _setupButtonCallbacks();
@@ -48,7 +50,7 @@ namespace Mimp
 		CanvasWidget::Ptr _getSelectedCanvas();
 
 		bool _saveImage(tgui::ChildWindow::Ptr win);
-		void _checkClose(const std::function<void()> &handler);
+		void _checkClose(const std::function<void()> &endHandler, const std::function<void(tgui::ChildWindow::Ptr)> &handler = {});
 		bool _checkSaved(std::string fileName, CanvasWidget::Ptr canvas, const std::function<void()> &noHandler, const std::function<void()> &yesHandler);
 
 		tgui::Panel::Ptr _getLayerPanelRightClickPanel(const tgui::ChildWindow::Ptr& win, const CanvasWidget::Ptr& canvas, const tgui::Panel::Ptr& layersPanel, Layer &layer, unsigned index);
@@ -60,6 +62,7 @@ namespace Mimp
 		//! @brief Constructor of the Editor class
 		//! @param images Vector of images used to build the Editor
 		Editor(const std::vector<std::string> &images = {});
+		~Editor();
 
 		static Key SFMLKeyToKey(sf::Keyboard::Key key);
 

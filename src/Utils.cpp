@@ -443,8 +443,9 @@ namespace Mimp::Utils
 		return window;
 	}
 
-	tgui::ChildWindow::Ptr makeColorPickWindow(tgui::Gui &gui, const std::function<void(Color color)> &onFinish)
+	tgui::ChildWindow::Ptr makeColorPickWindow(tgui::Gui &gui, const std::function<void(Color color)> &onFinish, Color startColor)
 	{
+		char buffer[8];
 		auto window = openWindowWithFocus(gui, 271, 182);
 		window->loadWidgetsFromFile("widgets/color.gui");
 
@@ -481,10 +482,17 @@ namespace Mimp::Utils
 			green->setValue(color.getGreen());
 			blue->setValue(color.getBlue());
 		});
+		sprintf(buffer, "#%02X%02X%02X", startColor.r, startColor.g, startColor.b);
+		edit->setText(buffer);
+
+		red->setValue(startColor.r);
+		green->setValue(startColor.g);
+		blue->setValue(startColor.b);
 		red->connect("ValueChanged", sliderCallback);
 		green->connect("ValueChanged", sliderCallback);
 		blue->connect("ValueChanged", sliderCallback);
-		preview->getRenderer()->setBackgroundColor({0, 0, 0, 255});
+
+		preview->getRenderer()->setBackgroundColor({startColor.r, startColor.g, startColor.b, 255});
 		window->get<tgui::Button>("Cancel")->connect("Clicked", [window]{
 			window->close();
 		});
