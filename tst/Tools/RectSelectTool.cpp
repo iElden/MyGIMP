@@ -37,3 +37,13 @@ TEST(RectSelectTool, selectOnDrag) {
     ASSERT_FALSE(image.selectedArea.pointInMap({5, 7}));
     ASSERT_FALSE(image.selectedArea.pointInMap({11, 3}));
 }
+
+/*
+TEST(RectSelectTool, DUMMY) {
+    tgui::Gui gui{};
+    Mimp::ToolBox toolbox{gui};
+    Mimp::RectSelectTool rst{toolbox};
+
+    rst.clear();
+}
+*/
