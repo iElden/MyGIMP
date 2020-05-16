@@ -15,6 +15,9 @@ Mimp::Fill::Fill(Mimp::ToolBox &toolBox):
 
 void Mimp::Fill::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick click, Mimp::Image &image)
 {
+    if (image.getSelectedLayer().isLocked())
+        return;
+
 	auto &layer = image.getSelectedLayer();
 
 	this->apply(pos - layer.pos, layer, click);

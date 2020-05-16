@@ -146,6 +146,8 @@ add_executable(
         tst/Tools/FillSelection.cpp
         tst/Tools/Eraser.cpp
         tst/Tools/Pencil.cpp
+        tst/Tools/RectSelectTool.cpp
+        tst/Tools/SelectByColorTool.cpp
 )
 
 if (WIN32)
