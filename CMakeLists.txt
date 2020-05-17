@@ -153,7 +153,8 @@ add_executable(
         tst/ImageOperations/Selection/UnselectOperation.cpp
         tst/ImageOperations/Selection/SelectAllOperation.cpp
         tst/ImageOperations/Selection/InvertSelectionOperation.cpp
-)
+        tst/ImageOperations/Selection/ExpandSelection.cpp
+        tst/ImageOperations/Selection/FillSelectionOperation.cpp)
 
 if (WIN32)
     target_link_libraries(
