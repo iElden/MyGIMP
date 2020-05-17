@@ -388,7 +388,8 @@ namespace Mimp
 	{
 		int min_x = pos.x - radius / 2;
 		int max_x = pos.x + radius / 2;
-		for (int j = pos.y - radius / 2; j < pos.y + radius / 2; j++)
+		int max_y = pos.y + radius / 2;
+		for (int j = pos.y - radius / 2; j < max_y; j++)
 			for (int i = min_x; i < max_x; i++)
 				this->drawPixel({i, j}, color, drawStrategy);
 	}
@@ -396,14 +397,13 @@ namespace Mimp
 	void FrameBuffer::_drawDiamondAt(Vector2<int> pos, const Color &color, unsigned short radius,
 									 DrawStrategy drawStrategy) noexcept
 	{
-		this->drawPixel(pos, color, drawStrategy);
-		if (radius > 2) {
-			this->_drawDiamondAt({pos.x - 1, pos.y}, color, radius - 2, drawStrategy);
-			this->_drawDiamondAt({pos.x + 1, pos.y}, color, radius - 2, drawStrategy);
-			this->_drawDiamondAt({pos.x, pos.y - 1}, color, radius - 2, drawStrategy);
-			this->_drawDiamondAt({pos.x, pos.y + 1}, color, radius - 2, drawStrategy);
-		}
-
+		int min_x = pos.x - radius / 2;
+		int max_x = pos.x + radius / 2;
+		int max_y = pos.y + radius / 2;
+		for (int j = pos.y - radius / 2; j < max_y; j++)
+			for (int i = min_x; i < max_x; i++)
+				if (abs(pos.x - i) + abs(pos.y - j) < radius / 2)
+					this->drawPixel({i, j}, color, drawStrategy);
 	}
 
 	const sf::Uint8 *FrameBuffer::getDrawBuffer() const
