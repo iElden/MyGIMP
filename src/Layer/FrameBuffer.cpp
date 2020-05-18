@@ -117,6 +117,7 @@ namespace Mimp
 		int dx = pt2.x - pt1.x;
 		int dy = pt2.y - pt1.y;
 
+		this->drawAt(pt2, color, thickness, shape, drawStrategy);
 		if (dx > 0) {
 			if (dy > 0) {
 				// vecteur oblique dans le 1er quadran
@@ -292,7 +293,6 @@ namespace Mimp
 				} while (pt1.y != pt2.y);
 			}
 		}
-		//TODO: Implement the above algorithm
 	}
 
 	void FrameBuffer::drawFrameBuffer(Vector2<int> pos, const FrameBuffer &buffer, DrawStrategy drawStrategy) noexcept
@@ -374,23 +374,34 @@ namespace Mimp
 	void FrameBuffer::_drawCircleAt(Vector2<int> pos, const Color &color, unsigned short radius,
 									DrawStrategy drawStrategy) noexcept
 	{
-		int min_x = pos.x - radius / 2;
-		int max_x = pos.x + radius / 2;
-		for (int j = pos.y - radius; j < pos.y + radius; j++)
-			for (int i = min_x; i < max_x; i++)
-				if (std::pow(i - pos.x, 2) / std::pow(radius / 2, 2) +
-					std::pow(j - pos.y, 2) / std::pow(radius / 2, 2) <= 1)
-					this->drawPixel({i, j}, color, drawStrategy);
+		if (radius == 1)
+			return this->drawPixel(pos, color, drawStrategy);
+
+		float realRadius = radius / 2.f;
+		float minX = pos.x - realRadius;
+		float maxX = pos.x + realRadius;
+		float minY = pos.y - realRadius;
+		float maxY = pos.y + realRadius;
+
+		for (float j = minY; j < maxY; j++)
+			for (float i = minX; i < maxX; i++)
+				if (std::pow(i - pos.x, 2) / std::pow(realRadius, 2) +
+					std::pow(j - pos.y, 2) / std::pow(realRadius, 2) <= 1)
+					this->drawPixel({
+						static_cast<int>(std::ceil(i)),
+						static_cast<int>(std::ceil(j))
+					}, color, drawStrategy);
 	}
 
 	void FrameBuffer::_drawSquareAt(Vector2<int> pos, const Color &color, unsigned short radius,
 									DrawStrategy drawStrategy) noexcept
 	{
 		int min_x = pos.x - radius / 2;
-		int max_x = pos.x + radius / 2;
-		int max_y = pos.y + radius / 2;
-		for (int j = pos.y - radius / 2; j < max_y; j++)
-			for (int i = min_x; i < max_x; i++)
+		int max_x = pos.x + (radius  - !(radius & 1U)) / 2;
+		int min_y = pos.y - radius / 2;
+		int max_y = pos.y + (radius  - !(radius & 1U)) / 2;
+		for (int j = min_y; j <= max_y; j++)
+			for (int i = min_x; i <= max_x; i++)
 				this->drawPixel({i, j}, color, drawStrategy);
 	}
 

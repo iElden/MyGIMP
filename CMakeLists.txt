@@ -83,7 +83,10 @@ set(MIMP_SRCS
     src/Network/Socket.hpp
     src/ImageOperations/Selection/ExpandSelection.cpp
     src/ImageOperations/Selection/ExpandSelection.hpp
-        src/ImageOperations/Selection/ExpandMoreSelection.cpp src/ImageOperations/Selection/ExpandMoreSelection.hpp)
+    src/ImageOperations/Selection/ExpandMoreSelection.cpp src/ImageOperations/Selection/ExpandMoreSelection.hpp
+    src/LayerWidget.cpp
+    src/LayerWidget.hpp
+)
 
 add_executable(
     MyGimp
@@ -125,17 +128,34 @@ add_executable(
 
         tst/main.cpp
         ${MIMP_SRCS}
-        tst/Vector.cpp
-        tst/Color.cpp
+        tst/Data/Vector.cpp
+        tst/Data/Color.cpp
         tst/Utils.cpp
-        tst/FrameBuffer.cpp
+        tst/Layer/FrameBuffer.cpp
         #tst/Exceptions.cpp
         tst/Image.cpp
-        tst/Layer.cpp
-        tst/LayerManager.cpp
+        tst/Layer/Layer.cpp
+        tst/Layer/LayerManager.cpp
         tst/SelectedArea.cpp
         tst/ToolBox.cpp
-)
+        tst/Network/Socket.cpp
+        tst/Network/SecuredSocket.cpp
+        tst/ImageOperations/ImageOperation.cpp
+        tst/ImageOperations/ImageOperationFactory.cpp
+        tst/Tools/Fill.cpp
+        tst/Tools/ColorPick.cpp
+        tst/Tools/FillSelection.cpp
+        tst/Tools/Eraser.cpp
+        tst/Tools/Pencil.cpp
+        tst/Tools/RectSelectTool.cpp
+        tst/Tools/SelectByColorTool.cpp
+        tst/Tools/SelectionTool.cpp
+        tst/ImageOperations/Selection/DelSelectOperation.cpp
+        tst/ImageOperations/Selection/UnselectOperation.cpp
+        tst/ImageOperations/Selection/SelectAllOperation.cpp
+        tst/ImageOperations/Selection/InvertSelectionOperation.cpp
+        tst/ImageOperations/Selection/ExpandSelection.cpp
+        tst/ImageOperations/Selection/FillSelectionOperation.cpp)
 
 if (WIN32)
     target_link_libraries(

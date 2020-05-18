@@ -2,11 +2,14 @@
 // Created by Gegel85 on 06/04/2020.
 //
 
+#include <filesystem>
 #include <TGUI/TGUI.hpp>
 #include <iostream>
+#include <fstream>
 #include "Editor.hpp"
 #include "Utils.hpp"
 #include "ImageOperations/ImageOperationFactory.hpp"
+#include "LayerWidget.hpp"
 
 namespace Mimp
 {
@@ -30,27 +33,102 @@ namespace Mimp
 		auto menu = this->_gui.get<tgui::MenuBar>("main_bar");
 
 		for (auto &image : images) {
-			try {
-				auto widget = CanvasWidget::create(this->_toolBox, image);
-				auto window = _makeImagePanel(widget);
+			if (image.substr(image.find_last_of('.')) != ".mimp")
+				try {
+					auto widget = CanvasWidget::create(this->_toolBox, image);
+					auto window = _makeImagePanel(widget);
 
-				window->setTitle(image);
-				this->_gui.add(window, "Image" + image);
-				this->_selectedImageWindow = window;
-				menu->setMenuItemEnabled({"File", "Save"}, true);
-				menu->setMenuItemEnabled({"File", "Save as"}, true);
-				menu->setMenuItemEnabled({"File", "Export"}, true);
-				menu->setMenuItemEnabled({"File", "Close"}, true);
-				menu->setMenuItemEnabled({"File", "Close All"}, true);
-			} catch (std::exception &e) {
-				Utils::dispMsg(
-					"Error",
-					"Cannot load " + image + "\n\n" +
-					Utils::getLastExceptionName() + ":\n" + e.what(),
-					MB_ICONERROR
-				);
+					window->setTitle(std::filesystem::path(image).filename().string());
+					this->_gui.add(window, "Image" + image);
+					this->_selectImage(window);
+				} catch (std::exception &e) {
+					Utils::dispMsg("Loading error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
+				}
+			else
+				try {
+					auto widget = CanvasWidget::create(this->_toolBox, Vector2<unsigned>{0, 0});
+
+					widget->importImageFromFile(image);
+
+					auto window = _makeImagePanel(widget);
+
+					window->setTitle(image);
+					this->_gui.add(window, "Image" + image);
+					this->_selectImage(window);
+				} catch (std::exception &e) {
+					Utils::dispMsg("Import error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
+				}
+		}
+
+		std::ifstream stream{"state.dat"};
+
+		if (stream.fail())
+			return;
+
+		stream >> this->_lastSize.x >> this->_lastSize.y;
+
+		std::string path;
+		unsigned long len;
+
+		std::getline(stream, path, '\0');
+		try {
+			len = std::stoul(path);
+		} catch (...) {
+			return;
+		}
+
+		while (len--) {
+			std::getline(stream, path, '\0');
+			if (path.find_last_of('.') == std::string::npos || path.substr(path.find_last_of('.')) == ".mimp")
+				try {
+					auto widget = CanvasWidget::create(this->_toolBox, path);
+					auto window = _makeImagePanel(widget);
+
+					window->setTitle(std::filesystem::path(path).filename().string());
+					this->_gui.add(window, "Image" + path);
+					this->_selectImage(window);
+				} catch (std::exception &e) {
+					Utils::dispMsg("Loading error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
+				}
+			else
+				try {
+					auto widget = CanvasWidget::create(this->_toolBox, Vector2<unsigned>{0, 0});
+
+					widget->importImageFromFile(path);
+
+					auto window = _makeImagePanel(widget);
+
+					window->setTitle(std::filesystem::path(path).filename().string());
+					this->_gui.add(window, "Image" + path);
+					this->_selectImage(window);
+				} catch (std::exception &e) {
+					Utils::dispMsg("Import error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
+				}
+		}
+	}
+
+	Editor::~Editor()
+	{
+		std::ofstream stream{"state.dat"};
+
+		stream << this->_lastSize.x << " " << this->_lastSize.y;
+
+		auto names = this->_gui.getWidgetNames();
+		std::vector<std::string> paths;
+
+		for (auto &name : names) {
+			if (name.substring(0, strlen("Image")) == "Image") {
+				std::string path = name.substring(strlen("Image"));
+
+				if (path.find_last_of(std::filesystem::path::preferred_separator) == std::string::npos)
+					continue;
+				paths.push_back(path);
 			}
 		}
+
+		stream << " " << paths.size() << '\0';
+		for (auto &p : paths)
+			stream << p << '\0';
 	}
 
 	void Editor::setSelectedImage(tgui::ChildWindow::Ptr canvas)
@@ -73,12 +151,13 @@ namespace Mimp
 
 			while (this->_mainWindow.pollEvent(event)) {
 				if (event.type == sf::Event::Closed)
-					this->_mainWindow.close();
-				if (event.type == sf::Event::Resized) {
+					this->_checkClose([this]{
+						this->_mainWindow.close();
+					});
+				else if (event.type == sf::Event::Resized) {
 					this->_mainWindow.setView(sf::View{sf::FloatRect(0, 0, event.size.width, event.size.height)});
 					this->_gui.setView(sf::View{sf::FloatRect(0, 0, event.size.width, event.size.height)});
-				}
-				if (event.type == sf::Event::KeyPressed && this->_selectedImageWindow) {
+				} else if (event.type == sf::Event::KeyPressed && this->_selectedImageWindow) {
 					KeyCombination comb{
 						Editor::SFMLKeyToKey(event.key.code),
 						event.key.control,
@@ -89,6 +168,16 @@ namespace Mimp
 					try {
 						this->_keysImgOps.at(comb)->click(this->_gui, *this->_getSelectedCanvas());
 					} catch (std::out_of_range &) {}
+				} else if (event.type == sf::Event::MouseWheelScrolled) {
+					auto canvas = this->_getSelectedCanvas();
+
+					if (canvas) {
+						if (event.mouseWheelScroll.delta > 0)
+							canvas->setZoomLevel(canvas->getZoomLevel() * 2);
+						else
+							canvas->setZoomLevel(canvas->getZoomLevel() / 2);
+					}
+					continue;
 				}
 				this->_gui.handleEvent(event);
 			}
@@ -113,24 +202,93 @@ namespace Mimp
 	tgui::ChildWindow::Ptr Editor::_makeImagePanel(CanvasWidget::Ptr canvas)
 	{
 		auto menu = this->_gui.get<tgui::MenuBar>("main_bar");
-		auto window = tgui::ChildWindow::create("Unnamed");
+		auto window = tgui::ChildWindow::create("Untitled");
 		auto layersPanel = this->_makeLayersPanel(window, canvas);
-		auto canvasPanel = tgui::ScrollablePanel::create({400, 400});
-
-		canvasPanel->getRenderer()->setBackgroundColor("transparent");
-		window->setSize({
-			600,
-			420
-		});
-		window->connect("Closed", [this, menu, window, canvas] {
+		auto canvasPanel = tgui::ScrollablePanel::create({"&.w - 200", "&.h - 20"});
+		auto common = [this, menu, window, canvas]{
 			this->_unselectImage();
-			canvas->disableRendering();
 			this->_gui.remove(window);
 			for (auto &name : this->_gui.getWidgetNames()) {
 				if (name.substring(0, strlen("Image")) == "Image") {
 					this->setSelectedImage(this->_gui.get<tgui::ChildWindow>(name));
 					break;
 				}
+			}
+
+			auto it = this->_minimizedWindows.find(window);
+
+			if (it != this->_minimizedWindows.end())
+				this->_minimizedWindows.erase(it);
+		};
+
+		window->setMinimumSize({
+			300,
+			100
+		});
+		window->setResizable(true);
+		window->setTitleButtons(tgui::ChildWindow::Close | tgui::ChildWindow::Maximize | tgui::ChildWindow::Minimize);
+		window->setSize({
+			600,
+			420
+		});
+		window->connect("Closed", [this, common, window] {
+			this->_checkSaved(window->getTitle(), window->get<tgui::ScrollablePanel>("Canvas")->get<CanvasWidget>("Canvas"), [common]{
+				common();
+			}, [this, common, window]{
+				if (this->_saveImage(window))
+					common();
+			});
+		});
+		window->connect("Minimized", [window, this]{
+			window->setTitleButtons(tgui::ChildWindow::Close | tgui::ChildWindow::Maximize);
+
+			auto it = this->_minimizedWindows.find(window);
+			unsigned index = 0;
+
+			if (it == this->_minimizedWindows.end()) {
+				window->setResizable(false);
+				this->_minimizedWindows[window] = {
+					{window->getPosition().x, window->getPosition().y},
+					{window->getSize().x, window->getSize().y},
+				};
+				window->setSize(160, 0);
+
+				for (auto &elem : this->_minimizedWindows) {
+					elem.first->setPosition(index * 160, "&.h - " + std::to_string(window->getFullSize().y));
+					index++;
+				}
+			} else {
+				auto oldElems = it->second;
+
+				this->_minimizedWindows.erase(it);
+				window->setPosition(oldElems.x.x, oldElems.x.y);
+				window->setSize(oldElems.y.x, oldElems.y.y);
+				window->setResizable(true);
+
+				for (auto &elem : this->_minimizedWindows) {
+					elem.first->setPosition(index * 160, "&.h - " + std::to_string(window->getFullSize().y));
+					index++;
+				}
+			}
+		});
+		window->connect("Maximized", [window, this]{
+			window->setTitleButtons(tgui::ChildWindow::Close | tgui::ChildWindow::Maximize | tgui::ChildWindow::Minimize);
+			auto it = this->_minimizedWindows.find(window);
+			unsigned index = 0;
+
+			if (it != this->_minimizedWindows.end()) {
+				auto oldElems = it->second;
+
+				this->_minimizedWindows.erase(it);
+
+				for (auto &elem : this->_minimizedWindows) {
+					elem.first->setPosition(index * 160, "&.h - " + std::to_string(window->getFullSize().y));
+					index++;
+				}
+
+				window->setPosition(oldElems.x.x, oldElems.x.y);
+				window->setSize(oldElems.y.x, oldElems.y.y);
+			} else {
 			}
 		});
 		window->connect("Focused", [this, window]{
@@ -142,8 +300,10 @@ namespace Mimp
 		window->add(layersPanel, "Layers");
 
 		canvasPanel->setPosition(190, 10);
+		canvasPanel->getRenderer()->setBackgroundColor("transparent");
 		canvasPanel->add(canvas, "Canvas");
 		window->add(canvasPanel, "Canvas");
+
 		return window;
 	}
 
@@ -187,20 +347,25 @@ namespace Mimp
 
 			auto ok = win->get<tgui::Button>("OK");
 			auto cancel = win->get<tgui::Button>("Cancel");
+			auto width = win->get<tgui::EditBox>("Width");
+			auto height = win->get<tgui::EditBox>("Height");
 
+			width->setText(std::to_string(this->_lastSize.x));
+			height->setText(std::to_string(this->_lastSize.y));
 			cancel->connect("Pressed", [win]{ win->close(); });
-			ok->connect("Pressed", [this, win] {
-				std::string width = win->get<tgui::EditBox>("Width")->getText();
-				std::string height = win->get<tgui::EditBox>("Height")->getText();
+			ok->connect("Pressed", [this, win, width, height] {
+				std::string wtxt = width->getText();
+				std::string htxt = height->getText();
 
-				if (width.empty() || height.empty())
+				if (wtxt.empty() || htxt.empty())
 					return;
 
-				auto w = std::stoul(width);
-				auto h = std::stoul(height);
+				auto w = std::stoul(wtxt);
+				auto h = std::stoul(htxt);
 				auto widget = CanvasWidget::create(this->_toolBox, Vector2<unsigned>{w, h});
 				auto window = _makeImagePanel(widget);
 
+				this->_lastSize = Vector2<unsigned>{w, h};
 				window->setTitle("Untitled " + std::to_string(++this->_lastUntitled));
 				this->_gui.add(window, "ImageUntitled " + std::to_string(this->_lastUntitled));
 				this->_selectImage(window);
@@ -216,7 +381,7 @@ namespace Mimp
 				auto widget = CanvasWidget::create(this->_toolBox, path);
 				auto window = _makeImagePanel(widget);
 
-				window->setTitle(path);
+				window->setTitle(std::filesystem::path(path).filename().string());
 				this->_gui.add(window, "Image" + path);
 				this->_selectImage(window);
 			} catch (std::exception &e) {
@@ -224,22 +389,7 @@ namespace Mimp
 			}
 		});
 		menu->connectMenuItem({"File", "Save"}, [this, menu] {
-			std::string path = this->_gui.getWidgetName(this->_selectedImageWindow).substr(strlen("Image"));
-
-			if (path.find_last_of('.') == std::string::npos || path.substr(path.find_last_of('.')) != ".mimp")
-				path = Utils::saveFileDialog("Save MIMP file", path, {{".+[.]mimp", "MIMP image file"}});
-
-			if (path.empty())
-				return;
-
-			this->_selectedImageWindow->setTitle(path);
-			this->_gui.remove(this->_selectedImageWindow);
-			this->_gui.add(this->_selectedImageWindow, "Image" + path);
-			try {
-				this->_getSelectedCanvas()->getLayers().save(path);
-			} catch (std::exception &e) {
-				Utils::dispMsg("Save error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
-			}
+			this->_saveImage(this->_selectedImageWindow);
 		});
 		menu->connectMenuItem({"File", "Save as"}, [this, menu] {
 			std::string name = this->_gui.getWidgetName(this->_selectedImageWindow).substr(strlen("Image"));
@@ -248,10 +398,14 @@ namespace Mimp
 			if (path.empty())
 				return;
 			try {
-				this->_getSelectedCanvas()->getLayers().save(path);
+				auto canvas = this->_getSelectedCanvas();
+
+				canvas->getLayers().save(path);
+				canvas->setEdited(false);
 			} catch (std::exception &e) {
 				Utils::dispMsg("Save error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
 			}
+			this->_selectedImageWindow->setTitle(std::filesystem::path(path).filename().string());
 		});
 		menu->connectMenuItem({"File", "Export"}, [this, menu] {
 			std::string name = this->_gui.getWidgetName(this->_selectedImageWindow).substr(strlen("Image"));
@@ -259,17 +413,31 @@ namespace Mimp
 
 			if (path.empty())
 				return;
+
 			try {
-				this->_getSelectedCanvas()->exportImage(path);
+				auto canvas = this->_getSelectedCanvas();
+
+				canvas->exportImage(path);
+				canvas->setEdited(false);
 			} catch (std::exception &e) {
 				Utils::dispMsg("Export error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
 			}
 		});
 		menu->connectMenuItem({"File", "Close"}, [this]{
-			this->_selectedImageWindow->close();
+			this->_checkSaved(this->_selectedImageWindow->getTitle(), this->_getSelectedCanvas(), [this]{
+				this->_selectedImageWindow->close();
+			}, [this]{
+				if (this->_saveImage(this->_selectedImageWindow))
+					this->_selectedImageWindow->close();
+			});
+		});
+		menu->connectMenuItem({"File", "Close All"}, [this] {
+			this->_checkClose([] {}, [](tgui::ChildWindow::Ptr win) {win->close();});
 		});
 		menu->connectMenuItem({"File", "Quit"}, [this]{
-			this->_mainWindow.close();
+			this->_checkClose([this]{
+				this->_mainWindow.close();
+			});
 		});
 		menu->connectMenuItem({"File", "Import", "Link"}, [this]{
 			auto win = Utils::openWindowWithFocus(this->_gui, 210, 70);
@@ -296,8 +464,12 @@ namespace Mimp
 
 					auto window = _makeImagePanel(widget);
 					auto pos = path.find_last_of('/');
+					auto name = std::filesystem::path(path).filename().string();
 
-					window->setTitle(path);
+					if (name.find_first_of('?') != std::string::npos)
+						name = name.substr(0, name.find_first_of('?'));
+
+					window->setTitle(name);
 					this->_gui.add(window, "Image" + (pos == std::string::npos ? "index.png" : path.substr(pos)));
 					this->_selectImage(window);
 
@@ -325,7 +497,7 @@ namespace Mimp
 
 				auto window = _makeImagePanel(widget);
 
-				window->setTitle(path);
+				window->setTitle(std::filesystem::path(path).filename().string());
 				this->_gui.add(window, "Image" + path);
 				this->_selectImage(window);
 			} catch (std::exception &e) {
@@ -440,7 +612,7 @@ namespace Mimp
 			});
 		});
 		move->connect("Pressed", [&layer, this, canvas]{
-			auto win = Utils::openWindowWithFocus(this->_gui, 200, 780);
+			auto win = Utils::openWindowWithFocus(this->_gui, 200, 110);
 
 			win->loadWidgetsFromFile("widgets/new.gui");
 			win->setTitle("Move layer");
@@ -499,7 +671,7 @@ namespace Mimp
 		auto size = layers.size();
 
 		if (!panel)
-			panel = tgui::ScrollablePanel::create({170, 400});
+			panel = tgui::ScrollablePanel::create({170, "&.h - 20"});
 		else
 			panel->removeAllWidgets();
 
@@ -510,7 +682,11 @@ namespace Mimp
 			auto visibleCancel = tgui::Picture::create("icons/cancel.png");
 			auto lockedCancel = tgui::Picture::create("icons/cancel.png");
 			auto widget = tgui::Button::create();
+			auto preview = LayerWidget::create(layer, {48, 48});
 			auto label = tgui::Label::create(std::string(layer.name, strnlen(layer.name, sizeof(layer.name))));
+
+			preview->ignoreMouseEvent();
+			preview->setPosition(10, (size - i - 1) * 66 + 10);
 
 			locked->setImage("icons/locked.png");
 			locked->setSize(18, 18);
@@ -534,10 +710,26 @@ namespace Mimp
 			visibleCancel->setVisible(!layer.visible);
 			visibleCancel->setPosition(2 + 66 + 18 + 1, (size - i - 1) * 66 + 2 + 1);
 
+			if (i == layers.getSelectedLayerIndex()){
+				widget->getRenderer()->setBackgroundColor("#888888");
+				widget->getRenderer()->setBackgroundColorHover("#AAAAAA");
+			} else {
+				widget->getRenderer()->setBackgroundColor("#EFEFEF");
+				widget->getRenderer()->setBackgroundColorHover("#FFFFFF");
+			}
+
 			widget->setSize(64, 64);
 			widget->setPosition(2, (size - i - 1) * 66 + 2);
-			widget->connect("Clicked", [&layers, i]{
+			widget->connect("Clicked", [&layers, i, widget, panel]{
+				auto other = panel->get<tgui::Button>("Widget" + std::to_string(layers.getSelectedLayerIndex()));
+
+				if (other) {
+					other->getRenderer()->setBackgroundColor("#EFEFEF");
+					other->getRenderer()->setBackgroundColorHover("#FFFFFF");
+				}
 				layers.selectLayer(i);
+				widget->getRenderer()->setBackgroundColor("#888888");
+				widget->getRenderer()->setBackgroundColorHover("#AAAAAA");
 			});
 			widget->connect("RightClicked", [this, win, panel, widget, label, &layer, i, canvas](tgui::Vector2f pos){
 				auto fakePanel = tgui::Panel::create({"100%", "100%"});
@@ -563,6 +755,7 @@ namespace Mimp
 			label->setPosition(66, (size - i - 1) * 66 + 26);
 
 			panel->add(widget, "Widget" + std::to_string(i));
+			panel->add(preview, "Preview" + std::to_string(i));
 			panel->add(label, "Label" + std::to_string(i));
 			panel->add(visible, "Visible" + std::to_string(i));
 			panel->add(locked, "Locked" + std::to_string(i));
@@ -618,7 +811,7 @@ namespace Mimp
 			if (key)
 				hierarchy.back() += " (" + key->toString() + ")";
 
-			menu->setMenuItemEnabled(hierarchy, true);
+			menu->setMenuItemEnabled(hierarchy, false);
 		}
 
 		this->_selectedImageWindow = nullptr;
@@ -694,5 +887,111 @@ namespace Mimp
 		default:
 			return KEY_UNKNOWN;
 		}
+	}
+
+	void Editor::_checkClose(const std::function<void()> &endHandler, const std::function<void(tgui::ChildWindow::Ptr)> &handler)
+	{
+		auto names = this->_gui.getWidgetNames();
+
+		for (auto &name : names) {
+			if (name.substring(0, strlen("Image")) == "Image") {
+				auto win = this->_gui.get<tgui::ChildWindow>(name);
+				auto canvas = win->get<tgui::ScrollablePanel>("Canvas")->get<CanvasWidget>("Canvas");
+
+				if (canvas->isEdited()) {
+					this->_checkSaved(
+						win->getTitle(),
+						canvas,
+						[win, canvas, this, handler, endHandler]{
+							canvas->setEdited(false);
+							if (handler)
+								handler(win);
+							this->_checkClose(endHandler);
+						},
+						[win, canvas, this, handler, endHandler]{
+							if (this->_saveImage(win)) {
+								canvas->setEdited(false);
+								if (handler)
+									handler(win);
+								this->_checkClose(endHandler);
+							}
+						}
+					);
+					return;
+				} else if (handler)
+					handler(win);
+			}
+		}
+		endHandler();
+	}
+
+	bool Editor::_checkSaved(std::string fileName, CanvasWidget::Ptr canvas, const std::function<void()> &noHandler, const std::function<void()> &yesHandler)
+	{
+		if (!canvas->isEdited())
+			return noHandler(), true;
+
+		auto &gui = this->_gui;
+		auto pan = tgui::Panel::create({"100%", "100%"});
+		pan->getRenderer()->setBackgroundColor({0, 0, 0, 175});
+		gui.add(pan);
+
+		auto win = tgui::ChildWindow::create();
+		win->setPosition("(&.w - w) / 2", "(&.h - h) / 2");
+		gui.add(win);
+
+		win->setFocused(true);
+
+		const bool tabUsageEnabled = gui.isTabKeyUsageEnabled();
+		auto closeWindow = [&gui, win, pan, tabUsageEnabled]{
+			gui.remove(win);
+			gui.remove(pan);
+			gui.setTabKeyUsageEnabled(tabUsageEnabled);
+		};
+
+		pan->connect("Clicked", closeWindow);
+		win->connect({"Closed", "EscapeKeyPressed"}, closeWindow);
+		win->loadWidgetsFromFile("widgets/not_saved.gui");
+
+		auto label = win->get<tgui::Label>("Label");
+		auto cancel = win->get<tgui::Button>("Cancel");
+
+		label->setText(fileName + label->getText());
+		win->setSize(std::max(label->getSize().x + 20, cancel->getPosition().x + cancel->getSize().x + 10), 80);
+		win->get<tgui::Button>("Yes")->connect("Clicked", [win, yesHandler]{
+			yesHandler();
+			win->close();
+		});
+		win->get<tgui::Button>("No")->connect("Clicked", [win, noHandler]{
+			noHandler();
+			win->close();
+		});
+		cancel->connect("Clicked", [win]{
+			win->close();
+		});
+		return false;
+	}
+
+	bool Editor::_saveImage(tgui::ChildWindow::Ptr win)
+	{
+		std::string path = this->_gui.getWidgetName(win).substr(strlen("Image"));
+
+		if (path.find_last_of('.') == std::string::npos || path.substr(path.find_last_of('.')) != ".mimp")
+			path = Utils::saveFileDialog("Save MIMP file", path, {{".+[.]mimp", "MIMP image file"}});
+
+		if (path.empty())
+			return false;
+
+		try {
+			auto canvas = win->get<tgui::ScrollablePanel>("Canvas")->get<CanvasWidget>("Canvas");
+
+			canvas->getLayers().save(path);
+			canvas->setEdited(false);
+		} catch (std::exception &e) {
+			Utils::dispMsg("Save error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
+		}
+		win->setTitle(std::filesystem::path(path).filename().string());
+		this->_gui.remove(win);
+		this->_gui.add(win, "Image" + path);
+		return true;
 	}
 }

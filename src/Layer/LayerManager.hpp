@@ -100,6 +100,9 @@ namespace Mimp
 		//! @brief Get the selected layer
 		//! @return Layer Selected Layer
 		Layer &getSelectedLayer() noexcept;
+		//! @brief Get the selected layer index
+		//! @return Selected Layer index
+		unsigned getSelectedLayerIndex() noexcept;
 		//! @brief Get the selected layer
 		//! @return Layer Selected Layer
 		const Layer &getSelectedLayer() const noexcept;

@@ -128,8 +128,19 @@ namespace Mimp
 		return this->_map[x + y * this->_size.x];
 	}
 
-	const Vector2<unsigned int> &SelectedArea::getSize() const
+	Vector2<unsigned int> SelectedArea::getSize() const
 	{
 		return _size;
+	}
+
+	void SelectedArea::setSize(Vector2<unsigned> size)
+	{
+		if (this->_size == size)
+			return;
+
+		this->_size = size;
+		delete[] this->_map;
+		this->_map = new bool[size.x * size.y];
+		this->clear();
 	}
 }

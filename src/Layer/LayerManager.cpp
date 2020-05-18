@@ -99,7 +99,7 @@ namespace Mimp
 		if (this->_layers.size() == 1)
 			throw InvalidArgumentException("Cannot delete layer because there are only a single layer.");
 		this->_setBusy();
-		if (this->_selectedLayer >= layer)
+		if (this->_selectedLayer >= layer && this->_selectedLayer)
 			this->_selectedLayer--;
 		this->_layers.erase(this->_layers.begin() + layer);
 		this->_unsetBusy();
@@ -111,7 +111,7 @@ namespace Mimp
 			throw OutOfBoundException(
 				"Cannot move layer " + std::to_string(layerOldIndex) +
 				" to location " + std::to_string(layerNewIndex) +
-				" because there are only " + std::to_string(this->_layers.size()) + "layers");
+				" because there are only " + std::to_string(this->_layers.size()) + " layers");
 
 		auto layerIt = this->_layers.begin() + layerOldIndex;
 		auto layer = *layerIt;
@@ -350,5 +350,10 @@ namespace Mimp
 	std::vector<std::shared_ptr<Layer>>::const_iterator LayerManager::end() const
 	{
 		return this->_layers.end();
+	}
+
+	unsigned LayerManager::getSelectedLayerIndex() noexcept
+	{
+		return this->_selectedLayer;
 	}
 }

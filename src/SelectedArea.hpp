@@ -17,8 +17,6 @@ namespace Mimp {
 	class SelectedArea {
 		//! @brief All the points selected, building the selected area
 		Vector2<unsigned> _size;
-	public:
-		const Vector2<unsigned int> &getSize() const;
 
 	private:
 		bool *_map;
@@ -30,6 +28,8 @@ namespace Mimp {
 		SelectedArea(Vector2<unsigned> size, const bool *buffer = nullptr);
 		~SelectedArea();
 
+		void setSize(Vector2<unsigned> size);
+		Vector2<unsigned int> getSize() const;
 		//! @brief Clears the selected points
 		void clear() noexcept;
 		void selectAll() noexcept;

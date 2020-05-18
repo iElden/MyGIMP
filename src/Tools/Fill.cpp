@@ -15,13 +15,20 @@ Mimp::Fill::Fill(Mimp::ToolBox &toolBox):
 
 void Mimp::Fill::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick click, Mimp::Image &image)
 {
-	this->apply(pos, image.getSelectedLayer(), click);
+    if (image.getSelectedLayer().isLocked())
+        return;
+
+	auto &layer = image.getSelectedLayer();
+
+	this->apply(pos - layer.pos, layer, click);
 }
 
 void Mimp::Fill::onMouseDrag(Mimp::Vector2<int>, Mimp::Vector2<int> newPos, Mimp::MouseClick click,
 							 Mimp::Image &image)
 {
-	this->apply(newPos, image.getSelectedLayer(), click);
+	auto &layer = image.getSelectedLayer();
+
+	this->apply(newPos - layer.pos, layer, click);
 }
 
 void Mimp::Fill::apply(Mimp::Vector2<int> pos, Mimp::Layer &layer, MouseClick &click)
@@ -48,7 +55,7 @@ void Mimp::Fill::_spread_color(Vector2<int> pos, Layer &layer, Color target_colo
 			for (auto sp : spread_pos) {
 				auto new_pos = pt + sp;
 				if (!layer.buffer.posIsOutOfBound(new_pos) && layer.buffer.getPixel(new_pos).diff(target_color, this->_alpha_in_tolerance) <= this->_tolerance) {
-					layer.buffer.drawPixel(new_pos, fill_color);
+					layer.buffer.drawPixel(new_pos, fill_color, SET);
 					new_points.push_back(new_pos);
 				}
 			}

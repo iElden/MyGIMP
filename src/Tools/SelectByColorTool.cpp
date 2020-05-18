@@ -13,8 +13,10 @@ Mimp::SelectByColorTool::SelectByColorTool(ToolBox &toolBox):
 void Mimp::SelectByColorTool::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick click, Mimp::Image &image)
 {
 	if (click == MouseClick::MIMP_LEFT_CLICK) {
+		auto &layer = image.getSelectedLayer();
+
 		image.selectedArea.clear();
-		this->_updateSelectedArea(image, image.getSelectedLayer().buffer.getPixel(pos));
+		this->_updateSelectedArea(image, layer.buffer.getPixel(pos - layer.pos));
 	}
 }
 
