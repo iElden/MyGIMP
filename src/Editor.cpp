@@ -41,6 +41,7 @@ namespace Mimp
 					window->setTitle(std::filesystem::path(image).filename().string());
 					this->_gui.add(window, "Image" + image);
 					this->_selectImage(window);
+					this->_addToRecents(image);
 				} catch (std::exception &e) {
 					Utils::dispMsg("Loading error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
 				}
@@ -52,9 +53,10 @@ namespace Mimp
 
 					auto window = _makeImagePanel(widget);
 
-					window->setTitle(image);
+					window->setTitle(std::filesystem::path(image).filename().string());
 					this->_gui.add(window, "Image" + image);
 					this->_selectImage(window);
+					this->_addToRecents(image);
 				} catch (std::exception &e) {
 					Utils::dispMsg("Import error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
 				}
@@ -105,6 +107,19 @@ namespace Mimp
 					Utils::dispMsg("Import error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
 				}
 		}
+
+		std::getline(stream, path, '\0');
+		try {
+			len = std::stoul(path);
+		} catch (...) {
+			return;
+		}
+
+		while (len--) {
+			std::getline(stream, path, '\0');
+			this->_recents.push_back(path);
+		}
+		this->_updateRecentMenu();
 	}
 
 	Editor::~Editor()
@@ -128,6 +143,10 @@ namespace Mimp
 
 		stream << " " << paths.size() << '\0';
 		for (auto &p : paths)
+			stream << p << '\0';
+
+		stream << " " << this->_recents.size() << '\0';
+		for (auto &p : this->_recents)
 			stream << p << '\0';
 	}
 
@@ -384,6 +403,7 @@ namespace Mimp
 				window->setTitle(std::filesystem::path(path).filename().string());
 				this->_gui.add(window, "Image" + path);
 				this->_selectImage(window);
+				this->_addToRecents(path);
 			} catch (std::exception &e) {
 				Utils::dispMsg("Loading error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
 			}
@@ -402,6 +422,7 @@ namespace Mimp
 
 				canvas->getLayers().save(path);
 				canvas->setEdited(false);
+				this->_addToRecents(path);
 			} catch (std::exception &e) {
 				Utils::dispMsg("Save error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
 			}
@@ -419,6 +440,7 @@ namespace Mimp
 
 				canvas->exportImage(path);
 				canvas->setEdited(false);
+				this->_addToRecents(path);
 			} catch (std::exception &e) {
 				Utils::dispMsg("Export error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
 			}
@@ -500,6 +522,7 @@ namespace Mimp
 				window->setTitle(std::filesystem::path(path).filename().string());
 				this->_gui.add(window, "Image" + path);
 				this->_selectImage(window);
+				this->_addToRecents(path);
 			} catch (std::exception &e) {
 				Utils::dispMsg("Import error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
 			}
@@ -986,12 +1009,68 @@ namespace Mimp
 
 			canvas->getLayers().save(path);
 			canvas->setEdited(false);
+			this->_addToRecents(path);
+			win->setTitle(std::filesystem::path(path).filename().string());
+			this->_gui.remove(win);
+			this->_gui.add(win, "Image" + path);
 		} catch (std::exception &e) {
 			Utils::dispMsg("Save error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
 		}
-		win->setTitle(std::filesystem::path(path).filename().string());
-		this->_gui.remove(win);
-		this->_gui.add(win, "Image" + path);
 		return true;
+	}
+
+	void Editor::_addToRecents(const std::string &path)
+	{
+		auto it = std::find(this->_recents.begin(), this->_recents.end(), path);
+
+		if (it == this->_recents.end() && this->_recents.size() >= 10)
+			this->_recents.pop_back();
+		else if (it != this->_recents.end())
+			this->_recents.erase(it);
+		this->_recents.insert(this->_recents.begin(), path);
+		this->_updateRecentMenu();
+	}
+
+	void Editor::_updateRecentMenu()
+	{
+		auto menu = this->_gui.get<tgui::MenuBar>("main_bar");
+
+		for (auto signal : this->_signals)
+			menu->disconnect(signal);
+		this->_signals.clear();
+		menu->removeSubMenuItems({"File", "Recents"});
+		for (auto &path : this->_recents) {
+			auto name = std::filesystem::path(path).filename().string();
+			menu->addMenuItem({"File", "Recents", name});
+			this->_signals.push_back(menu->connectMenuItem({"File", "Recents", name}, [this, path, name]{
+				if (path.substr(path.find_last_of('.')) == ".mimp")
+					try {
+						auto widget = CanvasWidget::create(this->_toolBox, path);
+						auto window = _makeImagePanel(widget);
+
+						window->setTitle(name);
+						this->_gui.add(window, "Image" + path);
+						this->_selectImage(window);
+						this->_addToRecents(path);
+					} catch (std::exception &e) {
+						Utils::dispMsg("Loading error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
+					}
+				else
+					try {
+						auto widget = CanvasWidget::create(this->_toolBox, Vector2<unsigned>{0, 0});
+
+						widget->importImageFromFile(path);
+
+						auto window = _makeImagePanel(widget);
+
+						window->setTitle(name);
+						this->_gui.add(window, "Image" + path);
+						this->_selectImage(window);
+						this->_addToRecents(path);
+					} catch (std::exception &e) {
+						Utils::dispMsg("Import error", Utils::getLastExceptionName() + ": " + e.what(), MB_ICONERROR);
+					}
+			}));
+		}
 	}
 }
