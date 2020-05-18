@@ -148,7 +148,13 @@ add_executable(
         tst/Tools/Pencil.cpp
         tst/Tools/RectSelectTool.cpp
         tst/Tools/SelectByColorTool.cpp
-)
+        tst/Tools/SelectionTool.cpp
+        tst/ImageOperations/Selection/DelSelectOperation.cpp
+        tst/ImageOperations/Selection/UnselectOperation.cpp
+        tst/ImageOperations/Selection/SelectAllOperation.cpp
+        tst/ImageOperations/Selection/InvertSelectionOperation.cpp
+        tst/ImageOperations/Selection/ExpandSelection.cpp
+        tst/ImageOperations/Selection/FillSelectionOperation.cpp)
 
 if (WIN32)
     target_link_libraries(
