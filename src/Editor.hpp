@@ -34,6 +34,7 @@ namespace Mimp
 		tgui::ChildWindow::Ptr _selectedImageWindow;
 		std::map<tgui::ChildWindow::Ptr, Vector2<Vector2<float>>> _minimizedWindows;
 		std::vector<std::string> _recents;
+		std::vector<unsigned int> _signals;
 		Vector2<unsigned> _lastSize = {640, 480};
 
 		//! @brief Setup Button Callbacks
@@ -41,6 +42,8 @@ namespace Mimp
 
 		void _selectImage(tgui::ChildWindow::Ptr win);
 		void _unselectImage();
+		void _addToRecents(const std::string &path);
+		void _updateRecentMenu();
 
 		//! @brief Makes image panel
 		//! @param canvas Canvas used to make image panel
