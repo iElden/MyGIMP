@@ -509,6 +509,30 @@ namespace Mimp::Utils
 		return window;
 	}
 
+	tgui::ChildWindow::Ptr makeSliderWindow(tgui::Gui &gui, const std::function<void(unsigned short value)> &onFinish)
+	{
+		auto window = openWindowWithFocus(gui, 271, 182);
+		window->loadWidgetsFromFile("widgets/slider.gui");
+
+		auto slider = window->get<tgui::Slider>("Slider");
+		auto txt = window->get<tgui::Label>("Nb");
+		auto sliderCallback = [slider, txt]{
+			auto value = static_cast<unsigned short>(slider->getValue());
+			txt->setText(std::to_string(value));
+		};
+		slider->connect("ValueChanged", sliderCallback);
+		window->get<tgui::Button>("Cancel")->connect("Clicked", [window]{
+			window->close();
+		});
+		window->get<tgui::Button>("Ok")->connect("Clicked", [onFinish, slider, window]{
+			auto value = static_cast<unsigned short>(slider->getValue());
+			if (onFinish)
+				onFinish(value);
+			window->close();
+		});
+		return window;
+	}
+
 	std::string DrawShapeToString(DrawShape shape)
 	{
 		switch (shape) {

@@ -5,6 +5,7 @@
 ** ExpandMoreSelection.cpp
 */
 #include "ExpandMoreSelection.hpp"
+#include "../../Utils.hpp"
 
 Mimp::ExpandMoreSelection::ExpandMoreSelection():
 		ImageOperation({"Selection", "Expand Selection ..."}, {KEY_I, true, true, true})
@@ -12,5 +13,7 @@ Mimp::ExpandMoreSelection::ExpandMoreSelection():
 
 void Mimp::ExpandMoreSelection::click(tgui::Gui &gui, Mimp::Image &image) const
 {
-	ExpandSelection::_run(image, 3);
+	Utils::makeSliderWindow(gui, [&image](unsigned short value){
+		ExpandSelection::_run(image, value);
+	});
 }
