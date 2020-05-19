@@ -56,3 +56,16 @@ TEST(FillSelectionOperation, selectOnePoint) {
         }
     }
 }
+
+TEST(FillSelectionOperation, click) {
+    tgui::Gui gui{};
+    Mimp::LayerManager lm{{10, 10}, 1, Mimp::Color::Red};
+    Mimp::Image image{{10, 10}, lm};
+    FSOTest fso;
+    Mimp::Vector2<int> pt{2, 8};
+
+    fso.click(gui, image);
+
+    auto edit = gui.get<tgui::EditBox>("Edit");
+    ASSERT_TRUE(edit->getText() == "#000000");
+}

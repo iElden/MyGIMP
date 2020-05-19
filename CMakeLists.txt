@@ -133,20 +133,19 @@ add_executable(
 
         tst/main.cpp
         ${MIMP_SRCS}
-        tst/Data/Vector.cpp
-        tst/Data/Color.cpp
         tst/Utils.cpp
-        tst/Layer/FrameBuffer.cpp
-        #tst/Exceptions.cpp
+        tst/CanvasWidget.cpp
         tst/Image.cpp
-        tst/Layer/Layer.cpp
-        tst/Layer/LayerManager.cpp
+        tst/Exceptions.cpp
         tst/SelectedArea.cpp
         tst/ToolBox.cpp
+        tst/Data/Vector.cpp
+        tst/Data/Color.cpp
+        tst/Layer/Layer.cpp
+        tst/Layer/LayerManager.cpp
+        tst/Layer/FrameBuffer.cpp
         tst/Network/Socket.cpp
         tst/Network/SecuredSocket.cpp
-        tst/ImageOperations/ImageOperation.cpp
-        tst/ImageOperations/ImageOperationFactory.cpp
         tst/Tools/Fill.cpp
         tst/Tools/ColorPick.cpp
         tst/Tools/FillSelection.cpp
@@ -155,12 +154,18 @@ add_executable(
         tst/Tools/RectSelectTool.cpp
         tst/Tools/SelectByColorTool.cpp
         tst/Tools/SelectionTool.cpp
+        tst/ImageOperations/ImageOperation.cpp
+        tst/ImageOperations/ImageOperationFactory.cpp
         tst/ImageOperations/Selection/DelSelectOperation.cpp
         tst/ImageOperations/Selection/UnselectOperation.cpp
         tst/ImageOperations/Selection/SelectAllOperation.cpp
         tst/ImageOperations/Selection/InvertSelectionOperation.cpp
         tst/ImageOperations/Selection/ExpandSelection.cpp
-        tst/ImageOperations/Selection/FillSelectionOperation.cpp)
+        tst/ImageOperations/Selection/FillSelectionOperation.cpp
+        tst/ImageOperations/Selection/ShrinkSelection.cpp
+        tst/ImageOperations/Selection/ExpandMoreSelection.cpp
+        tst/ImageOperations/Selection/ShrinkMoreSelection.cpp
+)
 
 if (WIN32)
     target_link_libraries(
