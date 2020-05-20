@@ -4,5 +4,5 @@
 TEST(IOFactory, testBuildsSize) {
     Mimp::ImageOperationFactory factory;
 
-    ASSERT_TRUE(factory.buildAll().size() == 6);
+    ASSERT_TRUE(factory.buildAll().size() == 9);
 }

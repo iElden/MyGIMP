@@ -108,3 +108,24 @@ TEST(SelectedArea, vectorPointInsiteSelectedArea) {
     selectedArea.add({5, 8});
     ASSERT_TRUE(selectedArea.pointInMap({5, 8}));
 }
+
+TEST(SelectedArea, removePointFromArea) {
+    Mimp::SelectedArea selectedArea(10, 10);
+    selectedArea.selectAll();
+
+    selectedArea.remove(5, 5);
+    selectedArea.remove({10, 10});
+
+    ASSERT_TRUE(selectedArea.getPoints().size() != 100);
+    ASSERT_TRUE(selectedArea.pointInMap(5, 4));
+    ASSERT_FALSE(selectedArea.pointInMap(5, 5));
+}
+
+TEST(SelectedArea, removePointFromOutsideArea) {
+    Mimp::SelectedArea selectedArea(10, 10);
+    selectedArea.selectAll();
+
+    selectedArea.remove(5, 12);
+
+    ASSERT_TRUE(selectedArea.getPoints().size() == 100);
+}

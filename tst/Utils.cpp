@@ -154,3 +154,27 @@ TEST(Utils, isOutOfBounds) {
     ASSERT_TRUE(Mimp::Utils::isOutOfBound(pt, {1, 10}));
     ASSERT_TRUE(Mimp::Utils::isOutOfBound(pt, {6, 8}));
 }
+
+TEST(Utils, sliderValue) {
+    tgui::Gui gui{};
+
+    auto window = Mimp::Utils::makeSliderWindow(gui, [](unsigned short){});
+
+    auto slider = window->get<tgui::Slider>("Slider");
+    ASSERT_TRUE(slider->getValue() == 0);
+}
+
+TEST(Utils, colorPickerWindow) {
+    tgui::Gui gui{};
+
+    auto window = Mimp::Utils::makeColorPickWindow(gui, [](unsigned short){}, Mimp::Color::Black);
+
+    auto edit = window->get<tgui::EditBox>("Edit");
+    ASSERT_TRUE(edit->getText() == "#000000");
+
+    window = Mimp::Utils::makeColorPickWindow(gui, [](unsigned short){}, Mimp::Color::Red);
+
+    edit = window->get<tgui::EditBox>("Edit");
+    ASSERT_TRUE(edit->getText() == "#FF0000");
+
+}

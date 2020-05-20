@@ -208,7 +208,12 @@ TEST(LayerManager, fromInvalidPath) {
     }
 }
 
-// save
-// importImageFromMemory
-// loadMimpImage
-// isValidMimpImage (non utilisé)
+TEST(LayerManager, fromMemory) {
+    Mimp::LayerManager lm{Mimp::Vector2<unsigned>{10, 10}};
+
+    try {
+        lm.importImageFromMemory("invalid");
+    } catch (Mimp::InvalidImageException &e) {
+        ASSERT_EQ(std::string(e.what()), "Failed to load image from memory");
+    }
+}
