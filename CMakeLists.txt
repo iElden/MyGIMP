@@ -86,13 +86,14 @@ set(MIMP_SRCS
     src/ImageOperations/Selection/ExpandMoreSelection.cpp src/ImageOperations/Selection/ExpandMoreSelection.hpp
     src/LayerWidget.cpp
     src/LayerWidget.hpp
-)
+    src/ImageOperations/Selection/OutlineMoreSelectionOperation.cpp src/ImageOperations/Selection/OutlineMoreSelectionOperation.hpp
+    src/ImageOperations/Selection/ShrinkSelection.cpp src/ImageOperations/Selection/ShrinkSelection.hpp src/ImageOperations/Selection/ShrinkMoreSelection.cpp src/ImageOperations/Selection/ShrinkMoreSelection.hpp src/ImageOperations/Selection/OutlineSelectionOperation.cpp src/ImageOperations/Selection/OutlineSelectionOperation.hpp)
 
 add_executable(
     MyGimp
     src/main.cpp
     ${MIMP_SRCS}
-        src/ImageOperations/Selection/ShrinkSelection.cpp src/ImageOperations/Selection/ShrinkSelection.hpp src/ImageOperations/Selection/ShrinkMoreSelection.cpp src/ImageOperations/Selection/ShrinkMoreSelection.hpp)
+        )
 
 if (WIN32)
     target_link_libraries(
