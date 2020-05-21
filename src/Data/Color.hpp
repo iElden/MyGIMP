@@ -10,18 +10,19 @@
 
 namespace Mimp
 {
-	//! @brief Struct containing the color values.
-	//! @details This structure contains red, green, blue, and alpha value for a color.
+	//! @brief Struct defining a Color
+	//! @details Holds the RGB value of the color and handles basic color operations.
 	struct Color {
-		unsigned char r;
-		unsigned char g;
-		unsigned char b;
-		unsigned char a;
+		unsigned char r; /*!< Red value of the color. */
+		unsigned char g; /*!< Green value of the color. */
+		unsigned char b; /*!< Blue value of the color. */
+		unsigned char a; /*!< Alpha value of the color. */
 
 		//! @brief Constructor of the Struct Color
-		//! @details Copy construct the color structure with a color in hexadecimal.
-		//! @param color The color to be copy in hexadecimal.
+		//! @details Copy construct the color structure from an hexadecimal value.
+		//! @param color The hexadecimal value of the color.
 		Color(unsigned int color = 0x00000000) noexcept;
+
 		//! @brief Constructor of the Struct Color
 		//! @details Copy construct the color structure with rgba values.
 		//! @param r Hexadecimal value for red.
@@ -29,39 +30,47 @@ namespace Mimp
 		//! @param b Hexadecimal value for blue.
 		//! @param a Hexadecimal value for alpha. Default value is 255.
 		Color(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 255) noexcept;
+
+		//! @brief Compare two Color's.
+		//! @param other The Color to compare with.
+		//! @param include_alpha If the alpha values have to be included within the comparison or not.
+		//! @return 0 if the colors are the same or more if they are not.
 		unsigned diff(const Color &other, bool include_alpha=true) const noexcept;
-		//! @brief Implicit Operator cast in unsigned int
-		//! @details Converts a color to unsigned int using assignation (unsigned int = Color)
+
+		//! @brief Implicit cast to unsigned int
+		//! @details Converts a color to an unsigned int using assignation (unsigned int = Color).
 		operator unsigned int() const noexcept;
-		//! @brief Implicit Operator cast in sf::Color (SFML)
-		//! @details Converts a color to sf::Color (SFML) using assignation (sf::Color = Color)
+
+		//! @brief Implicit cast to sf::Color (SFML)
+		//! @details Converts a Color to sf::Color (SFML) using assignation (sf::Color = Color).
 		operator sf::Color() const noexcept;
-		//! @brief Operator + for colors
-		//! @details color + color / Adds two colors together
+
+		//! @brief Operator +
+		//! @details Adds two colors together (Color + Color).
 		//! @param other Color to add
 		Color operator+(const Color &other);
 
-		//! @brief Color Black
+		//! @brief Black Color
 		static const Color Black;
-		//! @brief Color LightGray
+		//! @brief LightGray Color
 		static const Color LightGray;
-		//! @brief Color DarkGray
+		//! @brief DarkGray Color
 		static const Color DarkGray;
-		//! @brief Color White
+		//! @brief White Color
 		static const Color White;
-		//! @brief Color Red
+		//! @brief Red Color
 		static const Color Red;
-		//! @brief Color Blue
+		//! @brief Blue Color
 		static const Color Blue;
-		//! @brief Color Green
+		//! @brief Green Color
 		static const Color Green;
-		//! @brief Color Magenta
+		//! @brief Magenta Color
 		static const Color Magenta;
-		//! @brief Color Yellow
+		//! @brief Yellow Color
 		static const Color Yellow;
-		//! @brief Color Cyan
+		//! @brief Cyan Color
 		static const Color Cyan;
-		//! @brief Color Transparent
+		//! @brief Transparent Color
 		static const Color Transparent;
 	};
 }

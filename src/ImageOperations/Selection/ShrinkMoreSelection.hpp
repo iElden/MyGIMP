@@ -11,9 +11,16 @@
 #include "../ImageOperation.hpp"
 
 namespace Mimp {
-	class ShrinkMoreSelection : public ImageOperation {
+    //! @brief Define the ShrinkMoreSelection.
+    class ShrinkMoreSelection : public ImageOperation {
 	public:
+        //! @brief Constructor of the ShrinkMore Selection Operation
 		ShrinkMoreSelection();
+
+        //! @brief Handles the click of the ShrinkMore Selection Operation.
+        //! @details Shrink the selection on the image.
+        //! @param gui The global gui used to open a slider dialog.
+        //! @param image The image to edit.
 		void click(tgui::Gui &gui, Image &image) const override;
 	};
 }

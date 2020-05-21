@@ -2,7 +2,7 @@
 #include <TGUI/TGUI.hpp>
 #include "../../../src/ImageOperations/Selection/UnselectOperation.hpp"
 
-TEST(InvertSelectionOperation, wholeLayer) {
+TEST(UnselectOperation, wholeLayer) {
     tgui::Gui gui{};
     Mimp::LayerManager lm{{10, 10}, 1, Mimp::Color::Red};
     Mimp::Image i{{10, 10}, lm};

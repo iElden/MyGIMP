@@ -169,6 +169,8 @@ add_executable(
         tst/ImageOperations/Selection/ShrinkSelection.cpp
         tst/ImageOperations/Selection/ExpandMoreSelection.cpp
         tst/ImageOperations/Selection/ShrinkMoreSelection.cpp
+        tst/ImageOperations/Selection/OutlineMoreSelectionOperation.cpp
+        tst/ImageOperations/Selection/OutlineSelectionOperation.cpp
 )
 
 if (WIN32)

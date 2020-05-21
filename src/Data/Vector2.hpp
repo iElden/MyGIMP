@@ -9,17 +9,23 @@
 namespace Mimp
 {
 	//! @brief Templated Vector2
-	//! @details Struct containing a type x and a type y
+	//! @details Struct containing a type x and a type y.
 	template<typename type>
 	struct Vector2 {
-		type x;
-		type y;
+		type x; //!< The x value of the Vector2.
+		type y; //!< The y value of the Vector2.
 
+		//! @brief Constructor of a templated Vector2
+		//! @param x_ The x value of the vector
+		//! @param y_ The y value of the vector
 		Vector2(type x_, type y_): x(x_), y(y_) {};
+
+		//! \brief Default Vector2 constructor
 		Vector2<type>() = default;
+
 		//! @brief Operator +
-		//! @details Adds two Vector2 and returns the result in a Vector2
-		//! @param other The other Vector2 to add
+		//! @details Adds two Vector2 and returns the result in a Vector2 (Vector2 = Vector2 + Vector2).
+		//! @param other The other Vector2 to add.
 		//! @return Vector2<type>
 		Vector2<type> operator+(const Vector2<type> &other)
 		{
@@ -30,7 +36,7 @@ namespace Mimp
 		}
 
 		//! @brief Operator -
-		//! @details Subtracts two Vector2 and returns the result in a Vector2
+		//! @details Subtracts two Vector2 and returns the result in a Vector2 (Vector2 = Vector2 - Vector2).
 		//! @param other The other Vector2 to sub
 		//! @return Vector2<type>
 		Vector2<type> operator-(const Vector2<type> &other)
@@ -42,8 +48,8 @@ namespace Mimp
 		}
 
 		//! @brief Operator +=
-		//! @details Add the Vector2 in parameter to the first Vector2
-		//! @param other The Vector2 to add
+		//! @details Add the Vector2 in parameter to the first Vector2 (Vector2 += Vector2).
+		//! @param other The Vector2 to add.
 		//! @return Vector2<type>
 		Vector2<type> &operator+=(const Vector2<type> &other)
 		{
@@ -53,8 +59,8 @@ namespace Mimp
 		}
 
 		//! @brief Operator -=
-		//! @details Subtracts the Vector2 in parameter to the first Vector2
-		//! @param other The other Vector2 to sub
+		//! @details Subtracts the Vector2 in parameter to the first Vector2 (Vector2 -= Vector2).
+		//! @param other The other Vector2 to subtract.
 		//! @return Vector2<type>
 		Vector2<type> operator-=(const Vector2<type> &other)
 		{
@@ -63,6 +69,10 @@ namespace Mimp
 			return *this;
 		}
 
+		//! @brief Multiply a Vector2 by a factor.
+		//! \tparam type2 The type of factor of the multiplication (int, float, unsigned, etc.).
+		//! \param other The factor of the multiplication.
+		//! \return A Vector2 of the better storage type between type and type2 and containing the result of the multiplication.
 		template <typename type2>
 		auto operator*(type2 other)
 		{
@@ -73,7 +83,7 @@ namespace Mimp
 		}
 
 		//! @brief Operator ==
-		//! @details Is the Vector2 in parameter equal to the first Vector2
+		//! @details Is the Vector2 in parameter equal to the first Vector2 ?
 		//! @param other The other Vector2 to sub
 		//! @return bool
 		bool operator==(const Vector2<type> &other)

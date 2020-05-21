@@ -48,30 +48,54 @@ namespace Mimp
 		NB_OF_KEYS
 	};
 
+	//! @brief Convert a Key to a string
+	//! @param key The key to convert.
+	//! @return std::string
 	std::string KeyToString(Key key);
 
+	//! @brief Struct defining a combination of keys.
+	//! @details Holds the required key for a combination and some basic operations on keys.
 	struct KeyCombination {
-		Key key;
-		bool control;
-		bool shift;
-		bool alt;
+		Key key; //!< The key value
+		bool control; //!< If the Control key has to be pressed or not.
+		bool shift; //!< If the Shift key has to be pressed or not.
+		bool alt; //!< If the Alt key has to be pressed or not.
 
+		//! @brief Compare the combination with an other one.
+		//! @return bool
 		bool operator<(const KeyCombination &) const;
+
+		//! @brief Return the string representation of the combination.
+		//! @return std::string
 		std::string toString() const;
 	};
 
-	class ImageOperation {
+    //! @brief Define the ImageOperation base class.
+    class ImageOperation {
 	private:
 		std::vector<std::string> _hierarchy;
 		std::optional<KeyCombination> _keys;
 
 	protected:
+	    //! @brief Constructor of ImageOperation
+        //! @param hierarchy A vector of the hierarchy (ie : Menu title -> operation name)
 		ImageOperation(const std::vector<std::string> &&hierarchy);
+
+        //! @brief Constructor of ImageOperation
+        //! @param hierarchy A vector of the hierarchy (ie : Menu title -> operation name)
+        //! @param keys The key combination to invoke the operation.
 		ImageOperation(const std::vector<std::string> &&hierarchy, const KeyCombination &keys);
 
 	public:
+	    //! @brief Handles the click. Must be override.
 		virtual void click(tgui::Gui &, Image &) const = 0;
+
+		//! @brief Get the hierarchy of a menu item.
+		//! @return A vector of all the menu hierarchy.
 		const std::vector<std::string> &getMenuHierarchy() const;
+
+		//! @brief Get the possible key combination of the operation.
+		//! @return The combination of the operation if it exists.
 		std::optional<KeyCombination> getKeyStroke() const;
 	};
 }

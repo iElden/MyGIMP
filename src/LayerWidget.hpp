@@ -11,6 +11,7 @@
 
 namespace Mimp
 {
+    //! @brief Define the LayerWidget.
 	class LayerWidget : public tgui::ClickableWidget {
 	private:
 		Layer &_layer;
@@ -18,26 +19,38 @@ namespace Mimp
 		mutable sf::Texture _drawBuffer;
 
 	public:
-		//! @brief Shared widget pointer
-		typedef std::shared_ptr<LayerWidget> Ptr; ///< Shared widget pointer
-		//! @brief Shared constant widget pointer
-		typedef std::shared_ptr<const LayerWidget> ConstPtr; ///< Shared constant widget pointer
+		typedef std::shared_ptr<LayerWidget> Ptr; //!< Shared widget pointer
+		typedef std::shared_ptr<const LayerWidget> ConstPtr; //!< Shared constant widget pointer
 
-		//! @brief Public Constructor of the CanvasWidget class
-		//! @param box ToolBox
+		//! @brief Constructor of the LayerWidget
+		//! @param layer The Layer to handle.
 		//! @param size Size of the Preview
 		LayerWidget(Layer &layer, Vector2<tgui::Layout> size);
+
+		//! @brief LayerWidget destructor
 		~LayerWidget() override = default;
 
-		//! @brief create a new LayerWidget pointer
-		//! @param layer Layer
-		//! @param size Size of the Widget
+		//! @brief Create a new LayerWidget pointer
+		//! @param layer The Layer to handle
+		//! @param size Size of the Widget. Default is 32x32.
 		static LayerWidget::Ptr create(Layer &layer, Vector2<tgui::Layout> size = {32, 32});
 
-		//! @brief Disable the rendering by joining the render thread
+		//! @brief Detect if the mouse is on the LayerWidget.
+		//! @param pos The mouse position.
+		//! @return bool
 		bool mouseOnWidget(tgui::Vector2f pos) const override;
+
+        //! @brief Set if the mouse is ignored upon the LayerWIdget or not.
+        //! @param ignored Is the mouse ignore or not. Default is true.
 		void ignoreMouseEvent(bool ignored = true);
+
+		//! @brief Draw the LayerWidget.
+		//! @param target Where to draw.
+        //! @param states How to draw.
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
+		//! @brief Clone the LayerWidget.
+		//! @return A pointer to the clone.
 		Widget::Ptr clone() const override;
 	};
 }

@@ -10,11 +10,22 @@
 #include "../ImageOperation.hpp"
 
 namespace Mimp {
-	class OutlineSelectionOperation : public ImageOperation {
+    //! @brief Define the OutlineSelectionOperation.
+    class OutlineSelectionOperation : public ImageOperation {
 	public:
-		static void _keepPointIfNoPointNearby(unsigned i, unsigned j, Mimp::Image &image, const SelectedArea &area) noexcept;
-		static void _run(Image &image, int range=1) noexcept;
-		OutlineSelectionOperation();
+        //! @brief Do not call it directly. Use OutlineSelectionOperation::click.
+        static void _keepPointIfNoPointNearby(unsigned i, unsigned j, Mimp::Image &image, const SelectedArea &area) noexcept;
+
+        //! @brief Do not call it directly. Use OutlineSelectionOperation::click.
+        static void _run(Image &image, int range=1) noexcept;
+
+        //! @brief Constructor of the Outline Selection Operation
+        OutlineSelectionOperation();
+
+        //! @brief Handles the click of the Outline.
+        //! @details Outline the selection on the image.
+        //! @param gui The global gui (unused).
+        //! @param image The image to edit.
 		void click(tgui::Gui &gui, Image &image) const override;
 	};
 }
