@@ -115,7 +115,7 @@ namespace Mimp
     class FileNotFoundException : public BaseException {
 	public:
         //! @brief Create a FileNotFoundException with a message.
-        //! @param msg The error message.
+        //! @param path The error message.
 		explicit FileNotFoundException(const std::string &path) :
 			BaseException(path + ": " + strerror(errno))
 		{};

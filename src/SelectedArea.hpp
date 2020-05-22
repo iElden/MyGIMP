@@ -40,7 +40,7 @@ namespace Mimp {
 		~SelectedArea();
 
 		//! @brief Set the size of the SelectedArea.
-        //! @param The new size
+        //! @param size The new size
 		void setSize(Vector2<unsigned> size);
 
 		//! @brief Get the size of the SelectedArea.

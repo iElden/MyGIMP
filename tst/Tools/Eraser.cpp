@@ -2,6 +2,8 @@
 #include <TGUI/TGUI.hpp>
 #include "../../src/Tools/Eraser.hpp"
 
+#define INT(x) (static_cast<int>(x))
+
 TEST(Eraser, getDefaultPanelValues) {
     tgui::Gui gui{};
     Mimp::ToolBox toolbox{gui};
@@ -29,8 +31,8 @@ TEST(Eraser, onClick) {
 
     ASSERT_EQ(image.getLayers().size(), 1);
     auto buffer = image.getLayers()[0].buffer.getBuffer();
-    for (int i = 0; i < size.x; i += 1) {
-        for (int j = 0; j < size.y; j += 1) {
+    for (int i = 0; i < INT(size.x); i += 1) {
+        for (int j = 0; j < INT(size.y); j += 1) {
             ASSERT_TRUE(buffer[i + size.x * j] == Mimp::Color::Magenta);
         }
     }
@@ -38,10 +40,10 @@ TEST(Eraser, onClick) {
     eraser.onClick(erasePos, Mimp::MIMP_LEFT_CLICK, image);
 
     buffer = image.getLayers()[0].buffer.getBuffer();
-    for (int i = 0; i < size.x; i += 1) {
-        for (int j = 0; j < size.y; j += 1) {
-            if (i >= erasePos.x - 1 && i < erasePos.x + radius - 2
-            && j >= erasePos.y - 1 && j < erasePos.y + radius - 2) {
+    for (int i = 0; i < INT(size.x); i += 1) {
+        for (int j = 0; j < INT(size.y); j += 1) {
+            if (i >= erasePos.x - 1 && i < erasePos.x + INT(radius) - 2
+            && j >= erasePos.y - 1 && j < erasePos.y + INT(radius) - 2) {
                 ASSERT_TRUE(buffer[i + size.x * j] == Mimp::Color::Transparent);
             } else {
                 ASSERT_TRUE(buffer[i + size.x * j] == Mimp::Color::Magenta);
@@ -63,8 +65,8 @@ TEST(Eraser, onDrag) {
 
     ASSERT_EQ(image.getLayers().size(), 1);
     auto buffer = image.getLayers()[0].buffer.getBuffer();
-    for (int i = 0; i < size.x; i += 1) {
-        for (int j = 0; j < size.y; j += 1) {
+    for (int i = 0; i < INT(size.x); i += 1) {
+        for (int j = 0; j < INT(size.y); j += 1) {
             ASSERT_TRUE(buffer[i + size.x * j] == Mimp::Color::Magenta);
         }
     }
@@ -72,10 +74,10 @@ TEST(Eraser, onDrag) {
     eraser.onMouseDrag(erasePosStart, erasePosEnd, Mimp::MIMP_LEFT_CLICK, image);
 
     buffer = image.getLayers()[0].buffer.getBuffer();
-    for (int i = 0; i < size.x; i += 1) {
-        for (int j = 0; j < size.y; j += 1) {
-            if (i >= erasePosStart.x - 1 && i < erasePosEnd.x + radius - 2
-                && j >= erasePosStart.y - 1 && j < erasePosEnd.y + radius - 2) {
+    for (int i = 0; i < INT(size.x); i += 1) {
+        for (int j = 0; j < INT(size.y); j += 1) {
+            if (i >= erasePosStart.x - 1 && i < erasePosEnd.x + INT(radius) - 2
+                && j >= erasePosStart.y - 1 && j < erasePosEnd.y + INT(radius) - 2) {
                 ASSERT_TRUE(buffer[i + size.x * j] == Mimp::Color::Transparent);
             } else {
                 ASSERT_TRUE(buffer[i + size.x * j] == Mimp::Color::Magenta);
@@ -92,12 +94,11 @@ TEST(Eraser, onClickWithLockedLayer) {
     Mimp::LayerManager lm(size, 1, Mimp::Color::Magenta);
     Mimp::Image image(size, lm);
     Mimp::Vector2<int> erasePos = {2, 2};
-    float radius = eraser.getParametersPanel()->get<tgui::Slider>("Radius")->getValue();
 
     ASSERT_EQ(image.getLayers().size(), 1);
     auto buffer = image.getLayers()[0].buffer.getBuffer();
-    for (int i = 0; i < size.x; i += 1) {
-        for (int j = 0; j < size.y; j += 1) {
+    for (int i = 0; i < INT(size.x); i += 1) {
+        for (int j = 0; j < INT(size.y); j += 1) {
             ASSERT_TRUE(buffer[i + size.x * j] == Mimp::Color::Magenta);
         }
     }
@@ -106,8 +107,8 @@ TEST(Eraser, onClickWithLockedLayer) {
     eraser.onClick(erasePos, Mimp::MIMP_LEFT_CLICK, image);
 
     buffer = image.getLayers()[0].buffer.getBuffer();
-    for (int i = 0; i < size.x; i += 1) {
-        for (int j = 0; j < size.y; j += 1) {
+    for (int i = 0; i < INT(size.x); i += 1) {
+        for (int j = 0; j < INT(size.y); j += 1) {
             ASSERT_TRUE(buffer[i + size.x * j] == Mimp::Color::Magenta);
         }
     }
@@ -122,12 +123,11 @@ TEST(Eraser, onDragWithLockedLayer) {
     Mimp::Image image(size, lm);
     Mimp::Vector2<int> erasePosStart = {2, 2};
     Mimp::Vector2<int> erasePosEnd = {8, 2};
-    float radius = eraser.getParametersPanel()->get<tgui::Slider>("Radius")->getValue();
 
     ASSERT_EQ(image.getLayers().size(), 1);
     auto buffer = image.getLayers()[0].buffer.getBuffer();
-    for (int i = 0; i < size.x; i += 1) {
-        for (int j = 0; j < size.y; j += 1) {
+    for (int i = 0; i < INT(size.x); i += 1) {
+        for (int j = 0; j < INT(size.y); j += 1) {
             ASSERT_TRUE(buffer[i + size.x * j] == Mimp::Color::Magenta);
         }
     }
@@ -136,8 +136,8 @@ TEST(Eraser, onDragWithLockedLayer) {
     eraser.onMouseDrag(erasePosStart, erasePosEnd, Mimp::MIMP_LEFT_CLICK, image);
 
     buffer = image.getLayers()[0].buffer.getBuffer();
-    for (int i = 0; i < size.x; i += 1) {
-        for (int j = 0; j < size.y; j += 1) {
+    for (int i = 0; i < INT(size.x); i += 1) {
+        for (int j = 0; j < INT(size.y); j += 1) {
             ASSERT_TRUE(buffer[i + size.x * j] == Mimp::Color::Magenta);
         }
     }

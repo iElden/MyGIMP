@@ -58,8 +58,8 @@ set(MIMP_SRCS
     src/Tools/SelectByColorTool.hpp
     src/Tools/FillSelection.cpp
     src/Tools/FillSelection.hpp
-    src/Tools/ElipseSelectionTool.cpp
-    src/Tools/ElipseSelectionTool.hpp
+    src/Tools/EllipseSelectionTool.cpp
+    src/Tools/EllipseSelectionTool.hpp
     src/ImageOperations/ImageOperation.cpp
     src/ImageOperations/ImageOperation.hpp
     src/ImageOperations/ImageOperationFactory.cpp

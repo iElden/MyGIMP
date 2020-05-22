@@ -2,28 +2,28 @@
 ** EPITECH PROJECT, 2020
 ** MyGimp
 ** File description:
-** RectSelectTool.hpp
+** EllipseSelectionTool.hpp
 */
-#ifndef MYGIMP_RECTSELECTTOOL_HPP
-#define MYGIMP_RECTSELECTTOOL_HPP
+#ifndef MYGIMP_ELLIPSESELECTIONTOOL_HPP
+#define MYGIMP_ELLIPSESELECTIONTOOL_HPP
+
 
 #include "SelectionTool.hpp"
-#include "../ToolBox.hpp"
 
 namespace Mimp {
-    //! @brief Define a RectSelectTool
-	class RectSelectTool : public SelectionTool {
+    //! @brief Define a EllipseSelectionTool
+	class EllipseSelectionTool : public SelectionTool {
 	private:
-		int _state = 0;
-		Vector2<int> _pt1 = {-1, -1};
-		Vector2<int> _pt2 = {-1, -1};
+		int _state;
+		Vector2<int> _pt1;
+		Vector2<int> _pt2;
 
 		void _updateSelectedArea(Image &image);
 
 	public:
-        //! @brief Construct a RectSelectTool
-        //! @param toolBox ToolBox containing the RectSelectTool Tool
-		RectSelectTool(ToolBox &toolBox);
+        //! @brief Construct a EllipseSelectionTool
+        //! @param toolBox ToolBox containing the EllipseSelectionTool Tool
+		EllipseSelectionTool(ToolBox &toolBox);
 		void clear() override;
 
         //! @brief Handle the mouse dragging of the Tool.
@@ -42,8 +42,15 @@ namespace Mimp {
         //! @brief Get the parameters panel for the Tool.
         //! @return tgui::ScrollablePanel::Ptr Pointer containing the parameters panel
 		tgui::ScrollablePanel::Ptr getParametersPanel() override;
+
+		//! @brief Test if the point is inside the ellipse selection.
+		//! @param x X position of the point
+        //! @param y Y position of the point
+        //! @param rx X radius of the ellipse
+        //! @param ry Y radius of the ellipse
+		bool point_in_ellipse(int x, int y, int rx, int ry);
 	};
 }
 
 
-#endif //MYGIMP_RECTSELECTTOOL_HPP
+#endif //MYGIMP_ELLIPSESELECTIONTOOL_HPP

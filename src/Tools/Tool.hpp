@@ -12,39 +12,49 @@
 
 namespace Mimp
 {
-	//! @brief Class Tool
+	//! @brief Define a Tool
 	class Tool {
 	private:
-		//! @brief Name of the tool
-		std::string _name;
+		std::string _name; //!< Name of the Tool
 
 	public:
-		//! @brief Constructor of the Tool class
+		//! @brief Construct a Tool
 		//! @param name Name of the tool
 		explicit Tool(const std::string &name) : _name(name) {};
-		//! @brief Get the name of the tool
-		//! @return std::string Name of the tool
+
+		//! @brief Get the name of the Tool
+		//! @return std::string Name of the Tool
 		std::string getName() const
 		{
 			return this->_name;
 		};
-		//! @brief On Select, do the following actions
+
+		//! @brief Handle the selection of the Tool.
 		virtual void onSelect() {};
-		//! @brief On Unselect, do the following actions
+
+        //! @brief Handle the unselection of the Tool.
 		virtual void onUnselect() {};
-		virtual void onMouseRelease(Vector2<int>, MouseClick, Image &) {};
-		//! @brief When mouse is dragging, apply the tool to the new position
-		//! @param oldPos Old Pos
-		//! @param newPos New Pos
+
+        //! @brief Handle the mouse release of the Tool.
+        //! @param pos The position of the mouse
+        //! @param click Mouse click state
+        //! @param image The Image to edit
+        virtual void onMouseRelease([[maybe_unused]] Vector2<int> pos, [[maybe_unused]] MouseClick click, [[maybe_unused]] Image &image) {};
+
+        //! @brief Handle the mouse dragging of the Tool.
+		//! @param oldPos Old position of the mouse
+		//! @param newPos New position of the mouse
 		//! @param click Mouse click state
-		//! @param layer Layer used
+        //! @param image The Image to edit
 		virtual void onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Image &image) = 0;
-		//! @brief When mouse is clicked, apply the tool to the position
+
+        //! @brief Handle the mouse click of the Tool.
 		//! @param pos Position of the tool
 		//! @param click Mouse click state
-		//! @param layer Layer used
+        //! @param image The Image to edit
 		virtual void onClick(Vector2<int> pos, MouseClick click, Image &image) = 0;
-		//! @brief Get the Parameters Panel Pointer
+
+		//! @brief Get the parameters panel for the Tool.
 		//! @return tgui::ScrollablePanel::Ptr Pointer containing the parameters panel
 		virtual tgui::ScrollablePanel::Ptr getParametersPanel() = 0;
 	};

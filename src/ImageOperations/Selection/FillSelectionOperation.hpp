@@ -12,7 +12,11 @@ namespace Mimp
 {
     //! @brief Define the FillSelectionOperation.
     class FillSelectionOperation : public ImageOperation {
-	private:
+    protected:
+        //! @brief Fill the SelectedArea of the Layer with a Color.
+        //! @param layer The Layer to fill
+        //! @param area The SelectedArea of the Layer to fill
+        //! @param color The Color used to fill
 		static void _fill(Layer &layer, const SelectedArea &area, const Color &color);
 
 	public:

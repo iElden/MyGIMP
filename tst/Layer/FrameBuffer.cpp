@@ -2,6 +2,8 @@
 #include "../../src/Layer/FrameBuffer.hpp"
 #include "../../src/Exceptions.hpp"
 
+#define UINT(x) (static_cast<unsigned>(x))
+
 TEST(FrameBuffer, getBuffer) {
     Mimp::Vector2<unsigned> size{500, 500};
     Mimp::FrameBuffer fb{size, Mimp::Color::Cyan};
@@ -106,7 +108,7 @@ TEST(FrameBuffer, outOfBoundException) {
     Mimp::FrameBuffer fb(size, Mimp::Color::Green);
 
     try {
-        auto px = fb[10000];
+        [[maybe_unused]] auto px = fb[10000];
     } catch (Mimp::OutOfBoundException &e) {
         ASSERT_EQ(std::string(e.what()), "10000 >= 10 * 10");
     }
@@ -121,7 +123,7 @@ TEST(FrameBuffer, setPixelInsideBounds) {
 
     for (unsigned int i = 0; i < size.y; i += 1) {
         for (unsigned int j = 0; j < size.x; j += 1) {
-            if (i == pos.y && j == pos.x) {
+            if (i == UINT(pos.y) && j == UINT(pos.x)) {
                 ASSERT_TRUE(fb[i * size.x + j] == Mimp::Color::Yellow);
             } else {
                 ASSERT_TRUE(fb[i * size.x + j] == Mimp::Color::Green);

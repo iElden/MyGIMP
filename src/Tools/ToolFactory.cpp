@@ -9,7 +9,7 @@
 #include "FillSelection.hpp"
 #include "RectSelectTool.hpp"
 #include "SelectByColorTool.hpp"
-#include "ElipseSelectionTool.hpp"
+#include "EllipseSelectionTool.hpp"
 #include "Eraser.hpp"
 
 namespace Mimp
@@ -31,7 +31,7 @@ namespace Mimp
 			return std::make_shared<RectSelectTool>(box);
 		},
 		[](ToolBox &box){
-			return std::make_shared<ElipseSelectionTool>(box);
+			return std::make_shared<EllipseSelectionTool>(box);
 		},
 		[](ToolBox &box){
 			return std::make_shared<SelectByColorTool>(box);
