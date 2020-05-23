@@ -22,8 +22,8 @@ void Mimp::OutlineSelectionOperation::_run(Mimp::Image &image, int range) noexce
 	auto selectedArea = image.selectedArea;
 	for (auto pt : image.selectedArea.getPoints())
 		OutlineSelectionOperation::_keepPointIfNoPointNearby(pt.x, pt.y, image, selectedArea);
-	if (range > 1)
-		ExpandSelection::_run(image, range);
+	if (range > 0)
+	    ExpandSelection::_run(image, range - 1);
 }
 
 void Mimp::OutlineSelectionOperation::_keepPointIfNoPointNearby(unsigned i, unsigned j, Mimp::Image &image, const Mimp::SelectedArea &area) noexcept

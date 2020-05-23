@@ -26,17 +26,8 @@ TEST(OutlineSelectionOperation, onlyOnePixel) {
 
     oso.click(gui, i);
 
-    for (int x = 0; x < 10; x += 1) {
-        for (int y = 0; y < 10; y += 1)
-            std::cout << i.selectedArea.pointInMap(x, y) << "|";
-        std::cout << std::endl;
-    }
-
-    ASSERT_TRUE(i.selectedArea.getPoints().size() == 9);
-    ASSERT_TRUE(0);
-    for (int x = -1; x <= 1; x += 1)
-        for (int y = -1; y <= 1; y += 1)
-            ASSERT_TRUE(i.selectedArea.pointInMap(5 + x, 5 + y));
+    ASSERT_TRUE(i.selectedArea.getPoints().size() == 1);
+    ASSERT_TRUE(i.selectedArea.pointInMap(5, 5));
 }
 
 TEST(OutlineSelectionOperation, wholeLayer) {
@@ -50,5 +41,28 @@ TEST(OutlineSelectionOperation, wholeLayer) {
 
     oso.click(gui, i);
 
+    ASSERT_TRUE(i.selectedArea.getPoints().size() == 36);
+    ASSERT_TRUE(i.selectedArea.pointInMap(0, 0));
+    ASSERT_TRUE(i.selectedArea.pointInMap(0, 9));
+    ASSERT_TRUE(i.selectedArea.pointInMap(9, 6));
+    ASSERT_FALSE(i.selectedArea.pointInMap(6, 4));
+}
+
+TEST(OutlineSelectionOperation, wholeLayerWithThicknessOf2) {
+    tgui::Gui gui{};
+    Mimp::LayerManager lm{{10, 10}, 1, Mimp::Color::Red};
+    Mimp::Image i{{10, 10}, lm};
+    Mimp::OutlineSelectionOperation oso;
+
+    i.selectedArea.selectAll();
     ASSERT_TRUE(i.selectedArea.getPoints().size() == 100);
+
+    oso._run(i, 2);
+    
+    ASSERT_EQ(i.selectedArea.getPoints().size(), 64);
+    ASSERT_TRUE(i.selectedArea.pointInMap(0, 0));
+    ASSERT_TRUE(i.selectedArea.pointInMap(0, 9));
+    ASSERT_TRUE(i.selectedArea.pointInMap(9, 8));
+    ASSERT_FALSE(i.selectedArea.pointInMap(6, 4));
+    ASSERT_FALSE(i.selectedArea.pointInMap(5, 7));
 }
