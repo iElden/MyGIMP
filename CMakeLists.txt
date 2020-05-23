@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.14)
 project(MyGimp)
 
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/packages)
 
 if ("${CMAKE_BUILD_TYPE}" STREQUAL Debug)
     if (CMAKE_COMPILER_IS_GNUCC)
@@ -94,8 +95,11 @@ set(MIMP_SRCS
     src/ImageOperations/Selection/ShrinkMoreSelection.cpp
     src/ImageOperations/Selection/ShrinkMoreSelection.hpp
     src/ImageOperations/Selection/OutlineSelectionOperation.cpp
-    src/ImageOperations/Selection/OutlineSelectionOperation.hpp)
+    src/ImageOperations/Selection/OutlineSelectionOperation.hpp
+)
 
+find_package(clip REQUIRED)
+include_directories(${clip_INCLUDE_DIRS})
 
 add_executable(
     MyGimp
@@ -114,6 +118,7 @@ if (WIN32)
             stdc++fs
             ssl
             ws2_32
+            ${clip_LIBRARIES}
     )
 else ()
     target_link_libraries(
@@ -125,6 +130,7 @@ else ()
             pthread
             stdc++fs
             ssl
+            ${clip_LIBRARIES}
     )
 endif ()
 
@@ -186,6 +192,7 @@ if (WIN32)
             ws2_32
             gtest
             gcov
+            ${clip_LIBRARIES}
     )
 else ()
     target_link_libraries(
@@ -199,5 +206,6 @@ else ()
             ssl
             gtest
             gcov
+            ${clip_LIBRARIES}
     )
 endif ()
