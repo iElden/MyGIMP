@@ -198,11 +198,31 @@ TEST(FrameBuffer, drawCircle) {
     Mimp::FrameBuffer fb(size, Mimp::Color::Green);
 
     Mimp::Vector2<int> pos = {5, 5};
-    unsigned short radius = 4;
+    unsigned short radius = 9;
 
-    ASSERT_TRUE(0);
     fb.drawAt(pos, Mimp::Color::Yellow, radius, Mimp::CIRCLE);
 
+    auto buffer = fb.getBuffer();
+    std::stringstream output;
+    std::string correct =
+            "0000000000"\
+            "0000000000"\
+            "0001111110"\
+            "0011111111"\
+            "0011111111"\
+            "0011111111"\
+            "0011111111"\
+            "0011111111"\
+            "0011111111"\
+            "0001111110";
+
+    for (int i = 0; i < 10; i += 1) {
+        for (int j = 0; j < 10; j += 1) {
+            output << (buffer[i + j * 10] == Mimp::Color::Yellow);
+        }
+    }
+
+    ASSERT_EQ(output.str(), correct);
 }
 
 TEST(FrameBuffer, drawDiamond) {
@@ -210,11 +230,31 @@ TEST(FrameBuffer, drawDiamond) {
     Mimp::FrameBuffer fb(size, Mimp::Color::Green);
 
     Mimp::Vector2<int> pos = {5, 5};
-    unsigned short radius = 4;
+    unsigned short radius = 9;
 
-    ASSERT_TRUE(0);
     fb.drawAt(pos, Mimp::Color::Yellow, radius, Mimp::DIAMOND);
 
+    auto buffer = fb.getBuffer();
+    std::stringstream output;
+    std::string correct =
+            "0000000000"\
+            "0000000000"\
+            "0000010000"\
+            "0000111000"\
+            "0001111100"\
+            "0011111110"\
+            "0001111100"\
+            "0000111000"\
+            "0000010000"\
+            "0000000000";
+
+    for (int i = 0; i < 10; i += 1) {
+        for (int j = 0; j < 10; j += 1) {
+            output << (buffer[i + j * 10] == Mimp::Color::Yellow);
+        }
+    }
+
+    ASSERT_EQ(output.str(), correct);
 }
 
 TEST(FrameBuffer, drawNoShape) {
