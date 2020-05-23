@@ -70,7 +70,7 @@ namespace Mimp
 
 	void SelectedArea::remove(Vector2<int> point)
 	{
-		this->add(point.x, point.y);
+		this->remove(point.x, point.y);
 	}
 
 	void SelectedArea::remove(int x, int y)

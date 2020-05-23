@@ -114,11 +114,12 @@ TEST(SelectedArea, removePointFromArea) {
     selectedArea.selectAll();
 
     selectedArea.remove(5, 5);
-    selectedArea.remove({10, 10});
+    selectedArea.remove({7, 7});
 
     ASSERT_TRUE(selectedArea.getPoints().size() != 100);
     ASSERT_TRUE(selectedArea.pointInMap(5, 4));
     ASSERT_FALSE(selectedArea.pointInMap(5, 5));
+    ASSERT_FALSE(selectedArea.pointInMap(7, 7));
 }
 
 TEST(SelectedArea, removePointFromOutsideArea) {
