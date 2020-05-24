@@ -96,7 +96,9 @@ set(MIMP_SRCS
     src/ImageOperations/Selection/ShrinkMoreSelection.hpp
     src/ImageOperations/Selection/OutlineSelectionOperation.cpp
     src/ImageOperations/Selection/OutlineSelectionOperation.hpp
-)
+        src/ImageOperations/Clipboard/PasteOperation.cpp src/ImageOperations/Clipboard/PasteOperation.hpp)
+
+find_library(PNG_LIBRARY png)
 
 find_package(clip REQUIRED)
 include_directories(${clip_INCLUDE_DIRS})
@@ -118,6 +120,7 @@ if (WIN32)
             stdc++fs
             ssl
             ws2_32
+            ${PNG_LIBRARY}
             ${clip_LIBRARIES}
     )
 else ()
@@ -130,6 +133,8 @@ else ()
             pthread
             stdc++fs
             ssl
+            ${PNG_LIBRARY}
+            xcb
             ${clip_LIBRARIES}
     )
 endif ()
@@ -192,6 +197,7 @@ if (WIN32)
             ws2_32
             gtest
             gcov
+            ${PNG_LIBRARY}
             ${clip_LIBRARIES}
     )
 else ()
@@ -206,6 +212,7 @@ else ()
             ssl
             gtest
             gcov
+            ${PNG_LIBRARY}
             ${clip_LIBRARIES}
     )
 endif ()
