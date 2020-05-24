@@ -179,21 +179,19 @@ TEST(FrameBuffer, drawSquareRadius4) {
     auto buffer = fb.getBuffer();
     std::stringstream output;
     std::string correct =
-            "0000000000"\
-            "0000000000"\
-            "0000000000"\
-            "0011110000"\
-            "0011110000"\
-            "0011110000"\
-            "0011110000"\
-            "0000000000"\
-            "0000000000"\
+            "0000000000"
+            "0000000000"
+            "0001111000"
+            "0001111000"
+            "0001111000"
+            "0001111000"
+            "0000000000"
+            "0000000000"
+            "0000000000"
             "0000000000";
 
-    for (int i = 0; i < 10; i += 1) {
-        for (int j = 0; j < 10; j += 1) {
-            output << (buffer[i + j * 10] == Mimp::Color::Yellow);
-        }
+    for (int i = 0; i < 100; i += 1) {
+        output << (buffer[i] == Mimp::Color::Yellow);
     }
 
     ASSERT_EQ(output.str(), correct);
@@ -211,21 +209,19 @@ TEST(FrameBuffer, drawCircleRadisu9) {
     auto buffer = fb.getBuffer();
     std::stringstream output;
     std::string correct =
-            "0000000000"\
-            "0000000000"\
-            "0001111110"\
-            "0011111111"\
-            "0011111111"\
-            "0011111111"\
-            "0011111111"\
-            "0011111111"\
-            "0011111111"\
+            "0000000000"
+            "0000000000"
+            "0001111110"
+            "0011111111"
+            "0011111111"
+            "0011111111"
+            "0011111111"
+            "0011111111"
+            "0011111111"
             "0001111110";
 
-    for (int i = 0; i < 10; i += 1) {
-        for (int j = 0; j < 10; j += 1) {
-            output << (buffer[i + j * 10] == Mimp::Color::Yellow);
-        }
+    for (int i = 0; i < 100; i += 1) {
+        output << (buffer[i] == Mimp::Color::Yellow);
     }
 
     ASSERT_EQ(output.str(), correct);
@@ -243,21 +239,19 @@ TEST(FrameBuffer, drawCircleRadius1) {
     auto buffer = fb.getBuffer();
     std::stringstream output;
     std::string correct =
-            "0000000000"\
-            "0000000000"\
-            "0000000000"\
-            "0000000000"\
-            "0000000000"\
-            "0000010000"\
-            "0000000000"\
-            "0000000000"\
-            "0000000000"\
+            "0000000000"
+            "0000000000"
+            "0000000000"
+            "0000000000"
+            "0000000000"
+            "0000010000"
+            "0000000000"
+            "0000000000"
+            "0000000000"
             "0000000000";
 
-    for (int i = 0; i < 10; i += 1) {
-        for (int j = 0; j < 10; j += 1) {
-            output << (buffer[i + j * 10] == Mimp::Color::Yellow);
-        }
+    for (int i = 0; i < 100; i += 1) {
+        output << (buffer[i] == Mimp::Color::Yellow);
     }
 
     ASSERT_EQ(output.str(), correct);
@@ -275,21 +269,19 @@ TEST(FrameBuffer, drawDiamondRadius9) {
     auto buffer = fb.getBuffer();
     std::stringstream output;
     std::string correct =
-            "0000000000"\
-            "0000000000"\
-            "0000010000"\
-            "0000111000"\
-            "0001111100"\
-            "0011111110"\
-            "0001111100"\
-            "0000111000"\
-            "0000010000"\
+            "0000000000"
+            "0000000000"
+            "0000010000"
+            "0000111000"
+            "0001111100"
+            "0011111110"
+            "0001111100"
+            "0000111000"
+            "0000010000"
             "0000000000";
 
-    for (int i = 0; i < 10; i += 1) {
-        for (int j = 0; j < 10; j += 1) {
-            output << (buffer[i + j * 10] == Mimp::Color::Yellow);
-        }
+    for (int i = 0; i < 100; i += 1) {
+        output << (buffer[i] == Mimp::Color::Yellow);
     }
 
     ASSERT_EQ(output.str(), correct);
@@ -324,26 +316,24 @@ TEST(FrameBuffer, getDrawBuffer) {
 TEST(FrameBuffer, drawVerticalLine) {
     Mimp::FrameBuffer fb{{10, 10}, Mimp::Color::Red};
 
-    fb.drawLine({2, 3}, {8, 3}, Mimp::Color::Green, 1);
+    fb.drawLine({2, 3}, {2, 10}, Mimp::Color::Green, 1);
 
     auto buffer = fb.getBuffer();
     std::stringstream output;
     std::string correct =
-            "0000000000"\
-            "0000000000"\
-            "0001000000"\
-            "0001000000"\
-            "0001000000"\
-            "0001000000"\
-            "0001000000"\
-            "0001000000"\
-            "0001000000"\
-            "0000000000";
+            "0000000000"
+            "0000000000"
+            "0000000000"
+            "0010000000"
+            "0010000000"
+            "0010000000"
+            "0010000000"
+            "0010000000"
+            "0010000000"
+            "0010000000";
 
-    for (int i = 0; i < 10; i += 1) {
-        for (int j = 0; j < 10; j += 1) {
-            output << (buffer[i + j * 10] == Mimp::Color::Green);
-        }
+    for (int i = 0; i < 100; i += 1) {
+        output << (buffer[i] == Mimp::Color::Green);
     }
 
     ASSERT_EQ(output.str(), correct);
@@ -357,21 +347,279 @@ TEST(FrameBuffer, drawHorizontalLine) {
     auto buffer = fb.getBuffer();
     std::stringstream output;
     std::string correct =
-            "0000000000"\
-            "0000000000"\
-            "0001111110"\
-            "0000000000"\
-            "0000000000"\
-            "0000000000"\
-            "0000000000"\
-            "0000000000"\
-            "0000000000"\
+            "0000000000"
+            "0000000000"
+            "0000000000"
+            "0011111110"
+            "0000000000"
+            "0000000000"
+            "0000000000"
+            "0000000000"
+            "0000000000"
             "0000000000";
 
-    for (int i = 0; i < 10; i += 1) {
-        for (int j = 0; j < 10; j += 1) {
-            output << (buffer[i + j * 10] == Mimp::Color::Green);
-        }
+    for (int i = 0; i < 100; i += 1) {
+        output << (buffer[i] == Mimp::Color::Green);
+    }
+
+    ASSERT_EQ(output.str(), correct);
+}
+
+TEST(FrameBuffer, line1) {
+    Mimp::FrameBuffer fb{{10, 10}, Mimp::Color::Red};
+
+    fb.drawLine({3, 8}, {8, 2}, Mimp::Color::Green, 1);
+
+    auto buffer = fb.getBuffer();
+    std::stringstream output;
+    std::string correct =
+            "0000000000"
+            "0000000000"
+            "0000000010"
+            "0000000100"
+            "0000001000"
+            "0000010000"
+            "0000010000"
+            "0000100000"
+            "0001000000"
+            "0000000000";
+
+    for (int i = 0; i < 100; i += 1) {
+        output << (buffer[i] == Mimp::Color::Green);
+    }
+
+    ASSERT_EQ(output.str(), correct);
+}
+
+TEST(FrameBuffer, line2) {
+    Mimp::FrameBuffer fb{{10, 10}, Mimp::Color::Red};
+
+    fb.drawLine({1, 2}, {7, 8}, Mimp::Color::Green, 1);
+
+    auto buffer = fb.getBuffer();
+    std::stringstream output;
+    std::string correct =
+            "0000000000"
+            "0000000000"
+            "0100000000"
+            "0010000000"
+            "0001000000"
+            "0000100000"
+            "0000010000"
+            "0000001000"
+            "0000000100"
+            "0000000000";
+
+    for (int i = 0; i < 100; i += 1) {
+        output << (buffer[i] == Mimp::Color::Green);
+    }
+
+    ASSERT_EQ(output.str(), correct);
+}
+
+TEST(FrameBuffer, line3) {
+    Mimp::FrameBuffer fb{{10, 10}, Mimp::Color::Red};
+
+    fb.drawLine({1, 2}, {3, 8}, Mimp::Color::Green, 1);
+
+    auto buffer = fb.getBuffer();
+    std::stringstream output;
+    std::string correct =
+            "0000000000"
+            "0000000000"
+            "0100000000"
+            "0100000000"
+            "0010000000"
+            "0010000000"
+            "0010000000"
+            "0001000000"
+            "0001000000"
+            "0000000000";
+
+    for (int i = 0; i < 100; i += 1) {
+        output << (buffer[i] == Mimp::Color::Green);
+    }
+
+    ASSERT_EQ(output.str(), correct);
+}
+
+TEST(FrameBuffer, line4) {
+    Mimp::FrameBuffer fb{{10, 10}, Mimp::Color::Red};
+
+    fb.drawLine({1, 8}, {9, 2}, Mimp::Color::Green, 1);
+
+    auto buffer = fb.getBuffer();
+    std::stringstream output;
+    std::string correct =
+            "0000000000"
+            "0000000000"
+            "0000000001"
+            "0000000010"
+            "0000001100"
+            "0000010000"
+            "0000100000"
+            "0011000000"
+            "0100000000"
+            "0000000000";
+
+    for (int i = 0; i < 100; i += 1) {
+        output << (buffer[i] == Mimp::Color::Green);
+    }
+
+    ASSERT_EQ(output.str(), correct);
+}
+
+TEST(FrameBuffer, line5) {
+    Mimp::FrameBuffer fb{{10, 10}, Mimp::Color::Red};
+
+    fb.drawLine({9, 2}, {1, 8}, Mimp::Color::Green, 1);
+
+    auto buffer = fb.getBuffer();
+    std::stringstream output;
+    std::string correct =
+            "0000000000"
+            "0000000000"
+            "0000000001"
+            "0000000010"
+            "0000001100"
+            "0000010000"
+            "0000100000"
+            "0011000000"
+            "0100000000"
+            "0000000000";
+
+    for (int i = 0; i < 100; i += 1) {
+        output << (buffer[i] == Mimp::Color::Green);
+    }
+
+    ASSERT_EQ(output.str(), correct);
+}
+
+TEST(FrameBuffer, line6) {
+    Mimp::FrameBuffer fb{{10, 10}, Mimp::Color::Red};
+
+    fb.drawLine({9, 8}, {1, 2}, Mimp::Color::Green, 1);
+
+    auto buffer = fb.getBuffer();
+    std::stringstream output;
+    std::string correct =
+            "0000000000"
+            "0000000000"
+            "0100000000"
+            "0011000000"
+            "0000100000"
+            "0000010000"
+            "0000001100"
+            "0000000010"
+            "0000000001"
+            "0000000000";
+
+    for (int i = 0; i < 100; i += 1) {
+        output << (buffer[i] == Mimp::Color::Green);
+    }
+
+    ASSERT_EQ(output.str(), correct);
+}
+
+TEST(FrameBuffer, line7) {
+    Mimp::FrameBuffer fb{{10, 10}, Mimp::Color::Red};
+
+    fb.drawLine({6, 2}, {1, 8}, Mimp::Color::Green, 1);
+
+    auto buffer = fb.getBuffer();
+    std::stringstream output;
+    std::string correct =
+            "0000000000"
+            "0000000000"
+            "0000001000"
+            "0000010000"
+            "0000100000"
+            "0001000000"
+            "0001000000"
+            "0010000000"
+            "0100000000"
+            "0000000000";
+
+    for (int i = 0; i < 100; i += 1) {
+        output << (buffer[i] == Mimp::Color::Green);
+    }
+
+    ASSERT_EQ(output.str(), correct);
+}
+
+TEST(FrameBuffer, line8) {
+    Mimp::FrameBuffer fb{{10, 10}, Mimp::Color::Red};
+
+    fb.drawLine({6, 8}, {1, 1}, Mimp::Color::Green, 1);
+
+    auto buffer = fb.getBuffer();
+    std::stringstream output;
+    std::string correct =
+            "0000000000"
+            "0100000000"
+            "0010000000"
+            "0010000000"
+            "0001000000"
+            "0000100000"
+            "0000010000"
+            "0000010000"
+            "0000001000"
+            "0000000000";
+
+    for (int i = 0; i < 100; i += 1) {
+        output << (buffer[i] == Mimp::Color::Green);
+    }
+
+    ASSERT_EQ(output.str(), correct);
+}
+
+TEST(FrameBuffer, line9) {
+    Mimp::FrameBuffer fb{{10, 10}, Mimp::Color::Red};
+
+    fb.drawLine({6, 5}, {1, 5}, Mimp::Color::Green, 1);
+
+    auto buffer = fb.getBuffer();
+    std::stringstream output;
+    std::string correct =
+            "0000000000"
+            "0000000000"
+            "0000000000"
+            "0000000000"
+            "0000000000"
+            "0111111000"
+            "0000000000"
+            "0000000000"
+            "0000000000"
+            "0000000000";
+
+    for (int i = 0; i < 100; i += 1) {
+        output << (buffer[i] == Mimp::Color::Green);
+    }
+
+    ASSERT_EQ(output.str(), correct);
+}
+
+TEST(FrameBuffer, line10) {
+    Mimp::FrameBuffer fb{{10, 10}, Mimp::Color::Red};
+
+    fb.drawLine({6, 5}, {6, -1}, Mimp::Color::Green, 1);
+
+    auto buffer = fb.getBuffer();
+    std::stringstream output;
+    std::string correct =
+            "0000001000"
+            "0000001000"
+            "0000001000"
+            "0000001000"
+            "0000001000"
+            "0000001000"
+            "0000001000"
+            "0000000000"
+            "0000000000"
+            "0000000000";
+
+    for (int i = 0; i < 100; i += 1) {
+        output << (buffer[i] == Mimp::Color::Green);
     }
 
     ASSERT_EQ(output.str(), correct);
