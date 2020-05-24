@@ -165,6 +165,7 @@ add_executable(
         tst/Exceptions.cpp
         tst/SelectedArea.cpp
         tst/ToolBox.cpp
+        tst/LayerWidget.cpp
         tst/Data/Vector.cpp
         tst/Data/Color.cpp
         tst/Layer/Layer.cpp

@@ -35,3 +35,14 @@ TEST(CanvasWidget, mouseMoveNoClick) {
     cw.mouseMoved({9, 4});
     ASSERT_FALSE(cw.isEdited());
 }
+
+TEST(CanvasWidget, clone) {
+    tgui::Gui gui{};
+    Mimp::ToolBox tb{gui};
+    Mimp::CanvasWidget cw{tb, Mimp::Vector2<unsigned>{10, 10}};
+
+    auto clone = cw.clone();
+    ASSERT_TRUE(clone->getSize().x == 10);
+    ASSERT_TRUE(clone->getSize().y == 10);
+    ASSERT_TRUE(clone->isVisible());
+}
