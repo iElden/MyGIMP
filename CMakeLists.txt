@@ -107,7 +107,7 @@ add_executable(
     MyGimp
     src/main.cpp
     ${MIMP_SRCS}
-	src/ImageOperations/Clipboard/CopyOperation.cpp src/ImageOperations/Clipboard/CopyOperation.hpp)
+	src/ImageOperations/Clipboard/CopyOperation.cpp src/ImageOperations/Clipboard/CopyOperation.hpp src/ImageOperations/Clipboard/CutOperation.cpp src/ImageOperations/Clipboard/CutOperation.hpp)
 
 if (WIN32)
     target_link_libraries(

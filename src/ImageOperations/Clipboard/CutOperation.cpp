@@ -2,19 +2,19 @@
 // Created by Gegel85 on 24/05/2020.
 //
 
-#include "CopyOperation.hpp"
+#include "CutOperation.hpp"
 #include "clip.h"
 #include "../../Utils.hpp"
 
 namespace Mimp
 {
-	CopyOperation::CopyOperation() :
-		ImageOperation({"Edit", "Copy"}, {KEY_C, true, false, false})
+	CutOperation::CutOperation() :
+		ImageOperation({"Edit", "Cut"}, {KEY_X, true, false, false})
 	{
 
 	}
 
-	void CopyOperation::click(tgui::Gui &, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr, Editor &) const
+	void CutOperation::click(tgui::Gui &, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr, Editor &) const
 	{
 		Vector2<int> topLeft = {INT32_MAX, INT32_MAX};
 		Vector2<int> bottomRight = {INT32_MIN, INT32_MIN};
@@ -37,6 +37,7 @@ namespace Mimp
 			auto coord = (pt - topLeft);
 
 			pxBuffer[coord.x + coord.y * size.x] =  layer.buffer.getPixel(pt);
+			layer.buffer.setPixel(pt, Color::Transparent);
 		}
 
 		spec.width = size.x;
