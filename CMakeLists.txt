@@ -180,6 +180,7 @@ add_executable(
         tst/Tools/RectSelectTool.cpp
         tst/Tools/SelectByColorTool.cpp
         tst/Tools/SelectionTool.cpp
+        tst/Tools/Move.cpp
         tst/ImageOperations/ImageOperation.cpp
         tst/ImageOperations/ImageOperationFactory.cpp
         tst/ImageOperations/Selection/DelSelectOperation.cpp

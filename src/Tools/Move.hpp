@@ -13,8 +13,7 @@ namespace Mimp
 {
 	class Move : public Tool {
 	public:
-		//! @brief Constructor of the Pencil Class
-		//! @param toolBox ToolBox to create the Pencil Tool
+		//! @brief Constructor of the Move Class
 		Move();
 
 		//! @brief Handle the mouse dragging of the Tool.
