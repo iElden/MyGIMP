@@ -8,7 +8,7 @@ TEST(OutlineMoreSelectionOperation, click) {
     Mimp::Image i{{10, 10}, lm};
     Mimp::OutlineMoreSelectionOperation omso;
 
-    omso.click(gui, i);
+	omso.click(gui, i, nullptr, <#initializer#>);
 
     auto slider = gui.get<tgui::Slider>("Slider");
     ASSERT_TRUE(slider->getValue() == 0);

@@ -13,10 +13,10 @@ namespace Mimp
 	{
 	}
 
-	void FillSelectionOperation::click(tgui::Gui &gui, Image &image) const
+	void FillSelectionOperation::click(tgui::Gui &gui, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr, Editor &) const
 	{
 		Utils::makeColorPickWindow(gui, [&image](Color color){
-			FillSelectionOperation::_fill(image.getSelectedLayer(), image.selectedArea, color);
+			FillSelectionOperation::_fill(image->getSelectedLayer(), image->selectedArea, color);
 		}, Color::Black);
 	}
 

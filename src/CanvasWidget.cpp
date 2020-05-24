@@ -53,7 +53,7 @@ namespace Mimp
 
 	tgui::Widget::Ptr CanvasWidget::clone() const
 	{
-		return std::shared_ptr<CanvasWidget>(new CanvasWidget(this->_box, this->_size, this->_layers));
+		return CanvasWidget::Ptr(new CanvasWidget(this->_box, this->_size, this->_layers));
 	}
 
 	void CanvasWidget::draw(sf::RenderTarget &target, sf::RenderStates states) const

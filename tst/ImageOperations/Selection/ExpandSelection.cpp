@@ -9,7 +9,7 @@ TEST(ExpandSelection, noSelectedArea) {
     Mimp::ExpandSelection es;
 
     ASSERT_TRUE(i.selectedArea.getPoints().size() == 0);
-    es.click(gui, i);
+	es.click(gui, i, nullptr, <#initializer#>);
     ASSERT_TRUE(i.selectedArea.getPoints().size() == 0);
 }
 
@@ -21,7 +21,7 @@ TEST(ExpandSelection, selectFromWholeArea) {
 
     i.selectedArea.selectAll();
     ASSERT_TRUE(i.selectedArea.getPoints().size() == 100);
-    es.click(gui, i);
+	es.click(gui, i, nullptr, <#initializer#>);
     ASSERT_TRUE(i.selectedArea.getPoints().size() == 100);
 }
 
@@ -33,7 +33,7 @@ TEST(ExpandSelection, selectFromSinglePoint) {
 
     i.selectedArea.add(5, 5);
     ASSERT_TRUE(i.selectedArea.getPoints().size() == 1);
-    es.click(gui, i);
+	es.click(gui, i, nullptr, <#initializer#>);
     ASSERT_TRUE(i.selectedArea.getPoints().size() == 9);
     ASSERT_TRUE(i.selectedArea.pointInMap(5, 5));
     ASSERT_TRUE(i.selectedArea.pointInMap(5, 4));

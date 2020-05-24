@@ -14,10 +14,22 @@
 #include "Selection/ShrinkMoreSelection.hpp"
 #include "Selection/OutlineSelectionOperation.hpp"
 #include "Selection/OutlineMoreSelectionOperation.hpp"
+#include "Clipboard/PasteOperation.hpp"
+#include "Clipboard/CopyOperation.hpp"
+#include "Clipboard/CutOperation.hpp"
 
 namespace Mimp
 {
 	const std::vector<std::function<std::shared_ptr<ImageOperation>()>> ImageOperationFactory::_builders{
+		[]{
+			return std::make_shared<CutOperation>();
+		},
+		[]{
+			return std::make_shared<CopyOperation>();
+		},
+		[]{
+			return std::make_shared<PasteOperation>();
+		},
 		[]{
 			return std::make_shared<SelectAllOperation>();
 		},

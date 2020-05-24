@@ -7,14 +7,16 @@
 
 #include "OutlineSelectionOperation.hpp"
 #include "ExpandSelection.hpp"
+#include "../../CanvasWidget.hpp"
 
 Mimp::OutlineSelectionOperation::OutlineSelectionOperation():
 		ImageOperation({"Selection", "Outline Selection"}, {KEY_O, true, true, false})
 {}
 
-void Mimp::OutlineSelectionOperation::click(tgui::Gui &, Mimp::Image &image) const
+void
+Mimp::OutlineSelectionOperation::click(tgui::Gui &, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr, Editor &) const
 {
-	Mimp::OutlineSelectionOperation::_run(image);
+	Mimp::OutlineSelectionOperation::_run(*image);
 }
 
 void Mimp::OutlineSelectionOperation::_run(Mimp::Image &image, int range) noexcept

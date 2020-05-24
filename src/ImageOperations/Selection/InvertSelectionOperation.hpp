@@ -9,6 +9,7 @@
 
 
 #include "../ImageOperation.hpp"
+#include "../../Editor.hpp"
 
 namespace Mimp
 {
@@ -22,7 +23,8 @@ namespace Mimp
         //! @details Invert the selection on the image.
         //! @param gui The global gui (unused).
         //! @param image The image to edit.
-		void click(tgui::Gui &gui, Image &image) const override;
+	void click(tgui::Gui &gui, CanvasWidget::Ptr image,
+		   tgui::ChildWindow::Ptr window, Mimp::Editor &editor) const override;
 	};
 }
 

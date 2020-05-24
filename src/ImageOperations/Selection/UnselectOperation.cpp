@@ -5,6 +5,7 @@
 ** UnselectOperation.cpp
 */
 #include "UnselectOperation.hpp"
+#include "../../CanvasWidget.hpp"
 
 Mimp::UnselectOperation::UnselectOperation():
 	ImageOperation({"Selection", "Unselect"}, {KEY_D, true, false, false})
@@ -12,7 +13,7 @@ Mimp::UnselectOperation::UnselectOperation():
 
 }
 
-void Mimp::UnselectOperation::click(tgui::Gui &, Mimp::Image &image) const
+void Mimp::UnselectOperation::click(tgui::Gui &, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr, Editor &) const
 {
-	image.selectedArea.clear();
+	image->selectedArea.clear();
 }

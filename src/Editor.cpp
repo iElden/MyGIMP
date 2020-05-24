@@ -185,7 +185,7 @@ namespace Mimp
 					};
 
 					try {
-						this->_keysImgOps.at(comb)->click(this->_gui, *this->_getSelectedCanvas());
+						this->_keysImgOps.at(comb)->click(this->_gui, this->_getSelectedCanvas(), this->_selectedImageWindow, *this);
 					} catch (std::out_of_range &) {}
 				} else if (event.type == sf::Event::MouseWheelScrolled) {
 					auto canvas = this->_getSelectedCanvas();
@@ -345,7 +345,7 @@ namespace Mimp
 			menu->addMenuItem(hierarchy);
 			menu->setMenuItemEnabled(hierarchy, false);
 			menu->connectMenuItem(hierarchy, [this, imgOp]{
-				imgOp->click(this->_gui, *this->_getSelectedCanvas());
+				imgOp->click(this->_gui, this->_getSelectedCanvas(), this->_selectedImageWindow, *this);
 			});
 		}
 

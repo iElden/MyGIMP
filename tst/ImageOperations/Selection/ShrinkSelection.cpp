@@ -10,7 +10,7 @@ TEST(ShrinkSelection, noSelection) {
 
     ASSERT_TRUE(i.selectedArea.getPoints().size() == 0);
 
-    sso.click(gui, i);
+	sso.click(gui, i, nullptr, <#initializer#>);
 
     ASSERT_TRUE(i.selectedArea.getPoints().size() == 0);
 }
@@ -24,7 +24,7 @@ TEST(ShrinkSelection, onlyOnePixel) {
     i.selectedArea.add(5, 5);
     ASSERT_TRUE(i.selectedArea.getPoints().size() == 1);
 
-    sso.click(gui, i);
+	sso.click(gui, i, nullptr, <#initializer#>);
 
     ASSERT_TRUE(i.selectedArea.getPoints().size() == 0);
     ASSERT_FALSE(i.selectedArea.pointInMap(5, 5));
@@ -40,7 +40,7 @@ TEST(ShrinkSelection, wholeLayer) {
     i.selectedArea.selectAll();
     ASSERT_TRUE(i.selectedArea.getPoints().size() == 100);
 
-    sso.click(gui, i);
+	sso.click(gui, i, nullptr, <#initializer#>);
 
     ASSERT_TRUE(i.selectedArea.getPoints().size() == 64);
 }

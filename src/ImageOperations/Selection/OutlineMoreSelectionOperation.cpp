@@ -12,9 +12,9 @@ Mimp::OutlineMoreSelectionOperation::OutlineMoreSelectionOperation():
 		ImageOperation({"Selection", "Outline with thickness of ..."}, {KEY_O, true, true, true})
 {}
 
-void Mimp::OutlineMoreSelectionOperation::click(tgui::Gui &gui, Mimp::Image &image) const
+void Mimp::OutlineMoreSelectionOperation::click(tgui::Gui &gui, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr, Mimp::Editor &) const
 {
 	Utils::makeSliderWindow(gui, [&image](unsigned short value){
-		OutlineSelectionOperation::_run(image, value);
+		OutlineSelectionOperation::_run(*image, value);
 	});
 }

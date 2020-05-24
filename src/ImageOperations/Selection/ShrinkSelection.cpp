@@ -5,6 +5,7 @@
 ** ShrinkSelection.cpp
 */
 #include "ShrinkSelection.hpp"
+#include "../../CanvasWidget.hpp"
 
 Mimp::ShrinkSelection::ShrinkSelection():
 		ImageOperation({"Selection", "Shrink Selection"}, {KEY_K, true, true, false})
@@ -26,7 +27,7 @@ void Mimp::ShrinkSelection::_run(Mimp::Image &image, int range) noexcept
 		ShrinkSelection::_removePointIfNoPointNearby(pt.x, pt.y, image, selectedArea, range);
 }
 
-void Mimp::ShrinkSelection::click(tgui::Gui &, Mimp::Image &image) const
+void Mimp::ShrinkSelection::click(tgui::Gui &, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr, Editor &) const
 {
-	ShrinkSelection::_run(image);
+	ShrinkSelection::_run(*image);
 }

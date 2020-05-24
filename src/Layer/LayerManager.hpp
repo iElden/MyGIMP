@@ -145,6 +145,14 @@ namespace Mimp
 		//! @param data Data of the Image.
 		void importImageFromMemory(const std::string &data);
 
+		//! @brief Import an Image from a path
+		//! @param path Path of the Mimp Image to import
+		void addImageFromFile(const std::string &path);
+
+		//! @brief Import an Image from a path
+		//! @param data Data of the Image.
+		void addImageFromMemory(const std::string &data);
+
 		//! @brief Is the Mimp Image Valid ?
 		//! @param stream Stream of the Image to verify
 		//! @return bool Validity of the Image

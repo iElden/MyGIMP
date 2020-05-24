@@ -11,6 +11,6 @@ TEST(UnselectOperation, wholeLayer) {
     i.selectedArea.selectAll();
     ASSERT_TRUE(i.selectedArea.getPoints().size() == 100);
 
-    uo.click(gui, i);
+	uo.click(gui, i, nullptr, <#initializer#>);
     ASSERT_TRUE(i.selectedArea.getPoints().size() == 0);
 }
