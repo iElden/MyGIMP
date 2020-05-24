@@ -1,9 +1,9 @@
 //
-// Created by Gegel85 on 07/04/2020.
+// Created by Gegel85 on 24/05/2020.
 //
 
-#ifndef MYGIMP_PENCIL_HPP
-#define MYGIMP_PENCIL_HPP
+#ifndef MYGIMP_MOVE_HPP
+#define MYGIMP_MOVE_HPP
 
 
 #include "Tool.hpp"
@@ -11,18 +11,11 @@
 
 namespace Mimp
 {
-	//! @brief Define a Pencil
-	class Pencil : public Tool {
-	private:
-		//! @brief Reference of the Toolbox
-		ToolBox &_box;
-		unsigned short _radius = 5;
-		DrawShape _shape = CIRCLE;
-
+	class Move : public Tool {
 	public:
 		//! @brief Constructor of the Pencil Class
 		//! @param toolBox ToolBox to create the Pencil Tool
-		Pencil(ToolBox &toolBox);
+		Move();
 
 		//! @brief Handle the mouse dragging of the Tool.
 		//! @param oldPos Old position of the mouse
@@ -44,4 +37,4 @@ namespace Mimp
 }
 
 
-#endif //MYGIMP_PENCIL_HPP
+#endif //MYGIMP_MOVE_HPP
