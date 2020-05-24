@@ -96,7 +96,12 @@ set(MIMP_SRCS
     src/ImageOperations/Selection/ShrinkMoreSelection.hpp
     src/ImageOperations/Selection/OutlineSelectionOperation.cpp
     src/ImageOperations/Selection/OutlineSelectionOperation.hpp
-        src/ImageOperations/Clipboard/PasteOperation.cpp src/ImageOperations/Clipboard/PasteOperation.hpp)
+    src/ImageOperations/Clipboard/PasteOperation.cpp
+    src/ImageOperations/Clipboard/PasteOperation.hpp
+    src/ImageOperations/Clipboard/CopyOperation.cpp
+    src/ImageOperations/Clipboard/CopyOperation.hpp
+    src/ImageOperations/Clipboard/CutOperation.cpp
+    src/ImageOperations/Clipboard/CutOperation.hpp)
 
 find_library(PNG_LIBRARY png)
 
@@ -107,7 +112,7 @@ add_executable(
     MyGimp
     src/main.cpp
     ${MIMP_SRCS}
-	src/ImageOperations/Clipboard/CopyOperation.cpp src/ImageOperations/Clipboard/CopyOperation.hpp src/ImageOperations/Clipboard/CutOperation.cpp src/ImageOperations/Clipboard/CutOperation.hpp)
+	)
 
 if (WIN32)
     target_link_libraries(
@@ -198,6 +203,7 @@ if (WIN32)
             gtest
             gcov
             ${PNG_LIBRARY}
+            xcb
             ${clip_LIBRARIES}
     )
 else ()
@@ -213,6 +219,7 @@ else ()
             gtest
             gcov
             ${PNG_LIBRARY}
+            xcb
             ${clip_LIBRARIES}
     )
 endif ()

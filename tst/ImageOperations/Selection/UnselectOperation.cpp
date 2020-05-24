@@ -1,16 +1,19 @@
 #include <gtest/gtest.h>
 #include <TGUI/TGUI.hpp>
 #include "../../../src/ImageOperations/Selection/UnselectOperation.hpp"
+#include "../../../src/Editor.hpp"
 
 TEST(UnselectOperation, wholeLayer) {
     tgui::Gui gui{};
-    Mimp::LayerManager lm{{10, 10}, 1, Mimp::Color::Red};
-    Mimp::Image i{{10, 10}, lm};
+    Mimp::ToolBox toolBox{gui};
+    Mimp::Editor e{};
+    Mimp::CanvasWidget::Ptr cw = Mimp::CanvasWidget::create(toolBox, Mimp::Vector2<unsigned int>{10, 10});
     Mimp::UnselectOperation uo;
 
-    i.selectedArea.selectAll();
-    ASSERT_TRUE(i.selectedArea.getPoints().size() == 100);
 
-	uo.click(gui, i, nullptr, <#initializer#>);
-    ASSERT_TRUE(i.selectedArea.getPoints().size() == 0);
+    cw->selectedArea.selectAll();
+    ASSERT_TRUE(cw->selectedArea.getPoints().size() == 100);
+
+	uo.click(gui, cw, nullptr, e);
+    ASSERT_TRUE(cw->selectedArea.getPoints().size() == 0);
 }

@@ -4,12 +4,13 @@
 
 TEST(SelectAllOperation, wholeLayer) {
     tgui::Gui gui{};
-    Mimp::LayerManager lm{{10, 10}, 1, Mimp::Color::Red};
-    Mimp::Image i{{10, 10}, lm};
+    Mimp::ToolBox toolBox{gui};
+    Mimp::Editor e{};
+    Mimp::CanvasWidget::Ptr cw = Mimp::CanvasWidget::create(toolBox, Mimp::Vector2<unsigned int>{10, 10});
     Mimp::SelectAllOperation sao;
 
-    ASSERT_TRUE(i.selectedArea.getPoints().size() == 0);
+    ASSERT_TRUE(cw->selectedArea.getPoints().size() == 0);
 
-	sao.click(gui, i, nullptr, <#initializer#>);
-    ASSERT_TRUE(i.selectedArea.getPoints().size() == 100);
+	sao.click(gui, cw, nullptr, e);
+    ASSERT_TRUE(cw->selectedArea.getPoints().size() == 100);
 }
