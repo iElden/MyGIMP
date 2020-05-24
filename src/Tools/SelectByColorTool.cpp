@@ -16,7 +16,7 @@ void Mimp::SelectByColorTool::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick c
 		auto &layer = image.getSelectedLayer();
 
 		image.selectedArea.clear();
-		this->_updateSelectedArea(image, layer.buffer.getPixel(pos - layer.pos));
+		this->_updateSelectedArea(image, layer.getFrameBuffer().getPixel(pos - layer.pos));
 	}
 }
 
@@ -27,7 +27,7 @@ void Mimp::SelectByColorTool::_updateSelectedArea(Image &image, const Color &tar
 
 	for (unsigned j = 0; j < max_y; j++)
 		for (unsigned i = 0; i < max_x; i++)
-			if (image.getSelectedLayer().buffer[j * max_x + i] == target_color)
+			if (image.getSelectedLayer().getFrameBuffer()[j * max_x + i] == target_color)
 				image.selectedArea.add(i, j);
 }
 

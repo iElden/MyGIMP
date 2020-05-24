@@ -65,7 +65,7 @@ TEST(LayerManager, selectLayer) {
     ASSERT_EQ(l1.getSize().y, l2.getSize().y);
 
     for (int i = 0; i < l1.getSize().x * l1.getSize().y; i += 1)
-        ASSERT_EQ(l1.buffer[i], l2.buffer[i]);
+        ASSERT_EQ(l1.getFrameBuffer()[i], l2.getFrameBuffer()[i]);
 }
 
 TEST(LayerManager, deleteLayerOneLayer) {

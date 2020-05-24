@@ -68,7 +68,7 @@ namespace Mimp
 		this->_setBusy();
 		for (auto &layer : this->_layers)
 			if (layer->visible)
-				buffer.drawFrameBuffer(layer->pos, layer->buffer);
+				buffer.drawFrameBuffer(layer->pos, layer->getFrameBuffer());
 		this->_unsetBusy();
 	}
 
@@ -311,7 +311,7 @@ namespace Mimp
 			layer->attributes.visible = layerObject->visible;
 			layer->attributes.locked = layerObject->locked;
 
-			std::memcpy(layer->pixels, layerObject->buffer.getBuffer(), layer->size.x * layer->size.y * sizeof(*layer->pixels));
+			std::memcpy(layer->pixels, layerObject->getFrameBuffer().getBuffer(), layer->size.x * layer->size.y * sizeof(*layer->pixels));
 
 			currentLayer = reinterpret_cast<char *>(&layer->pixels[layer->size.x * layer->size.y]);
 		}

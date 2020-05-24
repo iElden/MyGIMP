@@ -6,6 +6,7 @@
 #define MYGIMP_LAYER_HPP
 
 #include <string>
+#include <memory>
 #include "../Data/Vector2.hpp"
 #include "../Data/Color.hpp"
 #include "FrameBuffer.hpp"
@@ -16,7 +17,7 @@ namespace Mimp
 	//! @details FrameBuffer that you can put above the main Framebuffer.
 	struct Layer {
 		//! @brief FrameBuffer of the layer
-		FrameBuffer buffer;
+		std::shared_ptr<FrameBuffer> buffer;
 		//! @brief Is the layer locked on the screen ?
 		bool locked = false;
 		//! @brief Is the layer visible on the screen ?
@@ -26,6 +27,7 @@ namespace Mimp
 		//! @brief Position of the layer
 		Vector2<int> pos = {0, 0};
 
+		FrameBuffer getFrameBuffer() noexcept;
 		//! @brief Constructor of the Layer
 		//! @param size Size of the layer
 		//! @param buffer Framebuffer of the layer

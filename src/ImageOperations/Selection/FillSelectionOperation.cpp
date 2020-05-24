@@ -24,6 +24,6 @@ namespace Mimp
 	{
 		if (area.isAnAreaSelected())
 			for (const auto &pt : area.getPoints())
-				layer.buffer.setPixel(pt, color);
+				layer.getFrameBuffer().setPixel(pt, color);
 	}
 }

@@ -25,13 +25,13 @@ TEST(Fill, fillBlankImageClick) {
     Mimp::Image image({10, 10}, lm);
 
     ASSERT_EQ(image.getLayers().size(), 1);
-    auto buffer = image.getLayers()[0].buffer.getBuffer();
+    auto buffer = image.getLayers()[0].getFrameBuffer().getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
     }
 
     fill.onClick({3, 3}, Mimp::MIMP_LEFT_CLICK, image);
-    buffer = image.getLayers()[0].buffer.getBuffer();
+    buffer = image.getLayers()[0].getFrameBuffer().getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::Black);
     }
@@ -45,13 +45,13 @@ TEST(Fill, fillBlankImageClickOutOfBound) {
     Mimp::Image image({10, 10}, lm);
 
     ASSERT_EQ(image.getLayers().size(), 1);
-    auto buffer = image.getLayers()[0].buffer.getBuffer();
+    auto buffer = image.getLayers()[0].getFrameBuffer().getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
     }
 
     fill.onClick({35, 3}, Mimp::MIMP_LEFT_CLICK, image);
-    buffer = image.getLayers()[0].buffer.getBuffer();
+    buffer = image.getLayers()[0].getFrameBuffer().getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
     }
@@ -65,13 +65,13 @@ TEST(Fill, fillBlankImageClickSameColor) {
     Mimp::Image image({10, 10}, lm);
 
     ASSERT_EQ(image.getLayers().size(), 1);
-    auto buffer = image.getLayers()[0].buffer.getBuffer();
+    auto buffer = image.getLayers()[0].getFrameBuffer().getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
     }
 
     fill.onClick({3, 3}, Mimp::MIMP_RIGHT_CLICK, image);
-    buffer = image.getLayers()[0].buffer.getBuffer();
+    buffer = image.getLayers()[0].getFrameBuffer().getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
     }
@@ -85,13 +85,13 @@ TEST(Fill, fillBlankImageDrag) {
     Mimp::Image image({10, 10}, lm);
 
     ASSERT_EQ(image.getLayers().size(), 1);
-    auto buffer = image.getLayers()[0].buffer.getBuffer();
+    auto buffer = image.getLayers()[0].getFrameBuffer().getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
     }
 
     fill.onMouseDrag({0, 0}, {3, 3}, Mimp::MIMP_RIGHT_CLICK, image);
-    buffer = image.getLayers()[0].buffer.getBuffer();
+    buffer = image.getLayers()[0].getFrameBuffer().getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
     }
@@ -106,14 +106,14 @@ TEST(Fill, fillWithTransparentColor) {
     Mimp::Color c(0x11223300);
 
     ASSERT_EQ(image.getLayers().size(), 1);
-    auto buffer = image.getLayers()[0].buffer.getBuffer();
+    auto buffer = image.getLayers()[0].getFrameBuffer().getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::Red);
     }
 
     toolbox.setSelectedColor(Mimp::MIMP_RIGHT_CLICK, c);
     fill.onClick({3, 3}, Mimp::MIMP_RIGHT_CLICK, image);
-    buffer = image.getLayers()[0].buffer.getBuffer();
+    buffer = image.getLayers()[0].getFrameBuffer().getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == c);
     }
@@ -128,13 +128,13 @@ TEST(Fill, fillWhenLayerIsLocked) {
 
     ASSERT_EQ(image.getLayers().size(), 1);
     image.getLayers()[0].locked = true;
-    auto buffer = image.getLayers()[0].buffer.getBuffer();
+    auto buffer = image.getLayers()[0].getFrameBuffer().getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::Red);
     }
 
     fill.onClick({3, 3}, Mimp::MIMP_LEFT_CLICK, image);
-    buffer = image.getLayers()[0].buffer.getBuffer();
+    buffer = image.getLayers()[0].getFrameBuffer().getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::Red);
     }

@@ -21,6 +21,6 @@ TEST(Layer, layerWithBuffer) {
     const Mimp::Color buffer[100] = {Mimp::Color::Green};
     Mimp::Layer layer({10, 10}, buffer);
 
-    ASSERT_EQ(layer.buffer.getBuffer()[0], buffer[0]);
+    ASSERT_EQ(layer.getFrameBuffer().getBuffer()[0], buffer[0]);
 }
 

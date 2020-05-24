@@ -8,7 +8,7 @@ TEST(DelSelectOperation, wholeLayer) {
     Mimp::Image i{{10, 10}, lm};
     Mimp::DelSelectionOperation dso;
 
-    auto buffer = i.getSelectedLayer().buffer.getBuffer();
+    auto buffer = i.getSelectedLayer().getFrameBuffer().getBuffer();
     for (int i = 0; i < 100; i += 1)
         ASSERT_TRUE(buffer[i] == Mimp::Color::Red);
 
@@ -16,7 +16,7 @@ TEST(DelSelectOperation, wholeLayer) {
     ASSERT_TRUE(i.selectedArea.getPoints().size() == 100);
 
     dso.click(gui, i);
-    buffer = i.getSelectedLayer().buffer.getBuffer();
+    buffer = i.getSelectedLayer().getFrameBuffer().getBuffer();
     for (int i = 0; i < 100; i += 1)
         ASSERT_TRUE(buffer[i] == Mimp::Color::Transparent);
 

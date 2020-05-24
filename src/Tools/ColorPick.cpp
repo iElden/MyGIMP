@@ -14,7 +14,7 @@ Mimp::ColorPick::ColorPick(Mimp::ToolBox &toolBox):
 void Mimp::ColorPick::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick click, Mimp::Image &image)
 {
 	auto &layer = image.getSelectedLayer();
-	Color color = layer.buffer.getPixel(pos - layer.pos);
+	Color color = layer.getFrameBuffer().getPixel(pos - layer.pos);
 
 	this->_toolBox.setSelectedColor(click, color);
 }

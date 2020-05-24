@@ -36,7 +36,7 @@ namespace Mimp
 		pos.x += (factorX / factor - 1) * this->m_size.x.getValue() / (2.f * size.y / size.x);
 		pos.y += (factorY / factor - 1) * this->m_size.y.getValue() / (2.f * size.x / size.y);
 		this->_drawBuffer.create(size.x, size.y);
-		this->_drawBuffer.update(this->_layer.buffer.getDrawBuffer(), size.x, size.y, 0, 0);
+		this->_drawBuffer.update(this->_layer.getFrameBuffer().getDrawBuffer(), size.x, size.y, 0, 0);
 		states.transform.translate(pos);
 		sprite.setTexture(this->_drawBuffer, true);
 		sprite.setScale({

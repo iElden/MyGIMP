@@ -54,7 +54,7 @@ TEST(SelectByColorTool, selectLayerWithColorWithoutAPixel) {
     Mimp::LayerManager lm({10, 10}, 1, Mimp::Color::Black);
     Mimp::Image image({10, 10}, lm);
 
-    image.getLayers()[0].buffer.drawPixel({3, 8}, Mimp::Color::Magenta);
+    image.getLayers()[0].getFrameBuffer().drawPixel({3, 8}, Mimp::Color::Magenta);
     ASSERT_TRUE(image.selectedArea.getPoints().size() == 0);
     sbct.onClick({0, 0}, Mimp::MIMP_LEFT_CLICK, image);
     ASSERT_TRUE(image.selectedArea.getPoints().size() == 99);
@@ -69,7 +69,7 @@ TEST(SelectByColorTool, selectLayerByAPixelOnly) {
     Mimp::LayerManager lm({10, 10}, 1, Mimp::Color::Black);
     Mimp::Image image({10, 10}, lm);
 
-    image.getLayers()[0].buffer.drawPixel({3, 8}, Mimp::Color::Magenta);
+    image.getLayers()[0].getFrameBuffer().drawPixel({3, 8}, Mimp::Color::Magenta);
     ASSERT_TRUE(image.selectedArea.getPoints().size() == 0);
     sbct.onClick({3, 8}, Mimp::MIMP_LEFT_CLICK, image);
     ASSERT_TRUE(image.selectedArea.getPoints().size() == 1);

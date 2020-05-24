@@ -8,24 +8,29 @@
 namespace Mimp
 {
 	Layer::Layer(Vector2<unsigned int> size, const Color *buffer) :
-		buffer(size, buffer)
+		buffer(std::make_shared<FrameBuffer>(size, buffer))
 	{
 		std::memset(this->name, 0, sizeof(this->name));
 	}
 
 	Layer::Layer(Vector2<unsigned int> size, const Color &defaultColor) :
-		buffer(size, defaultColor)
+		buffer(std::make_shared<FrameBuffer>(size, defaultColor))
 	{
 		std::memset(this->name, 0, sizeof(this->name));
 	}
 
 	Vector2<unsigned int> Layer::getSize() const noexcept
 	{
-		return this->buffer.getSize();
+		return this->buffer->getSize();
 	}
 
 	bool Layer::isLocked() const noexcept
 	{
 		return this->locked || !this->visible;
+	}
+
+	FrameBuffer Layer::getFrameBuffer() noexcept
+	{
+		return *this->buffer;
 	}
 }

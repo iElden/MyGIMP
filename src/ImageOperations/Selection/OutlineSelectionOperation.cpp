@@ -12,7 +12,7 @@ Mimp::OutlineSelectionOperation::OutlineSelectionOperation():
 		ImageOperation({"Selection", "Outline Selection"}, {KEY_O, true, true, false})
 {}
 
-void Mimp::OutlineSelectionOperation::click(tgui::Gui &gui, Mimp::Image &image) const
+void Mimp::OutlineSelectionOperation::click(tgui::Gui &, Mimp::Image &image) const
 {
 	Mimp::OutlineSelectionOperation::_run(image);
 }

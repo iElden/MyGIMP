@@ -28,7 +28,7 @@ TEST(Pencil, onClick) {
     float radius = pencil.getParametersPanel()->get<tgui::Slider>("Radius")->getValue();
 
     ASSERT_EQ(image.getLayers().size(), 1);
-    auto buffer = image.getLayers()[0].buffer.getBuffer();
+    auto buffer = image.getLayers()[0].getFrameBuffer().getBuffer();
     for (int i = 0; i < size.x; i += 1) {
         for (int j = 0; j < size.y; j += 1) {
             ASSERT_TRUE(buffer[i + size.x * j] == Mimp::Color::Magenta);
@@ -37,7 +37,7 @@ TEST(Pencil, onClick) {
 
     pencil.onClick(erasePos, Mimp::MIMP_LEFT_CLICK, image);
 
-    buffer = image.getLayers()[0].buffer.getBuffer();
+    buffer = image.getLayers()[0].getFrameBuffer().getBuffer();
     for (int i = 0; i < size.x; i += 1) {
         for (int j = 0; j < size.y; j += 1) {
             if (i >= erasePos.x - 1 && i < erasePos.x + radius - 2
@@ -62,7 +62,7 @@ TEST(Pencil, onDrag) {
     float radius = pencil.getParametersPanel()->get<tgui::Slider>("Radius")->getValue();
 
     ASSERT_EQ(image.getLayers().size(), 1);
-    auto buffer = image.getLayers()[0].buffer.getBuffer();
+    auto buffer = image.getLayers()[0].getFrameBuffer().getBuffer();
     for (int i = 0; i < size.x; i += 1) {
         for (int j = 0; j < size.y; j += 1) {
             ASSERT_TRUE(buffer[i + size.x * j] == Mimp::Color::Magenta);
@@ -71,7 +71,7 @@ TEST(Pencil, onDrag) {
 
     pencil.onMouseDrag(erasePosStart, erasePosEnd, Mimp::MIMP_LEFT_CLICK, image);
 
-    buffer = image.getLayers()[0].buffer.getBuffer();
+    buffer = image.getLayers()[0].getFrameBuffer().getBuffer();
     for (int i = 0; i < size.x; i += 1) {
         for (int j = 0; j < size.y; j += 1) {
             if (i >= erasePosStart.x - 1 && i < erasePosEnd.x + radius - 2
@@ -95,7 +95,7 @@ TEST(Pencil, onClickWithLockedLayer) {
     float radius = pencil.getParametersPanel()->get<tgui::Slider>("Radius")->getValue();
 
     ASSERT_EQ(image.getLayers().size(), 1);
-    auto buffer = image.getLayers()[0].buffer.getBuffer();
+    auto buffer = image.getLayers()[0].getFrameBuffer().getBuffer();
     for (int i = 0; i < size.x; i += 1) {
         for (int j = 0; j < size.y; j += 1) {
             ASSERT_TRUE(buffer[i + size.x * j] == Mimp::Color::Magenta);
@@ -105,7 +105,7 @@ TEST(Pencil, onClickWithLockedLayer) {
     image.getLayers()[0].locked = true;
     pencil.onClick(erasePos, Mimp::MIMP_LEFT_CLICK, image);
 
-    buffer = image.getLayers()[0].buffer.getBuffer();
+    buffer = image.getLayers()[0].getFrameBuffer().getBuffer();
     for (int i = 0; i < size.x; i += 1) {
         for (int j = 0; j < size.y; j += 1) {
             ASSERT_TRUE(buffer[i + size.x * j] == Mimp::Color::Magenta);
@@ -125,7 +125,7 @@ TEST(Pencil, onDragWithLockedLayer) {
     float radius = pencil.getParametersPanel()->get<tgui::Slider>("Radius")->getValue();
 
     ASSERT_EQ(image.getLayers().size(), 1);
-    auto buffer = image.getLayers()[0].buffer.getBuffer();
+    auto buffer = image.getLayers()[0].getFrameBuffer().getBuffer();
     for (int i = 0; i < size.x; i += 1) {
         for (int j = 0; j < size.y; j += 1) {
             ASSERT_TRUE(buffer[i + size.x * j] == Mimp::Color::Magenta);
@@ -135,7 +135,7 @@ TEST(Pencil, onDragWithLockedLayer) {
     image.getLayers()[0].locked = true;
     pencil.onMouseDrag(erasePosStart, erasePosEnd, Mimp::MIMP_LEFT_CLICK, image);
 
-    buffer = image.getLayers()[0].buffer.getBuffer();
+    buffer = image.getLayers()[0].getFrameBuffer().getBuffer();
     for (int i = 0; i < size.x; i += 1) {
         for (int j = 0; j < size.y; j += 1) {
             ASSERT_TRUE(buffer[i + size.x * j] == Mimp::Color::Magenta);
