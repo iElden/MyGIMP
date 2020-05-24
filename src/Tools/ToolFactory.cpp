@@ -11,6 +11,7 @@
 #include "SelectByColorTool.hpp"
 #include "EllipseSelectionTool.hpp"
 #include "Eraser.hpp"
+#include "Move.hpp"
 
 namespace Mimp
 {
@@ -38,6 +39,9 @@ namespace Mimp
 		},
 		[](ToolBox &box){
 			return std::make_shared<Eraser>(box);
+		},
+		[](ToolBox &){
+			return std::make_shared<Move>();
 		}
 	};
 

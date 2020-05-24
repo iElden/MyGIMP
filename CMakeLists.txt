@@ -101,7 +101,13 @@ set(MIMP_SRCS
     src/ImageOperations/Clipboard/CopyOperation.cpp
     src/ImageOperations/Clipboard/CopyOperation.hpp
     src/ImageOperations/Clipboard/CutOperation.cpp
-    src/ImageOperations/Clipboard/CutOperation.hpp)
+    src/ImageOperations/Clipboard/CutOperation.hpp
+    src/ImageOperations/Clipboard/CopyOperation.cpp
+    src/ImageOperations/Clipboard/CopyOperation.hpp
+    src/ImageOperations/Clipboard/CutOperation.cpp
+    src/ImageOperations/Clipboard/CutOperation.hpp
+    src/Tools/Move.cpp
+    src/Tools/Move.hpp)
 
 find_library(PNG_LIBRARY png)
 
@@ -112,7 +118,7 @@ add_executable(
     MyGimp
     src/main.cpp
     ${MIMP_SRCS}
-	)
+)
 
 if (WIN32)
     target_link_libraries(
