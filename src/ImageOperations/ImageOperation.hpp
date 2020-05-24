@@ -8,9 +8,11 @@
 
 #include <TGUI/Gui.hpp>
 #include "../Image.hpp"
+#include "../CanvasWidget.hpp"
 
 namespace Mimp
 {
+	class Editor;
 	enum Key {
 		KEY_UNKNOWN = -1,
 		KEY_A,
@@ -70,25 +72,25 @@ namespace Mimp
 		std::string toString() const;
 	};
 
-    //! @brief Define the ImageOperation base class.
-    class ImageOperation {
+	//! @brief Define the ImageOperation base class.
+	class ImageOperation {
 	private:
 		std::vector<std::string> _hierarchy;
 		std::optional<KeyCombination> _keys;
 
 	protected:
-	    //! @brief Constructor of ImageOperation
-        //! @param hierarchy A vector of the hierarchy (ie : Menu title -> operation name)
+		//! @brief Constructor of ImageOperation
+		//! @param hierarchy A vector of the hierarchy (ie : Menu title -> operation name)
 		ImageOperation(const std::vector<std::string> &&hierarchy);
 
-        //! @brief Constructor of ImageOperation
-        //! @param hierarchy A vector of the hierarchy (ie : Menu title -> operation name)
-        //! @param keys The key combination to invoke the operation.
+		//! @brief Constructor of ImageOperation
+		//! @param hierarchy A vector of the hierarchy (ie : Menu title -> operation name)
+		//! @param keys The key combination to invoke the operation.
 		ImageOperation(const std::vector<std::string> &&hierarchy, const KeyCombination &keys);
 
 	public:
-	    //! @brief Handles the click. Must be override.
-		virtual void click(tgui::Gui &, Image &) const = 0;
+		//! @brief Handles the click. Must be override.
+		virtual void click(tgui::Gui &gui, CanvasWidget::Ptr, tgui::ChildWindow::Ptr window, Mimp::Editor &editor) const = 0;
 
 		//! @brief Get the hierarchy of a menu item.
 		//! @return A vector of all the menu hierarchy.

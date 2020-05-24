@@ -248,7 +248,11 @@ namespace Mimp
 		auto &layer = this->addLayer(Layer{size, pixelBuffer});
 
 		delete[] pixelBuffer;
+#ifdef _WIN32
+		sprintf(layer.name, "Layer %llu", this->_layers.size());
+#else
 		sprintf(layer.name, "Layer %lu", this->_layers.size());
+#endif
 	}
 
 	void LayerManager::addImageFromMemory(const std::string &data)
@@ -281,7 +285,11 @@ namespace Mimp
 		auto &layer = this->addLayer(Layer{size, pixelBuffer});
 
 		delete[] pixelBuffer;
+#ifdef _WIN32
+		sprintf(layer.name, "Layer %llu", this->_layers.size());
+#else
 		sprintf(layer.name, "Layer %lu", this->_layers.size());
+#endif
 	}
 
 	Vector2<unsigned> LayerManager::getSize() const

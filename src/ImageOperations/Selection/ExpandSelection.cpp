@@ -6,6 +6,7 @@
 */
 #include "ExpandSelection.hpp"
 #include "../../Utils.hpp"
+#include "../../CanvasWidget.hpp"
 
 
 Mimp::ExpandSelection::ExpandSelection():
@@ -32,7 +33,7 @@ void Mimp::ExpandSelection::_run(Mimp::Image &image, int range) noexcept
 	}
 }
 
-void Mimp::ExpandSelection::click(tgui::Gui &, Mimp::Image &image) const
+void Mimp::ExpandSelection::click(tgui::Gui &, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr, Editor &) const
 {
-	ExpandSelection::_run(image);
+	ExpandSelection::_run(*image);
 }

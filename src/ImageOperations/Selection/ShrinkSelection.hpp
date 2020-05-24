@@ -27,7 +27,7 @@ namespace Mimp {
         //! @details Shrink the selection on the image.
         //! @param gui The global gui (unused).
         //! @param image The image to edit.
-		void click(tgui::Gui &gui, Image &image) const override;
+	void click(tgui::Gui &gui, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr window, Editor &editor) const override;
 	};
 }
 

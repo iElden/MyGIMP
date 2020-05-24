@@ -7,13 +7,14 @@
 
 
 #include "../ImageOperation.hpp"
+#include "../../CanvasWidget.hpp"
 
 namespace Mimp
 {
 	class PasteOperation : public ImageOperation {
 	public:
 		PasteOperation();
-		void click(tgui::Gui &gui, Image &image) const override;
+		void click(tgui::Gui &gui, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr window, Editor &editor) const override;
 	};
 }
 

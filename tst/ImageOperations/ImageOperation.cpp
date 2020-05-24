@@ -54,7 +54,7 @@ public:
     explicit IOTest(const std::vector<std::string> &&hierarchy, const Mimp::KeyCombination &keys) : Mimp::ImageOperation(
             static_cast<const std::vector<std::string> &&>(hierarchy), keys) {};
 private:
-    void click(tgui::Gui &, Mimp::Image &) const override {};
+    void click(tgui::Gui &gui, CanvasWidget::Ptr, tgui::ChildWindow::Ptr windown) const override {};
 };
 
 TEST(ImageOperation, noKeyStroke) {

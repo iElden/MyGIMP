@@ -12,7 +12,7 @@ Mimp::SelectAllOperation::SelectAllOperation():
 
 }
 
-void Mimp::SelectAllOperation::click(tgui::Gui &, Image &image) const
+void Mimp::SelectAllOperation::click(tgui::Gui &, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr, Editor &) const
 {
-	image.selectedArea.selectAll();
+	image->selectedArea.selectAll();
 }

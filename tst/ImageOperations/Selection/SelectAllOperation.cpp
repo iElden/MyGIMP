@@ -10,6 +10,6 @@ TEST(SelectAllOperation, wholeLayer) {
 
     ASSERT_TRUE(i.selectedArea.getPoints().size() == 0);
 
-    sao.click(gui, i);
+	sao.click(gui, i, nullptr, <#initializer#>);
     ASSERT_TRUE(i.selectedArea.getPoints().size() == 100);
 }

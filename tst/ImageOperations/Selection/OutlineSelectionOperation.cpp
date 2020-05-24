@@ -10,7 +10,7 @@ TEST(OutlineSelectionOperation, noSelection) {
 
     ASSERT_TRUE(i.selectedArea.getPoints().size() == 0);
 
-    oso.click(gui, i);
+	oso.click(gui, i, nullptr, <#initializer#>);
 
     ASSERT_TRUE(i.selectedArea.getPoints().size() == 0);
 }
@@ -24,7 +24,7 @@ TEST(OutlineSelectionOperation, onlyOnePixel) {
     i.selectedArea.add(5, 5);
     ASSERT_TRUE(i.selectedArea.getPoints().size() == 1);
 
-    oso.click(gui, i);
+	oso.click(gui, i, nullptr, <#initializer#>);
 
     for (int x = 0; x < 10; x += 1) {
         for (int y = 0; y < 10; y += 1)
@@ -48,7 +48,7 @@ TEST(OutlineSelectionOperation, wholeLayer) {
     i.selectedArea.selectAll();
     ASSERT_TRUE(i.selectedArea.getPoints().size() == 100);
 
-    oso.click(gui, i);
+	oso.click(gui, i, nullptr, <#initializer#>);
 
     ASSERT_TRUE(i.selectedArea.getPoints().size() == 100);
 }
