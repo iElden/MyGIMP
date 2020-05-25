@@ -112,7 +112,11 @@ set(MIMP_SRCS
     src/ImageOperations/Layer/MoveLeft.hpp
     src/ImageOperations/Layer/MoveRight.cpp
     src/ImageOperations/Layer/MoveRight.hpp
-        src/ImageOperations/Layer/MoveUp.cpp src/ImageOperations/Layer/MoveUp.hpp src/ImageOperations/Layer/MoveDown.cpp src/ImageOperations/Layer/MoveDown.hpp)
+    src/ImageOperations/Layer/MoveUp.cpp
+    src/ImageOperations/Layer/MoveUp.hpp
+    src/ImageOperations/Layer/MoveDown.cpp
+    src/ImageOperations/Layer/MoveDown.hpp
+)
 
 find_library(PNG_LIBRARY png)
 
