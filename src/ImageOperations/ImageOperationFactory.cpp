@@ -17,6 +17,10 @@
 #include "Clipboard/PasteOperation.hpp"
 #include "Clipboard/CopyOperation.hpp"
 #include "Clipboard/CutOperation.hpp"
+#include "Layer/MoveLeft.hpp"
+#include "Layer/MoveRight.hpp"
+#include "Layer/MoveUp.hpp"
+#include "Layer/MoveDown.hpp"
 
 namespace Mimp
 {
@@ -62,8 +66,19 @@ namespace Mimp
 		},
 		[]{
 			return std::make_shared<OutlineMoreSelectionOperation>();
+		},
+		[]{
+			return std::make_shared<MoveUp>();
+		},
+		[]{
+			return std::make_shared<MoveDown>();
+		},
+		[]{
+			return std::make_shared<MoveLeft>();
+		},
+		[]{
+			return std::make_shared<MoveRight>();
 		}
-
 	};
 
 	std::vector<std::shared_ptr<ImageOperation>> ImageOperationFactory::buildAll()
