@@ -11,14 +11,14 @@
 
 namespace Mimp
 {
-    //! @brief Define the ImageOperationFactory.
-    class ImageOperationFactory {
+	//! @brief Define the ImageOperationFactory.
+	class ImageOperationFactory {
 	private:
 		static const std::vector<std::function<std::shared_ptr<ImageOperation>()>> _builders;
 
 	public:
-	    //! @brief Build all the operations.
-	    //! @return A vector containing all the operations.
+		//! @brief Build all the operations.
+		//! @return A vector containing all the operations.
 		static std::vector<std::shared_ptr<ImageOperation>> buildAll();
 	};
 }

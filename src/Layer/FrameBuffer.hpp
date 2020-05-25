@@ -55,9 +55,9 @@ namespace Mimp
 		//! @return const Color * Contains the buffer in readonly mode
 		const Color *getBuffer() const;
 
-        //! @brief Get the DrawBuffer
-        //! @return const sf::Uint * Contains the DrawBuffer in readonly mode
-        const sf::Uint8 *getDrawBuffer() const;
+		//! @brief Get the DrawBuffer
+		//! @return const sf::Uint * Contains the DrawBuffer in readonly mode
+		const sf::Uint8 *getDrawBuffer() const;
 
 		//! @brief Get the color from the framebuffer at the given index.
 		//! @param index Contains the index of the seeked value
@@ -82,7 +82,7 @@ namespace Mimp
 		//! @brief Draw a pixel in the FrameBuffer
 		//! @param pos Position
 		//! @param color Color of the pixel
-        //! \param drawStrategy How the shape has to be drawn. Default is ADD.
+		//! \param drawStrategy How the shape has to be drawn. Default is ADD.
 		void drawPixel(Vector2<int> pos, const Color &color, DrawStrategy drawStrategy=ADD) noexcept;
 
 		//! @brief Draw a DrawShape in the FrameBuffer
@@ -103,14 +103,14 @@ namespace Mimp
 		//! @param pt2 Second Position
 		//! @param color Color of the line
 		//! @param thickness The thickness of the line
-        //! @param shape The shape to draw.
-        //! @param drawStrategy How the shape has to be drawn. Default is ADD.
-        void drawLine(Vector2<int> pt1, Vector2<int> pt2, const Color &color, unsigned short thickness, DrawShape shape=CIRCLE, DrawStrategy drawStrategy=ADD) noexcept;
+		//! @param shape The shape to draw.
+		//! @param drawStrategy How the shape has to be drawn. Default is ADD.
+		void drawLine(Vector2<int> pt1, Vector2<int> pt2, const Color &color, unsigned short thickness, DrawShape shape=CIRCLE, DrawStrategy drawStrategy=ADD) noexcept;
 
 		//! @brief Draw the FrameBuffer given in parameter
 		//! @param pos Position of the FrameBuffer on the screen
 		//! @param buffer The FrameBuffer to draw
-        //! @param drawStrategy How the shape has to be drawn. Default is ADD.
+		//! @param drawStrategy How the shape has to be drawn. Default is ADD.
 		void drawFrameBuffer(Vector2<int> pos, const FrameBuffer &buffer, DrawStrategy drawStrategy=ADD) noexcept;
 
 		//! @brief Get a FrameBuffer rectangle from the screen

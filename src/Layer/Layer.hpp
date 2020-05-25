@@ -12,12 +12,13 @@
 
 namespace Mimp
 {
-    //! @brief Define a Layer.
-    struct Layer {
-		FrameBuffer buffer; //!< FrameBuffer of the layer
+	//! @brief Define a Layer.
+	struct Layer {
+		FrameBuffer buffer;  //!< FrameBuffer of the layer
 		bool locked = false; //!< Is the layer locked on the screen ?
 		bool visible = true; //!< Is the layer visible on the screen ?
-		char name[32]; 		//!< Name of the layer
+		char name[32];       //!< Name of the layer
+		float rotation = 0;  //!< Rotation of the layer
 		Vector2<int> pos = {0, 0}; //!< Position of the layer
 
 		//! @brief Constructor of the Layer

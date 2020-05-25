@@ -102,11 +102,17 @@ namespace Mimp
 		for (auto &layer : this->_layers) {
 			if (!layer->visible)
 				continue;
-			this->_drawBuffer.create(layer->getSize().x, layer->getSize().y);
-			this->_drawBuffer.update(layer->buffer.getDrawBuffer(), layer->getSize().x, layer->getSize().y, 0, 0);
+
+			size = layer->getSize();
+
+			this->_drawBuffer.create(size.x, size.y);
+			this->_drawBuffer.update(layer->buffer.getDrawBuffer(), size.x, size.y, 0, 0);
 			sprite.setTexture(this->_drawBuffer, true);
 			sprite.setPosition(layer->pos.x * this->_zoom, layer->pos.y * this->_zoom);
+			//sprite.setPosition(layer->pos.x * this->_zoom + this->_zoom * size.x / 2, layer->pos.y * this->_zoom + this->_zoom * size.y / 2);
 			sprite.setScale(this->_zoom, this->_zoom);
+			//sprite.setOrigin(this->_zoom * size.x / 2, this->_zoom * size.y / 2);
+			sprite.setRotation(layer->rotation);
 			target.draw(sprite, states);
 		}
 		this->_drawBuffer.create(size.x, size.y);

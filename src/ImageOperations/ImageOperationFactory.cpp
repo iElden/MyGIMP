@@ -21,6 +21,7 @@
 #include "Layer/MoveRight.hpp"
 #include "Layer/MoveUp.hpp"
 #include "Layer/MoveDown.hpp"
+#include "Layer/RotateRight90.hpp"
 
 namespace Mimp
 {
@@ -78,6 +79,9 @@ namespace Mimp
 		},
 		[]{
 			return std::make_shared<MoveRight>();
+		},
+		[]{
+			return std::make_shared<RotateRight90>();
 		}
 	};
 
