@@ -195,7 +195,9 @@ add_executable(
         tst/ImageOperations/Selection/ShrinkMoreSelection.cpp
         tst/ImageOperations/Selection/OutlineMoreSelectionOperation.cpp
         tst/ImageOperations/Selection/OutlineSelectionOperation.cpp
-        tst/Editor.cpp)
+        tst/Editor.cpp
+        tst/ImageOperations/Clipboard/CopyOperation.cpp
+        tst/ImageOperations/Clipboard/CutOperation.cpp)
 
 if (WIN32)
     target_link_libraries(
