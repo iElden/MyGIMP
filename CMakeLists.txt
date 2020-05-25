@@ -107,7 +107,16 @@ set(MIMP_SRCS
     src/ImageOperations/Clipboard/CutOperation.cpp
     src/ImageOperations/Clipboard/CutOperation.hpp
     src/Tools/Move.cpp
-    src/Tools/Move.hpp)
+    src/Tools/Move.hpp
+    src/ImageOperations/Layer/MoveLeft.cpp
+    src/ImageOperations/Layer/MoveLeft.hpp
+    src/ImageOperations/Layer/MoveRight.cpp
+    src/ImageOperations/Layer/MoveRight.hpp
+    src/ImageOperations/Layer/MoveUp.cpp
+    src/ImageOperations/Layer/MoveUp.hpp
+    src/ImageOperations/Layer/MoveDown.cpp
+    src/ImageOperations/Layer/MoveDown.hpp
+)
 
 find_library(PNG_LIBRARY png)
 
@@ -213,7 +222,6 @@ if (WIN32)
             gtest
             gcov
             ${PNG_LIBRARY}
-            xcb
             ${clip_LIBRARIES}
     )
 else ()
