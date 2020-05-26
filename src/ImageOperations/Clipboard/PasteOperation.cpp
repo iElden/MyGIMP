@@ -32,7 +32,7 @@ namespace Mimp
 	}
 
 	PasteOperation::PasteOperation() :
-		ImageOperation({"Edit", "Paste"}, {KEY_V, true, false, false})
+		ImageOperation({"Edit", "Paste"},"Paste", {Keys::KEY_V, true, false, false})
 	{
 	}
 

@@ -17,7 +17,8 @@ namespace Mimp
 		_mainWindow({640, 480}, "Mimp"),
 		_gui(this->_mainWindow),
 		_toolBox(this->_gui),
-		_imgOps(ImageOperationFactory::buildAll())
+		_imgOps(ImageOperationFactory::buildAll()),
+		shortcutManager(_toolBox, ImageOperationFactory::get())
 	{
 		this->_mainWindow.setFramerateLimit(240);
 		this->_gui.loadWidgetsFromFile("widgets/top_menu.gui");
@@ -177,8 +178,8 @@ namespace Mimp
 					this->_mainWindow.setView(sf::View{sf::FloatRect(0, 0, event.size.width, event.size.height)});
 					this->_gui.setView(sf::View{sf::FloatRect(0, 0, event.size.width, event.size.height)});
 				} else if (event.type == sf::Event::KeyPressed && this->_selectedImageWindow) {
-					KeyCombination comb{
-						Editor::SFMLKeyToKey(event.key.code),
+					Keys::KeyCombination comb{
+						Keys::SFMLKeyToKey(event.key.code),
 						event.key.control,
 						event.key.shift,
 						event.key.alt
@@ -838,78 +839,6 @@ namespace Mimp
 		}
 
 		this->_selectedImageWindow = nullptr;
-	}
-
-	Key Editor::SFMLKeyToKey(sf::Keyboard::Key key)
-	{
-		switch (key) {
-		case sf::Keyboard::Key::A:
-			return KEY_A;
-		case sf::Keyboard::Key::B:
-			return KEY_B;
-		case sf::Keyboard::Key::C:
-			return KEY_C;
-		case sf::Keyboard::Key::D:
-			return KEY_D;
-		case sf::Keyboard::Key::E:
-			return KEY_E;
-		case sf::Keyboard::Key::F:
-			return KEY_F;
-		case sf::Keyboard::Key::G:
-			return KEY_G;
-		case sf::Keyboard::Key::H:
-			return KEY_H;
-		case sf::Keyboard::Key::I:
-			return KEY_I;
-		case sf::Keyboard::Key::J:
-			return KEY_J;
-		case sf::Keyboard::Key::K:
-			return KEY_K;
-		case sf::Keyboard::Key::L:
-			return KEY_L;
-		case sf::Keyboard::Key::M:
-			return KEY_M;
-		case sf::Keyboard::Key::N:
-			return KEY_N;
-		case sf::Keyboard::Key::O:
-			return KEY_O;
-		case sf::Keyboard::Key::P:
-			return KEY_P;
-		case sf::Keyboard::Key::Q:
-			return KEY_Q;
-		case sf::Keyboard::Key::R:
-			return KEY_R;
-		case sf::Keyboard::Key::S:
-			return KEY_S;
-		case sf::Keyboard::Key::T:
-			return KEY_T;
-		case sf::Keyboard::Key::U:
-			return KEY_U;
-		case sf::Keyboard::Key::V:
-			return KEY_V;
-		case sf::Keyboard::Key::W:
-			return KEY_W;
-		case sf::Keyboard::Key::X:
-			return KEY_X;
-		case sf::Keyboard::Key::Y:
-			return KEY_Y;
-		case sf::Keyboard::Key::Z:
-			return KEY_Z;
-		case sf::Keyboard::Key::Delete:
-			return KEY_DEL;
-		case sf::Keyboard::Key::Escape:
-			return KEY_ESC;
-		case sf::Keyboard::Key::Up:
-			return KEY_UP;
-		case sf::Keyboard::Key::Down:
-			return KEY_DOWN;
-		case sf::Keyboard::Key::Left:
-			return KEY_LEFT;
-		case sf::Keyboard::Key::Right:
-			return KEY_RIGHT;
-		default:
-			return KEY_UNKNOWN;
-		}
 	}
 
 	void Editor::_checkClose(const std::function<void()> &endHandler, const std::function<void(tgui::ChildWindow::Ptr)> &handler)

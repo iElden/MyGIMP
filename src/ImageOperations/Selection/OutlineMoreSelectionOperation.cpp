@@ -9,7 +9,7 @@
 #include "../../Utils.hpp"
 
 Mimp::OutlineMoreSelectionOperation::OutlineMoreSelectionOperation():
-		ImageOperation({"Selection", "Outline with thickness of ..."}, {KEY_O, true, true, true})
+		ImageOperation({"Selection", "Outline with thickness of ..."},"Outline with thickness of ...", {Keys::KEY_O, true, true, true})
 {}
 
 void Mimp::OutlineMoreSelectionOperation::click(tgui::Gui &gui, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr, Mimp::Editor &) const

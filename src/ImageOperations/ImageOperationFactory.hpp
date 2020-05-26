@@ -15,11 +15,14 @@ namespace Mimp
 	class ImageOperationFactory {
 	private:
 		static const std::vector<std::function<std::shared_ptr<ImageOperation>()>> _builders;
+		static std::vector<std::shared_ptr<ImageOperation>> ios;
 
 	public:
 		//! @brief Build all the operations.
 		//! @return A vector containing all the operations.
 		static std::vector<std::shared_ptr<ImageOperation>> buildAll();
+
+		static std::unordered_map<std::string, std::shared_ptr<ImageOperation>> get();
 	};
 }
 

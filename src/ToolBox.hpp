@@ -58,6 +58,8 @@ namespace Mimp
 		//! @param click Mouse click state
 		//! @param newColor Color to use
 		void setSelectedColor(MouseClick click, Color newColor);
+
+	    std::unordered_map<std::string, std::shared_ptr<Tool>> getTools();
 	};
 }
 

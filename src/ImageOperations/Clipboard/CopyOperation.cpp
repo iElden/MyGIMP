@@ -9,7 +9,7 @@
 namespace Mimp
 {
 	CopyOperation::CopyOperation() :
-		ImageOperation({"Edit", "Copy"}, {KEY_C, true, false, false})
+		ImageOperation({"Edit", "Copy"},"Copy", {Keys::KEY_C, true, false, false})
 	{
 
 	}

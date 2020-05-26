@@ -7,7 +7,7 @@
 namespace Mimp
 {
 	MoveRight::MoveRight() :
-		ImageOperation({"Layer", "Move Right"}, {KEY_RIGHT, false, false, false})
+		ImageOperation({"Layer", "Move Right"},"Move Right", {Keys::KEY_RIGHT, false, false, false})
 	{
 
 	}

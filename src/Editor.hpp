@@ -11,6 +11,8 @@
 #include "ToolBox.hpp"
 #include "CanvasWidget.hpp"
 #include "ImageOperations/ImageOperation.hpp"
+#include "Keys.hpp"
+#include "ShortcutManager.hpp"
 
 namespace Mimp
 {
@@ -22,12 +24,14 @@ namespace Mimp
 		unsigned _lastUntitled = 0; //< Last Untitled index
 		ToolBox _toolBox; //!< Global ToolBox
 		std::vector<std::shared_ptr<ImageOperation>> _imgOps; //!< Contains all the ImageOperation available.
-		std::map<KeyCombination, std::shared_ptr<ImageOperation>> _keysImgOps; //!< Contains all the shortcuts to invoke a specific ImageOperation
+		std::map<Keys::KeyCombination, std::shared_ptr<ImageOperation>> _keysImgOps; //!< Contains all the shortcuts to invoke a specific ImageOperation
 		tgui::ChildWindow::Ptr _selectedImageWindow; //!< The focused window
 		std::map<tgui::ChildWindow::Ptr, Vector2<Vector2<float>>> _minimizedWindows; //!< A map to the minimized windows
 		std::vector<std::string> _recents; //!< The recent mimp files
 		std::vector<unsigned int> _signals; //!< Holds the signals used by tgui
 		Vector2<unsigned> _lastSize = {640, 480}; //!< Save the last size configuration.
+
+		ShortcutManager shortcutManager;
 
 		//! @brief Setup Button Callbacks
 		void _setupButtonCallbacks();
@@ -62,11 +66,6 @@ namespace Mimp
 
 		//! @brief Editor Destructor
 		~Editor();
-
-		//! @brief Convert a sfml key to a mimp key
-		//! @param key The key to convert
-		//! @return The converted key
-		static Key SFMLKeyToKey(sf::Keyboard::Key key);
 
 		//! @brief Set selected images
 		//! @param _canvas Canvas to edit

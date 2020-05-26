@@ -118,7 +118,11 @@ set(MIMP_SRCS
     src/ImageOperations/Layer/MoveDown.hpp
     src/ImageOperations/Layer/RotateRight90.cpp
     src/ImageOperations/Layer/RotateRight90.hpp
-)
+    src/Keys.cpp
+    src/Keys.hpp
+    src/ShortcutManager.cpp
+    src/ShortcutManager.hpp
+        )
 
 find_library(PNG_LIBRARY png)
 
