@@ -13,11 +13,11 @@
 
 namespace Mimp {
 	Editor::Editor(const std::vector<std::string> &images) :
-			_mainWindow({640, 480}, "Mimp"),
-			_gui(this->_mainWindow),
-			_toolBox(this->_gui),
-			_imgOps(ImageOperationFactory::buildAll()),
-			shortcutManager(_toolBox, ImageOperationFactory::get())
+		_mainWindow({640, 480}, "Mimp"),
+		_gui(this->_mainWindow),
+		_toolBox(this->_gui),
+		_imgOps(ImageOperationFactory::buildAll()),
+		_shortcutManager(_toolBox, ImageOperationFactory::get())
 	{
 		this->_mainWindow.setFramerateLimit(240);
 		this->_gui.loadWidgetsFromFile("widgets/top_menu.gui");
@@ -178,10 +178,10 @@ namespace Mimp {
 					this->_gui.setView(sf::View{sf::FloatRect(0, 0, event.size.width, event.size.height)});
 				} else if (event.type == sf::Event::KeyPressed && this->_selectedImageWindow) {
 					Keys::KeyCombination comb{
-							Keys::SFMLKeyToKey(event.key.code),
-							event.key.control,
-							event.key.shift,
-							event.key.alt
+						Keys::SFMLKeyToKey(event.key.code),
+						event.key.control,
+						event.key.shift,
+						event.key.alt
 					};
 
 					try {
@@ -357,129 +357,143 @@ namespace Mimp {
 			this->_gui.remove(this->_gui.get<tgui::Widget>("ToolBox"));
 			this->_gui.add(this->_toolBox.getWindow(), "ToolBox");
 		});
+
+		menu->addMenuItem({"Settings", "Shortcuts"});
+		menu->connectMenuItem({"Settings", "Shortcuts"}, [this] {
+			auto win = Utils::openWindowWithFocus(this->_gui, 0, 0);
+
+			win->loadWidgetsFromFile("widgets/shortcut.gui");
+
+			auto panel = win->get<tgui::ScrollablePanel>("MainPanel");
+			float max = 0;
+			int idx = 0;
+
+			win->setTitle("Edit shortcuts");
+			for (auto &i : this->_shortcutManager.getShortcuts()) {
+				auto name = panel->get<tgui::Label>("Action" + std::to_string(idx + 1));
+
+				if (!name) {
+					name = tgui::Label::create();
+					panel->add(name, "Action" + std::to_string(idx + 1));
+					name->setPosition(0, "Action" + std::to_string(idx) + ".y + Action" + std::to_string(idx) + ".h + 5");
+				}
+
+				name->setTextSize(13);
+
+				idx += 1;
+				name->setText(i.first);
+				max = std::max(max, name->getSize().x);
+			}
+
+			idx = 0;
+
+			tgui::EditBox::Ptr key;
+			auto shortcuts = std::make_shared<std::unordered_map<std::string, Keys::KeyCombination>>();
+
+			for (auto &i : this->_shortcutManager.getShortcuts()) {
+				auto keyStroke = i.second->getKeyStroke();
+				if (keyStroke)
+					(*shortcuts)[i.first] = *keyStroke;
+
+				auto id = "Action" + std::to_string(idx + 1);
+				auto label = panel->get<tgui::Label>(id);
+				auto ctrlTick = tgui::CheckBox::create();
+				auto altTick = tgui::CheckBox::create();
+				auto shiftTick = tgui::CheckBox::create();
+
+				label->setSize({max, label->getSize().y});
+
+				ctrlTick->setPosition("(controllabel.x + (controllabel.w / 2)) - (w / 2)", id + ".y");
+				ctrlTick->setChecked(i.second->getKeyStroke()->control);
+				ctrlTick->connect("Changed", [ctrlTick, i, shortcuts]{
+					(*shortcuts)[i.first].control = ctrlTick->isChecked();
+				});
+				panel->add(ctrlTick);
+
+				altTick->setPosition("(altlabel.x + (altlabel.w / 2)) - (w / 2)", id + ".y");
+				altTick->setChecked(i.second->getKeyStroke()->alt);
+				altTick->connect("Changed", [altTick, i, shortcuts]{
+					(*shortcuts)[i.first].alt = altTick->isChecked();
+				});
+				panel->add(altTick);
+
+
+				shiftTick->setPosition("(shiftlabel.x + (shiftlabel.w / 2)) - (w / 2)", id + ".y");
+				shiftTick->setChecked(i.second->getKeyStroke()->shift);
+				panel->add(shiftTick);
+				shiftTick->connect("Changed", [shiftTick, i, shortcuts]{
+					(*shortcuts)[i.first].shift = shiftTick->isChecked();
+				});
+
+				key = tgui::EditBox::create();
+				key->setText(i.second->getKeyStroke()->getKeyName());
+				key->setTextSize(13);
+				key->setPosition("(keylabel.x + (keylabel.w / 2)) - (w / 2)", id + ".y");
+				key->setSize(65, 20);
+				key->connect("TextChanged", [i, shortcuts, key]{
+					(*shortcuts)[i.first].key = Keys::StringToKey(key->getText());
+				});
+
+				panel->add(key, "KeySelect" + id);
+
+				idx += 1;
+			}
+
+			auto len =  key->getSize().y + key->getPosition().y + 10;
+
+			panel->setSize("KeySelectAction1.x + KeySelectAction1.w + 10", std::min(len, 500.f));
+			win->setSize({"Cancel.x + Cancel.w + 10", "Cancel.y + Cancel.h + 10"});
+
+			auto ok = win->get<tgui::Button>("OK");
+			auto cancel = win->get<tgui::Button>("Cancel");
+
+			cancel->connect("Pressed", [win] { win->close(); });
+			ok->connect("Pressed", [this, win, shortcuts]{
+				auto menu = this->_gui.get<tgui::MenuBar>("main_bar");
+				auto s = this->_shortcutManager.getShortcuts();
+
+				this->_keysImgOps.clear();
+				for (auto &imgOp : this->_imgOps) {
+					std::vector<sf::String> hierarchy;
+					auto key = imgOp->getKeyStroke();
+
+					for (auto &elem : imgOp->getMenuHierarchy())
+						hierarchy.emplace_back(elem);
+
+					if (key)
+						hierarchy.back() += " (" + key->toString() + ")";
+
+					menu->removeMenuItem(hierarchy, false);
+				}
+
+				for (auto &i : *shortcuts)
+					s[i.first]->setKeyStroke(i.second);
+
+				for (auto &imgOp : this->_imgOps) {
+					std::vector<sf::String> hierarchy;
+					auto key = imgOp->getKeyStroke();
+
+					for (auto &elem : imgOp->getMenuHierarchy())
+						hierarchy.emplace_back(elem);
+
+					if (key) {
+						this->_keysImgOps[*key] = imgOp;
+						hierarchy.back() += " (" + key->toString() + ")";
+					}
+
+					menu->addMenuItem(hierarchy);
+					menu->setMenuItemEnabled(hierarchy, !!this->_selectedImageWindow);
+					menu->connectMenuItem(hierarchy, [this, imgOp] {
+						imgOp->click(this->_gui, this->_getSelectedCanvas(), this->_selectedImageWindow, *this);
+					});
+				}
+				win->close();
+			});
+		}); //! @todo -------------------------
 		menu->addMenu("Help");
 		menu->connect("MouseEntered", [](tgui::Widget::Ptr bar, const std::string &) {
 			bar->moveToFront();
 		});
-
-		menu->addMenuItem({"Settings", "Shortcuts"});
-		menu->connectMenuItem({"Settings", "Shortcuts"}, [this] {
-			auto win = Utils::openWindowWithFocus(this->_gui, 600, 400);
-			win->loadWidgetsFromFile("widgets/shortcuts.gui");
-
-			win->setTitle("Shortcuts");
-
-			auto panel = tgui::ScrollablePanel::create({500, 300});
-
-			float max = 0;
-
-			int idx = 0;
-			for (auto &i : this->shortcutManager.getShortcuts()) {
-				auto name = tgui::Label::create(i.first);
-				name->setTextSize(13);
-				name->setPosition(5, 20 * idx);
-				panel->add(name);
-
-				idx += 1;
-				if (name->getSize().x > max) {
-					max = name->getSize().x;
-				}
-			}
-
-			idx = 0;
-			std::unordered_map<std::string, std::optional<Keys::KeyCombination>> shortcuts;
-			for (auto &i : this->shortcutManager.getShortcuts()) {
-
-				shortcuts[i.first] = i.second->getKeyStroke();
-
-				auto ctrlLabel = tgui::Label::create("Control");
-				ctrlLabel->setTextSize(13);
-				ctrlLabel->setPosition(max + 10, 20 * idx);
-				panel->add(ctrlLabel);
-
-				auto ctrlTick = tgui::CheckBox::create();
-				ctrlTick->setPosition(max + ctrlLabel->getSize().x + 10, 20 * idx);
-				if (i.second->getKeyStroke()->toString().find("Ctrl + ") != std::string::npos)
-					ctrlTick->setChecked(true);
-				ctrlTick->connect("Checked", [i, &shortcuts]{
-					shortcuts[i.first]->control = true;
-				});
-				ctrlTick->connect("Unchecked", [i, &shortcuts]{
-					shortcuts[i.first]->control = false;
-				});
-				panel->add(ctrlTick);
-
-				auto altLabel = tgui::Label::create("Alt");
-				altLabel->setTextSize(13);
-				altLabel->setPosition(max + ctrlLabel->getSize().x + ctrlTick->getSize().x + 10, 20 * idx);
-				panel->add(altLabel);
-
-				auto altTick = tgui::CheckBox::create();
-				altTick->setPosition(max + ctrlLabel->getSize().x + ctrlTick->getSize().x + altLabel->getSize().x + 10, 20 * idx);
-				if (i.second->getKeyStroke()->toString().find("Alt + ") != std::string::npos)
-					altTick->setChecked(true);
-				altTick->connect("Checked", [i, &shortcuts]{
-					shortcuts[i.first]->alt = true;
-				});
-				altTick->connect("Unchecked", [i, &shortcuts]{
-					shortcuts[i.first]->alt = false;
-				});
-				panel->add(altTick);
-
-				auto shiftLabel = tgui::Label::create("Shift");
-				shiftLabel->setTextSize(13);
-				shiftLabel->setPosition(max + ctrlLabel->getSize().x + ctrlTick->getSize().x + altLabel->getSize().x + altTick->getSize().x + 10, 20 * idx);
-				panel->add(shiftLabel);
-
-				auto shiftTick = tgui::CheckBox::create();
-				shiftTick->setPosition(max + ctrlLabel->getSize().x + ctrlTick->getSize().x + altLabel->getSize().x + altTick->getSize().x + shiftLabel->getSize().x + 10, 20 * idx);
-				if (i.second->getKeyStroke()->toString().find("Shift + ") != std::string::npos)
-					shiftTick->setChecked(true);
-				panel->add(shiftTick);
-				shiftTick->connect("Checked", [i, &shortcuts]{
-					shortcuts[i.first]->shift = true;
-				});
-				shiftTick->connect("Unchecked", [i, &shortcuts]{
-					shortcuts[i.first]->shift = false;
-				});
-
-				auto key = tgui::EditBox::create();
-				key->setText(i.second->getKeyStroke()->getKeyName());
-				key->setTextSize(13);
-				key->setPosition(max + ctrlLabel->getSize().x + ctrlTick->getSize().x + altLabel->getSize().x + altTick->getSize().x + shiftLabel->getSize().x + shiftTick->getSize().x + 10, 20 * idx);
-				key->setSize(65, 20);
-				key->connect("TextChanged", [i, &shortcuts, key]{
-					shortcuts[i.first]->key = Keys::StringToKey(key->getText());
-				});
-
-				panel->add(key);
-
-				idx += 1;
-			}
-
-			win->add(panel);
-
-			auto ok = tgui::Button::create("Ok");
-			auto cancel = tgui::Button::create("Cancel");
-
-			ok->setTextSize(13);
-			cancel->setTextSize(13);
-			ok->setPosition(300, 350);
-			cancel->setPosition(350, 350);
-
-			cancel->connect("Pressed", [win] { win->close(); });
-
-			ok->connect("Pressed", [this, shortcuts]{
-				auto s = this->shortcutManager.getShortcuts();
-
-				/*for (auto i : shortcuts) {
-					s[i.first]->setKeyStroke(i.second.);
-				}*/
-			});
-
-			win->add(ok);
-			win->add(cancel);
-		}); //! @todo -------------------------
 
 		menu->connectMenuItem({"File", "New"}, [this, menu] {
 			auto win = Utils::openWindowWithFocus(this->_gui, 200, 110);
@@ -660,9 +674,7 @@ namespace Mimp {
 		return this->_selectedImageWindow->get<tgui::ScrollablePanel>("Canvas")->get<CanvasWidget>("Canvas");
 	}
 
-	tgui::Panel::Ptr
-	Editor::_getLayerPanelRightClickPanel(const tgui::ChildWindow::Ptr &win, const CanvasWidget::Ptr &canvas,
-	                                      const tgui::Panel::Ptr &layersPanel, Layer &layer, unsigned index)
+	tgui::Panel::Ptr Editor::_getLayerPanelRightClickPanel(const tgui::ChildWindow::Ptr &win, const CanvasWidget::Ptr &canvas, const tgui::Panel::Ptr &layersPanel, Layer &layer, unsigned index)
 	{
 		auto &layers = canvas->getLayers();
 		auto panel = tgui::Panel::create({110, 230});

@@ -31,7 +31,7 @@ namespace Mimp
 		std::vector<unsigned int> _signals; //!< Holds the signals used by tgui
 		Vector2<unsigned> _lastSize = {640, 480}; //!< Save the last size configuration.
 
-		ShortcutManager shortcutManager;
+		ShortcutManager _shortcutManager;
 
 		//! @brief Setup Button Callbacks
 		void _setupButtonCallbacks();

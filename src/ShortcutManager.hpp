@@ -12,7 +12,7 @@ namespace Mimp {
 
 		~ShortcutManager();
 
-		std::unordered_map<std::string, std::shared_ptr<ImageOperation>> getShortcuts()
+		std::unordered_map<std::string, std::shared_ptr<ImageOperation>> getShortcuts() const
 		{ return _io; };
 
 	private:
