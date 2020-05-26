@@ -426,7 +426,7 @@ namespace Mimp {
 					(*shortcuts)[i.first].shift = shiftTick->isChecked();
 				});
 
-				key = KeyWidget::create(i.second->getKeyStroke()->getKeyName());
+				key = KeyWidget::create(i.second->getKeyStroke()->getKeyName(), shortcuts, i.first);
 				key->setTextSize(13);
 				key->setPosition("(keylabel.x + (keylabel.w / 2)) - (w / 2)", id + ".y");
 				key->setSize(65, 20);

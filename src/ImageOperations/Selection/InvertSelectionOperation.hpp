@@ -23,6 +23,8 @@ namespace Mimp
         //! @details Invert the selection on the image.
         //! @param gui The global gui (unused).
         //! @param image The image to edit.
+        //! @param window The focused window (unused).
+        //! @param editor The global editor (unused).
 	void click(tgui::Gui &gui, CanvasWidget::Ptr image,
 		   tgui::ChildWindow::Ptr window, Mimp::Editor &editor) const override;
 	};

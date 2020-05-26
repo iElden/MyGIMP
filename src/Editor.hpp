@@ -55,6 +55,9 @@ namespace Mimp
 		tgui::Panel::Ptr _getLayerPanelRightClickPanel(const tgui::ChildWindow::Ptr& win, const CanvasWidget::Ptr& canvas, const tgui::Panel::Ptr& layersPanel, Layer &layer, unsigned index);
 
 	public:
+		//! @brief Create a panel containing the layers.
+		//! @param win The focused window used to edit images.
+		//! @param canvas The object containing the layers.
 		tgui::Panel::Ptr _makeLayersPanel(tgui::ChildWindow::Ptr win, CanvasWidget::Ptr canvas);
 
 		//! @brief Copy Constructor of the Editor

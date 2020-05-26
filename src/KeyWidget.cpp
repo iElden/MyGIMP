@@ -3,14 +3,14 @@
 
 void Mimp::KeyWidget::keyPressed(const sf::Event::KeyEvent &event)
 {
-	if (this->editing) {
+	if (this->_editing) {
 		this->setText(Keys::KeyToString(Keys::SFMLKeyToKey(event.code)));
-
-		this->editing = !this->editing;
+		(*this->_ptr)[this->_entry].key = Keys::SFMLKeyToKey(event.code);
+		this->_editing = !this->_editing;
 	}
 }
 
-void Mimp::KeyWidget::leftMousePressed(tgui::Vector2f pos)
+void Mimp::KeyWidget::leftMousePressed(tgui::Vector2f)
 {
-	this->editing = true;
+	this->_editing = true;
 }

@@ -59,6 +59,7 @@ namespace Mimp
 		//! @param newColor Color to use
 		void setSelectedColor(MouseClick click, Color newColor);
 
+		//! @brief Get the tools of the ToolBox.
 	    std::unordered_map<std::string, std::shared_ptr<Tool>> getTools();
 	};
 }

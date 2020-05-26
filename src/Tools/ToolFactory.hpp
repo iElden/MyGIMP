@@ -31,9 +31,9 @@ namespace Mimp
 		//! @return std::vector<std::shared_ptr<Tool>> Return a vector of Tools Shared Pointers
 		static std::vector<std::shared_ptr<Tool>> buildAll(ToolBox &toolBox);
 
+		//! @brief Get all the Tools.
 		static std::unordered_map<std::string, std::shared_ptr<Tool>> get();
 	};
 }
-
 
 #endif //MYGIMP_TOOLFACTORY_HPP

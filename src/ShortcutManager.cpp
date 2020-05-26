@@ -46,7 +46,6 @@ namespace Mimp {
 				Keys::KeyCombination kc{};
 				kc.fromString(s.second);
 				io[s.first]->setKeyStroke(kc);
-				std::cout << io.find(s.first)->second->name << ">>>" << kc.toString() << std::endl;
 			}
 		} catch (...) {
 			std::cout << "Problem while reading shortcuts.ini, using default settings." << std::endl;

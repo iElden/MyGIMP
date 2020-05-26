@@ -47,6 +47,9 @@ namespace Mimp::Keys {
 	//! @return std::string
 	std::string KeyToString(Key key);
 
+	//! @brief Convert a string to a Key.
+	//! @param s The string to convert.
+	//! @return Key
 	Key StringToKey(std::string s);
 
 	//! @brief Struct defining a combination of keys.
@@ -65,9 +68,13 @@ namespace Mimp::Keys {
 		//! @return std::string
 		std::string toString() const;
 
+		//! @brief Convert a string to a KeyCombination
+		//! @param s The string to convert
 		void fromString(std::string s);
 
-		std::string getKeyName()
+		//! @brief Get the name of the Key.
+		//! @return std::string
+		std::string getKeyName() const
 		{ return KeyToString(this->key); };
 	};
 

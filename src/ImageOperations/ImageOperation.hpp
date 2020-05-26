@@ -24,10 +24,12 @@ namespace Mimp
 	protected:
 		//! @brief Constructor of ImageOperation
 		//! @param hierarchy A vector of the hierarchy (ie : Menu title -> operation name)
+		//! @param name The name of the ImageOperation.
 		ImageOperation(const std::vector<std::string> &&hierarchy, const std::string &&name);
 
 		//! @brief Constructor of ImageOperation
 		//! @param hierarchy A vector of the hierarchy (ie : Menu title -> operation name)
+		//! @param name The name of the ImageOperation.
 		//! @param keys The key combination to invoke the operation.
 		ImageOperation(const std::vector<std::string> &&hierarchy, const std::string &&name, const Keys::KeyCombination &keys);
 
@@ -43,9 +45,11 @@ namespace Mimp
 		//! @return The combination of the operation if it exists.
 		std::optional<Keys::KeyCombination> getKeyStroke() const;
 
+		//! @brief Set the new key stroke for the ImageOperation.
+		//! @param k The updated KeyCombination
 		void setKeyStroke(Keys::KeyCombination k);
 
-		const std::string name;
+		const std::string name; //!< The name of the ImageOperation.
 	};
 }
 

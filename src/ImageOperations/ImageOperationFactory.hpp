@@ -22,6 +22,8 @@ namespace Mimp
 		//! @return A vector containing all the operations.
 		static std::vector<std::shared_ptr<ImageOperation>> buildAll();
 
+		//! @brief Get all the operations.
+		//! @return All the operations.
 		static std::map<std::string, std::shared_ptr<ImageOperation>> get();
 	};
 }
