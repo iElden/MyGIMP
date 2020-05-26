@@ -118,6 +118,7 @@ namespace Mimp
 		this->_drawBuffer.update(buffer.getDrawBuffer(), size.x, size.y, 0, 0);
 		sprite.setTexture(this->_drawBuffer, true);
 		sprite.setPosition(0, 0);
+		sprite.setOrigin(0, 0);
 		sprite.setScale(this->_zoom, this->_zoom);
 		target.draw(sprite, states);
 	}
