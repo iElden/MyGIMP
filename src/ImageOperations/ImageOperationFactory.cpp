@@ -94,9 +94,9 @@ namespace Mimp
 		return ios;
 	}
 
-	std::unordered_map<std::string, std::shared_ptr<ImageOperation>> ImageOperationFactory::get()
+	std::map<std::string, std::shared_ptr<ImageOperation>> ImageOperationFactory::get()
 	{
-		std::unordered_map<std::string, std::shared_ptr<ImageOperation>> result;
+		std::map<std::string, std::shared_ptr<ImageOperation>> result;
 
 		for (auto &io : ImageOperationFactory::ios) {
 			result[io->name] = io;

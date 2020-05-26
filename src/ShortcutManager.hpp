@@ -8,15 +8,15 @@
 namespace Mimp {
 	class ShortcutManager {
 	public:
-		ShortcutManager(ToolBox &tb, std::unordered_map<std::string, std::shared_ptr<ImageOperation>> io);
+		ShortcutManager(ToolBox &tb, std::map<std::string, std::shared_ptr<ImageOperation>> io);
 
 		~ShortcutManager();
 
-		std::unordered_map<std::string, std::shared_ptr<ImageOperation>> getShortcuts() const
+		std::map<std::string, std::shared_ptr<ImageOperation>> getShortcuts() const
 		{ return _io; };
 
 	private:
-		std::unordered_map<std::string, std::shared_ptr<ImageOperation>> _io;
+		std::map<std::string, std::shared_ptr<ImageOperation>> _io;
 	};
 }
 

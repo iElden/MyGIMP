@@ -10,6 +10,7 @@
 #include "Utils.hpp"
 #include "ImageOperations/ImageOperationFactory.hpp"
 #include "LayerWidget.hpp"
+#include "KeyWidget.hpp"
 
 namespace Mimp {
 	Editor::Editor(const std::vector<std::string> &images) :
@@ -387,7 +388,7 @@ namespace Mimp {
 
 			idx = 0;
 
-			tgui::EditBox::Ptr key;
+			KeyWidget::Ptr key;
 			auto shortcuts = std::make_shared<std::unordered_map<std::string, Keys::KeyCombination>>();
 
 			for (auto &i : this->_shortcutManager.getShortcuts()) {
@@ -425,15 +426,10 @@ namespace Mimp {
 					(*shortcuts)[i.first].shift = shiftTick->isChecked();
 				});
 
-				key = tgui::EditBox::create();
-				key->setText(i.second->getKeyStroke()->getKeyName());
+				key = KeyWidget::create(i.second->getKeyStroke()->getKeyName());
 				key->setTextSize(13);
 				key->setPosition("(keylabel.x + (keylabel.w / 2)) - (w / 2)", id + ".y");
 				key->setSize(65, 20);
-				key->connect("TextChanged", [i, shortcuts, key]{
-					(*shortcuts)[i.first].key = Keys::StringToKey(key->getText());
-				});
-
 				panel->add(key, "KeySelect" + id);
 
 				idx += 1;
@@ -489,7 +485,8 @@ namespace Mimp {
 				}
 				win->close();
 			});
-		}); //! @todo -------------------------
+		});
+
 		menu->addMenu("Help");
 		menu->connect("MouseEntered", [](tgui::Widget::Ptr bar, const std::string &) {
 			bar->moveToFront();

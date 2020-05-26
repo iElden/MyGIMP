@@ -122,7 +122,8 @@ set(MIMP_SRCS
     src/Keys.hpp
     src/ShortcutManager.cpp
     src/ShortcutManager.hpp
-        )
+    src/KeyWidget.cpp
+    src/KeyWidget.hpp)
 
 find_library(PNG_LIBRARY png)
 

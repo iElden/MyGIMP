@@ -5,7 +5,7 @@
 
 namespace Mimp {
 
-	ShortcutManager::ShortcutManager(ToolBox &tb, std::unordered_map<std::string, std::shared_ptr<ImageOperation>> io) :
+	ShortcutManager::ShortcutManager(ToolBox &tb, std::map<std::string, std::shared_ptr<ImageOperation>> io) :
 		_io(io)
 	{
 		std::ifstream input{"shortcuts.ini"};
@@ -22,7 +22,7 @@ namespace Mimp {
 		}
 
 		try {
-			std::unordered_map<std::string, std::string> shortcuts;
+			std::map<std::string, std::string> shortcuts;
 
 			std::string tmp;
 			while (std::getline(input, tmp, '\n')) {

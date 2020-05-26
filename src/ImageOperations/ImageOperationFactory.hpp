@@ -22,7 +22,7 @@ namespace Mimp
 		//! @return A vector containing all the operations.
 		static std::vector<std::shared_ptr<ImageOperation>> buildAll();
 
-		static std::unordered_map<std::string, std::shared_ptr<ImageOperation>> get();
+		static std::map<std::string, std::shared_ptr<ImageOperation>> get();
 	};
 }
 
