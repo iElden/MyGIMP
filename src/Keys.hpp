@@ -66,6 +66,9 @@ namespace Mimp::Keys {
 		std::string toString() const;
 
 		void fromString(std::string s);
+
+		std::string getKeyName()
+		{ return KeyToString(this->key); };
 	};
 
 	//! @brief Convert a sfml key to a mimp key
