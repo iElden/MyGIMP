@@ -182,7 +182,7 @@ add_executable(
         tst/SelectedArea.cpp
         tst/ToolBox.cpp
         tst/LayerWidget.cpp
-        tst/Editor.cpp
+        tst/Keys.cpp
         tst/Data/Vector.cpp
         tst/Data/Color.cpp
         tst/Layer/Layer.cpp
@@ -218,7 +218,7 @@ add_executable(
         tst/ImageOperations/Layer/MoveLeft.cpp
         tst/ImageOperations/Layer/MoveRight.cpp
         tst/ImageOperations/Layer/MoveUp.cpp
-        tst/ImageOperations/Layer/RotateRight90.cpp)
+        tst/ImageOperations/Layer/RotateRight90.cpp tst/KeyWidget.cpp)
 
 if (WIN32)
     target_link_libraries(

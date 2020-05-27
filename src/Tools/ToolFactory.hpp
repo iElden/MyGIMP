@@ -32,7 +32,7 @@ namespace Mimp
 		static std::vector<std::shared_ptr<Tool>> buildAll(ToolBox &toolBox);
 
 		//! @brief Get all the Tools.
-		static std::unordered_map<std::string, std::shared_ptr<Tool>> get();
+		static std::map<std::string, std::shared_ptr<Tool>> get();
 	};
 }
 

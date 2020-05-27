@@ -36,14 +36,20 @@ namespace Mimp::Keys {
 		if (ctrlPos != std::string::npos) {
 			this->control = true;
 			position += 7;
+		} else {
+			this->control = false;
 		}
 		if (shiftPos != std::string::npos) {
 			this->shift = true;
 			position += 8;
+		} else {
+			this->shift = false;
 		}
 		if (altPos != std::string::npos) {
 			this->alt = true;
 			position += 6;
+		} else {
+			this->alt = false;
 		}
 
 		this->key = StringToKey(s.substr(position, s.length()));

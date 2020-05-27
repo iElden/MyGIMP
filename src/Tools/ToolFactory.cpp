@@ -54,9 +54,9 @@ namespace Mimp
 		return tls;
 	}
 
-	std::unordered_map<std::string, std::shared_ptr<Tool>> ToolFactory::get()
+	std::map<std::string, std::shared_ptr<Tool>> ToolFactory::get()
 	{
-		std::unordered_map<std::string, std::shared_ptr<Tool>> result;
+		std::map<std::string, std::shared_ptr<Tool>> result;
 
 		for (auto &tl : ToolFactory::tls) {
 			result[tl->getName()] = tl;

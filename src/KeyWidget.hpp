@@ -14,14 +14,14 @@ namespace Mimp {
 		//! @param key Name of the Key
 		//! @param ptr A pointer to an ImageOperation
 		//! @param entry The ImageOperation name
-		explicit KeyWidget(std::string &key, std::shared_ptr<std::unordered_map<std::string, Keys::KeyCombination>> &ptr, const std::string entry) : _ptr(ptr), _entry(entry) { this->setText(key);}
+		explicit KeyWidget(std::string &key, std::shared_ptr<std::map<std::string, Keys::KeyCombination>> &ptr, const std::string entry) : _ptr(ptr), _entry(entry) { this->setText(key);}
 
 		//! @brief Create a new CanvasWidget pointer
 		//! @param key Name of the Key
 		//! @param ptr A pointer to an ImageOperation
 		//! @param entry The ImageOperation name
 		//! @return CanvasWidget::Ptr
-		static KeyWidget::Ptr create(std::string &&key, std::shared_ptr<std::unordered_map<std::string, Keys::KeyCombination>> &ptr, const std::string entry)
+		static KeyWidget::Ptr create(std::string &&key, std::shared_ptr<std::map<std::string, Keys::KeyCombination>> &ptr, const std::string entry)
 		{
 			return std::make_shared<KeyWidget>(key, ptr, entry);
 		}
@@ -36,7 +36,7 @@ namespace Mimp {
 
 	private:
 		bool _editing = false;
-		std::shared_ptr<std::unordered_map<std::string, Keys::KeyCombination>> _ptr;
+		std::shared_ptr<std::map<std::string, Keys::KeyCombination>> _ptr;
 		std::string _entry;
 	};
 

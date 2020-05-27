@@ -38,3 +38,11 @@ TEST(ToolBox, SetSelectedColorTest)
     ASSERT_EQ(toolbox.getSelectedColor(Mimp::MIMP_LEFT_CLICK), Mimp::Color::Red);
     ASSERT_EQ(toolbox.getSelectedColor(Mimp::MIMP_RIGHT_CLICK), Mimp::Color::Cyan);
 }
+
+TEST(ToolBox, getTools)
+{
+	tgui::Gui gui{};
+	Mimp::ToolBox toolbox{gui};
+
+	ASSERT_TRUE(toolbox.getTools().size() != 0);
+}

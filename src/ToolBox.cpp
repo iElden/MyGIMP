@@ -18,7 +18,7 @@ namespace Mimp
 		this->_tools[0]->onSelect();
 	}
 
-	std::unordered_map<std::string, std::shared_ptr<Tool> > ToolBox::getTools() {
+	std::map<std::string, std::shared_ptr<Tool> > ToolBox::getTools() {
 		return ToolFactory::get();
 	}
 

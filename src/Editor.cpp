@@ -389,7 +389,7 @@ namespace Mimp {
 			idx = 0;
 
 			KeyWidget::Ptr key;
-			auto shortcuts = std::make_shared<std::unordered_map<std::string, Keys::KeyCombination>>();
+			auto shortcuts = std::make_shared<std::map<std::string, Keys::KeyCombination>>();
 
 			for (auto &i : this->_shortcutManager.getShortcuts()) {
 				auto keyStroke = i.second->getKeyStroke();
