@@ -33,15 +33,6 @@ namespace Mimp
 		return this->_window;
 	}
 
-	void ToolBox::regenerateGuiWindow(tgui::Gui gui)
-	{
-		bool drawIt = this->_window->isVisible();
-
-//		this->_window->close();
-		this->_generateGuiWindow(gui);
-//		if (drawIt) this->_window
-	}
-
 	void ToolBox::_generateGuiWindow(tgui::Gui &gui)
 	{
 		auto callback = [this, &gui](tgui::Button::Ptr button, Color *color){
@@ -143,13 +134,11 @@ namespace Mimp
 		try {
 			for (std::size_t i = 0; i < _tools.size(); i += 1) {
 				auto tool = _tools[i];
-				std::cout << "Testing " << tool->getName() << ": " << tool->getKeyCombination().toString() << " with " << kc.toString() << std::endl;
 				if (tool->getKeyCombination() == kc) {
 					this->getSelectedTool()->onUnselect();
 					this->_selectedTool = i;
 					this->_addSelectedToolConfigPanel(panel);
 					this->getSelectedTool()->onSelect();
-					std::cout << "Trouvé ! " << tool->getName() << std::endl;
 					return;
 				}
 			}
