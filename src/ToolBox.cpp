@@ -33,6 +33,15 @@ namespace Mimp
 		return this->_window;
 	}
 
+	void ToolBox::regenerateGuiWindow(tgui::Gui gui)
+	{
+		bool drawIt = this->_window->isVisible();
+
+//		this->_window->close();
+		this->_generateGuiWindow(gui);
+//		if (drawIt) this->_window
+	}
+
 	void ToolBox::_generateGuiWindow(tgui::Gui &gui)
 	{
 		auto callback = [this, &gui](tgui::Button::Ptr button, Color *color){
@@ -76,7 +85,7 @@ namespace Mimp
 					if (index >= this->_tools.size())
 						throw CorruptedGuiFileException("Tool index out of range");
 
-					widget->setToolTip(tgui::Label::create(this->_tools[index]->getName()));
+					widget->setToolTip(tgui::Label::create(this->_tools[index]->getName() + " (" + this->_tools[index]->getKeyCombination().toString() + ")"));
 					widget->connect("Pressed", [this, index, panel]{
 						this->getSelectedTool()->onUnselect();
 						this->_selectedTool = index;
@@ -126,5 +135,25 @@ namespace Mimp
 		panel->setPosition(10, pan->getSize().y + 10);
 		panel->setSize(pan->getSize().x - 20, 280);
 		this->_window->add(panel, "cfg");
+	}
+
+	void ToolBox::selectTool(Keys::KeyCombination kc)
+	{
+		auto panel = this->_window->get<tgui::ScrollablePanel>("Panel");
+		try {
+			for (std::size_t i = 0; i < _tools.size(); i += 1) {
+				auto tool = _tools[i];
+				std::cout << "Testing " << tool->getName() << ": " << tool->getKeyCombination().toString() << " with " << kc.toString() << std::endl;
+				if (tool->getKeyCombination() == kc) {
+					this->getSelectedTool()->onUnselect();
+					this->_selectedTool = i;
+					this->_addSelectedToolConfigPanel(panel);
+					this->getSelectedTool()->onSelect();
+					std::cout << "Trouvé ! " << tool->getName() << std::endl;
+					return;
+				}
+			}
+		}
+		 catch (...) {}
 	}
 }

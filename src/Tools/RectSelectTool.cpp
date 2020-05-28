@@ -9,7 +9,9 @@
 
 Mimp::RectSelectTool::RectSelectTool(ToolBox &toolBox):
 	SelectionTool("RectSelect", toolBox)
-{}
+{
+	this->setKeyCombination({Keys::KEY_R, false, false, false});
+}
 
 void Mimp::RectSelectTool::clear()
 {

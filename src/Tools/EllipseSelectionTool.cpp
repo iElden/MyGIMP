@@ -11,6 +11,7 @@ Mimp::EllipseSelectionTool::EllipseSelectionTool(Mimp::ToolBox &toolBox):
 	SelectionTool("Elipse Selection", toolBox)
 {
 	this->clear();
+	this->setKeyCombination({Keys::KEY_E, false, false, false});
 }
 
 void Mimp::EllipseSelectionTool::clear()

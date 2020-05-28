@@ -11,7 +11,9 @@
 Mimp::Fill::Fill(Mimp::ToolBox &toolBox):
 		Tool("Fill color"),
 		_box(toolBox)
-{}
+{
+	this->setKeyCombination({Keys::KEY_F, false, false, false});
+}
 
 void Mimp::Fill::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick click, Mimp::Image &image)
 {

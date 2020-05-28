@@ -64,6 +64,8 @@ namespace Mimp::Keys {
 		//! @return bool
 		bool operator<(const KeyCombination &) const;
 
+		bool operator==(const KeyCombination &other) const;
+
 		//! @brief Return the string representation of the combination.
 		//! @return std::string
 		std::string toString() const;

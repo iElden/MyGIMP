@@ -8,9 +8,7 @@ namespace Mimp
 {
 	Move::Move() :
 		Tool("Move Layer")
-	{
-
-	}
+	{}
 
 	void Move::onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick, Image &image)
 	{

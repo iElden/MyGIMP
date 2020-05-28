@@ -61,6 +61,10 @@ namespace Mimp
 
 		//! @brief Get the tools of the ToolBox.
 	    std::map<std::string, std::shared_ptr<Tool>> getTools();
+
+	    void selectTool(Keys::KeyCombination kc);
+
+	    void regenerateGuiWindow(tgui::Gui gui);
 	};
 }
 

@@ -12,6 +12,10 @@ namespace Mimp::Keys {
 		return val1 < val2;
 	}
 
+	bool Keys::KeyCombination::operator==(const KeyCombination &other) const {
+		return this->key == other.key && this->alt == other.alt && this->control == other.control && this->shift == other.shift;
+	}
+
 	std::string KeyCombination::toString() const
 	{
 		std::string result;

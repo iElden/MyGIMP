@@ -15,6 +15,7 @@ namespace Mimp
 			Tool("Eraser"),
 			_box(box)
 	{
+		this->setKeyCombination({Keys::KEY_DEL, false, false, true});
 	}
 
 	void Eraser::onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick, Image &image)
