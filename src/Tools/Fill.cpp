@@ -18,6 +18,7 @@ void Mimp::Fill::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick click, Mimp::I
 	if (image.getSelectedLayer().isLocked())
 		return;
 
+	image.takeFrameBufferSnapshot();
 	auto &layer = image.getSelectedLayer();
 
 	this->apply(pos - layer.pos, layer, click);

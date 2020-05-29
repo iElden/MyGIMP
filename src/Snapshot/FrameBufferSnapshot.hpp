@@ -9,6 +9,7 @@
 
 
 #include "Snapshot.hpp"
+#include "../Layer/FrameBuffer.hpp"
 
 namespace Mimp {
 	class FrameBufferSnapshot : public Snapshot {

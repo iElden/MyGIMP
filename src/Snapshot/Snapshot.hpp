@@ -7,9 +7,9 @@
 #ifndef MYGIMP_SNAPSHOT_HPP
 #define MYGIMP_SNAPSHOT_HPP
 
-#include "../Image.hpp"
-
 namespace Mimp {
+	class Image;
+
 	class Snapshot {
 	public:
 		virtual void rollback(Image &image) = 0;

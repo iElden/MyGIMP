@@ -6,6 +6,7 @@
 */
 
 #include "FrameBufferSnapshot.hpp"
+#include "../Image.hpp"
 
 Mimp::FrameBufferSnapshot::FrameBufferSnapshot(const FrameBuffer &frameBuffer, int layerNb):
 	layerNumber(layerNb),

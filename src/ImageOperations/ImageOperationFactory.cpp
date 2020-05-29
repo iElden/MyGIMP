@@ -22,6 +22,7 @@
 #include "Layer/MoveUp.hpp"
 #include "Layer/MoveDown.hpp"
 #include "Layer/RotateRight90.hpp"
+#include "Undo.hpp"
 
 namespace Mimp
 {
@@ -34,6 +35,9 @@ namespace Mimp
 		},
 		[]{
 			return std::make_shared<PasteOperation>();
+		},
+		[]{
+			return std::make_shared<Undo>();
 		},
 		[]{
 			return std::make_shared<SelectAllOperation>();

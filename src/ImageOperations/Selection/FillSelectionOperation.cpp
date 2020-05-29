@@ -15,6 +15,7 @@ namespace Mimp
 
 	void FillSelectionOperation::click(tgui::Gui &gui, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr, Editor &) const
 	{
+		image->takeFrameBufferSnapshot();
 		Utils::makeColorPickWindow(gui, [image](Color color){
 			FillSelectionOperation::_fill(image->getSelectedLayer(), image->selectedArea, color);
 		}, Color::Black);

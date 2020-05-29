@@ -16,6 +16,7 @@ void Mimp::FillSelection::onClick(Mimp::Vector2<int>, Mimp::MouseClick click, Mi
 	if (image.getSelectedLayer().isLocked())
 		return;
 
+	image.takeFrameBufferSnapshot();
 	auto &layer = image.getSelectedLayer();
 
 	if (image.selectedArea.isAnAreaSelected())

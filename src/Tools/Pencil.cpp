@@ -30,6 +30,7 @@ namespace Mimp
 		if (image.getSelectedLayer().isLocked())
 			return;
 
+		image.takeFrameBufferSnapshot();
 		auto &layer = image.getSelectedLayer();
 
 		layer.buffer.drawAt(pos - layer.pos, this->_box.getSelectedColor(click), this->_radius, this->_shape);
