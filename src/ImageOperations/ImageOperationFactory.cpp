@@ -103,7 +103,7 @@ namespace Mimp
 		std::map<std::string, std::shared_ptr<ImageOperation>> result;
 
 		for (auto &io : ImageOperationFactory::ios) {
-			result[io->name] = io;
+			result[io->getName()] = io;
 		}
 		return result;
 	}

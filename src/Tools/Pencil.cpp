@@ -13,6 +13,7 @@ namespace Mimp
 		Tool("Pencil"),
 		_box(box)
 	{
+		this->setKeyCombination({Keys::KEY_P, false, false, false});
 	}
 
 	void Pencil::onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Image &image)

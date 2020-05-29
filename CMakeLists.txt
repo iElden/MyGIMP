@@ -123,7 +123,11 @@ set(MIMP_SRCS
     src/ShortcutManager.cpp
     src/ShortcutManager.hpp
     src/KeyWidget.cpp
-    src/KeyWidget.hpp src/Snapshot/Snapshot.hpp src/Snapshot/FrameBufferSnapshot.cpp src/Snapshot/FrameBufferSnapshot.hpp src/ImageOperations/Undo.cpp src/ImageOperations/Undo.hpp)
+    src/KeyWidget.hpp
+    src/Snapshot/Snapshot.hpp src/Snapshot/FrameBufferSnapshot.cpp src/Snapshot/FrameBufferSnapshot.hpp
+    src/ImageOperations/Undo.cpp src/ImageOperations/Undo.hpp
+    src/Action.hpp
+    )
 
 find_library(PNG_LIBRARY png)
 
@@ -182,7 +186,7 @@ add_executable(
         tst/SelectedArea.cpp
         tst/ToolBox.cpp
         tst/LayerWidget.cpp
-        tst/Editor.cpp
+        tst/Keys.cpp
         tst/Data/Vector.cpp
         tst/Data/Color.cpp
         tst/Layer/Layer.cpp
@@ -218,7 +222,7 @@ add_executable(
         tst/ImageOperations/Layer/MoveLeft.cpp
         tst/ImageOperations/Layer/MoveRight.cpp
         tst/ImageOperations/Layer/MoveUp.cpp
-        tst/ImageOperations/Layer/RotateRight90.cpp)
+        tst/ImageOperations/Layer/RotateRight90.cpp tst/KeyWidget.cpp)
 
 if (WIN32)
     target_link_libraries(

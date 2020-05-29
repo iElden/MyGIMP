@@ -12,6 +12,10 @@ namespace Mimp::Keys {
 		return val1 < val2;
 	}
 
+	bool Keys::KeyCombination::operator==(const KeyCombination &other) const {
+		return this->key == other.key && this->alt == other.alt && this->control == other.control && this->shift == other.shift;
+	}
+
 	std::string KeyCombination::toString() const
 	{
 		std::string result;
@@ -36,14 +40,20 @@ namespace Mimp::Keys {
 		if (ctrlPos != std::string::npos) {
 			this->control = true;
 			position += 7;
+		} else {
+			this->control = false;
 		}
 		if (shiftPos != std::string::npos) {
 			this->shift = true;
 			position += 8;
+		} else {
+			this->shift = false;
 		}
 		if (altPos != std::string::npos) {
 			this->alt = true;
 			position += 6;
+		} else {
+			this->alt = false;
 		}
 
 		this->key = StringToKey(s.substr(position, s.length()));

@@ -5,17 +5,24 @@
 
 namespace Mimp {
 
-	ShortcutManager::ShortcutManager(ToolBox &tb, std::map<std::string, std::shared_ptr<ImageOperation>> io) :
-		_io(io)
+	ShortcutManager::ShortcutManager(std::map<std::string, std::shared_ptr<Tool>> tb, std::map<std::string, std::shared_ptr<ImageOperation>> io) :
+		_io(io), _tb(tb)
 	{
+		for (auto &i : _io) {
+			this->_shortcuts[i.first] = i.second;
+		}
+		for (auto &i : _tb) {
+			this->_shortcuts[i.first] = i.second;
+		}
+
 		std::ifstream input{"shortcuts.ini"};
 
 		if (input.fail()) {
 			std::cout << "No shortcuts.ini file found. Creating default one..." << std::endl;
 			std::ofstream output{"shortcuts.ini"};
 
-			for (auto &i : io) {
-				output << i.first << ":" << i.second->getKeyStroke()->toString() << "\n";
+			for (auto &i : _shortcuts) {
+				output << i.first << ":" << i.second->getKeyCombination().toString() << "\n";
 			}
 			output.close();
 			return;
@@ -37,7 +44,7 @@ namespace Mimp {
 			}
 
 			for (auto &s : shortcuts) {
-				if (io.find(s.first) == io.end()) {
+				if (_shortcuts.find(s.first) == _shortcuts.end()) {
 					throw std::exception();
 				}
 			}
@@ -45,7 +52,7 @@ namespace Mimp {
 			for (auto &s : shortcuts) {
 				Keys::KeyCombination kc{};
 				kc.fromString(s.second);
-				io[s.first]->setKeyStroke(kc);
+				_shortcuts[s.first]->setKeyCombination(kc);
 			}
 		} catch (...) {
 			std::cout << "Problem while reading shortcuts.ini, using default settings." << std::endl;
@@ -56,8 +63,8 @@ namespace Mimp {
 	ShortcutManager::~ShortcutManager() {
 		std::ofstream output{"shortcuts.ini"};
 
-		for (auto &i : _io) {
-			output << i.first << ":" << i.second->getKeyStroke()->toString() << "\n";
+		for (auto &i : _shortcuts) {
+			output << i.first << ":" << i.second->getKeyCombination().toString() << "\n";
 		}
 		output.close();
 	}

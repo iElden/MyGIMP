@@ -14,12 +14,13 @@
 
 namespace Mimp {
 	Editor::Editor(const std::vector<std::string> &images) :
-		_mainWindow({640, 480}, "Mimp"),
-		_gui(this->_mainWindow),
-		_toolBox(this->_gui),
-		_imgOps(ImageOperationFactory::buildAll()),
-		_shortcutManager(_toolBox, ImageOperationFactory::get())
+			_mainWindow({640, 480}, "Mimp"),
+			_gui(this->_mainWindow),
+			_toolBox(this->_gui),
+			_imgOps(ImageOperationFactory::buildAll()),
+			_shortcutManager(_toolBox.getTools(), ImageOperationFactory::get())
 	{
+		this->_toolBox.refreshToolBox();
 		this->_mainWindow.setFramerateLimit(240);
 		this->_gui.loadWidgetsFromFile("widgets/top_menu.gui");
 		this->_setupButtonCallbacks();
@@ -177,18 +178,22 @@ namespace Mimp {
 				else if (event.type == sf::Event::Resized) {
 					this->_mainWindow.setView(sf::View{sf::FloatRect(0, 0, event.size.width, event.size.height)});
 					this->_gui.setView(sf::View{sf::FloatRect(0, 0, event.size.width, event.size.height)});
-				} else if (event.type == sf::Event::KeyPressed && this->_selectedImageWindow) {
+				} else if (event.type == sf::Event::KeyPressed) {
 					Keys::KeyCombination comb{
-						Keys::SFMLKeyToKey(event.key.code),
-						event.key.control,
-						event.key.shift,
-						event.key.alt
+							Keys::SFMLKeyToKey(event.key.code),
+							event.key.control,
+							event.key.shift,
+							event.key.alt
 					};
-
-					try {
-						this->_keysImgOps.at(comb)->click(this->_gui, this->_getSelectedCanvas(),
-						                                  this->_selectedImageWindow, *this);
-					} catch (std::out_of_range &) {}
+					if (comb.key != Keys::KEY_UNKNOWN && !this->_shortcutManager.isBusy()) {
+						if (this->_selectedImageWindow) {
+							try {
+								this->_keysImgOps.at(comb)->click(this->_gui, this->_getSelectedCanvas(),
+								                                  this->_selectedImageWindow, *this);
+							} catch (std::out_of_range &) {}
+						}
+						this->_toolBox.selectTool(comb);
+					}
 				} else if (event.type == sf::Event::MouseWheelScrolled) {
 					auto canvas = this->_getSelectedCanvas();
 
@@ -336,15 +341,13 @@ namespace Mimp {
 
 		for (auto &imgOp : this->_imgOps) {
 			std::vector<sf::String> hierarchy;
-			auto key = imgOp->getKeyStroke();
+			auto key = imgOp->getKeyCombination();
 
 			for (auto &elem : imgOp->getMenuHierarchy())
 				hierarchy.emplace_back(elem);
 
-			if (key) {
-				this->_keysImgOps[*key] = imgOp;
-				hierarchy.back() += " (" + key->toString() + ")";
-			}
+			this->_keysImgOps[key] = imgOp;
+			hierarchy.back() += " (" + key.toString() + ")";
 
 			menu->addMenuItem(hierarchy);
 			menu->setMenuItemEnabled(hierarchy, false);
@@ -356,11 +359,18 @@ namespace Mimp {
 		menu->addMenuItem({"Window", "Tools"});
 		menu->connectMenuItem({"Window", "Tools"}, [this, menu] {
 			this->_gui.remove(this->_gui.get<tgui::Widget>("ToolBox"));
-			this->_gui.add(this->_toolBox.getWindow(), "ToolBox");
+
+			auto win = this->_toolBox.getWindow();
+			win->connect("Closed", [this, win] {
+				this->_gui.remove(win);
+			});
+			this->_gui.add(win, "ToolBox");
 		});
 
 		menu->addMenuItem({"Settings", "Shortcuts"});
 		menu->connectMenuItem({"Settings", "Shortcuts"}, [this] {
+			this->_shortcutManager.setBusy();
+
 			auto win = Utils::openWindowWithFocus(this->_gui, 0, 0);
 
 			win->loadWidgetsFromFile("widgets/shortcut.gui");
@@ -370,6 +380,7 @@ namespace Mimp {
 			int idx = 0;
 
 			win->setTitle("Edit shortcuts");
+
 			for (auto &i : this->_shortcutManager.getShortcuts()) {
 				auto name = panel->get<tgui::Label>("Action" + std::to_string(idx + 1));
 
@@ -389,12 +400,10 @@ namespace Mimp {
 			idx = 0;
 
 			KeyWidget::Ptr key;
-			auto shortcuts = std::make_shared<std::unordered_map<std::string, Keys::KeyCombination>>();
+			auto shortcuts = std::make_shared<std::map<std::string, Keys::KeyCombination>>();
 
 			for (auto &i : this->_shortcutManager.getShortcuts()) {
-				auto keyStroke = i.second->getKeyStroke();
-				if (keyStroke)
-					(*shortcuts)[i.first] = *keyStroke;
+				(*shortcuts)[i.first] = i.second->getKeyCombination();
 
 				auto id = "Action" + std::to_string(idx + 1);
 				auto label = panel->get<tgui::Label>(id);
@@ -405,28 +414,27 @@ namespace Mimp {
 				label->setSize({max, label->getSize().y});
 
 				ctrlTick->setPosition("(controllabel.x + (controllabel.w / 2)) - (w / 2)", id + ".y");
-				ctrlTick->setChecked(i.second->getKeyStroke()->control);
-				ctrlTick->connect("Changed", [ctrlTick, i, shortcuts]{
+				ctrlTick->setChecked(i.second->getKeyCombination().control);
+				ctrlTick->connect("Changed", [ctrlTick, i, shortcuts] {
 					(*shortcuts)[i.first].control = ctrlTick->isChecked();
 				});
 				panel->add(ctrlTick);
 
 				altTick->setPosition("(altlabel.x + (altlabel.w / 2)) - (w / 2)", id + ".y");
-				altTick->setChecked(i.second->getKeyStroke()->alt);
-				altTick->connect("Changed", [altTick, i, shortcuts]{
+				altTick->setChecked(i.second->getKeyCombination().alt);
+				altTick->connect("Changed", [altTick, i, shortcuts] {
 					(*shortcuts)[i.first].alt = altTick->isChecked();
 				});
 				panel->add(altTick);
 
-
 				shiftTick->setPosition("(shiftlabel.x + (shiftlabel.w / 2)) - (w / 2)", id + ".y");
-				shiftTick->setChecked(i.second->getKeyStroke()->shift);
-				panel->add(shiftTick);
-				shiftTick->connect("Changed", [shiftTick, i, shortcuts]{
+				shiftTick->setChecked(i.second->getKeyCombination().shift);
+				shiftTick->connect("Changed", [shiftTick, i, shortcuts] {
 					(*shortcuts)[i.first].shift = shiftTick->isChecked();
 				});
+				panel->add(shiftTick);
 
-				key = KeyWidget::create(i.second->getKeyStroke()->getKeyName(), shortcuts, i.first);
+				key = KeyWidget::create(i.second->getKeyCombination().getKeyName(), shortcuts, i.first);
 				key->setTextSize(13);
 				key->setPosition("(keylabel.x + (keylabel.w / 2)) - (w / 2)", id + ".y");
 				key->setSize(65, 20);
@@ -435,47 +443,48 @@ namespace Mimp {
 				idx += 1;
 			}
 
-			auto len =  key->getSize().y + key->getPosition().y + 10;
+			auto len = key->getSize().y + key->getPosition().y + 10;
 
-			panel->setSize("KeySelectAction1.x + KeySelectAction1.w + 10", std::min(len, 500.f));
+			panel->setSize("KeySelectAction1.x + KeySelectAction1.w + 20", std::min(len, 500.f));
 			win->setSize({"Cancel.x + Cancel.w + 10", "Cancel.y + Cancel.h + 10"});
 
 			auto ok = win->get<tgui::Button>("OK");
 			auto cancel = win->get<tgui::Button>("Cancel");
 
-			cancel->connect("Pressed", [win] { win->close(); });
-			ok->connect("Pressed", [this, win, shortcuts]{
+			cancel->connect("Pressed", [this, win] {
+				win->close();
+				this->_shortcutManager.setBusy(false);
+			});
+			ok->connect("Pressed", [this, win, shortcuts] {
 				auto menu = this->_gui.get<tgui::MenuBar>("main_bar");
 				auto s = this->_shortcutManager.getShortcuts();
 
 				this->_keysImgOps.clear();
 				for (auto &imgOp : this->_imgOps) {
 					std::vector<sf::String> hierarchy;
-					auto key = imgOp->getKeyStroke();
+					auto key = imgOp->getKeyCombination();
 
 					for (auto &elem : imgOp->getMenuHierarchy())
 						hierarchy.emplace_back(elem);
 
-					if (key)
-						hierarchy.back() += " (" + key->toString() + ")";
+					hierarchy.back() += " (" + key.toString() + ")";
 
 					menu->removeMenuItem(hierarchy, false);
 				}
 
-				for (auto &i : *shortcuts)
-					s[i.first]->setKeyStroke(i.second);
+				for (auto &i : *shortcuts) {
+					s[i.first]->setKeyCombination(i.second);
+				}
 
 				for (auto &imgOp : this->_imgOps) {
 					std::vector<sf::String> hierarchy;
-					auto key = imgOp->getKeyStroke();
+					auto key = imgOp->getKeyCombination();
 
 					for (auto &elem : imgOp->getMenuHierarchy())
 						hierarchy.emplace_back(elem);
 
-					if (key) {
-						this->_keysImgOps[*key] = imgOp;
-						hierarchy.back() += " (" + key->toString() + ")";
-					}
+					this->_keysImgOps[key] = imgOp;
+					hierarchy.back() += " (" + key.toString() + ")";
 
 					menu->addMenuItem(hierarchy);
 					menu->setMenuItemEnabled(hierarchy, !!this->_selectedImageWindow);
@@ -484,6 +493,8 @@ namespace Mimp {
 					});
 				}
 				win->close();
+				this->_shortcutManager.setBusy(false);
+				this->_toolBox.refreshToolBox();
 			});
 		});
 
@@ -935,13 +946,12 @@ namespace Mimp {
 
 		for (auto &imgOp : this->_imgOps) {
 			std::vector<sf::String> hierarchy;
-			auto key = imgOp->getKeyStroke();
+			auto key = imgOp->getKeyCombination();
 
 			for (auto &elem : imgOp->getMenuHierarchy())
 				hierarchy.emplace_back(elem);
 
-			if (key)
-				hierarchy.back() += " (" + key->toString() + ")";
+			hierarchy.back() += " (" + key.toString() + ")";
 
 			menu->setMenuItemEnabled(hierarchy, true);
 		}
@@ -961,13 +971,12 @@ namespace Mimp {
 
 		for (auto &imgOp : this->_imgOps) {
 			std::vector<sf::String> hierarchy;
-			auto key = imgOp->getKeyStroke();
+			auto key = imgOp->getKeyCombination();
 
 			for (auto &elem : imgOp->getMenuHierarchy())
 				hierarchy.emplace_back(elem);
 
-			if (key)
-				hierarchy.back() += " (" + key->toString() + ")";
+			hierarchy.back() += " (" + key.toString() + ")";
 
 			menu->setMenuItemEnabled(hierarchy, false);
 		}

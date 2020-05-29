@@ -8,7 +8,9 @@
 
 Mimp::SelectByColorTool::SelectByColorTool(ToolBox &toolBox):
 	SelectionTool("SelectByColor", toolBox)
-{}
+{
+	this->setKeyCombination({Keys::KEY_U, true, false, false});
+}
 
 void Mimp::SelectByColorTool::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick click, Mimp::Image &image)
 {

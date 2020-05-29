@@ -9,7 +9,9 @@
 Mimp::FillSelection::FillSelection(Mimp::ToolBox &toolBox):
 	Tool("FillSelection"),
 	_toolBox(toolBox)
-{}
+{
+	this->setKeyCombination({Keys::KEY_F, false, false, true});
+}
 
 void Mimp::FillSelection::onClick(Mimp::Vector2<int>, Mimp::MouseClick click, Mimp::Image &image)
 {

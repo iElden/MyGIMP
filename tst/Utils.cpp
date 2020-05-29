@@ -27,6 +27,14 @@ TEST(Utils, resolveHttpBadHost) {
     }
 }
 
+TEST(Utils, resolveHttpBadHostInUrl) {
+	try {
+		Mimp::Utils::resolveUrl("www.mygimp.fr");
+	} catch (Mimp::HostNotFoundException &e) {
+		ASSERT_EQ(std::string(e.what()), "Cannot find host 'www.mygimp.fr'");
+	}
+}
+
 TEST(Utils, resolveHttpsBadHost) {
     try {
         Mimp::Utils::resolveUrl("https://www.mygimp.fr");
@@ -47,6 +55,12 @@ TEST(Utils, resolveValidUrl) {
     auto body = Mimp::Utils::resolveUrl("https://www.google.com");
 
     ASSERT_NE(body.size(), 0);
+}
+
+TEST(Utils, resolveValidUrlInUrl) {
+	auto body = Mimp::Utils::resolveUrl("www.google.com");
+
+	ASSERT_NE(body.size(), 0);
 }
 
 TEST(Utils, resolveExistingFile) {

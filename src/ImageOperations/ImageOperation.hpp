@@ -16,10 +16,11 @@ namespace Mimp
 	class Editor;
 
 	//! @brief Define the ImageOperation base class.
-	class ImageOperation {
+	class ImageOperation : public Action {
 	private:
 		std::vector<std::string> _hierarchy;
 		std::optional<Keys::KeyCombination> _keys;
+		std::string _name;
 
 	protected:
 		//! @brief Constructor of ImageOperation
@@ -41,15 +42,10 @@ namespace Mimp
 		//! @return A vector of all the menu hierarchy.
 		const std::vector<std::string> &getMenuHierarchy() const;
 
-		//! @brief Get the possible key combination of the operation.
-		//! @return The combination of the operation if it exists.
-		std::optional<Keys::KeyCombination> getKeyStroke() const;
-
-		//! @brief Set the new key stroke for the ImageOperation.
-		//! @param k The updated KeyCombination
-		void setKeyStroke(Keys::KeyCombination k);
-
-		const std::string name; //!< The name of the ImageOperation.
+		std::string getName()
+		{
+			return this->_name;
+		}
 	};
 }
 
