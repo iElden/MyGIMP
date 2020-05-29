@@ -20,6 +20,7 @@ namespace Mimp {
 			_imgOps(ImageOperationFactory::buildAll()),
 			_shortcutManager(_toolBox.getTools(), ImageOperationFactory::get())
 	{
+		this->_toolBox.refreshToolBox();
 		this->_mainWindow.setFramerateLimit(240);
 		this->_gui.loadWidgetsFromFile("widgets/top_menu.gui");
 		this->_setupButtonCallbacks();
@@ -184,7 +185,6 @@ namespace Mimp {
 							event.key.shift,
 							event.key.alt
 					};
-					std::cout << comb.toString() << std::endl;
 					if (comb.key != Keys::KEY_UNKNOWN && !this->_shortcutManager.isBusy()) {
 						if (this->_selectedImageWindow) {
 							try {
@@ -359,7 +359,12 @@ namespace Mimp {
 		menu->addMenuItem({"Window", "Tools"});
 		menu->connectMenuItem({"Window", "Tools"}, [this, menu] {
 			this->_gui.remove(this->_gui.get<tgui::Widget>("ToolBox"));
-			this->_gui.add(this->_toolBox.getWindow(), "ToolBox");
+
+			auto win = this->_toolBox.getWindow();
+			win->connect("Closed", [this, win] {
+				this->_gui.remove(win);
+			});
+			this->_gui.add(win, "ToolBox");
 		});
 
 		menu->addMenuItem({"Settings", "Shortcuts"});
@@ -489,6 +494,7 @@ namespace Mimp {
 				}
 				win->close();
 				this->_shortcutManager.setBusy(false);
+				this->_toolBox.refreshToolBox();
 			});
 		});
 

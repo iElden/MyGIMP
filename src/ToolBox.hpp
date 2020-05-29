@@ -63,6 +63,8 @@ namespace Mimp
 	    std::map<std::string, std::shared_ptr<Tool>> getTools();
 
 	    void selectTool(Keys::KeyCombination kc);
+
+	    void refreshToolBox();
 	};
 }
 
