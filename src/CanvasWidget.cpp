@@ -88,7 +88,7 @@ namespace Mimp
 		for (unsigned x = 0; x < realSize.x; x += 10) {
 			dark = x % 20;
 			for (unsigned y = 0; y < realSize.y; y += 10) {
-				rect.setFillColor(dark ? sf::Color{0x888888FF} : sf::Color::White);
+				rect.setFillColor(dark ? sf::Color{0x888888FF} : sf::Color::Blue);
 				rect.setPosition(x, y);
 				rect.setSize({
 					(size.x * this->_zoom) - x > 10 ? 10 : (size.x * this->_zoom) - x,
@@ -98,7 +98,7 @@ namespace Mimp
 				dark = !dark;
 			}
 		}
-
+/*
 		for (auto &layer : this->_layers) {
 			if (!layer->visible)
 				continue;
@@ -121,6 +121,20 @@ namespace Mimp
 		sprite.setPosition(0, 0);
 		sprite.setScale(this->_zoom, this->_zoom);
 		target.draw(sprite, states);
+*/
+		if (!this->getSelectedLayer().text.content.empty()) {
+			auto text = this->getSelectedLayer().text;
+			for (auto &c : text.content) {
+				//auto glyph = text.font.getGlyph(c, text.fontSize, false);
+				auto glyph = text.font.getGlyph(U'a', text.fontSize, false);
+
+				sprite.setTexture(text.font.getTexture(text.fontSize));
+				sprite.setTextureRect(glyph.textureRect);
+				sprite.setPosition(100, 100);
+				sprite.setScale(this->_zoom, this->_zoom);
+				target.draw(sprite, states);
+			}
+		}
 	}
 
 	CanvasWidget::Ptr CanvasWidget::create(const ToolBox &box, Vector2<unsigned int> size)

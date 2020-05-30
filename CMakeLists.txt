@@ -123,7 +123,14 @@ set(MIMP_SRCS
     src/ShortcutManager.cpp
     src/ShortcutManager.hpp
     src/KeyWidget.cpp
-    src/KeyWidget.hpp src/Snapshot/Snapshot.hpp src/Snapshot/FrameBufferSnapshot.cpp src/Snapshot/FrameBufferSnapshot.hpp src/Action.hpp)
+    src/KeyWidget.hpp
+    src/Snapshot/Snapshot.hpp
+    src/Snapshot/FrameBufferSnapshot.cpp
+    src/Snapshot/FrameBufferSnapshot.hpp
+    src/Action.hpp
+    src/Tools/Text.cpp
+    src/Tools/Text.hpp)
+
 
 find_library(PNG_LIBRARY png)
 

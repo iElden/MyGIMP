@@ -8,6 +8,7 @@
 #include "Tools/ToolFactory.hpp"
 #include "Exceptions.hpp"
 #include "Utils.hpp"
+#include "Tools/Text.hpp"
 
 namespace Mimp
 {
@@ -172,5 +173,9 @@ namespace Mimp
 				widget->setToolTip(tgui::Label::create(this->_tools[index]->getName() + " (" + this->_tools[index]->getKeyCombination().toString() + ")"));
 			} catch (...) {}
 		}
+	}
+
+	bool ToolBox::isTextEditing() {
+		return this->getSelectedTool()->isEditing();
 	}
 }

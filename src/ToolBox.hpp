@@ -65,6 +65,8 @@ namespace Mimp
 	    void selectTool(Keys::KeyCombination kc);
 
 	    void refreshToolBox();
+
+	    bool isTextEditing();
 	};
 }
 

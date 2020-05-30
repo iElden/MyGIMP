@@ -192,7 +192,8 @@ namespace Mimp {
 								                                  this->_selectedImageWindow, *this);
 							} catch (std::out_of_range &) {}
 						}
-						this->_toolBox.selectTool(comb);
+						if (!this->_toolBox.isTextEditing())
+							this->_toolBox.selectTool(comb);
 					}
 				} else if (event.type == sf::Event::MouseWheelScrolled) {
 					auto canvas = this->_getSelectedCanvas();
@@ -766,7 +767,7 @@ namespace Mimp {
 			width->setText(std::to_string(layer.getSize().x));
 			height->setText(std::to_string(layer.getSize().y));
 			cancel->connect("Pressed", [win] { win->close(); });
-			ok->connect("Pressed", [win, &layer, width, height] {
+			ok->connect("Pressed", [this, win, &layer, width, height] {
 				std::string wid = width->getText();
 				std::string hei = height->getText();
 

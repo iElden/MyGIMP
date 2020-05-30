@@ -6,6 +6,7 @@
 #define MYGIMP_LAYER_HPP
 
 #include <string>
+#include <SFML/Graphics/Text.hpp>
 #include "../Data/Vector2.hpp"
 #include "../Data/Color.hpp"
 #include "FrameBuffer.hpp"
@@ -20,6 +21,13 @@ namespace Mimp
 		char name[32];       //!< Name of the layer
 		float rotation = 0;  //!< Rotation of the layer
 		Vector2<int> pos = {0, 0}; //!< Position of the layer
+
+		struct Text {
+			std::string content;
+			unsigned int fontSize;
+			sf::Font font;
+		} text;
+
 
 		//! @brief Constructor of the Layer
 		//! @param size Size of the Layer
