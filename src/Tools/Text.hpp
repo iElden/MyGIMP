@@ -22,6 +22,9 @@ namespace Mimp {
 		void onUnselect() override;
 
 	private:
+		void getFonts();
+
+	private:
 		ToolBox &_toolBox;
 
 		bool _edition = false;
@@ -30,6 +33,8 @@ namespace Mimp {
 		std::wstring _text;
 		std::string _fontPath = "";
 		sf::Font _font;
+
+		std::map<std::string, std::string> _fonts;
 	};
 }
 

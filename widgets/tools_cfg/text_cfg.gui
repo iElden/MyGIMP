@@ -41,6 +41,16 @@ Label.Label1 {
     renderer = &1;
 }
 
+Label.Label2 {
+    AutoSize = true;
+    Position = (10, 43);
+    ScrollbarPolicy = Never;
+    Size = (46.2, 18);
+    Text = Font;
+    TextSize = 13;
+    renderer = &1;
+}
+
 TextBox.FontSizePreview {
     HorizontalScrollbarPolicy = Never;
     MaximumCharacters = 0;
@@ -73,9 +83,14 @@ TextBox.FontSizePreview {
     }
 }
 
+ComboBox.Fonts {
+    Position = (60, 40);
+    TextSize = 13;
+}
+
 TextBox.Input {
     HorizontalScrollbarPolicy = Never;
-    Position = (60, 70);
+    Position = (60, 80);
     ReadOnly = false;
     Size = (150, 150);
     Text = Your text;
