@@ -16,7 +16,7 @@ namespace Mimp {
 		int layerNumber;
 		FrameBuffer oldBuffer;
 	public:
-		FrameBufferSnapshot(const FrameBuffer &frameBuffer, int layerNb);
+		FrameBufferSnapshot(std::shared_ptr<FrameBuffer> frameBuffer, int layerNb);
 		void rollback(Image &image) override;
 	};
 }

@@ -295,9 +295,9 @@ namespace Mimp
 		}
 	}
 
-	void FrameBuffer::drawFrameBuffer(Vector2<int> pos, const FrameBuffer &buffer, DrawStrategy drawStrategy) noexcept
+	void FrameBuffer::drawFrameBuffer(Vector2<int> pos, std::shared_ptr<FrameBuffer> buffer, DrawStrategy drawStrategy) noexcept
 	{
-		auto size = buffer.getSize();
+		auto size = buffer->getSize();
 
 		for (unsigned x = 0; x < size.x; x++)
 			for (unsigned y = 0; y < size.x; y++)
@@ -305,7 +305,7 @@ namespace Mimp
 					{
 						static_cast<int>(x + pos.x),
 						static_cast<int>(y + pos.y)
-					}, buffer.getPixel({
+					}, buffer->getPixel({
 						static_cast<int>(x),
 						static_cast<int>(y)
 					}, drawStrategy)

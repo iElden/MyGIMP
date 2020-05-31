@@ -5,7 +5,7 @@
 #ifndef MYGIMP_FRAMEBUFFER_HPP
 #define MYGIMP_FRAMEBUFFER_HPP
 
-
+#include <memory>
 #include <vector>
 #include "../Data/Vector2.hpp"
 #include "../Data/Color.hpp"
@@ -111,7 +111,7 @@ namespace Mimp
 		//! @param pos Position of the FrameBuffer on the screen
 		//! @param buffer The FrameBuffer to draw
 		//! @param drawStrategy How the shape has to be drawn. Default is ADD.
-		void drawFrameBuffer(Vector2<int> pos, const FrameBuffer &buffer, DrawStrategy drawStrategy=ADD) noexcept;
+		void drawFrameBuffer(Vector2<int> pos, std::shared_ptr<FrameBuffer> buffer, DrawStrategy drawStrategy=ADD) noexcept;
 
 		//! @brief Get a FrameBuffer rectangle from the screen
 		//! @param pos Origin of the Framebuffer to get

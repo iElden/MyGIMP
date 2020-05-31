@@ -24,11 +24,11 @@ TEST(RotateRigth90, oneRotation) {
 	Mimp::CanvasWidget::Ptr cw = Mimp::CanvasWidget::create(toolBox, Mimp::Vector2<unsigned int>{10, 10});
 	Mimp::RotateRight90 rr90;
 
-	cw->getSelectedLayer().buffer.clear(Mimp::Color::Black);
+	cw->getSelectedLayer()->buffer.clear(Mimp::Color::Black);
 
-	cw->getSelectedLayer().buffer.drawAt({3, 3}, Mimp::Color::Red, 1, Mimp::SQUARE);
+	cw->getSelectedLayer()->buffer.drawAt({3, 3}, Mimp::Color::Red, 1, Mimp::SQUARE);
 
-/*	auto buffer = cw->getSelectedLayer().buffer.getDrawBuffer();
+/*	auto buffer = cw->getSelectedLayer()->buffer.getDrawBuffer();
 
 	for (int i = 0; i < 100; i += 1) {
 		if (i && i % 10 == 0) {
@@ -46,7 +46,7 @@ TEST(RotateRigth90, oneRotation) {
 */
 	rr90.click(gui, cw, nullptr, e);
 
-	//buffer = cw->getSelectedLayer().buffer.getDrawBuffer();
+	//buffer = cw->getSelectedLayer()->buffer.getDrawBuffer();
 	ASSERT_TRUE(cw->getSelectedLayer().rotation == 90.f);
 
 	/*for (int i = 0; i < 100; i += 1) {

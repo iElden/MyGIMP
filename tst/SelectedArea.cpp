@@ -75,7 +75,7 @@ TEST(SelectedArea, fillWholeSelection) {
     selectedArea.selectAll();
     selectedArea.fill(l, Mimp::Color::Green);
 
-    auto pxs = l.buffer.getBuffer();
+    auto pxs = l->buffer.getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_EQ(pxs[i], Mimp::Color::Green);
     }

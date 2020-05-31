@@ -736,7 +736,7 @@ namespace Mimp {
 		});
 		merge->connect("Pressed", [&layer, &layers, index, this, win, canvas] {
 			layers.selectLayer(index - 1);
-			layers.getSelectedLayer().buffer.drawFrameBuffer(layer.pos, layer.buffer);
+			layers.getSelectedLayer().buffer->drawFrameBuffer(layer.pos, layer.buffer);
 			layers.deleteLayer(index);
 			this->_makeLayersPanel(win, canvas);
 		});
@@ -776,7 +776,7 @@ namespace Mimp {
 				auto w = std::stoul(wid);
 				auto h = std::stoul(hei);
 
-				layer.buffer = layer.buffer.getRectFromBuffer({0, 0}, {w, h});
+				layer.buffer = std::make_shared<FrameBuffer>(layer.buffer->getRectFromBuffer({0, 0}, {w, h}));
 				win->close();
 			});
 		});

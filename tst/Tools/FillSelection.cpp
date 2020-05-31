@@ -19,7 +19,7 @@ TEST(FillSelection, fillNoSelectedLayer) {
     Mimp::Image image({10, 10}, lm);
 
     ASSERT_TRUE(image.getLayers().size() == 1);
-    auto buffer = image.getLayers()[0].buffer.getBuffer();
+    auto buffer = image.getLayers()[0]->buffer.getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
     }
@@ -40,7 +40,7 @@ TEST(FillSelection, fillDefaultColorWholeLayer) {
     image.selectedArea.selectAll();
 
     ASSERT_TRUE(image.getLayers().size() == 1);
-    auto buffer = image.getLayers()[0].buffer.getBuffer();
+    auto buffer = image.getLayers()[0]->buffer.getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
     }
@@ -61,7 +61,7 @@ TEST(FillSelection, fillDefaultColorPartLayer) {
     image.selectedArea.selectAll();
 
     ASSERT_TRUE(image.getLayers().size() == 1);
-    auto buffer = image.getLayers()[0].buffer.getBuffer();
+    auto buffer = image.getLayers()[0]->buffer.getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
     }
@@ -82,7 +82,7 @@ TEST(FillSelection, fillWithCustomLeftColorWholeLayer) {
     image.selectedArea.selectAll();
 
     ASSERT_TRUE(image.getLayers().size() == 1);
-    auto buffer = image.getLayers()[0].buffer.getBuffer();
+    auto buffer = image.getLayers()[0]->buffer.getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
     }
@@ -105,7 +105,7 @@ TEST(FillSelection, fillWhenLayerIsLocked) {
 
     ASSERT_TRUE(image.getLayers().size() == 1);
     image.getLayers()[0].locked = true;
-    auto buffer = image.getLayers()[0].buffer.getBuffer();
+    auto buffer = image.getLayers()[0]->buffer.getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
     }
@@ -124,7 +124,7 @@ TEST(FillSelection, fillDrag) {
     Mimp::Image image({10, 10}, lm);
 
     ASSERT_TRUE(image.getLayers().size() == 1);
-    auto buffer = image.getLayers()[0].buffer.getBuffer();
+    auto buffer = image.getLayers()[0]->buffer.getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::Red);
     }

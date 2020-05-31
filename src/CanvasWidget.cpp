@@ -106,7 +106,7 @@ namespace Mimp
 			size = layer->getSize();
 
 			this->_drawBuffer.create(size.x, size.y);
-			this->_drawBuffer.update(layer->buffer.getDrawBuffer(), size.x, size.y, 0, 0);
+			this->_drawBuffer.update(layer->buffer->getDrawBuffer(), size.x, size.y, 0, 0);
 			sprite.setTexture(this->_drawBuffer, true);
 			sprite.setPosition(layer->pos.x * this->_zoom, layer->pos.y * this->_zoom);
 			//sprite.setPosition(layer->pos.x * this->_zoom + this->_zoom * size.x / 2, layer->pos.y * this->_zoom + this->_zoom * size.y / 2);

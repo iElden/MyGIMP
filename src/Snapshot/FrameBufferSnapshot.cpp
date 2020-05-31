@@ -8,12 +8,12 @@
 #include "FrameBufferSnapshot.hpp"
 #include "../Image.hpp"
 
-Mimp::FrameBufferSnapshot::FrameBufferSnapshot(const FrameBuffer &frameBuffer, int layerNb):
+Mimp::FrameBufferSnapshot::FrameBufferSnapshot(std::shared_ptr<FrameBuffer> frameBuffer, int layerNb):
 	layerNumber(layerNb),
-	oldBuffer(frameBuffer)
+	oldBuffer(*frameBuffer)
 {}
 
 void Mimp::FrameBufferSnapshot::rollback(Mimp::Image &image)
 {
-	image.getLayers()[this->layerNumber].buffer = oldBuffer;
+	image.getLayers()[this->layerNumber].buffer = std::make_shared<FrameBuffer>(oldBuffer);
 }

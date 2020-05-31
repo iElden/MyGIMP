@@ -36,8 +36,8 @@ namespace Mimp
 		for (auto &pt : image->selectedArea.getPoints()){
 			auto coord = (pt - topLeft);
 
-			pxBuffer[coord.x + coord.y * size.x] =  layer.buffer.getPixel(pt);
-			layer.buffer.setPixel(pt, Color::Transparent);
+			pxBuffer[coord.x + coord.y * size.x] =  layer.buffer->getPixel(pt);
+			layer.buffer->setPixel(pt, Color::Transparent);
 		}
 
 		spec.width = size.x;
