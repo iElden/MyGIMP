@@ -9,12 +9,19 @@ namespace Mimp {
 
 	void Text::onClick(Vector2<int> pos, MouseClick click, Image &image)
 	{
-		int position = 0;
+
 
 		if (!this->_text.empty()) {
-			this->_font.loadFromFile(this->_fontPath);
-			for (auto &c : this->_text) {
+			int xpos = 0;
+			int ypos = 0;
 
+			this->_font.loadFromFile(this->_fontPath);
+
+			//! @todo
+			//auto layer = image.getLayers().addLayer(image.getSelectedLayer().getSize());
+			auto &layer = image.getSelectedLayer();
+
+			for (auto &c : this->_text) {
 				auto glyph = this->_font.getGlyph(c, this->_fontSize, false);
 				auto texture = this->_font.getTexture(this->_fontSize);
 				sf::Sprite sprite;
@@ -26,22 +33,21 @@ namespace Mimp {
 
 				auto buffer = sprite.getTexture()->copyToImage();
 
-
-
-				for (int y = 0; y < glyph.textureRect.height; y += 1) {
-				for (int x = 0; x < glyph.textureRect.width; x += 1) {
-
-						if (buffer.getPixel(x + glyph.textureRect.left, y + glyph.textureRect.top).a >= 100) {
-							image.getSelectedLayer().buffer.setPixel({pos.x + x + position, pos.y + y}, Color::Red);
+				if (c != '\n') {
+					for (int y = 0; y < glyph.textureRect.height; y += 1) {
+						for (int x = 0; x < glyph.textureRect.width; x += 1) {
+							if (buffer.getPixel(x + glyph.textureRect.left, y + glyph.textureRect.top).a >= 100) {
+								layer.buffer.setPixel({pos.x + x + xpos, pos.y + y + ypos}, Color::Red);
+							}
 						}
 					}
+					xpos += glyph.advance;
+				} else {
+					xpos = 0;
+					ypos += this->_fontSize;
 				}
-
-				position += glyph.advance;
-
 			}
 		}
-		//! @todo
 	}
 
 	void Text::onUnselect() {
@@ -72,10 +78,10 @@ namespace Mimp {
 			fontSizePreview->setText(std::to_string(this->_fontSize));
 		});
 
-		this->_text = std::string(input->getText());
+		this->_text = input->getText().toWideString();
 		input->connect("Focused", [input, this] {
 			this->_edition = true;
-			this->_text = std::string(input->getText());
+			this->_text = input->getText().toWideString();
 		});
 		input->connect("Unfocused", [this] {
 			this->_edition = false;
@@ -83,7 +89,7 @@ namespace Mimp {
 
 		input->connect("TextChanged", [input, this] {
 			this->_edition = true;
-			this->_text = std::string(input->getText());
+			this->_text = input->getText().toWideString();
 		});
 
 		return panel;
