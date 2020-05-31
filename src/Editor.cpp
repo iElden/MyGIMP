@@ -205,6 +205,8 @@ namespace Mimp {
 							canvas->setZoomLevel(canvas->getZoomLevel() / 2);
 					}
 					continue;
+				} else if (event.type == sf::Event::MouseButtonPressed && this->_toolBox.getSelectedTool()->getName() == "Text") {
+					this->_makeLayersPanel(this->getSelectedImage(), this->_getSelectedCanvas());
 				}
 				this->_gui.handleEvent(event);
 			}

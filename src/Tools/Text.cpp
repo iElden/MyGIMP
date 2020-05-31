@@ -35,9 +35,7 @@ namespace Mimp {
 
 			this->_font.loadFromFile(this->_fontPath);
 
-			//! @todo
-			//auto layer = image.getLayers().addLayer(image.getSelectedLayer().getSize());
-			auto &layer = image.getSelectedLayer();
+			auto &layer = image.getLayers().addLayer(image.getSelectedLayer().getSize());
 
 			for (auto &c : this->_text) {
 				auto glyph = this->_font.getGlyph(c, this->_fontSize, false);
