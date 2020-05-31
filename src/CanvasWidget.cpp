@@ -5,6 +5,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <iostream>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderTexture.hpp>
 #include "CanvasWidget.hpp"
 
 namespace Mimp
@@ -98,7 +99,6 @@ namespace Mimp
 				dark = !dark;
 			}
 		}
-/*
 		for (auto &layer : this->_layers) {
 			if (!layer->visible)
 				continue;
@@ -121,20 +121,6 @@ namespace Mimp
 		sprite.setPosition(0, 0);
 		sprite.setScale(this->_zoom, this->_zoom);
 		target.draw(sprite, states);
-*/
-		if (!this->getSelectedLayer().text.content.empty()) {
-			auto text = this->getSelectedLayer().text;
-			for (auto &c : text.content) {
-				//auto glyph = text.font.getGlyph(c, text.fontSize, false);
-				auto glyph = text.font.getGlyph(U'a', text.fontSize, false);
-
-				sprite.setTexture(text.font.getTexture(text.fontSize));
-				sprite.setTextureRect(glyph.textureRect);
-				sprite.setPosition(100, 100);
-				sprite.setScale(this->_zoom, this->_zoom);
-				target.draw(sprite, states);
-			}
-		}
 	}
 
 	CanvasWidget::Ptr CanvasWidget::create(const ToolBox &box, Vector2<unsigned int> size)

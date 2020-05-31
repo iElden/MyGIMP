@@ -29,6 +29,7 @@ namespace Mimp {
 		int _fontSize = 13;
 		std::string _text = "";
 		std::string _fontPath = "";
+		sf::Font _font;
 	};
 }
 
