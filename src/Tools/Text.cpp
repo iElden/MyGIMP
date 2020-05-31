@@ -40,6 +40,7 @@ namespace Mimp {
 			for (auto &c : this->_text) {
 				auto glyph = this->_font.getGlyph(c, this->_fontSize, false);
 				auto texture = this->_font.getTexture(this->_fontSize);
+				int spacing = glyph.bounds.top;
 				sf::Sprite sprite;
 
 				sprite.setTexture(texture, false);
@@ -48,12 +49,12 @@ namespace Mimp {
 				sprite.setScale(1, 1);
 
 				auto buffer = sprite.getTexture()->copyToImage();
-
+				
 				if (c != '\n') {
 					for (int y = 0; y < glyph.textureRect.height; y += 1) {
 						for (int x = 0; x < glyph.textureRect.width; x += 1) {
 							if (buffer.getPixel(x + glyph.textureRect.left, y + glyph.textureRect.top).a >= 100) {
-								layer.buffer.setPixel({pos.x + x + xpos, pos.y + y + ypos}, Color::Red);
+								layer.buffer.setPixel({pos.x + x + xpos, pos.y + y + ypos + spacing}, Color::Red);
 							}
 						}
 					}
