@@ -24,13 +24,14 @@ void Mimp::SelectByColorTool::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick c
 
 void Mimp::SelectByColorTool::_updateSelectedArea(Image &image, const Color &target_color)
 {
-	unsigned max_x = image.getSelectedLayer().getSize().x;
-	unsigned max_y = image.getSelectedLayer().getSize().y;
+	auto &layer = image.getSelectedLayer();
+	unsigned max_x = layer.getSize().x;
+	unsigned max_y = layer.getSize().y;
 
 	for (unsigned j = 0; j < max_y; j++)
 		for (unsigned i = 0; i < max_x; i++)
-			if (image.getSelectedLayer().buffer->operator[](j * max_x + i) == target_color)
-				image.selectedArea.add(i, j);
+			if (layer.buffer->operator[](j * max_x + i) == target_color)
+				image.selectedArea.add(i + layer.pos.x, j + layer.pos.y);
 }
 
 tgui::ScrollablePanel::Ptr Mimp::SelectByColorTool::getParametersPanel()
