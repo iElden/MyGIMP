@@ -9,8 +9,8 @@ namespace Mimp
 	Move::Move() :
 		Tool("Move Layer")
 	{
-
-	}
+        this->setKeyCombination({Keys::KEY_M, false, false, false});
+    }
 
 	void Move::onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick, Image &image)
 	{

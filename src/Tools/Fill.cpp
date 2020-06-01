@@ -11,13 +11,16 @@
 Mimp::Fill::Fill(Mimp::ToolBox &toolBox):
 		Tool("Fill color"),
 		_box(toolBox)
-{}
+{
+	this->setKeyCombination({Keys::KEY_F, false, false, false});
+}
 
 void Mimp::Fill::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick click, Mimp::Image &image)
 {
 	if (image.getSelectedLayer().isLocked())
 		return;
 
+	image.takeFrameBufferSnapshot();
 	auto &layer = image.getSelectedLayer();
 
 	this->apply(pos - layer.pos, layer, click);
@@ -33,9 +36,9 @@ void Mimp::Fill::onMouseDrag(Mimp::Vector2<int>, Mimp::Vector2<int> newPos, Mimp
 
 void Mimp::Fill::apply(Mimp::Vector2<int> pos, Mimp::Layer &layer, MouseClick &click)
 {
-	if (layer.buffer.posIsOutOfBound(pos))
+	if (layer.buffer->posIsOutOfBound(pos))
 		return;
-	auto target_color = layer.buffer.getPixel(pos);
+	auto target_color = layer.buffer->getPixel(pos);
 	auto fill_color = this->_box.getSelectedColor(click);
 	if (fill_color == target_color)
 		return;
@@ -48,14 +51,14 @@ void Mimp::Fill::_spread_color(Vector2<int> pos, Layer &layer, Color target_colo
 	std::vector<Vector2<int>> points = {pos};
 	std::vector<Vector2<int>> new_points;
 
-	layer.buffer.drawPixel(pos, fill_color);
+	layer.buffer->drawPixel(pos, fill_color);
 	while (!points.empty()) {
 		new_points.clear();
 		for (auto pt : points)
 			for (auto sp : spread_pos) {
 				auto new_pos = pt + sp;
-				if (!layer.buffer.posIsOutOfBound(new_pos) && layer.buffer.getPixel(new_pos).diff(target_color, this->_alpha_in_tolerance) <= this->_tolerance) {
-					layer.buffer.drawPixel(new_pos, fill_color, SET);
+				if (!layer.buffer->posIsOutOfBound(new_pos) && layer.buffer->getPixel(new_pos).diff(target_color, this->_alpha_in_tolerance) <= this->_tolerance) {
+					layer.buffer->drawPixel(new_pos, fill_color, SET);
 					new_points.push_back(new_pos);
 				}
 			}

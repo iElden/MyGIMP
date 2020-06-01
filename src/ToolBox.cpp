@@ -12,10 +12,15 @@
 namespace Mimp
 {
 	ToolBox::ToolBox(tgui::Gui &gui) :
-		_tools(ToolFactory::buildAll(*this))
+		_tools(ToolFactory::buildAll(*this)),
+		_parent(gui)
 	{
 		this->_generateGuiWindow(gui);
 		this->_tools[0]->onSelect();
+	}
+
+	std::map<std::string, std::shared_ptr<Tool> > ToolBox::getTools() {
+		return ToolFactory::get();
 	}
 
 	std::shared_ptr<Tool> ToolBox::getSelectedTool() const
@@ -72,7 +77,7 @@ namespace Mimp
 					if (index >= this->_tools.size())
 						throw CorruptedGuiFileException("Tool index out of range");
 
-					widget->setToolTip(tgui::Label::create(this->_tools[index]->getName()));
+					widget->setToolTip(tgui::Label::create(this->_tools[index]->getName() + " (" + this->_tools[index]->getKeyCombination().toString() + ")"));
 					widget->connect("Pressed", [this, index, panel]{
 						this->getSelectedTool()->onUnselect();
 						this->_selectedTool = index;
@@ -122,5 +127,55 @@ namespace Mimp
 		panel->setPosition(10, pan->getSize().y + 10);
 		panel->setSize(pan->getSize().x - 20, 280);
 		this->_window->add(panel, "cfg");
+	}
+
+	void ToolBox::selectTool(Keys::KeyCombination kc)
+	{
+		auto panel = this->_window->get<tgui::ScrollablePanel>("Panel");
+		try {
+			for (std::size_t i = 0; i < _tools.size(); i += 1) {
+				auto tool = _tools[i];
+				if (tool->getKeyCombination() == kc) {
+					this->getSelectedTool()->onUnselect();
+					this->_selectedTool = i;
+					this->_addSelectedToolConfigPanel(panel);
+					this->getSelectedTool()->onSelect();
+
+					auto panel = this->_window->get<tgui::ScrollablePanel>("Panel");
+
+					for (auto &widget : panel->getWidgets()) {
+						auto name = panel->getWidgetName(widget);
+
+						try {
+							size_t index = std::stol(static_cast<std::string>(name.substr(strlen("Tool"))));
+							if (this->_tools[index]->getName() == this->_tools[this->_selectedTool]->getName()) {
+								widget->setFocused(true);
+								return;
+							}
+						} catch (...) {}
+					}
+					return;
+				}
+			}
+		}
+		 catch (...) {}
+	}
+
+	void ToolBox::refreshToolBox()
+	{
+		auto panel = this->_window->get<tgui::ScrollablePanel>("Panel");
+
+		for (auto &widget : panel->getWidgets()) {
+			auto name = panel->getWidgetName(widget);
+
+			try {
+				size_t index = std::stol(static_cast<std::string>(name.substr(strlen("Tool"))));
+				widget->setToolTip(tgui::Label::create(this->_tools[index]->getName() + " (" + this->_tools[index]->getKeyCombination().toString() + ")"));
+			} catch (...) {}
+		}
+	}
+
+	bool ToolBox::isTextEditing() {
+		return this->getSelectedTool()->isEditing();
 	}
 }

@@ -18,13 +18,13 @@ TEST(FillSelectionOperation, noSelectedArea) {
     Mimp::Image image{{10, 10}, lm};
     FSOTest fso;
 
-    auto buffer = image.getLayers()[0].buffer.getBuffer();
+    auto buffer = image.getLayers()[0]->buffer.getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::Red);
     }
     fso.fill(image, Mimp::Color::Yellow);
 
-    buffer = image.getLayers()[0].buffer.getBuffer();
+    buffer = image.getLayers()[0]->buffer.getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::Red);
     }
@@ -36,7 +36,7 @@ TEST(FillSelectionOperation, selectOnePoint) {
     FSOTest fso;
     Mimp::Vector2<int> pt{2, 8};
 
-    auto buffer = image.getLayers()[0].buffer.getBuffer();
+    auto buffer = image.getLayers()[0]->buffer.getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::Red);
     }
@@ -44,7 +44,7 @@ TEST(FillSelectionOperation, selectOnePoint) {
     fso.fill(image, Mimp::Color::Yellow);
 
     ASSERT_TRUE(image.selectedArea.pointInMap(pt));
-    buffer = image.getLayers()[0].buffer.getBuffer();
+    buffer = image.getLayers()[0]->buffer.getBuffer();
 
     for (int i = 0; i < 10; i += 1) {
         for (int j = 0; j < 10; j += 1) {

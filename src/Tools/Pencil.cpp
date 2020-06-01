@@ -13,6 +13,7 @@ namespace Mimp
 		Tool("Pencil"),
 		_box(box)
 	{
+		this->setKeyCombination({Keys::KEY_P, false, false, false});
 	}
 
 	void Pencil::onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Image &image)
@@ -22,7 +23,7 @@ namespace Mimp
 
 		auto &layer = image.getSelectedLayer();
 
-		layer.buffer.drawLine(oldPos - layer.pos, newPos - layer.pos, this->_box.getSelectedColor(click), this->_radius, this->_shape);
+		layer.buffer->drawLine(oldPos - layer.pos, newPos - layer.pos, this->_box.getSelectedColor(click), this->_radius, this->_shape);
 	}
 
 	void Pencil::onClick(Vector2<int> pos, MouseClick click, Image &image)
@@ -30,9 +31,10 @@ namespace Mimp
 		if (image.getSelectedLayer().isLocked())
 			return;
 
+		image.takeFrameBufferSnapshot();
 		auto &layer = image.getSelectedLayer();
 
-		layer.buffer.drawAt(pos - layer.pos, this->_box.getSelectedColor(click), this->_radius, this->_shape);
+		layer.buffer->drawAt(pos - layer.pos, this->_box.getSelectedColor(click), this->_radius, this->_shape);
 	}
 
 	tgui::ScrollablePanel::Ptr Pencil::getParametersPanel()

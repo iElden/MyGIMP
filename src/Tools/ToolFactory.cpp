@@ -1,4 +1,4 @@
-//
+	//
 // Created by Gegel85 on 07/04/2020.
 //
 
@@ -12,9 +12,9 @@
 #include "EllipseSelectionTool.hpp"
 #include "Eraser.hpp"
 #include "Move.hpp"
+#include "Text.hpp"
 
-namespace Mimp
-{
+namespace Mimp {
 	const std::vector<std::function<std::shared_ptr<Tool>(ToolBox &)>> ToolFactory::_builders{
 		[](ToolBox &box){
 			return std::make_shared<Pencil>(box);
@@ -42,16 +42,28 @@ namespace Mimp
 		},
 		[](ToolBox &){
 			return std::make_shared<Move>();
+		},
+		[](ToolBox &box){
+			return std::make_shared<Text>(box);
 		}
 	};
 
+	std::vector<std::shared_ptr<Tool>> ToolFactory::tls{};
+
 	std::vector<std::shared_ptr<Tool>> ToolFactory::buildAll(ToolBox &box)
 	{
-		std::vector<std::shared_ptr<Tool>> array;
-
-		array.reserve(ToolFactory::_builders.size());
 		for (auto &func : ToolFactory::_builders)
-			array.push_back(func(box));
-		return array;
+			tls.push_back(func(box));
+		return tls;
+	}
+
+	std::map<std::string, std::shared_ptr<Tool>> ToolFactory::get()
+	{
+		std::map<std::string, std::shared_ptr<Tool>> result;
+
+		for (auto &tl : ToolFactory::tls) {
+			result[tl->getName()] = tl;
+		}
+		return result;
 	}
 }

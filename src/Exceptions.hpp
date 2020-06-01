@@ -137,6 +137,16 @@ namespace Mimp
 			BaseException(static_cast<const std::string &&>(msg) + "\n" + e.what())
 		{};
 	};
+
+	//! @brief Define a NoFontException.
+	class NoFontException : public BaseException {
+	public:
+		//! @brief Create a NoFontException with a message.
+		//! @param msg The error message.
+		explicit NoFontException() :
+				BaseException("No fonts available. Create a folder `fonts` at the root of the project and place some fonts inside.")
+		{};
+	};
 }
 
 

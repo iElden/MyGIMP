@@ -15,6 +15,7 @@ namespace Mimp
 			Tool("Eraser"),
 			_box(box)
 	{
+		this->setKeyCombination({Keys::KEY_DEL, false, false, true});
 	}
 
 	void Eraser::onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick, Image &image)
@@ -24,7 +25,7 @@ namespace Mimp
 
 		auto &layer = image.getSelectedLayer();
 
-		layer.buffer.drawLine(oldPos - layer.pos, newPos - layer.pos, Color::Transparent, this->_radius, this->_shape, DrawStrategy::SET);
+		layer.buffer->drawLine(oldPos - layer.pos, newPos - layer.pos, Color::Transparent, this->_radius, this->_shape, DrawStrategy::SET);
 	}
 
 	void Eraser::onClick(Vector2<int> pos, MouseClick, Image &image)
@@ -32,9 +33,10 @@ namespace Mimp
 		if (image.getSelectedLayer().isLocked())
 			return;
 
+		image.takeFrameBufferSnapshot();
 		auto &layer = image.getSelectedLayer();
 
-		layer.buffer.drawAt(pos - layer.pos, Color::Transparent, this->_radius, this->_shape, DrawStrategy::SET);
+		layer.buffer->drawAt(pos - layer.pos, Color::Transparent, this->_radius, this->_shape, DrawStrategy::SET);
 	}
 
 	tgui::ScrollablePanel::Ptr Eraser::getParametersPanel()

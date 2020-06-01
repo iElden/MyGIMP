@@ -9,6 +9,7 @@
 
 #include "Layer/LayerManager.hpp"
 #include "SelectedArea.hpp"
+#include "Snapshot/Snapshot.hpp"
 
 namespace Mimp {
     //! @brief Define the SelectedArea.
@@ -16,6 +17,8 @@ namespace Mimp {
 	protected:
 		Vector2<unsigned> _size; //!< Size of the Image
 		LayerManager _layers; //!< Layers of the Image
+		std::vector<std::shared_ptr<Snapshot>> _snapshots = {};
+		unsigned _max_snapshots = 10;
 	public:
 		SelectedArea selectedArea; //!< SelectedArea of the Image
 
@@ -51,6 +54,12 @@ namespace Mimp {
 		//! @brief Get the image size
 		//! @return Vector2<unsigned> Size of the image
 		Vector2<unsigned> getImageSize() const noexcept;
+
+		int getMaxSnapshots() const noexcept;
+		void setMaxSnapshots(int maxSnapshots) noexcept;
+		void takeSnapshot(std::shared_ptr<Snapshot> snapshot) noexcept;
+		void takeFrameBufferSnapshot() noexcept;
+		void undoLastAction() noexcept;
 	};
 }
 

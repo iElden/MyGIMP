@@ -113,7 +113,7 @@ namespace Mimp
 	{
 		if (this->isAnAreaSelected())
 			for (const auto &pt : this->getPoints())
-				layer.buffer.setPixel(pt, color);
+				layer.buffer->setPixel(pt, color);
 	}
 
 	bool SelectedArea::pointInMap(Vector2<int> point) const

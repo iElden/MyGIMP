@@ -5,6 +5,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <iostream>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderTexture.hpp>
 #include "CanvasWidget.hpp"
 
 namespace Mimp
@@ -98,15 +99,14 @@ namespace Mimp
 				dark = !dark;
 			}
 		}
-
 		for (auto &layer : this->_layers) {
 			if (!layer->visible)
 				continue;
 
-			size = layer->getSize();
+			auto s = layer->getSize();
 
-			this->_drawBuffer.create(size.x, size.y);
-			this->_drawBuffer.update(layer->buffer.getDrawBuffer(), size.x, size.y, 0, 0);
+			this->_drawBuffer.create(s.x, s.y);
+			this->_drawBuffer.update(layer->buffer->getDrawBuffer(), s.x, s.y, 0, 0);
 			sprite.setTexture(this->_drawBuffer, true);
 			sprite.setPosition((layer->pos.x + size.x / 2.f) * this->_zoom, (layer->pos.y + size.y / 2.f) * this->_zoom);
 			sprite.setScale(this->_zoom, this->_zoom);

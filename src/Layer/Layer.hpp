@@ -6,15 +6,17 @@
 #define MYGIMP_LAYER_HPP
 
 #include <string>
+#include <memory>
 #include "../Data/Vector2.hpp"
 #include "../Data/Color.hpp"
 #include "FrameBuffer.hpp"
+
 
 namespace Mimp
 {
 	//! @brief Define a Layer.
 	struct Layer {
-		FrameBuffer buffer;  //!< FrameBuffer of the layer
+		std::shared_ptr<FrameBuffer> buffer;  //!< FrameBuffer of the layer
 		bool locked = false; //!< Is the layer locked on the screen ?
 		bool visible = true; //!< Is the layer visible on the screen ?
 		char name[32];       //!< Name of the layer

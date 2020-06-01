@@ -23,6 +23,7 @@
 #include "Layer/MoveDown.hpp"
 #include "Layer/RotateRight90.hpp"
 #include "Layer/RotateLeft90.hpp"
+#include "Undo.hpp"
 
 namespace Mimp
 {
@@ -35,6 +36,9 @@ namespace Mimp
 		},
 		[]{
 			return std::make_shared<PasteOperation>();
+		},
+		[]{
+			return std::make_shared<Undo>();
 		},
 		[]{
 			return std::make_shared<SelectAllOperation>();
@@ -89,12 +93,22 @@ namespace Mimp
 		}
 	};
 
+	std::vector<std::shared_ptr<ImageOperation>> ImageOperationFactory::ios{};
+
 	std::vector<std::shared_ptr<ImageOperation>> ImageOperationFactory::buildAll()
 	{
-		std::vector<std::shared_ptr<ImageOperation>> result;
-
 		for (auto &fct : ImageOperationFactory::_builders)
-			result.push_back(fct());
+			ImageOperationFactory::ios.push_back(fct());
+		return ios;
+	}
+
+	std::map<std::string, std::shared_ptr<ImageOperation>> ImageOperationFactory::get()
+	{
+		std::map<std::string, std::shared_ptr<ImageOperation>> result;
+
+		for (auto &io : ImageOperationFactory::ios) {
+			result[io->getName()] = io;
+		}
 		return result;
 	}
 }

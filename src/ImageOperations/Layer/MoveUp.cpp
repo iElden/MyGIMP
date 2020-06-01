@@ -7,7 +7,7 @@
 namespace Mimp
 {
 	MoveUp::MoveUp() :
-		ImageOperation({"Layer", "Move Up"}, {KEY_UP, false, false, false})
+		ImageOperation({"Layer", "Move Up"},"Move Up", {Keys::KEY_UP, false, false, false})
 	{
 
 	}

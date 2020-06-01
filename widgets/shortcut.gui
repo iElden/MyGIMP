@@ -1,0 +1,114 @@
+Renderer.1 {
+    backgroundcolor = #F5F5F5;
+    backgroundcolordisabled = #E6E6E6;
+    backgroundcolordown = #EBEBEB;
+    backgroundcolorhover = white;
+    bordercolor = #3C3C3C;
+    bordercolordisabled = #7D7D7D;
+    bordercolordown = black;
+    bordercolorfocused = #1E1EB4;
+    bordercolorhover = black;
+    borders = (1, 1, 1, 1);
+    textcolor = #3C3C3C;
+    textcolordisabled = #7D7D7D;
+    textcolordown = black;
+    textcolorhover = black;
+    texture = None;
+    texturedisabled = None;
+    texturedown = None;
+    texturefocused = None;
+    texturehover = None;
+}
+
+Renderer.2 {
+    backgroundcolor = transparent;
+    bordercolor = #3C3C3C;
+    borders = (0, 0, 0, 0);
+    textcolor = #3C3C3C;
+    texturebackground = None;
+}
+
+ScrollablePanel.MainPanel {
+    ContentSize = (0, 0);
+    Position = (10, 10);
+    Size = (480, 340);
+
+    Renderer {
+        backgroundcolor = transparent;
+        bordercolor = black;
+        texturebackground = None;
+    }
+
+    Label.Action1 {
+        Position = (0, 20);
+        ScrollbarPolicy = Never;
+        Size = (85.2, 18);
+        Text = qzdqzdqzdqzd;
+        TextSize = 13;
+        renderer = &2;
+    }
+
+    Label.Label1 {
+        AutoSize = true;
+        Position = ((action1.x + (action1.w / 2)) - (w / 2), 0);
+        ScrollbarPolicy = Never;
+        Size = (43.2, 18);
+        Text = Action;
+        TextSize = 13;
+        renderer = &2;
+    }
+
+    Label.ControlLabel {
+        AutoSize = true;
+        Position = ((action1.x + action1.w) + 10, 0);
+        ScrollbarPolicy = Never;
+        Size = (49.2, 18);
+        Text = Control;
+        TextSize = 13;
+        renderer = &2;
+    }
+
+    Label.ShiftLabel {
+        AutoSize = true;
+        Position = ((controllabel.x + controllabel.w) + 15, 0);
+        ScrollbarPolicy = Never;
+        Size = (32.2, 18);
+        Text = Shift;
+        TextSize = 13;
+        renderer = &2;
+    }
+
+    Label.AltLabel {
+        AutoSize = true;
+        Position = ((shiftlabel.x + shiftlabel.w) + 10, 0);
+        ScrollbarPolicy = Never;
+        Size = (20.2, 18);
+        Text = Alt;
+        TextSize = 13;
+        renderer = &2;
+    }
+
+    Label.KeyLabel {
+        AutoSize = true;
+        Position = ((altlabel.x + altlabel.w) + 45, 0);
+        ScrollbarPolicy = Never;
+        Size = (27.2, 18);
+        Text = Key;
+        TextSize = 13;
+        renderer = &2;
+    }
+}
+
+Button.Cancel {
+    Position = ((mainpanel.x + mainpanel.w) - w, (mainpanel.y + mainpanel.h) + 10);
+    Text = Cancel;
+    TextSize = 13;
+    renderer = &1;
+}
+
+Button.OK {
+    Position = ((cancel.x - w) - 10, (mainpanel.y + mainpanel.h) + 10);
+    Text = OK;
+    TextSize = 13;
+    renderer = &1;
+}

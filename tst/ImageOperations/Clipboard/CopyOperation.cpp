@@ -63,7 +63,7 @@ TEST(CopyOperation, clickWholeLayerSquare) {
 	Mimp::CanvasWidget::Ptr cw = Mimp::CanvasWidget::create(toolBox, Mimp::Vector2<unsigned int>{10, 10});
 	Mimp::CopyOperation co;
 
-	cw->getSelectedLayer().buffer.drawAt({5, 5}, Mimp::Color::Green, 2, Mimp::SQUARE);
+	cw->getSelectedLayer()->buffer.drawAt({5, 5}, Mimp::Color::Green, 2, Mimp::SQUARE);
 	cw->selectedArea.selectAll();
 	co.click(gui, cw, nullptr, e);
 
@@ -96,7 +96,7 @@ TEST(CopyOperation, clickWholeLayerSquare) {
 
 	ASSERT_EQ(ss.str(), correct);
 
-	auto buffer = cw->getSelectedLayer().buffer.getBuffer();
+	auto buffer = cw->getSelectedLayer()->buffer.getBuffer();
 	std::stringstream ssbuffer;
 
 	for (int idx = 0; idx < 100; idx += 1) {

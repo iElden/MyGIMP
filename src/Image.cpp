@@ -7,6 +7,7 @@
 #include <SFML/Graphics/Image.hpp>
 #include "Image.hpp"
 #include "Exceptions.hpp"
+#include "Snapshot/FrameBufferSnapshot.hpp"
 
 namespace Mimp {
 	Layer &Image::getSelectedLayer() noexcept
@@ -67,4 +68,40 @@ namespace Mimp {
 		if (!image.saveToFile(path))
 			throw ExportErrorException("Cannot export to file " + path);
 	}
+
+	int Image::getMaxSnapshots() const noexcept
+	{
+		return _max_snapshots;
+	}
+
+	void Image::setMaxSnapshots(int maxSnapshots) noexcept
+	{
+		_max_snapshots = maxSnapshots;
+	}
+
+	void Image::takeSnapshot(std::shared_ptr<Snapshot> snapshot) noexcept
+	{
+		this->_snapshots.push_back(snapshot);
+		if (this->_snapshots.size() > this->_max_snapshots)
+			this->_snapshots.erase(this->_snapshots.begin());
+	}
+
+	void Image::takeFrameBufferSnapshot() noexcept
+	{
+		this->takeSnapshot(std::make_shared<FrameBufferSnapshot>(
+				this->getSelectedLayer().buffer, this->_layers.getSelectedLayerIndex()
+		));
+	}
+
+	void Image::undoLastAction() noexcept
+	{
+		if (this->_snapshots.empty())
+			return;
+		std::shared_ptr<Snapshot> snapshot = this->_snapshots.back();
+		snapshot->rollback(*this);
+		this->_snapshots.pop_back();
+	}
+
 }
+
+

@@ -9,7 +9,7 @@
 namespace Mimp
 {
 	CopyOperation::CopyOperation() :
-		ImageOperation({"Edit", "Copy"}, {KEY_C, true, false, false})
+		ImageOperation({"Edit", "Copy"},"Copy", {Keys::KEY_C, true, false, false})
 	{
 
 	}
@@ -36,7 +36,7 @@ namespace Mimp
 		for (auto &pt : image->selectedArea.getPoints()){
 			auto coord = (pt - topLeft);
 
-			pxBuffer[coord.x + coord.y * size.x] =  layer.buffer.getPixel(pt);
+			pxBuffer[coord.x + coord.y * size.x] =  layer.buffer->getPixel(pt);
 		}
 
 		spec.width = size.x;

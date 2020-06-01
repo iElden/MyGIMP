@@ -10,7 +10,7 @@
 
 
 Mimp::ExpandSelection::ExpandSelection():
-		ImageOperation({"Selection", "Expand Selection"}, {KEY_I, true, true, false})
+		ImageOperation({"Selection", "Expand Selection"},"Expand Selection", {Keys::KEY_I, true, true, false})
 {}
 
 void Mimp::ExpandSelection::_addPointIfPointNearby(unsigned i, unsigned j, Mimp::Image &image, const SelectedArea &area, int range) noexcept

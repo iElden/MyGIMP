@@ -22,6 +22,7 @@ namespace Mimp
 			Color::Black,
 			Color::White
 		}; //!< Pair of Selected Colors. Default are Black and White.
+		tgui::Gui &_parent;
 
 		std::pair<tgui::Button::Ptr, tgui::Button::Ptr> _colorButtons;
 
@@ -58,6 +59,17 @@ namespace Mimp
 		//! @param click Mouse click state
 		//! @param newColor Color to use
 		void setSelectedColor(MouseClick click, Color newColor);
+
+		//! @brief Get the tools of the ToolBox.
+	    std::map<std::string, std::shared_ptr<Tool>> getTools();
+
+	    void selectTool(Keys::KeyCombination kc);
+
+	    void refreshToolBox();
+
+	    bool isTextEditing();
+
+	    tgui::Gui &getParent() { return this->_parent; }
 	};
 }
 

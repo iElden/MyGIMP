@@ -11,6 +11,7 @@
 
 namespace Mimp
 {
+	//! @brief Define a Mover
 	class Move : public Tool {
 	public:
 		//! @brief Constructor of the Move Class
