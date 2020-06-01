@@ -5,6 +5,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <iostream>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderTexture.hpp>
 #include "CanvasWidget.hpp"
 
 namespace Mimp
@@ -98,7 +99,6 @@ namespace Mimp
 				dark = !dark;
 			}
 		}
-
 		for (auto &layer : this->_layers) {
 			if (!layer->visible)
 				continue;

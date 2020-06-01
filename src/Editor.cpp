@@ -192,7 +192,8 @@ namespace Mimp {
 								                                  this->_selectedImageWindow, *this);
 							} catch (std::out_of_range &) {}
 						}
-						this->_toolBox.selectTool(comb);
+						if (!this->_toolBox.isTextEditing()) //! @todo If a window child is focused, do not select a new tool.
+							this->_toolBox.selectTool(comb);
 					}
 				} else if (event.type == sf::Event::MouseWheelScrolled) {
 					auto canvas = this->_getSelectedCanvas();
@@ -206,6 +207,11 @@ namespace Mimp {
 					continue;
 				}
 				this->_gui.handleEvent(event);
+
+				if (event.type == sf::Event::MouseButtonReleased && this->_toolBox.getSelectedTool()->getName() == "Text") {
+					if (this->getSelectedImage() != nullptr)  //! Quick fix to reload automatically the layers panel.
+						this->_makeLayersPanel(this->getSelectedImage(), this->_getSelectedCanvas());
+				}
 			}
 			this->_mainWindow.clear();
 			this->_gui.draw();
@@ -766,7 +772,7 @@ namespace Mimp {
 			width->setText(std::to_string(layer.getSize().x));
 			height->setText(std::to_string(layer.getSize().y));
 			cancel->connect("Pressed", [win] { win->close(); });
-			ok->connect("Pressed", [win, &layer, width, height] {
+			ok->connect("Pressed", [this, win, &layer, width, height] {
 				std::string wid = width->getText();
 				std::string hei = height->getText();
 

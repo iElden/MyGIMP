@@ -167,4 +167,14 @@ ScrollablePanel.Panel {
             texturehover = None;
         }
     }
+
+
+    BitmapButton.Tool9 {
+        Image = "icons/text.png";
+        ImageScaling = 0;
+        Position = (150, 100);
+        Size = (30, 30);
+        TextSize = 13;
+        renderer = &1;
+    }
 }

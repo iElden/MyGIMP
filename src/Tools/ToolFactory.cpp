@@ -12,9 +12,9 @@
 #include "EllipseSelectionTool.hpp"
 #include "Eraser.hpp"
 #include "Move.hpp"
+#include "Text.hpp"
 
-namespace Mimp
-{
+namespace Mimp {
 	const std::vector<std::function<std::shared_ptr<Tool>(ToolBox &)>> ToolFactory::_builders{
 		[](ToolBox &box){
 			return std::make_shared<Pencil>(box);
@@ -42,6 +42,9 @@ namespace Mimp
 		},
 		[](ToolBox &){
 			return std::make_shared<Move>();
+		},
+		[](ToolBox &box){
+			return std::make_shared<Text>(box);
 		}
 	};
 
