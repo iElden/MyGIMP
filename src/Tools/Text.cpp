@@ -2,6 +2,7 @@
 #include <filesystem>
 #include "Text.hpp"
 #include "../Exceptions.hpp"
+#include "../Utils.hpp"
 
 namespace Mimp {
 	Text::Text(ToolBox &toolBox) : Tool("Text"), _toolBox(toolBox)
@@ -27,7 +28,7 @@ namespace Mimp {
 		}
 	}
 
-	void Text::onClick(Vector2<int> pos, MouseClick click, Image &image)
+	void Text::onClick(Vector2<int> pos, MouseClick, Image &image)
 	{
 		if (!this->_text.empty()) {
 			int xpos = 0;
@@ -49,12 +50,11 @@ namespace Mimp {
 				sprite.setScale(1, 1);
 
 				auto buffer = sprite.getTexture()->copyToImage();
-				
 				if (c != '\n') {
 					for (int y = 0; y < glyph.textureRect.height; y += 1) {
 						for (int x = 0; x < glyph.textureRect.width; x += 1) {
 							if (buffer.getPixel(x + glyph.textureRect.left, y + glyph.textureRect.top).a >= 100) {
-								layer.buffer.setPixel({pos.x + x + xpos, pos.y + y + ypos + spacing}, Color::Red);
+								layer.buffer.setPixel({pos.x + x + xpos, pos.y + y + ypos + spacing}, this->_color);
 							}
 						}
 					}
@@ -81,6 +81,7 @@ namespace Mimp {
 		auto fontSizePreview = panel->get<tgui::TextBox>("FontSizePreview");
 		auto input = panel->get<tgui::TextBox>("Input");
 		auto fonts = panel->get<tgui::ComboBox>("Fonts");
+		auto color = panel->get<tgui::Button>("Color");
 
 		auto reload = tgui::Button::create("Reload fonts");
 		reload->setPosition("Fonts.x + Fonts.w + 10", "Fonts.y");
@@ -89,13 +90,15 @@ namespace Mimp {
 		for (auto &f : this->_fonts) {
 			fonts->addItem(f.first, f.second);
 		}
-		fonts->setSelectedItem(this->_fonts.begin()->first);
+		this->_selected = this->_selected.empty() ? this->_fonts.begin()->first : this->_selected;
+		fonts->setSelectedItem(this->_selected);
 
 		fontSizePreview->setText(std::to_string(this->_fontSize));
 		fontSize->setValue(this->_fontSize);
 
 		this->_fontSize = fontSize->getValue();
-		this->_text = input->getText().toWideString();
+		this->_text = this->_text.empty() ? input->getText().toWideString() : this->_text;
+		input->setText(this->_text);
 		this->_fontPath = fonts->getSelectedItemId();
 
 		fontSize->connect("ValueChanged", [fontSizePreview, this, fontSize]{
@@ -111,6 +114,7 @@ namespace Mimp {
 		});
 		fonts->connect("ItemSelected", [fonts, this] {
 			this->_fontPath = fonts->getSelectedItemId();
+			this->_selected = fonts->getSelectedItem();
 		});
 		reload->connect("Pressed", [fonts, this] {
 			try {
@@ -126,6 +130,21 @@ namespace Mimp {
 				this->_fontPath = "";
 			}
 		});
+
+		color->connect("Pressed", [color, this] {
+			Utils::makeColorPickWindow(this->_toolBox.getParent(), [this, color](Color newColor) {
+				this->_color = newColor;
+
+				tgui::Color buffer = {newColor.r, newColor.g, newColor.b, 255};
+				color->getRenderer()->setBackgroundColor(buffer);
+				color->getRenderer()->setBackgroundColorHover(buffer);
+				color->getRenderer()->setBackgroundColorDown(buffer);
+			}, this->_color);
+		});
+		tgui::Color buffer = {this->_color.r, this->_color.g, this->_color.b, 255};
+		color->getRenderer()->setBackgroundColor(buffer);
+		color->getRenderer()->setBackgroundColorHover(buffer);
+		color->getRenderer()->setBackgroundColorDown(buffer);
 
 		return panel;
 	}

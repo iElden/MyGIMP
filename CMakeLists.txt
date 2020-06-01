@@ -19,16 +19,7 @@ if ("${CMAKE_BUILD_TYPE}" STREQUAL Release)
 endif ()
 
 set(MIMP_SRCS
-    src/Layer/Layer.cpp
-    src/Layer/Layer.hpp
-    src/Data/Vector2.hpp
-    src/Data/Color.hpp
-    src/Data/Color.cpp
-    src/Layer/FrameBuffer.cpp
-    src/Layer/FrameBuffer.hpp
-    src/Layer/LayerManager.cpp
-    src/Layer/LayerManager.hpp
-    src/Tools/Tool.hpp
+    # Root
     src/Editor.cpp
     src/Editor.hpp
     src/ToolBox.cpp
@@ -36,19 +27,56 @@ set(MIMP_SRCS
     src/CanvasWidget.cpp
     src/CanvasWidget.hpp
     src/Data/MouseClick.hpp
-    src/Tools/ToolFactory.cpp
-    src/Tools/ToolFactory.hpp
     src/Exceptions.hpp
-    src/Tools/Pencil.cpp
-    src/Tools/Pencil.hpp
     src/Utils.cpp
     src/Utils.hpp
-    src/Tools/Fill.cpp
-    src/Tools/Fill.hpp
     src/Image.cpp
     src/Image.hpp
     src/SelectedArea.cpp
     src/SelectedArea.hpp
+    src/Enum.hpp
+    src/LayerWidget.cpp
+    src/LayerWidget.hpp
+    src/Keys.cpp
+    src/Keys.hpp
+    src/ShortcutManager.cpp
+    src/ShortcutManager.hpp
+    src/KeyWidget.cpp
+    src/KeyWidget.hpp
+    src/Action.hpp
+
+    # Misc data
+    src/Data/Vector2.hpp
+    src/Data/Color.hpp
+    src/Data/Color.cpp
+
+    # Network
+    src/Network/SecuredSocket.cpp
+    src/Network/SecuredSocket.hpp
+    src/Network/Socket.cpp
+    src/Network/Socket.hpp
+
+    # Snapshot
+    src/Snapshot/Snapshot.hpp
+    src/Snapshot/FrameBufferSnapshot.cpp
+    src/Snapshot/FrameBufferSnapshot.hpp
+
+    # Layer manipulation
+    src/Layer/Layer.cpp
+    src/Layer/Layer.hpp
+    src/Layer/FrameBuffer.cpp
+    src/Layer/FrameBuffer.hpp
+    src/Layer/LayerManager.cpp
+    src/Layer/LayerManager.hpp
+
+    # Tools
+    src/Tools/Tool.hpp
+    src/Tools/ToolFactory.cpp
+    src/Tools/ToolFactory.hpp
+    src/Tools/Pencil.cpp
+    src/Tools/Pencil.hpp
+    src/Tools/Fill.cpp
+    src/Tools/Fill.hpp
     src/Tools/ColorPick.cpp
     src/Tools/ColorPick.hpp
     src/Tools/SelectionTool.cpp
@@ -61,6 +89,14 @@ set(MIMP_SRCS
     src/Tools/FillSelection.hpp
     src/Tools/EllipseSelectionTool.cpp
     src/Tools/EllipseSelectionTool.hpp
+    src/Tools/Eraser.cpp
+    src/Tools/Eraser.hpp
+    src/Tools/Move.cpp
+    src/Tools/Move.hpp
+    src/Tools/Text.cpp
+    src/Tools/Text.hpp
+
+    # Image Operations
     src/ImageOperations/ImageOperation.cpp
     src/ImageOperations/ImageOperation.hpp
     src/ImageOperations/ImageOperationFactory.cpp
@@ -75,19 +111,10 @@ set(MIMP_SRCS
     src/ImageOperations/Selection/InvertSelectionOperation.hpp
     src/ImageOperations/Selection/DelSelectionOperation.cpp
     src/ImageOperations/Selection/DelSelectionOperation.hpp
-    src/Tools/Eraser.cpp
-    src/Tools/Eraser.hpp
-    src/Enum.hpp
-    src/Network/SecuredSocket.cpp
-    src/Network/SecuredSocket.hpp
-    src/Network/Socket.cpp
-    src/Network/Socket.hpp
     src/ImageOperations/Selection/ExpandSelection.cpp
     src/ImageOperations/Selection/ExpandSelection.hpp
     src/ImageOperations/Selection/ExpandMoreSelection.cpp
     src/ImageOperations/Selection/ExpandMoreSelection.hpp
-    src/LayerWidget.cpp
-    src/LayerWidget.hpp
     src/ImageOperations/Selection/OutlineMoreSelectionOperation.cpp
     src/ImageOperations/Selection/OutlineMoreSelectionOperation.hpp
     src/ImageOperations/Selection/ShrinkSelection.cpp
@@ -106,8 +133,6 @@ set(MIMP_SRCS
     src/ImageOperations/Clipboard/CopyOperation.hpp
     src/ImageOperations/Clipboard/CutOperation.cpp
     src/ImageOperations/Clipboard/CutOperation.hpp
-    src/Tools/Move.cpp
-    src/Tools/Move.hpp
     src/ImageOperations/Layer/MoveLeft.cpp
     src/ImageOperations/Layer/MoveLeft.hpp
     src/ImageOperations/Layer/MoveRight.cpp
@@ -118,18 +143,7 @@ set(MIMP_SRCS
     src/ImageOperations/Layer/MoveDown.hpp
     src/ImageOperations/Layer/RotateRight90.cpp
     src/ImageOperations/Layer/RotateRight90.hpp
-    src/Keys.cpp
-    src/Keys.hpp
-    src/ShortcutManager.cpp
-    src/ShortcutManager.hpp
-    src/KeyWidget.cpp
-    src/KeyWidget.hpp
-    src/Snapshot/Snapshot.hpp
-    src/Snapshot/FrameBufferSnapshot.cpp
-    src/Snapshot/FrameBufferSnapshot.hpp
-    src/Action.hpp
-    src/Tools/Text.cpp
-    src/Tools/Text.hpp)
+)
 
 
 find_library(PNG_LIBRARY png)

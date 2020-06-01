@@ -8,12 +8,12 @@
 #include "Tools/ToolFactory.hpp"
 #include "Exceptions.hpp"
 #include "Utils.hpp"
-#include "Tools/Text.hpp"
 
 namespace Mimp
 {
 	ToolBox::ToolBox(tgui::Gui &gui) :
-		_tools(ToolFactory::buildAll(*this))
+		_tools(ToolFactory::buildAll(*this)),
+		_parent(gui)
 	{
 		this->_generateGuiWindow(gui);
 		this->_tools[0]->onSelect();

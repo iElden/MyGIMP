@@ -192,7 +192,7 @@ namespace Mimp {
 								                                  this->_selectedImageWindow, *this);
 							} catch (std::out_of_range &) {}
 						}
-						if (!this->_toolBox.isTextEditing())
+						if (!this->_toolBox.isTextEditing()) //! @todo If a window child is focused, do not select a new tool.
 							this->_toolBox.selectTool(comb);
 					}
 				} else if (event.type == sf::Event::MouseWheelScrolled) {
@@ -205,10 +205,13 @@ namespace Mimp {
 							canvas->setZoomLevel(canvas->getZoomLevel() / 2);
 					}
 					continue;
-				} else if (event.type == sf::Event::MouseButtonPressed && this->_toolBox.getSelectedTool()->getName() == "Text") {
-					this->_makeLayersPanel(this->getSelectedImage(), this->_getSelectedCanvas());
 				}
 				this->_gui.handleEvent(event);
+
+				if (event.type == sf::Event::MouseButtonPressed && this->_toolBox.getSelectedTool()->getName() == "Text") {
+					if (this->getSelectedImage() != nullptr)  //! Quick fix to reload automatically the layers panel.
+						this->_makeLayersPanel(this->getSelectedImage(), this->_getSelectedCanvas());
+				}
 			}
 			this->_mainWindow.clear();
 			this->_gui.draw();

@@ -22,6 +22,7 @@ namespace Mimp
 			Color::Black,
 			Color::White
 		}; //!< Pair of Selected Colors. Default are Black and White.
+		tgui::Gui &_parent;
 
 		std::pair<tgui::Button::Ptr, tgui::Button::Ptr> _colorButtons;
 
@@ -67,6 +68,8 @@ namespace Mimp
 	    void refreshToolBox();
 
 	    bool isTextEditing();
+
+	    tgui::Gui &getParent() { return this->_parent; }
 	};
 }
 

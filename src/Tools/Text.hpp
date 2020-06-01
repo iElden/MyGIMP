@@ -33,6 +33,8 @@ namespace Mimp {
 		std::wstring _text;
 		std::string _fontPath = "";
 		sf::Font _font;
+		Color _color = Color::Black;
+		std::string _selected = "";
 
 		std::map<std::string, std::string> _fonts;
 	};
