@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../src/KeyWidget.hpp"
+#include "../src/Widgets/KeyWidget.hpp"
 
 TEST(KeyWidget, constructor)
 {

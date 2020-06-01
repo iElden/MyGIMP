@@ -6,7 +6,7 @@
 */
 #include "ExpandSelection.hpp"
 #include "../../Utils.hpp"
-#include "../../CanvasWidget.hpp"
+#include "../../Widgets/CanvasWidget.hpp"
 
 
 Mimp::ExpandSelection::ExpandSelection():

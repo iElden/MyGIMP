@@ -1,5 +1,5 @@
 #include "KeyWidget.hpp"
-#include "Keys.hpp"
+#include "../Keys.hpp"
 
 void Mimp::KeyWidget::keyPressed(const sf::Event::KeyEvent &event)
 {

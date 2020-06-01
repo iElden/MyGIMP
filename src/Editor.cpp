@@ -9,8 +9,9 @@
 #include "Editor.hpp"
 #include "Utils.hpp"
 #include "ImageOperations/ImageOperationFactory.hpp"
-#include "LayerWidget.hpp"
-#include "KeyWidget.hpp"
+#include "Widgets/LayerWidget.hpp"
+#include "Widgets/KeyWidget.hpp"
+#include "Widgets/CheckBoardScrollablePanel.hpp"
 
 namespace Mimp {
 	Editor::Editor(const std::vector<std::string> &images) :
@@ -180,16 +181,15 @@ namespace Mimp {
 					this->_gui.setView(sf::View{sf::FloatRect(0, 0, event.size.width, event.size.height)});
 				} else if (event.type == sf::Event::KeyPressed) {
 					Keys::KeyCombination comb{
-							Keys::SFMLKeyToKey(event.key.code),
-							event.key.control,
-							event.key.shift,
-							event.key.alt
+						Keys::SFMLKeyToKey(event.key.code),
+						event.key.control,
+						event.key.shift,
+						event.key.alt
 					};
 					if (comb.key != Keys::KEY_UNKNOWN && !this->_shortcutManager.isBusy()) {
 						if (this->_selectedImageWindow) {
 							try {
-								this->_keysImgOps.at(comb)->click(this->_gui, this->_getSelectedCanvas(),
-								                                  this->_selectedImageWindow, *this);
+								this->_keysImgOps.at(comb)->click(this->_gui, this->_getSelectedCanvas(), this->_selectedImageWindow, *this);
 							} catch (std::out_of_range &) {}
 						}
 						if (!this->_toolBox.isTextEditing()) //! @todo If a window child is focused, do not select a new tool.
@@ -199,10 +199,13 @@ namespace Mimp {
 					auto canvas = this->_getSelectedCanvas();
 
 					if (canvas) {
+						auto panel = this->_selectedImageWindow->get<CheckBoardScrollablePanel>("Canvas");
+
 						if (event.mouseWheelScroll.delta > 0)
 							canvas->setZoomLevel(canvas->getZoomLevel() * 2);
 						else
 							canvas->setZoomLevel(canvas->getZoomLevel() / 2);
+						panel->setMaxSize(canvas->getSize());
 					}
 					continue;
 				}
@@ -236,7 +239,7 @@ namespace Mimp {
 		auto menu = this->_gui.get<tgui::MenuBar>("main_bar");
 		auto window = tgui::ChildWindow::create("Untitled");
 		auto layersPanel = this->_makeLayersPanel(window, canvas);
-		auto canvasPanel = tgui::ScrollablePanel::create({"&.w - 200", "&.h - 20"});
+		auto canvasPanel = CheckBoardScrollablePanel::create({"&.w - 200", "&.h - 20"});
 		auto common = [this, menu, window, canvas] {
 			this->_unselectImage();
 			this->_gui.remove(window);
@@ -253,24 +256,30 @@ namespace Mimp {
 				this->_minimizedWindows.erase(it);
 		};
 
+		canvasPanel->setMaxSize({
+			canvas->getSize().x,
+			canvas->getSize().y
+		});
 		window->setMinimumSize({
-				                       300,
-				                       100
-		                       });
+			300,
+			100
+		});
 		window->setResizable(true);
 		window->setTitleButtons(tgui::ChildWindow::Close | tgui::ChildWindow::Maximize | tgui::ChildWindow::Minimize);
 		window->setSize({
-				                600,
-				                420
-		                });
+			600,
+			420
+		});
 		window->connect("Closed", [this, common, window] {
-			this->_checkSaved(window->getTitle(),
-			                  window->get<tgui::ScrollablePanel>("Canvas")->get<CanvasWidget>("Canvas"), [common] {
+			this->_checkSaved(
+				window->getTitle(),
+				window->get<tgui::ScrollablePanel>("Canvas")->get<CanvasWidget>("Canvas"), [common] {
+					common();
+				}, [this, common, window] {
+					if (this->_saveImage(window))
 						common();
-					}, [this, common, window] {
-						if (this->_saveImage(window))
-							common();
-					});
+				}
+			);
 		});
 		window->connect("Minimized", [window, this] {
 			window->setTitleButtons(tgui::ChildWindow::Close | tgui::ChildWindow::Maximize);
@@ -281,8 +290,8 @@ namespace Mimp {
 			if (it == this->_minimizedWindows.end()) {
 				window->setResizable(false);
 				this->_minimizedWindows[window] = {
-						{window->getPosition().x, window->getPosition().y},
-						{window->getSize().x,     window->getSize().y},
+					{window->getPosition().x, window->getPosition().y},
+					{window->getSize().x,     window->getSize().y},
 				};
 				window->setSize(160, 0);
 
@@ -581,8 +590,7 @@ namespace Mimp {
 		});
 		menu->connectMenuItem({"File", "Export"}, [this, menu] {
 			std::string name = this->_gui.getWidgetName(this->_selectedImageWindow).substr(strlen("Image"));
-			std::string path = Utils::saveFileDialog("Export image", name,
-			                                         {{".+[.]png", "Portable Network Graphics (PNG)"}});
+			std::string path = Utils::saveFileDialog("Export image", name, {{".+[.]png", "Portable Network Graphics (PNG)"}});
 
 			if (path.empty())
 				return;
@@ -655,10 +663,10 @@ namespace Mimp {
 		});
 		menu->connectMenuItem({"File", "Import", "Local file"}, [this, menu] {
 			std::string path = Utils::openFileDialog("Load MIMP file", ".", {
-					{".+[.]png", "Portable Network Graphics (PNG)"},
-					{".+[.]jpg", "Joint Photographic Experts Group (JPEG)"},
-					{".+[.]bmp", "Windows Bitmap (BMP)"},
-					{".+[.]gif", "Graphics Interchange Format (GIF)"},
+				{".+[.]png", "Portable Network Graphics (PNG)"},
+				{".+[.]jpg", "Joint Photographic Experts Group (JPEG)"},
+				{".+[.]bmp", "Windows Bitmap (BMP)"},
+				{".+[.]gif", "Graphics Interchange Format (GIF)"},
 			});
 
 			try {
@@ -1002,22 +1010,20 @@ namespace Mimp {
 
 				if (canvas->isEdited()) {
 					this->_checkSaved(
-							win->getTitle(),
-							canvas,
-							[win, canvas, this, handler, endHandler] {
+						win->getTitle(),
+						canvas,
+						[win, canvas, this, handler, endHandler] {
+							canvas->setEdited(false);
+							if (handler)
+								handler(win);
+							this->_checkClose(endHandler);},[win, canvas, this, handler, endHandler] {
+							if (this->_saveImage(win)) {
 								canvas->setEdited(false);
 								if (handler)
 									handler(win);
 								this->_checkClose(endHandler);
-							},
-							[win, canvas, this, handler, endHandler] {
-								if (this->_saveImage(win)) {
-									canvas->setEdited(false);
-									if (handler)
-										handler(win);
-									this->_checkClose(endHandler);
-								}
 							}
+						}
 					);
 					return;
 				} else if (handler)
@@ -1027,8 +1033,7 @@ namespace Mimp {
 		endHandler();
 	}
 
-	bool Editor::_checkSaved(std::string fileName, CanvasWidget::Ptr canvas, const std::function<void()> &noHandler,
-	                         const std::function<void()> &yesHandler)
+	bool Editor::_checkSaved(std::string fileName, CanvasWidget::Ptr canvas, const std::function<void()> &noHandler, const std::function<void()> &yesHandler)
 	{
 		if (!canvas->isEdited())
 			return noHandler(), true;

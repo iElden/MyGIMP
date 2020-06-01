@@ -5,7 +5,7 @@
 ** InvertSelectionOperation.cpp
 */
 #include "InvertSelectionOperation.hpp"
-#include "../../CanvasWidget.hpp"
+#include "../../Widgets/CanvasWidget.hpp"
 
 Mimp::InvertSelectionOperation::InvertSelectionOperation():
 	ImageOperation({"Selection", "Invert Selection"}, "Invert Selection",{Keys::KEY_I, true, false, false})

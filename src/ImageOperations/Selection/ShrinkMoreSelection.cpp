@@ -8,7 +8,7 @@
 #include "ExpandMoreSelection.hpp"
 #include "ShrinkSelection.hpp"
 #include "../../Utils.hpp"
-#include "../../CanvasWidget.hpp"
+#include "../../Widgets/CanvasWidget.hpp"
 #include "../../Editor.hpp"
 
 Mimp::ShrinkMoreSelection::ShrinkMoreSelection():

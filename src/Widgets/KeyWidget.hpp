@@ -2,7 +2,7 @@
 #define MYGIMP_KEYWIDGET_HPP
 
 #include <TGUI/TGUI.hpp>
-#include "ImageOperations/ImageOperation.hpp"
+#include "../ImageOperations/ImageOperation.hpp"
 
 namespace Mimp {
 	//! @brief Define a KeyWidget

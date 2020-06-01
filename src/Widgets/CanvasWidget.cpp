@@ -61,7 +61,6 @@ namespace Mimp
 	{
 		sf::RectangleShape rect;
 		sf::Sprite sprite;
-		bool dark;
 		auto size = this->_size;
 		FrameBuffer buffer{size};
 		auto color = Color{this->_colorCounter, this->_colorCounter, this->_colorCounter, 120};
@@ -85,20 +84,6 @@ namespace Mimp
 			realSize.y = std::min(parentSize.y, realSize.y);
 		}
 
-		rect.setOutlineThickness(0);
-		for (unsigned x = 0; x < realSize.x; x += 10) {
-			dark = x % 20;
-			for (unsigned y = 0; y < realSize.y; y += 10) {
-				rect.setFillColor(dark ? sf::Color{0x888888FF} : sf::Color::White);
-				rect.setPosition(x, y);
-				rect.setSize({
-					(size.x * this->_zoom) - x > 10 ? 10 : (size.x * this->_zoom) - x,
-					(size.y * this->_zoom) - y > 10 ? 10 : (size.y * this->_zoom) - y
-				});
-				target.draw(rect, states);
-				dark = !dark;
-			}
-		}
 		for (auto &layer : this->_layers) {
 			if (!layer->visible)
 				continue;

@@ -24,8 +24,8 @@ set(MIMP_SRCS
     src/Editor.hpp
     src/ToolBox.cpp
     src/ToolBox.hpp
-    src/CanvasWidget.cpp
-    src/CanvasWidget.hpp
+	src/Widgets/CanvasWidget.cpp
+	src/Widgets/CanvasWidget.hpp
     src/Data/MouseClick.hpp
     src/Exceptions.hpp
     src/Utils.cpp
@@ -35,14 +35,14 @@ set(MIMP_SRCS
     src/SelectedArea.cpp
     src/SelectedArea.hpp
     src/Enum.hpp
-    src/LayerWidget.cpp
-    src/LayerWidget.hpp
+	src/Widgets/LayerWidget.cpp
+	src/Widgets/LayerWidget.hpp
     src/Keys.cpp
     src/Keys.hpp
     src/ShortcutManager.cpp
     src/ShortcutManager.hpp
-    src/KeyWidget.cpp
-    src/KeyWidget.hpp
+	src/Widgets/KeyWidget.cpp
+	src/Widgets/KeyWidget.hpp
     src/Action.hpp
 
     # Misc data
@@ -145,7 +145,7 @@ set(MIMP_SRCS
     src/ImageOperations/Layer/RotateRight90.hpp
     src/ImageOperations/Undo.cpp
     src/ImageOperations/Undo.hpp
-)
+	src/Widgets/CheckBoardScrollablePanel.cpp src/Widgets/CheckBoardScrollablePanel.hpp)
 
 find_library(PNG_LIBRARY png)
 

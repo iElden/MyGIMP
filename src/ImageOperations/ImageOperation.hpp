@@ -8,7 +8,7 @@
 
 #include <TGUI/Gui.hpp>
 #include "../Image.hpp"
-#include "../CanvasWidget.hpp"
+#include "../Widgets/CanvasWidget.hpp"
 #include "../Keys.hpp"
 
 namespace Mimp

@@ -6,7 +6,7 @@
 */
 #include "ExpandMoreSelection.hpp"
 #include "../../Utils.hpp"
-#include "../../CanvasWidget.hpp"
+#include "../../Widgets/CanvasWidget.hpp"
 
 Mimp::ExpandMoreSelection::ExpandMoreSelection():
 		ImageOperation({"Selection", "Expand Selection ..."},"Expand Selection ...", {Keys::KEY_I, true, true, true})

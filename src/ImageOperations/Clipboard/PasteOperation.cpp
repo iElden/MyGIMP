@@ -4,9 +4,8 @@
 
 #include <clip.h>
 #include <iostream>
-#include <iomanip>
 #include "PasteOperation.hpp"
-#include "../../CanvasWidget.hpp"
+#include "../../Widgets/CanvasWidget.hpp"
 #include "../../Editor.hpp"
 
 namespace Mimp
