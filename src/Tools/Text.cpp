@@ -19,8 +19,8 @@ namespace Mimp {
 	{
 		this->_fonts.clear();
 		try {
-			for (auto file : std::filesystem::directory_iterator("fonts")) {
-				this->_fonts[file.path().stem().c_str()] = file.path();
+			for (auto &file : std::filesystem::directory_iterator("fonts")) {
+				this->_fonts[file.path().stem().string()] = file.path().string();
 			}
 			if (this->_fonts.empty()) throw std::exception();
 		} catch (...) {
