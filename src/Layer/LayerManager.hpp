@@ -11,17 +11,18 @@
 
 namespace Mimp
 {
-    //! @brief Define a LayerManager.
-    class LayerManager {
+	//! @brief Define a LayerManager.
+	class LayerManager {
 	private:
 		//! @brief Magic Number for .mimp saves
 		//! @details This magic number is used to know if a .mimp file is valid for Mimp or not.
 		static constexpr unsigned MAGIC_NBR = 0xDAFE4E1A;
 
-        //! @brief Define a SavedLayer.
+		//! @brief Define a SavedLayer.
 		struct SavedLayer {
 			Vector2<int> pos; //!< Position of the SavedLayer
 			Vector2<unsigned> size; //!< Size of the SavedLayer
+			float rotation; //!< Rotation angle
 			char name[32]; //!< Name of the Layer
 			struct {
 				bool visible : 1; //!< Is the Layer visible ?
@@ -30,7 +31,7 @@ namespace Mimp
 			Color pixels[0]; //!< Array of FrameBuffer pixels
 		};
 
-        //! @brief Define a MimpImage.
+		//! @brief Define a MimpImage.
 		struct MimpImage {
 			unsigned magic; //!< Magic number for .mimp files
 			uint32_t nbLayers; //!< Number of layers in the Image

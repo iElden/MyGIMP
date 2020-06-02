@@ -24,8 +24,8 @@ set(MIMP_SRCS
     src/Editor.hpp
     src/ToolBox.cpp
     src/ToolBox.hpp
-	src/Widgets/CanvasWidget.cpp
-	src/Widgets/CanvasWidget.hpp
+    src/Widgets/CanvasWidget.cpp
+    src/Widgets/CanvasWidget.hpp
     src/Data/MouseClick.hpp
     src/Exceptions.hpp
     src/Utils.cpp
@@ -35,14 +35,14 @@ set(MIMP_SRCS
     src/SelectedArea.cpp
     src/SelectedArea.hpp
     src/Enum.hpp
-	src/Widgets/LayerWidget.cpp
-	src/Widgets/LayerWidget.hpp
+    src/Widgets/LayerWidget.cpp
+    src/Widgets/LayerWidget.hpp
     src/Keys.cpp
     src/Keys.hpp
     src/ShortcutManager.cpp
     src/ShortcutManager.hpp
-	src/Widgets/KeyWidget.cpp
-	src/Widgets/KeyWidget.hpp
+    src/Widgets/KeyWidget.cpp
+    src/Widgets/KeyWidget.hpp
     src/Action.hpp
 
     # Misc data
@@ -141,11 +141,19 @@ set(MIMP_SRCS
     src/ImageOperations/Layer/MoveUp.hpp
     src/ImageOperations/Layer/MoveDown.cpp
     src/ImageOperations/Layer/MoveDown.hpp
+    src/ImageOperations/Layer/RotateLeft90.cpp
+    src/ImageOperations/Layer/RotateLeft90.hpp
     src/ImageOperations/Layer/RotateRight90.cpp
     src/ImageOperations/Layer/RotateRight90.hpp
     src/ImageOperations/Undo.cpp
     src/ImageOperations/Undo.hpp
-	src/Widgets/CheckBoardScrollablePanel.cpp src/Widgets/CheckBoardScrollablePanel.hpp)
+    src/Widgets/CheckBoardScrollablePanel.cpp
+    src/Widgets/CheckBoardScrollablePanel.hpp
+    src/ImageOperations/Layer/Rotate.cpp
+    src/ImageOperations/Layer/Rotate.hpp
+    src/ImageOperations/Layer/SetRotation.cpp
+    src/ImageOperations/Layer/SetRotation.hpp
+)
 
 find_library(PNG_LIBRARY png)
 
@@ -160,31 +168,31 @@ add_executable(
 
 if (WIN32)
     target_link_libraries(
-            MyGimp
-            tgui
-            sfml-graphics
-            sfml-window
-            sfml-system
-            pthread
-            stdc++fs
-            ssl
-            ws2_32
-            ${PNG_LIBRARY}
-            ${clip_LIBRARIES}
+        MyGimp
+        tgui
+        sfml-graphics
+        sfml-window
+        sfml-system
+        pthread
+        stdc++fs
+        ssl
+        ws2_32
+        ${PNG_LIBRARY}
+        ${clip_LIBRARIES}
     )
 else ()
     target_link_libraries(
-            MyGimp
-            tgui
-            sfml-graphics
-            sfml-window
-            sfml-system
-            pthread
-            stdc++fs
-            ssl
-            ${PNG_LIBRARY}
-            xcb
-            ${clip_LIBRARIES}
+        MyGimp
+        tgui
+        sfml-graphics
+        sfml-window
+        sfml-system
+        pthread
+        stdc++fs
+        ssl
+        ${PNG_LIBRARY}
+        xcb
+        ${clip_LIBRARIES}
     )
 endif ()
 

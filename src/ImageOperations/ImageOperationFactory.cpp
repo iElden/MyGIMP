@@ -22,7 +22,10 @@
 #include "Layer/MoveUp.hpp"
 #include "Layer/MoveDown.hpp"
 #include "Layer/RotateRight90.hpp"
+#include "Layer/RotateLeft90.hpp"
 #include "Undo.hpp"
+#include "Layer/Rotate.hpp"
+#include "Layer/SetRotation.hpp"
 
 namespace Mimp
 {
@@ -85,7 +88,16 @@ namespace Mimp
 			return std::make_shared<MoveRight>();
 		},
 		[]{
+			return std::make_shared<RotateLeft90>();
+		},
+		[]{
 			return std::make_shared<RotateRight90>();
+		},
+		[]{
+			return std::make_shared<Rotate>();
+		},
+		[]{
+			return std::make_shared<SetRotation>();
 		}
 	};
 
@@ -103,7 +115,7 @@ namespace Mimp
 		std::map<std::string, std::shared_ptr<ImageOperation>> result;
 
 		for (auto &io : ImageOperationFactory::ios) {
-			result[io->getName()] = io;
+			result[io->getMenuHierarchy().back()] = io;
 		}
 		return result;
 	}

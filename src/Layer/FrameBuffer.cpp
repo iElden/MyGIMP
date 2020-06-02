@@ -295,21 +295,28 @@ namespace Mimp
 		}
 	}
 
-	void FrameBuffer::drawFrameBuffer(Vector2<int> pos, std::shared_ptr<FrameBuffer> buffer, DrawStrategy drawStrategy) noexcept
+	void FrameBuffer::drawFrameBuffer(Vector2<int> pos, const std::shared_ptr<FrameBuffer> &buffer, float rotation, DrawStrategy drawStrategy) noexcept
 	{
 		auto size = buffer->getSize();
 
+		rotation = rotation * M_PI / 180;
 		for (unsigned x = 0; x < size.x; x++)
-			for (unsigned y = 0; y < size.x; y++)
-				this->drawPixel(
-					{
+			for (unsigned y = 0; y < size.x; y++) {
+				auto col = buffer->getPixel({static_cast<int>(x), static_cast<int>(y)});
+				auto c = cos(rotation);
+				auto s = sin(rotation);
+
+				if (rotation == 0)
+					this->drawPixel({
 						static_cast<int>(x + pos.x),
 						static_cast<int>(y + pos.y)
-					}, buffer->getPixel({
-						static_cast<int>(x),
-						static_cast<int>(y)
-					}, drawStrategy)
-				);
+					}, col, drawStrategy);
+				else
+					this->drawPoint({
+						static_cast<float>(c * (x - size.x / 2.) - s * (y - size.y / 2.) + size.x / 2. + pos.x),
+						static_cast<float>(s * (x - size.x / 2.) + c * (y - size.y / 2.) + size.y / 2. + pos.y)
+					}, col, drawStrategy);
+			}
 	}
 
 	FrameBuffer FrameBuffer::getRectFromBuffer(Vector2<int> pos, Vector2<unsigned> size, const Color &fill)
@@ -393,8 +400,7 @@ namespace Mimp
 					}, color, drawStrategy);
 	}
 
-	void FrameBuffer::_drawSquareAt(Vector2<int> pos, const Color &color, unsigned short radius,
-									DrawStrategy drawStrategy) noexcept
+	void FrameBuffer::_drawSquareAt(Vector2<int> pos, const Color &color, unsigned short radius, DrawStrategy drawStrategy) noexcept
 	{
 		int min_x = pos.x - radius / 2;
 		int max_x = pos.x + (radius  - !(radius & 1U)) / 2;
@@ -420,5 +426,16 @@ namespace Mimp
 	const sf::Uint8 *FrameBuffer::getDrawBuffer() const
 	{
 		return reinterpret_cast<sf::Uint8 *>(this->_drawBuffer);
+	}
+
+	void FrameBuffer::drawPoint(Vector2<float> pos, const Color &color, DrawStrategy drawStrategy) noexcept
+	{
+		this->drawPixel({static_cast<int>(pos.x), static_cast<int>(pos.y)}, color, drawStrategy);
+		if (std::floor(pos.x) != pos.x)
+			this->drawPixel({static_cast<int>(pos.x + 1), static_cast<int>(pos.y)}, color, drawStrategy);
+		if (std::floor(pos.y) != pos.y)
+			this->drawPixel({static_cast<int>(pos.x), static_cast<int>(pos.y + 1)}, color, drawStrategy);
+		if (std::floor(pos.x) != pos.x && std::floor(pos.y) != pos.y)
+			this->drawPixel({static_cast<int>(pos.x + 1), static_cast<int>(pos.y + 1)}, color, drawStrategy);
 	}
 }

@@ -12,12 +12,12 @@
 #include "../../Editor.hpp"
 
 Mimp::ShrinkMoreSelection::ShrinkMoreSelection():
-		ImageOperation({"Selection", "Shrink Selection ..."}, "Shrink Selection ...",{Keys::KEY_K, true, true, true})
+	ImageOperation({"Selection", "Shrink Selection ..."}, {Keys::KEY_K, true, true, true})
 {}
 
 void Mimp::ShrinkMoreSelection::click(tgui::Gui &gui, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr, Editor &) const
 {
-	Utils::makeSliderWindow(gui, [&image](unsigned short value){
+	Utils::makeSliderWindow(gui, [image](unsigned short value){
 		ShrinkSelection::_run(*image, value);
 	});
 }

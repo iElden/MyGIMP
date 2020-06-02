@@ -93,10 +93,9 @@ namespace Mimp
 			this->_drawBuffer.create(s.x, s.y);
 			this->_drawBuffer.update(layer->buffer->getDrawBuffer(), s.x, s.y, 0, 0);
 			sprite.setTexture(this->_drawBuffer, true);
-			sprite.setPosition(layer->pos.x * this->_zoom, layer->pos.y * this->_zoom);
-			//sprite.setPosition(layer->pos.x * this->_zoom + this->_zoom * size.x / 2, layer->pos.y * this->_zoom + this->_zoom * size.y / 2);
+			sprite.setPosition((layer->pos.x + size.x / 2.f) * this->_zoom, (layer->pos.y + size.y / 2.f) * this->_zoom);
 			sprite.setScale(this->_zoom, this->_zoom);
-			//sprite.setOrigin(this->_zoom * size.x / 2, this->_zoom * size.y / 2);
+			sprite.setOrigin(size.x / 2.f, size.y / 2.f);
 			sprite.setRotation(layer->rotation);
 			target.draw(sprite, states);
 		}
@@ -104,6 +103,7 @@ namespace Mimp
 		this->_drawBuffer.update(buffer.getDrawBuffer(), size.x, size.y, 0, 0);
 		sprite.setTexture(this->_drawBuffer, true);
 		sprite.setPosition(0, 0);
+		sprite.setOrigin(0, 0);
 		sprite.setScale(this->_zoom, this->_zoom);
 		target.draw(sprite, states);
 	}
