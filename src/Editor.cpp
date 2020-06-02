@@ -742,7 +742,7 @@ namespace Mimp {
 		});
 		merge->connect("Pressed", [&layer, &layers, index, this, win, canvas] {
 			layers.selectLayer(index - 1);
-			layers.getSelectedLayer().buffer->drawFrameBuffer(layer.pos, layer.buffer);
+			layers.getSelectedLayer().buffer->drawFrameBuffer(layer.pos, layer.buffer, layer.rotation);
 			layers.deleteLayer(index);
 			this->_makeLayersPanel(win, canvas);
 		});
