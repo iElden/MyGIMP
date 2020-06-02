@@ -191,6 +191,7 @@ namespace Mimp
 				createdLayer->visible = layer->attributes.visible;
 				createdLayer->locked = layer->attributes.locked;
 				createdLayer->pos = layer->pos;
+				createdLayer->rotation = layer->rotation;
 			}
 		} catch (...) {
 			this->_unsetBusy();
@@ -337,6 +338,7 @@ namespace Mimp
 			std::memcpy(layer->name, layerObject->name, sizeof(layer->name));
 			layer->size = layerObject->getSize();
 			layer->pos = layerObject->pos;
+			layer->rotation = layerObject->rotation;
 			layer->attributes.visible = layerObject->visible;
 			layer->attributes.locked = layerObject->locked;
 

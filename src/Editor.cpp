@@ -581,8 +581,7 @@ namespace Mimp {
 		});
 		menu->connectMenuItem({"File", "Export"}, [this, menu] {
 			std::string name = this->_gui.getWidgetName(this->_selectedImageWindow).substr(strlen("Image"));
-			std::string path = Utils::saveFileDialog("Export image", name,
-			                                         {{".+[.]png", "Portable Network Graphics (PNG)"}});
+			std::string path = Utils::saveFileDialog("Export image", name, {{".+[.]png", "Portable Network Graphics (PNG)"}});
 
 			if (path.empty())
 				return;
