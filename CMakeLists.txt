@@ -147,7 +147,7 @@ set(MIMP_SRCS
     src/ImageOperations/Layer/RotateRight90.hpp
     src/ImageOperations/Undo.cpp
     src/ImageOperations/Undo.hpp
-)
+	src/ImageOperations/Layer/Rotate.cpp src/ImageOperations/Layer/Rotate.hpp)
 
 find_library(PNG_LIBRARY png)
 
@@ -158,7 +158,7 @@ add_executable(
     MyGimp
     src/main.cpp
     ${MIMP_SRCS}
-)
+	src/ImageOperations/Layer/SetRotation.cpp src/ImageOperations/Layer/SetRotation.hpp)
 
 if (WIN32)
     target_link_libraries(

@@ -9,7 +9,7 @@
 namespace Mimp
 {
 	CutOperation::CutOperation() :
-		ImageOperation({"Edit", "Cut"},"Cut", {Keys::KEY_X, true, false, false})
+		ImageOperation({"Edit", "Cut"}, {Keys::KEY_X, true, false, false})
 	{
 
 	}

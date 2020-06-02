@@ -6,15 +6,13 @@
 #include "../ShortcutManager.hpp"
 
 namespace Mimp {
-	ImageOperation::ImageOperation(const std::vector<std::string> &&hierarchy, const std::string &&name) :
-			_hierarchy(hierarchy),
-			_name(name)
+	ImageOperation::ImageOperation(const std::vector<std::string> &&hierarchy) :
+		_hierarchy(hierarchy)
 	{
 	}
 
-	ImageOperation::ImageOperation(const std::vector<std::string> &&hierarchy, const std::string &&name, const Keys::KeyCombination &keys) :
-			_hierarchy(hierarchy),
-			_name(name)
+	ImageOperation::ImageOperation(const std::vector<std::string> &&hierarchy, const Keys::KeyCombination &keys) :
+		_hierarchy(hierarchy)
 	{
 		this->setKeyCombination(keys);
 	}

@@ -510,25 +510,36 @@ namespace Mimp::Utils
 		return window;
 	}
 
-	tgui::ChildWindow::Ptr makeSliderWindow(tgui::Gui &gui, const std::function<void(unsigned short value)> &onFinish)
+	tgui::ChildWindow::Ptr makeSliderWindow(tgui::Gui &gui, const std::function<void(float value)> &onFinish, float defaultValue, float min, float max, float step)
 	{
-		auto window = openWindowWithFocus(gui, 271, 182);
+		auto window = openWindowWithFocus(gui, 260, 80);
 		window->loadWidgetsFromFile("widgets/slider.gui");
 
 		auto slider = window->get<tgui::Slider>("Slider");
 		auto txt = window->get<tgui::Label>("Nb");
 		auto sliderCallback = [slider, txt]{
-			auto value = static_cast<unsigned short>(slider->getValue());
-			txt->setText(std::to_string(value));
+			std::stringstream s;
+
+			s << slider->getValue();
+			txt->setText(s.str());
 		};
+		std::stringstream s;
+
+		slider->setMaximum(min);
+		slider->setMaximum(max);
+		slider->setStep(step);
+		slider->setValue(defaultValue);
 		slider->connect("ValueChanged", sliderCallback);
+
+		s << slider->getValue();
+		txt->setText(s.str());
+
 		window->get<tgui::Button>("Cancel")->connect("Clicked", [window]{
 			window->close();
 		});
 		window->get<tgui::Button>("Ok")->connect("Clicked", [onFinish, slider, window]{
-			auto value = static_cast<unsigned short>(slider->getValue());
 			if (onFinish)
-				onFinish(value);
+				onFinish(slider->getValue());
 			window->close();
 		});
 		return window;

@@ -8,7 +8,7 @@
 #include "../../CanvasWidget.hpp"
 
 Mimp::UnselectOperation::UnselectOperation():
-	ImageOperation({"Selection", "Unselect"}, "Unselect", {Keys::KEY_D, true, false, false})
+	ImageOperation({"Selection", "Unselect"}, {Keys::KEY_D, true, false, false})
 {
 
 }
