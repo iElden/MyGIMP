@@ -9,7 +9,7 @@
 
 
 #include "../ImageOperation.hpp"
-#include "../../CanvasWidget.hpp"
+#include "../../Widgets/CanvasWidget.hpp"
 #include "../../Editor.hpp"
 
 namespace Mimp

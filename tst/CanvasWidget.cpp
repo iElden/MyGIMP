@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 #include <TGUI/TGUI.hpp>
-#include "../src/CanvasWidget.hpp"
+#include "../src/Widgets/CanvasWidget.hpp"
 
 TEST(CanvasWidget, zoom) {
     tgui::Gui gui{};

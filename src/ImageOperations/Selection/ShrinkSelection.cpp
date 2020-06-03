@@ -5,10 +5,10 @@
 ** ShrinkSelection.cpp
 */
 #include "ShrinkSelection.hpp"
-#include "../../CanvasWidget.hpp"
+#include "../../Widgets/CanvasWidget.hpp"
 
 Mimp::ShrinkSelection::ShrinkSelection():
-		ImageOperation({"Selection", "Shrink Selection"}, "Shrink Selection",{Keys::KEY_K, true, true, false})
+	ImageOperation({"Selection", "Shrink Selection"}, {Keys::KEY_K, true, true, false})
 {}
 
 void Mimp::ShrinkSelection::_removePointIfNoPointNearby(unsigned i, unsigned j, Mimp::Image &image,

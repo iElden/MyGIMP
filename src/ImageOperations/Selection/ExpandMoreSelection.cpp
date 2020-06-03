@@ -6,15 +6,15 @@
 */
 #include "ExpandMoreSelection.hpp"
 #include "../../Utils.hpp"
-#include "../../CanvasWidget.hpp"
+#include "../../Widgets/CanvasWidget.hpp"
 
 Mimp::ExpandMoreSelection::ExpandMoreSelection():
-		ImageOperation({"Selection", "Expand Selection ..."},"Expand Selection ...", {Keys::KEY_I, true, true, true})
+	ImageOperation({"Selection", "Expand Selection ..."}, {Keys::KEY_I, true, true, true})
 {}
 
 void Mimp::ExpandMoreSelection::click(tgui::Gui &gui, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr, Editor &) const
 {
-	Utils::makeSliderWindow(gui, [&image](unsigned short value){
+	Utils::makeSliderWindow(gui, [image](unsigned short value){
 		ExpandSelection::_run(*image, value);
 	});
 }

@@ -4,9 +4,8 @@
 
 #include <clip.h>
 #include <iostream>
-#include <iomanip>
 #include "PasteOperation.hpp"
-#include "../../CanvasWidget.hpp"
+#include "../../Widgets/CanvasWidget.hpp"
 #include "../../Editor.hpp"
 
 namespace Mimp
@@ -32,7 +31,7 @@ namespace Mimp
 	}
 
 	PasteOperation::PasteOperation() :
-		ImageOperation({"Edit", "Paste"},"Paste", {Keys::KEY_V, true, false, false})
+		ImageOperation({"Edit", "Paste"}, {Keys::KEY_V, true, false, false})
 	{
 	}
 

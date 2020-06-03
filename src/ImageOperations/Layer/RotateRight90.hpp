@@ -7,7 +7,7 @@
 
 
 #include "../ImageOperation.hpp"
-#include "../../CanvasWidget.hpp"
+#include "../../Widgets/CanvasWidget.hpp"
 
 namespace Mimp
 {

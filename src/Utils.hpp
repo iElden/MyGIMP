@@ -72,35 +72,29 @@ namespace Mimp::Utils
 	//! @return std::string Converted Path in String
 	std::string cleanPath(const std::string &path);
 
-    //! @brief Display a focused window.
-    //! @param gui The gui handling the window.
-    //! @param width The width of the window.
-    //! @param height The height of the window.
-    //! @return A pointer to the window
+	//! @brief Display a focused window.
+	//! @param gui The gui handling the window.
+	//! @param width The width of the window.
+	//! @param height The height of the window.
+	//! @return A pointer to the window
 	tgui::ChildWindow::Ptr openWindowWithFocus(tgui::Gui &gui, tgui::Layout width, tgui::Layout height);
-
-    //! @brief Display a window with a Color picker.
-    //! @param gui The gui handling the window.
-    //! @param onFinish Function to call when exiting the window.
-    //! @return A pointer to the window
-	tgui::ChildWindow::Ptr makeColorPickWindow(tgui::Gui &gui, const std::function<void(Color color)> &onFinish);
 
 	//! @brief Display a window with a slider.
 	//! @param gui The gui handling the window.
 	//! @param onFinish Function to call when exiting the window.
 	//! @return A pointer to the window
-	tgui::ChildWindow::Ptr makeSliderWindow(tgui::Gui &gui, const std::function<void(unsigned short value)> &onFinish);
+	tgui::ChildWindow::Ptr makeSliderWindow(tgui::Gui &gui, const std::function<void(float value)> &onFinish, float defaultValue = 1, float min = 0, float max = 20, float step = 1);
 
-    //! @brief Display a window with a Color picker.
-    //! @param gui The gui handling the window.
-    //! @param onFinish Function to call when exiting the window.
-    //! @param startColor The color to initialize the picker.
-    //! @return A pointer to the window
+	//! @brief Display a window with a Color picker.
+	//! @param gui The gui handling the window.
+	//! @param onFinish Function to call when exiting the window.
+	//! @param startColor The color to initialize the picker.
+	//! @return A pointer to the window
 	tgui::ChildWindow::Ptr makeColorPickWindow(tgui::Gui &gui, const std::function<void(Color color)> &onFinish, Color startColor);
 
-    //! @brief Convert a DrawShape to the string equivalent.
-    //! @param shape The DrawShape to convert.
-    //! @return std::string
+	//! @brief Convert a DrawShape to the string equivalent.
+	//! @param shape The DrawShape to convert.
+	//! @return std::string
 	std::string DrawShapeToString(DrawShape shape);
 
 	//! @brief Convert a string to the DrawShape equivalent.

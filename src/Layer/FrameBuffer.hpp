@@ -93,6 +93,12 @@ namespace Mimp
 		//! \param drawStrategy How the shape has to be drawn. Default is ADD.
 		void drawAt(Vector2<int> pos, const Color &color, unsigned short radius, DrawShape shape, DrawStrategy drawStrategy=ADD) noexcept;
 
+		//! @brief Draw a point in the FrameBuffer
+		//! @param pos Position
+		//! @param color Color of the pixel
+		//! \param drawStrategy How the shape has to be drawn. Default is ADD.
+		void drawPoint(Vector2<float> pos, const Color &color, DrawStrategy drawStrategy=ADD) noexcept;
+
 		//! @brief Set a pixel in the FrameBuffer
 		//! @param pos Position of the pixel.
 		//! @param color Color of the pixel.
@@ -111,7 +117,8 @@ namespace Mimp
 		//! @param pos Position of the FrameBuffer on the screen
 		//! @param buffer The FrameBuffer to draw
 		//! @param drawStrategy How the shape has to be drawn. Default is ADD.
-		void drawFrameBuffer(Vector2<int> pos, std::shared_ptr<FrameBuffer> buffer, DrawStrategy drawStrategy=ADD) noexcept;
+		//! @param rotation The rotation of the buffer.
+		void drawFrameBuffer(Vector2<int> pos, const std::shared_ptr<FrameBuffer>& buffer, float rotation = 0, DrawStrategy drawStrategy=ADD) noexcept;
 
 		//! @brief Get a FrameBuffer rectangle from the screen
 		//! @param pos Origin of the Framebuffer to get

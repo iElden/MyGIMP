@@ -5,10 +5,10 @@
 ** UnselectOperation.cpp
 */
 #include "UnselectOperation.hpp"
-#include "../../CanvasWidget.hpp"
+#include "../../Widgets/CanvasWidget.hpp"
 
 Mimp::UnselectOperation::UnselectOperation():
-	ImageOperation({"Selection", "Unselect"}, "Unselect", {Keys::KEY_D, true, false, false})
+	ImageOperation({"Selection", "Unselect"}, {Keys::KEY_D, true, false, false})
 {
 
 }

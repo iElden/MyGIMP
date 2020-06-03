@@ -64,6 +64,8 @@ namespace Mimp {
 		//! @brief Get the parameters panel for the Tool.
 		//! @return tgui::ScrollablePanel::Ptr Pointer containing the parameters panel
 		virtual tgui::ScrollablePanel::Ptr getParametersPanel() = 0;
+
+		virtual bool isEditing() { return false; }
 	};
 }
 

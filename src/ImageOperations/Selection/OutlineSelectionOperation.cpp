@@ -7,10 +7,10 @@
 
 #include "OutlineSelectionOperation.hpp"
 #include "ExpandSelection.hpp"
-#include "../../CanvasWidget.hpp"
+#include "../../Widgets/CanvasWidget.hpp"
 
 Mimp::OutlineSelectionOperation::OutlineSelectionOperation():
-		ImageOperation({"Selection", "Outline Selection"},"Outline Selection",  {Keys::KEY_O, true, true, false})
+	ImageOperation({"Selection", "Outline Selection"}, {Keys::KEY_O, true, true, false})
 {}
 
 void

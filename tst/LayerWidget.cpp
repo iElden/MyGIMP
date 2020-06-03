@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../src/LayerWidget.hpp"
+#include "../src/Widgets/LayerWidget.hpp"
 
 TEST(LayerWidget, basicConstruction) {
     Mimp::Layer l{{10, 10}};

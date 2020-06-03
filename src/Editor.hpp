@@ -9,7 +9,7 @@
 #include <SFML/Graphics.hpp>
 #include <TGUI/TGUI.hpp>
 #include "ToolBox.hpp"
-#include "CanvasWidget.hpp"
+#include "Widgets/CanvasWidget.hpp"
 #include "ImageOperations/ImageOperation.hpp"
 #include "Keys.hpp"
 #include "ShortcutManager.hpp"

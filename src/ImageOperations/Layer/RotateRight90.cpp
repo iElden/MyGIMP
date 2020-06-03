@@ -8,7 +8,7 @@
 namespace Mimp
 {
 	RotateRight90::RotateRight90() :
-		ImageOperation({"Layer", "Rotate 90° Right"},"Rotate 90° Right", {Keys::KEY_RIGHT, true, false, false})
+		ImageOperation({"Layer", "Rotate 90° Right"}, {Keys::KEY_RIGHT, true, false, false})
 	{
 
 	}

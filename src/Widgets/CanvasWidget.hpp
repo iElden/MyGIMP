@@ -9,9 +9,9 @@
 #include <TGUI/Widgets/ChildWindow.hpp>
 #include <memory>
 #include <thread>
-#include "Layer/LayerManager.hpp"
-#include "ToolBox.hpp"
-#include "Image.hpp"
+#include "../Layer/LayerManager.hpp"
+#include "../ToolBox.hpp"
+#include "../Image.hpp"
 
 namespace Mimp
 {

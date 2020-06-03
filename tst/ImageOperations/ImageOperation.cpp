@@ -4,9 +4,11 @@
 class IOTest : public Mimp::ImageOperation {
 public:
     explicit IOTest(const std::vector<std::string> &&hierarchy) : Mimp::ImageOperation(
-            static_cast<const std::vector<std::string> &&>(hierarchy), "Test") {};
+	    static_cast<const std::vector<std::string> &&>(hierarchy))
+    {};
     explicit IOTest(const std::vector<std::string> &&hierarchy, const Mimp::Keys::KeyCombination &keys) : Mimp::ImageOperation(
-            static_cast<const std::vector<std::string> &&>(hierarchy), "Test", keys) {};
+	    static_cast<const std::vector<std::string> &&>(hierarchy), keys)
+    {};
 private:
     void click(tgui::Gui &, Mimp::CanvasWidget::Ptr, tgui::ChildWindow::Ptr, Mimp::Editor &) const override {}
 };

@@ -7,7 +7,7 @@
 namespace Mimp
 {
 	MoveDown::MoveDown() :
-		ImageOperation({"Layer", "Move Down"},"Move Down", {Keys::KEY_DOWN, false, false, false})
+		ImageOperation({"Layer", "Move Down"}, {Keys::KEY_DOWN, false, false, false})
 	{
 
 	}

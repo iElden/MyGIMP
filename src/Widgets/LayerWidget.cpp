@@ -39,12 +39,13 @@ namespace Mimp
 		this->_drawBuffer.update(this->_layer.buffer->getDrawBuffer(), size.x, size.y, 0, 0);
 		states.transform.translate(pos);
 		sprite.setTexture(this->_drawBuffer, true);
-		//sprite.setOrigin(factor * size.x / 2, factor * size.y / 2);
+		sprite.setOrigin(size.x / 2, size.y / 2);
+		sprite.setPosition(factor * size.x / 2, factor * size.y / 2);
 		sprite.setScale({
 			factor,
 			factor
 		});
-		//sprite.setRotation(this->_layer.rotation);
+		sprite.setRotation(this->_layer.rotation);
 		target.draw(sprite, states);
 	}
 

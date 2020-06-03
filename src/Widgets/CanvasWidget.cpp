@@ -5,6 +5,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <iostream>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderTexture.hpp>
 #include "CanvasWidget.hpp"
 
 namespace Mimp
@@ -60,7 +61,6 @@ namespace Mimp
 	{
 		sf::RectangleShape rect;
 		sf::Sprite sprite;
-		bool dark;
 		auto size = this->_size;
 		FrameBuffer buffer{size};
 		auto color = Color{this->_colorCounter, this->_colorCounter, this->_colorCounter, 120};
@@ -84,34 +84,18 @@ namespace Mimp
 			realSize.y = std::min(parentSize.y, realSize.y);
 		}
 
-		rect.setOutlineThickness(0);
-		for (unsigned x = 0; x < realSize.x; x += 10) {
-			dark = x % 20;
-			for (unsigned y = 0; y < realSize.y; y += 10) {
-				rect.setFillColor(dark ? sf::Color{0x888888FF} : sf::Color::White);
-				rect.setPosition(x, y);
-				rect.setSize({
-					(size.x * this->_zoom) - x > 10 ? 10 : (size.x * this->_zoom) - x,
-					(size.y * this->_zoom) - y > 10 ? 10 : (size.y * this->_zoom) - y
-				});
-				target.draw(rect, states);
-				dark = !dark;
-			}
-		}
-
 		for (auto &layer : this->_layers) {
 			if (!layer->visible)
 				continue;
 
-			size = layer->getSize();
+			auto s = layer->getSize();
 
-			this->_drawBuffer.create(size.x, size.y);
-			this->_drawBuffer.update(layer->buffer->getDrawBuffer(), size.x, size.y, 0, 0);
+			this->_drawBuffer.create(s.x, s.y);
+			this->_drawBuffer.update(layer->buffer->getDrawBuffer(), s.x, s.y, 0, 0);
 			sprite.setTexture(this->_drawBuffer, true);
-			sprite.setPosition(layer->pos.x * this->_zoom, layer->pos.y * this->_zoom);
-			//sprite.setPosition(layer->pos.x * this->_zoom + this->_zoom * size.x / 2, layer->pos.y * this->_zoom + this->_zoom * size.y / 2);
+			sprite.setPosition((layer->pos.x + size.x / 2.f) * this->_zoom, (layer->pos.y + size.y / 2.f) * this->_zoom);
 			sprite.setScale(this->_zoom, this->_zoom);
-			//sprite.setOrigin(this->_zoom * size.x / 2, this->_zoom * size.y / 2);
+			sprite.setOrigin(size.x / 2.f, size.y / 2.f);
 			sprite.setRotation(layer->rotation);
 			target.draw(sprite, states);
 		}
@@ -119,6 +103,7 @@ namespace Mimp
 		this->_drawBuffer.update(buffer.getDrawBuffer(), size.x, size.y, 0, 0);
 		sprite.setTexture(this->_drawBuffer, true);
 		sprite.setPosition(0, 0);
+		sprite.setOrigin(0, 0);
 		sprite.setScale(this->_zoom, this->_zoom);
 		target.draw(sprite, states);
 	}

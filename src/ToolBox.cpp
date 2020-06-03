@@ -12,7 +12,8 @@
 namespace Mimp
 {
 	ToolBox::ToolBox(tgui::Gui &gui) :
-		_tools(ToolFactory::buildAll(*this))
+		_tools(ToolFactory::buildAll(*this)),
+		_parent(gui)
 	{
 		this->_generateGuiWindow(gui);
 		this->_tools[0]->onSelect();
@@ -172,5 +173,9 @@ namespace Mimp
 				widget->setToolTip(tgui::Label::create(this->_tools[index]->getName() + " (" + this->_tools[index]->getKeyCombination().toString() + ")"));
 			} catch (...) {}
 		}
+	}
+
+	bool ToolBox::isTextEditing() {
+		return this->getSelectedTool()->isEditing();
 	}
 }
