@@ -54,9 +54,11 @@ namespace Mimp {
 		this->_fonts.clear();
 		try {
 			getCustomFonts();
+			this->_system = true;
 		} catch (...) {
 			try {
 				getSystemFonts();
+				this->_system = false;
 			} catch (...) {
 				this->_fonts[""] = "";
 				throw NoFontException();
@@ -121,9 +123,9 @@ namespace Mimp {
 		auto fonts = panel->get<tgui::ComboBox>("Fonts");
 		auto color = panel->get<tgui::Button>("Color");
 
-		auto reload = tgui::Button::create("Reload fonts");
-		reload->setPosition("Fonts.x + Fonts.w + 10", "Fonts.y");
-		panel->add(reload, "Reload");
+		auto choose = tgui::Button::create("Custom Fonts");
+		choose->setPosition("Fonts.x + Fonts.w + 10", "Fonts.y");
+		panel->add(choose, "Choose");
 
 		for (auto &f : this->_fonts) {
 			fonts->addItem(f.first, f.second);
@@ -154,19 +156,20 @@ namespace Mimp {
 			this->_fontPath = fonts->getSelectedItemId();
 			this->_selected = fonts->getSelectedItem();
 		});
-		reload->connect("Pressed", [fonts, this] {
+		choose->connect("Pressed", [choose, fonts, this] {
 			try {
-				this->getFonts();
+				this->_system ? (choose->setText("Custom Fonts"), this->getSystemFonts()) : (choose->setText("System Fonts"), this->getCustomFonts());
 				fonts->removeAllItems();
 				for (auto &f : this->_fonts) {
 					fonts->addItem(f.first, f.second);
 				}
 				fonts->setSelectedItem(this->_fonts.begin()->first);
-			} catch (NoFontException &e) {
+			} catch (std::exception &e) {
 				std::cerr << e.what() << std::endl;
 				fonts->removeAllItems();
 				this->_fontPath = "";
 			}
+			this->_system = !this->_system;
 		});
 
 		color->connect("Pressed", [color, this] {

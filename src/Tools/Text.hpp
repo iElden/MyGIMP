@@ -65,6 +65,8 @@ namespace Mimp {
 		std::string _selected = "";
 
 		std::map<std::string, std::string> _fonts;
+
+		bool _system = false;
 	};
 }
 
