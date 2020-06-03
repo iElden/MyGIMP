@@ -1,5 +1,6 @@
 #include <TGUI/TGUI.hpp>
 #include <filesystem>
+#include <algorithm>
 #include "Text.hpp"
 #include "../Exceptions.hpp"
 #include "../Utils.hpp"
@@ -15,17 +16,51 @@ namespace Mimp {
 		}
 	}
 
+	void Text::getFontsFromPath(std::string path)
+	{
+		for (auto &file : std::filesystem::directory_iterator(path)) {
+			if (file.is_directory()) {
+				this->getFontsFromPath(file.path().string());
+			} else {
+				if (std::find(this->_extensions.begin(), this->_extensions.end(), file.path().extension().string()) != this->_extensions.end())
+					this->_fonts[file.path().stem().string()] = file.path().string();
+			}
+		}
+		if (this->_fonts.empty()) throw std::exception();
+	}
+
+	void Text::getCustomFonts()
+	{
+		this->_fonts.clear();
+		this->getFontsFromPath("fonts");
+	}
+
+	void Text::getSystemFonts()
+	{
+		this->_fonts.clear();
+#ifdef _WIN32
+		this->getFontsFromPath("C:/Windows/Fonts");
+#else
+		try {
+			this->getFontsFromPath("/usr/local/share/fonts");
+		} catch (...) {
+			this->getFontsFromPath("/usr/share/fonts");
+		}
+#endif
+	}
+
 	void Text::getFonts()
 	{
 		this->_fonts.clear();
 		try {
-			for (auto &file : std::filesystem::directory_iterator("fonts")) {
-				this->_fonts[file.path().stem().string()] = file.path().string();
-			}
-			if (this->_fonts.empty()) throw std::exception();
+			getCustomFonts();
 		} catch (...) {
-			this->_fonts[""] = "";
-			throw NoFontException();
+			try {
+				getSystemFonts();
+			} catch (...) {
+				this->_fonts[""] = "";
+				throw NoFontException();
+			}
 		}
 	}
 
@@ -38,6 +73,7 @@ namespace Mimp {
 			this->_font.loadFromFile(this->_fontPath);
 
 			auto &layer = image.getLayers().addLayer(image.getSelectedLayer().getSize());
+			sprintf(layer.name, "Text");
 
 			for (auto &c : this->_text) {
 				auto glyph = this->_font.getGlyph(c, this->_fontSize, false);
@@ -68,7 +104,8 @@ namespace Mimp {
 		}
 	}
 
-	void Text::onUnselect() {
+	void Text::onUnselect()
+	{
 		this->_edition = false;
 	}
 
@@ -102,7 +139,7 @@ namespace Mimp {
 		input->setText(this->_text);
 		this->_fontPath = fonts->getSelectedItemId();
 
-		fontSize->connect("ValueChanged", [fontSizePreview, this, fontSize]{
+		fontSize->connect("ValueChanged", [fontSizePreview, this, fontSize] {
 			this->_fontSize = fontSize->getValue();
 			fontSizePreview->setText(std::to_string(this->_fontSize));
 		});
@@ -149,4 +186,5 @@ namespace Mimp {
 
 		return panel;
 	}
+
 }
