@@ -127,7 +127,7 @@ set(MIMP_SRCS
     src/Snapshot/Snapshot.hpp src/Snapshot/FrameBufferSnapshot.cpp src/Snapshot/FrameBufferSnapshot.hpp
     src/ImageOperations/Undo.cpp src/ImageOperations/Undo.hpp
     src/Action.hpp
-    )
+    src/ImageOperations/Redo.cpp src/ImageOperations/Redo.hpp)
 
 find_library(PNG_LIBRARY png)
 

@@ -12,7 +12,8 @@ namespace Mimp {
 
 	class Snapshot {
 	public:
-		virtual void rollback(Image &image) = 0;
+		virtual void undo(Image &image) = 0;
+		virtual void redo(Image &image) = 0;
 	};
 }
 

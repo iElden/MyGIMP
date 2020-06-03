@@ -84,12 +84,13 @@ namespace Mimp {
 		this->_snapshots.push_back(snapshot);
 		if (this->_snapshots.size() > this->_max_snapshots)
 			this->_snapshots.erase(this->_snapshots.begin());
+		this->_redoSnapshots.clear();
 	}
 
 	void Image::takeFrameBufferSnapshot() noexcept
 	{
 		this->takeSnapshot(std::make_shared<FrameBufferSnapshot>(
-				this->getSelectedLayer().buffer, this->_layers.getSelectedLayerIndex()
+				*this->getSelectedLayer().buffer, this->_layers.getSelectedLayerIndex()
 		));
 	}
 
@@ -98,10 +99,19 @@ namespace Mimp {
 		if (this->_snapshots.empty())
 			return;
 		std::shared_ptr<Snapshot> snapshot = this->_snapshots.back();
-		snapshot->rollback(*this);
+		snapshot->undo(*this);
+		this->_redoSnapshots.emplace_back(snapshot);
 		this->_snapshots.pop_back();
 	}
 
+	void Image::redoLastUndo() noexcept
+	{
+		if (this->_redoSnapshots.empty())
+			return;
+		std::shared_ptr<Snapshot> snapshot = this->_redoSnapshots.back();
+		snapshot->redo(*this);
+		this->_snapshots.emplace_back(snapshot);
+		this->_redoSnapshots.pop_back();
+	}
+
 }
-
-

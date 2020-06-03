@@ -14,10 +14,11 @@
 namespace Mimp {
 	class FrameBufferSnapshot : public Snapshot {
 		int layerNumber;
-		FrameBuffer oldBuffer;
+		std::shared_ptr<FrameBuffer> oldBuffer;
 	public:
-		FrameBufferSnapshot(std::shared_ptr<FrameBuffer> frameBuffer, int layerNb);
-		void rollback(Image &image) override;
+		FrameBufferSnapshot(const FrameBuffer &frameBuffer, int layerNb);
+		void undo(Image &image) override;
+		void redo(Image &image) override;
 	};
 }
 

@@ -23,6 +23,7 @@
 #include "Layer/MoveDown.hpp"
 #include "Layer/RotateRight90.hpp"
 #include "Undo.hpp"
+#include "Redo.hpp"
 
 namespace Mimp
 {
@@ -38,6 +39,9 @@ namespace Mimp
 		},
 		[]{
 			return std::make_shared<Undo>();
+		},
+		[]{
+			return std::make_shared<Redo>();
 		},
 		[]{
 			return std::make_shared<SelectAllOperation>();
