@@ -113,6 +113,7 @@ namespace Mimp {
 
 	tgui::ScrollablePanel::Ptr Text::getParametersPanel()
 	{
+		bool isbusy = false;
 		auto panel = tgui::ScrollablePanel::create();
 
 		panel->loadWidgetsFromFile("widgets/tools_cfg/text_cfg.gui");
@@ -120,11 +121,12 @@ namespace Mimp {
 		auto fontSize = panel->get<tgui::Slider>("FontSize");
 		auto fontSizePreview = panel->get<tgui::TextBox>("FontSizePreview");
 		auto input = panel->get<tgui::TextBox>("Input");
-		auto fonts = panel->get<tgui::ComboBox>("Fonts");
+		auto fonts = panel->get<tgui::ListBox>("Fonts");
+		auto fontDisplay = panel->get<tgui::TextBox>("FontDisplay");
 		auto color = panel->get<tgui::Button>("Color");
 
 		auto choose = tgui::Button::create("Custom Fonts");
-		choose->setPosition("Fonts.x + Fonts.w + 10", "Fonts.y");
+		choose->setPosition("FontDisplay.x + FontDisplay.w + 10", "FontDisplay.y");
 		panel->add(choose, "Choose");
 
 		for (auto &f : this->_fonts) {
@@ -145,6 +147,7 @@ namespace Mimp {
 			this->_fontSize = fontSize->getValue();
 			fontSizePreview->setText(std::to_string(this->_fontSize));
 		});
+
 		input->connect({"Focused", "TextChanged"}, [input, this] {
 			this->_edition = true;
 			this->_text = input->getText().toWideString();
@@ -152,10 +155,42 @@ namespace Mimp {
 		input->connect("Unfocused", [this] {
 			this->_edition = false;
 		});
-		fonts->connect("ItemSelected", [fonts, this] {
+
+		fontDisplay->setText(this->_selected);
+		fontDisplay->connect("Unfocused", [fonts, &isbusy] {
+			if (!isbusy)
+				fonts->setSize(0, 0);
+		});
+		fontDisplay->connect("Focused", [fontDisplay, fonts, &isbusy] {
+			fonts->setFocused(true);
+			isbusy = true;
+		});
+
+		fonts->connect("Unfocused", [fonts, &isbusy] {
+			fonts->setSize(0, 0);
+			isbusy = false;
+		});
+		fonts->connect("Focused", [fonts, &isbusy] {
+			fonts->setSize(150, 200);
+			isbusy = true;
+		});
+		fonts->connect("ItemSelected", [fontDisplay, fonts, input, this, &isbusy] {
 			this->_fontPath = fonts->getSelectedItemId();
 			this->_selected = fonts->getSelectedItem();
+			fonts->setSize(0, 0);
+			fontDisplay->setText(this->_selected);
+			auto lines = fontDisplay->getLinesCount();
+			auto ysize = 20;
+			auto ypos = 100;
+			if (lines == 2) {
+				ysize = 40;
+				ypos = 120;
+			}
+			fontDisplay->setSize(150, ysize);
+			input->setPosition(60, ypos);
+			isbusy = false;
 		});
+
 		choose->connect("Pressed", [choose, fonts, this] {
 			try {
 				this->_system ? (choose->setText("Custom Fonts"), this->getSystemFonts()) : (choose->setText("System Fonts"), this->getCustomFonts());
