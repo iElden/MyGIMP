@@ -167,7 +167,7 @@ set(MIMP_SRCS
     src/ImageOperations/Layer/SetRotation.hpp
         src/ImageOperations/Grid/DrawGrid.cpp src/ImageOperations/Grid/DrawGrid.hpp
         src/ImageOperations/Grid/IncreaseGrid.cpp src/ImageOperations/Grid/IncreaseGrid.hpp
-        src/ImageOperations/Grid/DecreaseGrid.cpp src/ImageOperations/Grid/DecreaseGrid.hpp)
+        src/ImageOperations/Grid/DecreaseGrid.cpp src/ImageOperations/Grid/DecreaseGrid.hpp src/ImageOperations/Effects/Effects.cpp src/ImageOperations/Effects/Effects.hpp)
 
 find_library(PNG_LIBRARY png)
 
