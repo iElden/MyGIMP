@@ -5,10 +5,15 @@
 ** RectSelectTool.cpp
 */
 
+#include <cmath>
+#include <TGUI/TGUI.hpp>
 #include "RectSelectTool.hpp"
+#include "EllipseSelectionTool.hpp"
 
-Mimp::RectSelectTool::RectSelectTool(ToolBox &toolBox):
-	SelectionTool("RectSelect", toolBox)
+#include <iostream>
+
+Mimp::RectSelectTool::RectSelectTool(ToolBox &toolBox) :
+		SelectionTool("RectSelect", toolBox), _esp(toolBox)
 {
 	this->setKeyCombination({Keys::KEY_R, false, false, false});
 }
@@ -41,12 +46,44 @@ void Mimp::RectSelectTool::_updateSelectedArea(Image &image)
 	int max_y = std::max(this->_pt1.y, this->_pt2.y);
 
 	image.selectedArea.clear();
-	for (int j = min_y; j <= max_y; j++)
-		for (int i = min_x; i <= max_x; i++)
+	for (int j = min_y; j < max_y; j++) {
+		for (int i = min_x; i < max_x; i++) {
 			image.selectedArea.add(i, j);
+		}
+	}
+
+	int min = std::min(max_x - min_x, max_y - min_y);
+	int middle = min / 2;
+	int radius = middle * (this->_percentage / 100);
+
+	for (int j = 0; j <= radius; j++) {
+		for (int i = 0; i <= radius; i++) {
+			if (!this->_esp.point_in_ellipse(i, j, radius, radius)) {
+				image.selectedArea.remove(min_x - i + radius, min_y - j + radius); // Upper-left corner
+				image.selectedArea.remove(max_x + i - radius, min_y - j + radius); // Upper-right corner
+				image.selectedArea.remove(min_x - i + radius, max_y + j - radius); // Lower-left corner
+				image.selectedArea.remove(max_x + i - radius, max_y + j - radius); // Lower-right corner
+			}
+		}
+	}
+
 }
 
 tgui::ScrollablePanel::Ptr Mimp::RectSelectTool::getParametersPanel()
 {
-	return tgui::ScrollablePanel::create({0, 0});
+	auto panel = tgui::ScrollablePanel::create();
+
+	panel->loadWidgetsFromFile("widgets/tools_cfg/rect_cfg.gui");
+
+	auto borderRadiusSlider = panel->get<tgui::Slider>("BorderRadiusSlider");
+	auto borderRadiusPreview = panel->get<tgui::TextBox>("BorderRadiusPreview");
+
+	borderRadiusPreview->setText(std::to_string(static_cast<int>(this->_percentage)));
+	borderRadiusSlider->setValue(this->_percentage);
+
+	borderRadiusSlider->connect("ValueChanged", [borderRadiusPreview, this, borderRadiusSlider] {
+		this->_percentage = borderRadiusSlider->getValue();
+		borderRadiusPreview->setText(std::to_string(static_cast<int>(this->_percentage)));
+	});
+	return panel;
 }
