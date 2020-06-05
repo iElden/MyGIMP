@@ -27,6 +27,9 @@
 #include "Redo.hpp"
 #include "Layer/Rotate.hpp"
 #include "Layer/SetRotation.hpp"
+#include "Grid/DrawGrid.hpp"
+#include "Grid/IncreaseGrid.hpp"
+#include "Grid/DecreaseGrid.hpp"
 
 namespace Mimp
 {
@@ -102,6 +105,15 @@ namespace Mimp
 		},
 		[]{
 			return std::make_shared<SetRotation>();
+		},
+		[]{
+			return std::make_shared<DrawGrid>();
+		},
+		[]{
+			return std::make_shared<IncreaseGrid>();
+		},
+		[]{
+			return std::make_shared<DecreaseGrid>();
 		}
 	};
 

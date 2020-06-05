@@ -27,6 +27,9 @@ namespace Mimp
 		bool _edited = false;
 		float _zoom = 1.f;
 
+		bool _drawGrid = false;
+		int _gridSize = 10;
+
 		mutable unsigned char _colorCounter = 0;
 
 		mutable sf::Texture _drawBuffer;
@@ -102,6 +105,12 @@ namespace Mimp
 		//! @brief Import an image in the canvas
 		//! @param data Image data as string
 		void importImageFromMemory(const std::string &data);
+
+		void updateGrid() { this->_drawGrid = !this->_drawGrid; };
+
+		void increaseGrid();
+
+		void decreaseGrid();
 	};
 }
 

@@ -64,6 +64,7 @@ namespace Mimp
 		auto size = this->_size;
 		FrameBuffer buffer{size};
 		auto color = Color{this->_colorCounter, this->_colorCounter, this->_colorCounter, 120};
+		auto realSize = size * this->_zoom;
 
 		this->_colorCounter += (this->_counterUp * 2 - 1) * 20;
 		this->_counterUp = (this->_counterUp && this->_colorCounter < 240) || !this->_colorCounter;
@@ -72,8 +73,6 @@ namespace Mimp
 				buffer.drawPixel(pt, color, SET);
 
 		states.transform.translate(getPosition());
-
-		auto realSize = size * this->_zoom;
 
 		if (this->m_parent) {
 			auto parentSize = this->m_parent->getSize();
@@ -106,6 +105,23 @@ namespace Mimp
 		sprite.setOrigin(0, 0);
 		sprite.setScale(this->_zoom, this->_zoom);
 		target.draw(sprite, states);
+
+		//! @todo Basic grid implementation.
+		if (this->_drawGrid) {
+			auto realGridSize = this->_gridSize * this->_zoom;
+			sf::RectangleShape rs;
+			rs.setSize({realGridSize, realGridSize});
+			rs.setOutlineThickness(1.0);
+			rs.setOutlineColor(sf::Color::Black);
+			rs.setFillColor(sf::Color::Transparent);
+
+			for (int i = 0; i * realGridSize <= realSize.x; i += 1) {
+				for (int j = 0; j * realGridSize <= realSize.y; j += 1) {
+					rs.setPosition(i * rs.getSize().x, j * rs.getSize().y);
+					target.draw(rs, states);
+				}
+			}
+		}
 	}
 
 	CanvasWidget::Ptr CanvasWidget::create(const ToolBox &box, Vector2<unsigned int> size)
@@ -206,5 +222,17 @@ namespace Mimp
 			this->_rightMouseDown = false;
 			this->_box.getSelectedTool()->onMouseRelease(realPos, MIMP_RIGHT_CLICK, *this);
 		});
+	}
+
+	void CanvasWidget::increaseGrid()
+	{
+		if (this->_gridSize < 100)
+			this->_gridSize += 10;
+	}
+
+	void CanvasWidget::decreaseGrid()
+	{
+		if (this->_gridSize > 10)
+			this->_gridSize -= 10;
 	}
 }
