@@ -5,6 +5,7 @@
 ** SelectByColorTool.cpp
 */
 #include "SelectByColorTool.hpp"
+#include <TGUI/TGUI.hpp>
 
 Mimp::SelectByColorTool::SelectByColorTool(ToolBox &toolBox):
 	SelectionTool("SelectByColor", toolBox)
@@ -29,12 +30,29 @@ void Mimp::SelectByColorTool::_updateSelectedArea(Image &image, const Color &tar
 	unsigned max_y = layer.getSize().y;
 
 	for (unsigned j = 0; j < max_y; j++)
-		for (unsigned i = 0; i < max_x; i++)
-			if (layer.buffer->operator[](j * max_x + i) == target_color)
+		for (unsigned i = 0; i < max_x; i++) {
+			if (layer.buffer->operator[](j * max_x + i).diff(target_color, this->_alpha_in_tolerance) <= this->_tolerance)
 				image.selectedArea.add(i + layer.pos.x, j + layer.pos.y);
+		}
 }
 
 tgui::ScrollablePanel::Ptr Mimp::SelectByColorTool::getParametersPanel()
 {
-	return tgui::ScrollablePanel::create({0, 0});
+	auto panel = tgui::ScrollablePanel::create();
+
+	panel->loadWidgetsFromFile("widgets/tools_cfg/fill_cfg.gui");
+
+	auto toleranceSlider = panel->get<tgui::Slider>("Tolerance");
+	auto alpha = panel->get<tgui::CheckBox>("Alpha");
+	auto tolerancePreview = panel->get<tgui::TextBox>("TolerancePreview");
+
+	tolerancePreview->setText(std::to_string(this->_tolerance));
+	toleranceSlider->setValue(this->_tolerance);
+	alpha->setChecked(true);
+
+	toleranceSlider->connect("ValueChanged", [tolerancePreview, this, toleranceSlider]{
+		this->_tolerance = toleranceSlider->getValue();
+		tolerancePreview->setText(std::to_string(this->_tolerance));
+	});
+	return panel;
 }

@@ -15,6 +15,9 @@ namespace Mimp {
 	private:
 		void _updateSelectedArea(Image &image, const Color &target_color);
 
+		unsigned _tolerance = 0; //!< The tolerance of the Selection
+		bool _alpha_in_tolerance = false; //!< Include or not the alpha when selecting
+
 	public:
         //! @brief Construct a SelectByColorTool
         //! @param toolBox ToolBox containing the SelectByColorTool Tool
