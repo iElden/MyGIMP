@@ -7,27 +7,55 @@
 #include <iostream>
 
 namespace Mimp {
+	//! @brief Define a Text Tool.
 	class Text : public Tool {
 	public:
+
+		//! @brief Construct a Text Tool
+		//! @param toolBox ToolBox containing the Text Tool
 		Text(ToolBox &toolBox);
 
+		//! @brief Handle the mouse click of the Tool.
+		//! @details Draw the text in the image.
+		//! @param pos Position of the mouse
+		//! @param click Mouse click state (unused)
+		//! @param image The Image to edit
 		void onClick(Vector2<int> pos, MouseClick click, Image &image) override;
 
-		void onMouseDrag(Vector2<int>, Vector2<int>, MouseClick, Image &) override {};
+		//! @brief Handle the mouse dragging of the Tool (unused).
+		//! @param oldPos Old position of the mouse
+		//! @param newPos New position of the mouse
+		//! @param click Mouse click state
+		//! @param image The Image to edit
+		void onMouseDrag([[maybe_unused]] Vector2<int> oldPos, [[maybe_unused]] Vector2<int> newPos, [[maybe_unused]] MouseClick click, [[maybe_unused]] Image &image) override
+		{};
 
+		//! @brief Get the parameters panel for the Tool.
+		//! @return tgui::ScrollablePanel::Ptr Pointer containing the parameters panel
 		tgui::ScrollablePanel::Ptr getParametersPanel() override;
 
-		bool isEditing() override { return this->_edition; }
+		//! @brief Return the state of the Tool.
+		bool isEditing() override
+		{ return this->_edition; }
 
+		//! @brief Handle the unselection of the Tool.
 		void onUnselect() override;
 
 	private:
+		void getFontsFromPath(std::string systemPath);
+
+		void getSystemFonts();
+
+		void getCustomFonts();
+
 		void getFonts();
 
 	private:
 		ToolBox &_toolBox;
 
 		bool _edition = false;
+
+		std::vector<std::string> _extensions{".ttf", ".otf", ".ttc", ".TTF"};
 
 		int _fontSize = 13;
 		std::wstring _text;
@@ -37,6 +65,8 @@ namespace Mimp {
 		std::string _selected = "";
 
 		std::map<std::string, std::string> _fonts;
+
+		bool _system = false;
 	};
 }
 
