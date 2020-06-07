@@ -30,7 +30,7 @@
 #include "Grid/DrawGrid.hpp"
 #include "Grid/IncreaseGrid.hpp"
 #include "Grid/DecreaseGrid.hpp"
-#include "Effects/Effects.hpp"
+#include "Effects.hpp"
 
 namespace Mimp
 {

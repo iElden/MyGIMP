@@ -2,7 +2,8 @@
 #define MYGIMP_EFFECTS_HPP
 
 #include <TGUI/TGUI.hpp>
-#include "../ImageOperation.hpp"
+#include "ImageOperation.hpp"
+#include "Effects/Effect.hpp"
 
 namespace Mimp {
 	class Effects : public ImageOperation {
@@ -12,6 +13,7 @@ namespace Mimp {
 
 	private:
 		std::shared_ptr<tgui::ChildWindow> _win;
+		std::vector<std::shared_ptr<Effect>> _effects;
 	};
 }
 

@@ -1,31 +1,22 @@
-#include "Effects.hpp"
+#include "Light.hpp"
 
 #include <iostream>
 
 namespace Mimp {
 
-	Effects::Effects() : ImageOperation({"Window", "Effects"}, {Keys::KEY_E, true, false, false})
+	Light::Light() : Effect("light", "widgets/effects_cfg/light.gui")
 	{
-		this->_win = tgui::ChildWindow::create();
-		this->_win->loadWidgetsFromFile("widgets/effects.gui");
-
-		this->_win->setTitle("Effects");
-		this->_win->setSize("Label1.x + Label1.w + Light.x + Light.w + LightPreview.x ° LightPreview.w + 10", "Label1.y + Label1.h + 10");
-	}
-
-	void Effects::click(tgui::Gui &gui, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr window, Editor &editor) const
-	{
-		auto lightSlider = this->_win->get<tgui::Slider>("Light");
-		auto lightPreview = this->_win->get<tgui::TextBox>("LightPreview");
+		auto lightSlider = this->_panel->get<tgui::Slider>("Light");
+		auto lightPreview = this->_panel->get<tgui::TextBox>("LightPreview");
 
 		lightSlider->connect("ValueChanged", [lightSlider, lightPreview] {
 			lightPreview->setText(std::to_string(lightSlider->getValue()));
-
 		});
-		lightSlider->connect("MouseLeft", [lightSlider, image] {
-			image->takeFrameBufferSnapshot();
 
-			auto buffer = image->getSelectedLayer().buffer;
+		lightSlider->connect("MouseLeft", [lightSlider, this] {
+			this->_image->takeFrameBufferSnapshot();
+
+			auto buffer = this->_image->getSelectedLayer().buffer;
 			auto size = buffer->getSize();
 			auto value = lightSlider->getValue();
 
@@ -47,10 +38,5 @@ namespace Mimp {
 			}
 			lightSlider->setValue(0);
 		});
-
-		this->_win->connect("Closed", [this, &gui]{
-			gui.remove(this->_win);
-		});
-		gui.add(this->_win, "effects");
 	}
 }

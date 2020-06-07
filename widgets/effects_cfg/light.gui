@@ -1,9 +1,9 @@
 Label.Label1 {
-    AutoSize = true;
     Position = (10, 10);
     ScrollbarPolicy = Never;
     Text = Light;
     TextSize = 13;
+    Size = (100, 16);
 
     Renderer {
         backgroundcolor = transparent;
@@ -40,11 +40,13 @@ Slider.Light {
 }
 
 TextBox.LightPreview {
-    AutoSize = true;
+    AutoSize = false;
     Position = (Light.x + Light.w + 10, Light.y);
     ScrollbarPolicy = Never;
-    Text = Light;
+    Text = 0;
     TextSize = 13;
+    MaximumCharacters = 4;
+    Size = (55, 16);
 
     Renderer {
         backgroundcolor = transparent;

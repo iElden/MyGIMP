@@ -149,8 +149,6 @@ set(MIMP_SRCS
     src/Keys.hpp
     src/ShortcutManager.cpp
     src/ShortcutManager.hpp
-    #src/KeyWidget.cpp
-    #src/KeyWidget.hpp
     src/Snapshot/Snapshot.hpp
     src/Snapshot/FrameBufferSnapshot.cpp
     src/Snapshot/FrameBufferSnapshot.hpp
@@ -165,9 +163,17 @@ set(MIMP_SRCS
     src/ImageOperations/Layer/Rotate.hpp
     src/ImageOperations/Layer/SetRotation.cpp
     src/ImageOperations/Layer/SetRotation.hpp
-        src/ImageOperations/Grid/DrawGrid.cpp src/ImageOperations/Grid/DrawGrid.hpp
-        src/ImageOperations/Grid/IncreaseGrid.cpp src/ImageOperations/Grid/IncreaseGrid.hpp
-        src/ImageOperations/Grid/DecreaseGrid.cpp src/ImageOperations/Grid/DecreaseGrid.hpp src/ImageOperations/Effects/Effects.cpp src/ImageOperations/Effects/Effects.hpp)
+    src/ImageOperations/Grid/DrawGrid.cpp
+    src/ImageOperations/Grid/DrawGrid.hpp
+    src/ImageOperations/Grid/IncreaseGrid.cpp
+    src/ImageOperations/Grid/IncreaseGrid.hpp
+    src/ImageOperations/Grid/DecreaseGrid.cpp
+    src/ImageOperations/Grid/DecreaseGrid.hpp
+    src/ImageOperations/Effects.cpp
+    src/ImageOperations/Effects.hpp
+    src/ImageOperations/Effects/Light.cpp
+    src/ImageOperations/Effects/Light.hpp
+    src/ImageOperations/Effects/Effect.hpp)
 
 find_library(PNG_LIBRARY png)
 
