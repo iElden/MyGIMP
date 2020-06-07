@@ -1,14 +1,13 @@
 #ifndef MYGIMP_LIGHT_HPP
 #define MYGIMP_LIGHT_HPP
 
-#include <TGUI/TGUI.hpp>
 #include "Effect.hpp"
 #include "../../Widgets/CanvasWidget.hpp"
 
 namespace Mimp {
 	class Light : public Effect {
 	public:
-		Light();
+		Light(std::shared_ptr<tgui::ChildWindow> window);
 	};
 }
 

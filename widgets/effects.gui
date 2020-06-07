@@ -1,0 +1,243 @@
+//-------------------------------------------------------------------
+// Light
+//-------------------------------------------------------------------
+
+Label.LightLabel {
+    Position = (10, 10);
+    ScrollbarPolicy = Never;
+    Text = Light;
+    TextSize = 13;
+    Size = (100, 16);
+
+    Renderer {
+        backgroundcolor = transparent;
+        bordercolor = #3C3C3C;
+        borders = (0, 0, 0, 0);
+        textcolor = #3C3C3C;
+        texturebackground = None;
+    }
+}
+
+Slider.LightSlider {
+    ChangeValueOnScroll = false;
+    InvertedDirection = false;
+    Maximum = 255;
+    Minimum = -255;
+    Position = (LightLabel.x + LightLabel.w + 10, LightLabel.y);
+    Size = (200, 16);
+    Step = 1;
+    Value = 0;
+
+    Renderer {
+        bordercolor = #3C3C3C;
+        bordercolorhover = black;
+        borders = (1, 1, 1, 1);
+        texturethumb = None;
+        texturethumbhover = None;
+        texturetrack = None;
+        texturetrackhover = None;
+        thumbcolor = #F5F5F5;
+        thumbcolorhover = white;
+        trackcolor = #F5F5F5;
+        trackcolorhover = white;
+    }
+}
+
+TextBox.LightPreview {
+    AutoSize = false;
+    Position = (LightSlider.x + LightSlider.w + 10, LightSlider.y);
+    ScrollbarPolicy = Never;
+    Text = 0;
+    TextSize = 13;
+    MaximumCharacters = 4;
+    Size = (55, 16);
+
+    Renderer {
+        backgroundcolor = transparent;
+        bordercolor = #3C3C3C;
+        borders = (0, 0, 0, 0);
+        textcolor = #3C3C3C;
+        texturebackground = None;
+    }
+}
+
+//-------------------------------------------------------------------
+// Saturation
+//-------------------------------------------------------------------
+
+Label.SaturationRedLabel {
+    Position = (10, 50);
+    ScrollbarPolicy = Never;
+    Text = Red;
+    TextSize = 13;
+    Size = (100, 16);
+
+    Renderer {
+        backgroundcolor = transparent;
+        bordercolor = #3C3C3C;
+        borders = (0, 0, 0, 0);
+        textcolor = #3C3C3C;
+        texturebackground = None;
+    }
+}
+
+Slider.SaturationRedSlider {
+    ChangeValueOnScroll = false;
+    InvertedDirection = false;
+    Maximum = 255;
+    Minimum = -255;
+    Position = (SaturationRedLabel.x + SaturationRedLabel.w + 10, SaturationRedLabel.y);
+    Size = (200, 16);
+    Step = 1;
+    Value = 0;
+
+    Renderer {
+        bordercolor = #3C3C3C;
+        bordercolorhover = black;
+        borders = (1, 1, 1, 1);
+        texturethumb = None;
+        texturethumbhover = None;
+        texturetrack = None;
+        texturetrackhover = None;
+        thumbcolor = #F5F5F5;
+        thumbcolorhover = white;
+        trackcolor = #F5F5F5;
+        trackcolorhover = white;
+    }
+}
+
+TextBox.SaturationRedPreview {
+    AutoSize = false;
+    Position = (SaturationRedSlider.x + SaturationRedSlider.w + 10, SaturationRedSlider.y);
+    ScrollbarPolicy = Never;
+    Text = 0;
+    TextSize = 13;
+    MaximumCharacters = 4;
+    Size = (55, 16);
+
+    Renderer {
+        backgroundcolor = transparent;
+        bordercolor = #3C3C3C;
+        borders = (0, 0, 0, 0);
+        textcolor = #3C3C3C;
+        texturebackground = None;
+    }
+}
+
+Label.SaturationGreenLabel {
+    Position = (10, 90);
+    ScrollbarPolicy = Never;
+    Text = Green;
+    TextSize = 13;
+    Size = (100, 16);
+
+    Renderer {
+        backgroundcolor = transparent;
+        bordercolor = #3C3C3C;
+        borders = (0, 0, 0, 0);
+        textcolor = #3C3C3C;
+        texturebackground = None;
+    }
+}
+
+Slider.SaturationGreenSlider {
+    ChangeValueOnScroll = false;
+    InvertedDirection = false;
+    Maximum = 255;
+    Minimum = -255;
+    Position = (SaturationGreenLabel.x + SaturationGreenLabel.w + 10, SaturationGreenLabel.y);
+    Size = (200, 16);
+    Step = 1;
+    Value = 0;
+
+    Renderer {
+        bordercolor = #3C3C3C;
+        bordercolorhover = black;
+        borders = (1, 1, 1, 1);
+        texturethumb = None;
+        texturethumbhover = None;
+        texturetrack = None;
+        texturetrackhover = None;
+        thumbcolor = #F5F5F5;
+        thumbcolorhover = white;
+        trackcolor = #F5F5F5;
+        trackcolorhover = white;
+    }
+}
+
+TextBox.SaturationGreenPreview {
+    AutoSize = false;
+    Position = (SaturationGreenSlider.x + SaturationGreenSlider.w + 10, SaturationGreenSlider.y);
+    ScrollbarPolicy = Never;
+    Text = 0;
+    TextSize = 13;
+    MaximumCharacters = 4;
+    Size = (55, 16);
+
+    Renderer {
+        backgroundcolor = transparent;
+        bordercolor = #3C3C3C;
+        borders = (0, 0, 0, 0);
+        textcolor = #3C3C3C;
+        texturebackground = None;
+    }
+}
+
+Label.SaturationBlueLabel {
+    Position = (10, 70);
+    ScrollbarPolicy = Never;
+    Text = Blue;
+    TextSize = 13;
+    Size = (100, 16);
+
+    Renderer {
+        backgroundcolor = transparent;
+        bordercolor = #3C3C3C;
+        borders = (0, 0, 0, 0);
+        textcolor = #3C3C3C;
+        texturebackground = None;
+    }
+}
+
+Slider.SaturationBlueSlider {
+    ChangeValueOnScroll = false;
+    InvertedDirection = false;
+    Maximum = 255;
+    Minimum = -255;
+    Position = (SaturationBlueLabel.x + SaturationBlueLabel.w + 10, SaturationBlueLabel.y);
+    Size = (200, 16);
+    Step = 1;
+    Value = 0;
+
+    Renderer {
+        bordercolor = #3C3C3C;
+        bordercolorhover = black;
+        borders = (1, 1, 1, 1);
+        texturethumb = None;
+        texturethumbhover = None;
+        texturetrack = None;
+        texturetrackhover = None;
+        thumbcolor = #F5F5F5;
+        thumbcolorhover = white;
+        trackcolor = #F5F5F5;
+        trackcolorhover = white;
+    }
+}
+
+TextBox.SaturationBluePreview {
+    AutoSize = false;
+    Position = (SaturationBlueSlider.x + SaturationBlueSlider.w + 10, SaturationBlueSlider.y);
+    ScrollbarPolicy = Never;
+    Text = 0;
+    TextSize = 13;
+    MaximumCharacters = 4;
+    Size = (55, 16);
+
+    Renderer {
+        backgroundcolor = transparent;
+        bordercolor = #3C3C3C;
+        borders = (0, 0, 0, 0);
+        textcolor = #3C3C3C;
+        texturebackground = None;
+    }
+}

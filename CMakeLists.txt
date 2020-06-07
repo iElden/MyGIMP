@@ -173,7 +173,9 @@ set(MIMP_SRCS
     src/ImageOperations/Effects.hpp
     src/ImageOperations/Effects/Light.cpp
     src/ImageOperations/Effects/Light.hpp
-    src/ImageOperations/Effects/Effect.hpp)
+    src/ImageOperations/Effects/Effect.hpp
+    src/ImageOperations/Effects/Saturation.cpp
+    src/ImageOperations/Effects/Saturation.hpp)
 
 find_library(PNG_LIBRARY png)
 

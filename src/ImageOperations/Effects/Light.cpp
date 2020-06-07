@@ -1,13 +1,11 @@
 #include "Light.hpp"
 
-#include <iostream>
-
 namespace Mimp {
 
-	Light::Light() : Effect("light", "widgets/effects_cfg/light.gui")
+	Light::Light(std::shared_ptr<tgui::ChildWindow> window) : Effect(window)
 	{
-		auto lightSlider = this->_panel->get<tgui::Slider>("Light");
-		auto lightPreview = this->_panel->get<tgui::TextBox>("LightPreview");
+		auto lightSlider = window->get<tgui::Slider>("LightSlider");
+		auto lightPreview = window->get<tgui::TextBox>("LightPreview");
 
 		lightSlider->connect("ValueChanged", [lightSlider, lightPreview] {
 			lightPreview->setText(std::to_string(lightSlider->getValue()));
