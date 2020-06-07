@@ -28,4 +28,15 @@ namespace Mimp
 	{
 		return this->locked || !this->visible;
 	}
+
+	Layer &Layer::operator=(const Layer &other)
+	{
+		this->buffer = other.buffer;
+		this->pos = other.pos;
+		std::memcpy(this->name, other.name, 32);
+		this->rotation = other.rotation;
+		this->locked = other.locked;
+		this->visible = other.visible;
+		return *this;
+	}
 }

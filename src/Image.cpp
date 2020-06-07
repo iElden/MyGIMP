@@ -8,6 +8,7 @@
 #include "Image.hpp"
 #include "Exceptions.hpp"
 #include "Snapshot/FrameBufferSnapshot.hpp"
+#include "Snapshot/LayerSnapshot.hpp"
 
 namespace Mimp {
 	Layer &Image::getSelectedLayer() noexcept
@@ -91,6 +92,14 @@ namespace Mimp {
 	{
 		this->takeSnapshot(std::make_shared<FrameBufferSnapshot>(
 				*this->getSelectedLayer().buffer, this->_layers.getSelectedLayerIndex()
+		));
+	}
+
+
+	void Image::takeLayerSnapshot() noexcept
+	{
+		this->takeSnapshot(std::make_shared<LayerSnapshot>(
+				this->getSelectedLayer(), this->_layers.getSelectedLayerIndex()
 		));
 	}
 

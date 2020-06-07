@@ -60,6 +60,7 @@ namespace Mimp {
 		void setMaxSnapshots(int maxSnapshots) noexcept;
 		void takeSnapshot(std::shared_ptr<Snapshot> snapshot) noexcept;
 		void takeFrameBufferSnapshot() noexcept;
+		void takeLayerSnapshot() noexcept;
 		void undoLastAction() noexcept;
 		void redoLastUndo() noexcept;
 	};

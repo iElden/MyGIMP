@@ -14,6 +14,7 @@ namespace Mimp
 
 	void MoveRight::click(tgui::Gui &, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr, Editor &) const
 	{
+		image->takeLayerSnapshot();
 		image->getSelectedLayer().pos.x++;
 	}
 }

@@ -15,6 +15,7 @@ namespace Mimp
 
 	void Rotate::click(tgui::Gui &gui, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr, Editor &) const
 	{
+		image->takeLayerSnapshot();
 		Utils::makeSliderWindow(gui, [image](float value){
 			auto &layer = image->getSelectedLayer();
 

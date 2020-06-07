@@ -83,6 +83,7 @@ namespace Mimp
 		//! @param index Index of the Layer to get
 		//! @return Layer Returned Layer
 		Layer &operator[](unsigned int index);
+		std::shared_ptr<Layer> &getLayerPtr(unsigned int index);
 
 		//! @brief Render the FrameBuffer on the screen
 		//! @param buffer The FrameBuffer to render

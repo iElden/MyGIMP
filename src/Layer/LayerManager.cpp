@@ -68,6 +68,11 @@ namespace Mimp
 		return *this->_layers.at(index);
 	}
 
+	std::shared_ptr<Layer> &LayerManager::getLayerPtr(unsigned int index)
+	{
+		return this->_layers[index];
+	}
+
 	void LayerManager::render(FrameBuffer &buffer) const noexcept
 	{
 		this->_setBusy();

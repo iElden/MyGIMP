@@ -14,6 +14,7 @@ namespace Mimp
 
 	void RotateLeft90::click(tgui::Gui &, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr, Editor &) const
 	{
+		image->takeLayerSnapshot();
 		image->getSelectedLayer().rotation = std::fmod(image->getSelectedLayer().rotation - 90 + 360, 360);
 	}
 }

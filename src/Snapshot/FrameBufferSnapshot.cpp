@@ -15,7 +15,7 @@ Mimp::FrameBufferSnapshot::FrameBufferSnapshot(const FrameBuffer &frameBuffer, i
 
 void Mimp::FrameBufferSnapshot::undo(Mimp::Image &image)
 {
-	image.getLayers()[this->layerNumber].buffer.swap(oldBuffer);
+	image.getLayers()[this->layerNumber].buffer.swap(this->oldBuffer);
 }
 
 void Mimp::FrameBufferSnapshot::redo(Mimp::Image &image)
