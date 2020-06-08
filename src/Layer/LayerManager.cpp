@@ -78,7 +78,7 @@ namespace Mimp
 		this->_setBusy();
 		for (auto &layer : this->_layers)
 			if (layer->visible)
-				buffer.drawFrameBuffer(layer->pos, layer->buffer);
+				buffer.drawFrameBuffer(layer->pos, layer->buffer, layer->rotation);
 		this->_unsetBusy();
 	}
 

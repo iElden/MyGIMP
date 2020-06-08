@@ -9,17 +9,17 @@ namespace Mimp
 	Move::Move() :
 		Tool("Move Layer")
 	{
-        this->setKeyCombination({Keys::KEY_M, false, false, false});
-    }
+		this->setKeyCombination({Keys::KEY_M, false, false, false});
+	}
 
 	void Move::onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick, Image &image)
 	{
 		image.getSelectedLayer().pos -= oldPos - newPos;
 	}
 
-	void Move::onClick(Vector2<int>, MouseClick, Image &)
+	void Move::onClick(Vector2<int>, MouseClick, Image &image)
 	{
-
+		image.takeLayerSnapshot();
 	}
 
 	tgui::ScrollablePanel::Ptr Move::getParametersPanel()

@@ -726,12 +726,14 @@ namespace Mimp {
 			up->setEnabled(false);
 
 		visible->setText(layer.visible ? "Hide" : "Show");
-		visible->connect("Pressed", [&layer, visible, index, layersPanel] {
+		visible->connect("Pressed", [canvas, &layer, visible, index, layersPanel] {
+			canvas->takeLayerSnapshot();
 			layer.visible = !layer.visible;
 			layersPanel->get<tgui::Widget>("VisibleCancel" + std::to_string(index))->setVisible(!layer.visible);
 		});
 		locked->setText(layer.locked ? "Unlock" : "Lock");
-		locked->connect("Pressed", [&layer, locked, index, layersPanel] {
+		locked->connect("Pressed", [canvas, &layer, locked, index, layersPanel] {
+			canvas->takeLayerSnapshot();
 			layer.locked = !layer.locked;
 			layersPanel->get<tgui::Widget>("LockedCancel" + std::to_string(index))->setVisible(!layer.locked);
 		});
@@ -749,8 +751,9 @@ namespace Mimp {
 			this->_makeLayersPanel(win, canvas);
 		});
 		merge->connect("Pressed", [&layer, &layers, index, this, win, canvas] {
+			canvas->takeFrameBufferSnapshot();
 			layers.selectLayer(index - 1);
-			layers.getSelectedLayer().buffer->drawFrameBuffer(layer.pos, layer.buffer, layer.rotation);
+			layers.getSelectedLayer().buffer->drawFrameBuffer(layer.pos, layer.buffer, layer.rotation - layers.getSelectedLayer().rotation);
 			layers.deleteLayer(index);
 			this->_makeLayersPanel(win, canvas);
 		});
@@ -780,7 +783,8 @@ namespace Mimp {
 			width->setText(std::to_string(layer.getSize().x));
 			height->setText(std::to_string(layer.getSize().y));
 			cancel->connect("Pressed", [win] { win->close(); });
-			ok->connect("Pressed", [this, win, &layer, width, height] {
+			ok->connect("Pressed", [canvas, this, win, &layer, width, height] {
+				canvas->takeLayerSnapshot();
 				std::string wid = width->getText();
 				std::string hei = height->getText();
 
@@ -795,6 +799,7 @@ namespace Mimp {
 			});
 		});
 		move->connect("Pressed", [&layer, this, canvas] {
+			canvas->takeLayerSnapshot();
 			auto win = Utils::openWindowWithFocus(this->_gui, 200, 110);
 
 			win->loadWidgetsFromFile("widgets/new.gui");
@@ -823,6 +828,7 @@ namespace Mimp {
 			});
 		});
 		rename->connect("Pressed", [layersPanel, &layer, this, canvas, index] {
+			canvas->takeLayerSnapshot();
 			auto win = Utils::openWindowWithFocus(this->_gui, 200, 80);
 
 			win->loadWidgetsFromFile("widgets/rename.gui");
@@ -865,7 +871,7 @@ namespace Mimp {
 			auto visibleCancel = tgui::Picture::create("icons/cancel.png");
 			auto lockedCancel = tgui::Picture::create("icons/cancel.png");
 			auto widget = tgui::Button::create();
-			auto preview = LayerWidget::create(layer, {48, 48});
+			auto preview = LayerWidget::create(layers.getLayerPtr(i), {48, 48});
 			auto label = tgui::Label::create(std::string(layer.name, strnlen(layer.name, sizeof(layer.name))));
 
 			preview->ignoreMouseEvent();

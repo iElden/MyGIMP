@@ -8,13 +8,13 @@
 
 namespace Mimp
 {
-	LayerWidget::LayerWidget(Mimp::Layer &layer, Vector2<tgui::Layout> size) :
+	LayerWidget::LayerWidget(const std::shared_ptr<Layer> &layer, Vector2<tgui::Layout> size) :
 		_layer(layer)
 	{
 		this->m_size = {size.x, size.y};
 	}
 
-	LayerWidget::Ptr LayerWidget::create(Mimp::Layer &layer, Vector2<tgui::Layout> size)
+	LayerWidget::Ptr LayerWidget::create(const std::shared_ptr<Layer> &layer, Vector2<tgui::Layout> size)
 	{
 		return std::make_shared<LayerWidget>(layer, size);
 	}
@@ -26,7 +26,7 @@ namespace Mimp
 
 	void LayerWidget::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	{
-		auto size = this->_layer.getSize();
+		auto size = this->_layer->getSize();
 		sf::Sprite sprite;
 		float factorX = (this->m_size.x / size.x).getValue();
 		float factorY = (this->m_size.y / size.y).getValue();
@@ -36,7 +36,7 @@ namespace Mimp
 		pos.x += (factorX / factor - 1) * this->m_size.x.getValue() / (2.f * size.y / size.x);
 		pos.y += (factorY / factor - 1) * this->m_size.y.getValue() / (2.f * size.x / size.y);
 		this->_drawBuffer.create(size.x, size.y);
-		this->_drawBuffer.update(this->_layer.buffer->getDrawBuffer(), size.x, size.y, 0, 0);
+		this->_drawBuffer.update(this->_layer->buffer->getDrawBuffer(), size.x, size.y, 0, 0);
 		states.transform.translate(pos);
 		sprite.setTexture(this->_drawBuffer, true);
 		sprite.setOrigin(size.x / 2, size.y / 2);
@@ -45,7 +45,7 @@ namespace Mimp
 			factor,
 			factor
 		});
-		sprite.setRotation(this->_layer.rotation);
+		sprite.setRotation(this->_layer->rotation);
 		target.draw(sprite, states);
 	}
 
