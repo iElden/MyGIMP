@@ -92,9 +92,9 @@ namespace Mimp
 			this->_drawBuffer.create(s.x, s.y);
 			this->_drawBuffer.update(layer->buffer->getDrawBuffer(), s.x, s.y, 0, 0);
 			sprite.setTexture(this->_drawBuffer, true);
-			sprite.setPosition((layer->pos.x + size.x / 2.f) * this->_zoom, (layer->pos.y + size.y / 2.f) * this->_zoom);
+			sprite.setPosition((layer->pos.x + s.x / 2.f) * this->_zoom, (layer->pos.y + s.y / 2.f) * this->_zoom);
 			sprite.setScale(this->_zoom, this->_zoom);
-			sprite.setOrigin(size.x / 2.f, size.y / 2.f);
+			sprite.setOrigin(s.x / 2.f, s.y / 2.f);
 			sprite.setRotation(layer->rotation);
 			target.draw(sprite, states);
 		}

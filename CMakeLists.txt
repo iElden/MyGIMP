@@ -149,8 +149,8 @@ set(MIMP_SRCS
     src/Keys.hpp
     src/ShortcutManager.cpp
     src/ShortcutManager.hpp
-    #src/KeyWidget.cpp
-    #src/KeyWidget.hpp
+    src/Widgets/KeyWidget.cpp
+    src/Widgets/KeyWidget.hpp
     src/Snapshot/Snapshot.hpp
     src/Snapshot/FrameBufferSnapshot.cpp
     src/Snapshot/FrameBufferSnapshot.hpp

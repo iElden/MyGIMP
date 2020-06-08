@@ -23,7 +23,13 @@ namespace Mimp
 
 		auto &layer = image.getSelectedLayer();
 
-		layer.buffer->drawLine(oldPos - layer.pos, newPos - layer.pos, this->_box.getSelectedColor(click), this->_radius, this->_shape);
+		layer.buffer->drawLine(
+			(oldPos - layer.pos).rotate(-layer.rotation, layer.getSize() / 2).to<int>(),
+			(newPos - layer.pos).rotate(-layer.rotation, layer.getSize() / 2).to<int>(),
+			this->_box.getSelectedColor(click),
+			this->_radius,
+			this->_shape
+		);
 	}
 
 	void Pencil::onClick(Vector2<int> pos, MouseClick click, Image &image)
@@ -34,7 +40,7 @@ namespace Mimp
 		image.takeFrameBufferSnapshot();
 		auto &layer = image.getSelectedLayer();
 
-		layer.buffer->drawAt(pos - layer.pos, this->_box.getSelectedColor(click), this->_radius, this->_shape);
+		layer.buffer->drawAt((pos - layer.pos).rotate(-layer.rotation, layer.getSize() / 2).to<int>(), this->_box.getSelectedColor(click), this->_radius, this->_shape);
 	}
 
 	tgui::ScrollablePanel::Ptr Pencil::getParametersPanel()
