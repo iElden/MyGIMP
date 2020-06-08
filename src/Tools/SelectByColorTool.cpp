@@ -19,7 +19,7 @@ void Mimp::SelectByColorTool::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick c
 		auto &layer = image.getSelectedLayer();
 
 		image.selectedArea.clear();
-		this->_updateSelectedArea(image, layer.buffer->getPixel(pos - layer.pos));
+		this->_updateSelectedArea(image, layer.buffer->getPixel((pos - layer.pos).rotate(-layer.rotation, layer.getSize() / 2).to<int>()));
 	}
 }
 
@@ -32,7 +32,7 @@ void Mimp::SelectByColorTool::_updateSelectedArea(Image &image, const Color &tar
 	for (unsigned j = 0; j < max_y; j++)
 		for (unsigned i = 0; i < max_x; i++) {
 			if (layer.buffer->operator[](j * max_x + i).diff(target_color, this->_alpha_in_tolerance) <= this->_tolerance)
-				image.selectedArea.add(i + layer.pos.x, j + layer.pos.y);
+				image.selectedArea.add(Vector2<unsigned>{i, j}.rotate(layer.rotation, layer.getSize() / 2).to<int>() + layer.pos);
 		}
 }
 

@@ -16,14 +16,18 @@ Mimp::ColorPick::ColorPick(Mimp::ToolBox &toolBox):
 void Mimp::ColorPick::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick click, Mimp::Image &image)
 {
 	auto &layer = image.getSelectedLayer();
-	Color color = layer.buffer->getPixel(pos - layer.pos);
+	Color color = layer.buffer->getPixel((pos - layer.pos).rotate(-layer.rotation, layer.getSize() / 2).to<int>());
 
 	this->_toolBox.setSelectedColor(click, color);
 }
 
+void Mimp::ColorPick::onMouseDrag(Mimp::Vector2<int>, Mimp::Vector2<int> pos, Mimp::MouseClick click, Mimp::Image &image)
+{
+	auto &layer = image.getSelectedLayer();
+	Color color = layer.buffer->getPixel((pos - layer.pos).rotate(-layer.rotation, layer.getSize() / 2).to<int>());
 
-void Mimp::ColorPick::onMouseDrag(Mimp::Vector2<int>, Mimp::Vector2<int>, Mimp::MouseClick, Mimp::Image &)
-{}
+	this->_toolBox.setSelectedColor(click, color);
+}
 
 tgui::ScrollablePanel::Ptr Mimp::ColorPick::getParametersPanel()
 {
