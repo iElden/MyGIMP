@@ -149,8 +149,6 @@ set(MIMP_SRCS
     src/Keys.hpp
     src/ShortcutManager.cpp
     src/ShortcutManager.hpp
-    src/Widgets/KeyWidget.cpp
-    src/Widgets/KeyWidget.hpp
     src/Snapshot/Snapshot.hpp
     src/Snapshot/FrameBufferSnapshot.cpp
     src/Snapshot/FrameBufferSnapshot.hpp
@@ -165,9 +163,26 @@ set(MIMP_SRCS
     src/ImageOperations/Layer/Rotate.hpp
     src/ImageOperations/Layer/SetRotation.cpp
     src/ImageOperations/Layer/SetRotation.hpp
-    src/ImageOperations/Grid/DrawGrid.cpp src/ImageOperations/Grid/DrawGrid.hpp
-    src/ImageOperations/Grid/IncreaseGrid.cpp src/ImageOperations/Grid/IncreaseGrid.hpp
-    src/ImageOperations/Grid/DecreaseGrid.cpp src/ImageOperations/Grid/DecreaseGrid.hpp src/Snapshot/LayerSnapshot.cpp src/Snapshot/LayerSnapshot.hpp)
+    src/ImageOperations/Grid/DrawGrid.cpp
+    src/ImageOperations/Grid/DrawGrid.hpp
+    src/ImageOperations/Grid/IncreaseGrid.cpp
+    src/ImageOperations/Grid/IncreaseGrid.hpp
+    src/ImageOperations/Grid/DecreaseGrid.cpp
+    src/ImageOperations/Grid/DecreaseGrid.hpp
+    src/ImageOperations/Effects.cpp
+    src/ImageOperations/Effects.hpp
+    src/ImageOperations/Effects/Light.cpp
+    src/ImageOperations/Effects/Light.hpp
+    src/ImageOperations/Effects/Effect.hpp
+    src/ImageOperations/Effects/Saturation.cpp
+    src/ImageOperations/Effects/Saturation.hpp
+    src/ImageOperations/Effects/Symmetry.cpp
+    src/ImageOperations/Effects/Symmetry.hpp
+    src/Snapshot/LayerSnapshot.cpp
+    src/Snapshot/LayerSnapshot.hpp
+
+    )
+
 
 find_library(PNG_LIBRARY png)
 

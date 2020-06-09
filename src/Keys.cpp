@@ -1,7 +1,5 @@
 #include "Keys.hpp"
 
-#include <iostream>
-
 namespace Mimp::Keys {
 
 	bool Keys::KeyCombination::operator<(const KeyCombination &other) const

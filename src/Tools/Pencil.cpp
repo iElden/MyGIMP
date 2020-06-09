@@ -3,7 +3,6 @@
 //
 
 #include <TGUI/TGUI.hpp>
-#include <iostream>
 #include "Pencil.hpp"
 #include "../Utils.hpp"
 

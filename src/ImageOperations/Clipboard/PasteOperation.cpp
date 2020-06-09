@@ -3,7 +3,6 @@
 //
 
 #include <clip.h>
-#include <iostream>
 #include "PasteOperation.hpp"
 #include "../../Widgets/CanvasWidget.hpp"
 #include "../../Editor.hpp"

@@ -3,7 +3,6 @@
 //
 
 #include <SFML/Graphics/Sprite.hpp>
-#include <iostream>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTexture.hpp>
 #include "CanvasWidget.hpp"
@@ -107,7 +106,7 @@ namespace Mimp
 		sprite.setScale(this->_zoom, this->_zoom);
 		target.draw(sprite, states);
 
-		//! @todo Basic grid implementation.
+		//! Basic grid implementation.
 		if (this->_drawGrid) {
 			auto realGridSize = this->_gridSize * this->_zoom;
 			sf::RectangleShape rs;
@@ -122,6 +121,24 @@ namespace Mimp
 					target.draw(rs, states);
 				}
 			}
+		}
+
+		//! @todo Basic symmetry implementation. Optimization with sf::Vertex ?
+		if (this->_symmetry.x) {
+			sf::RectangleShape rs;
+			rs.setSize({this->_size.x * this->_zoom, 1});
+			rs.setRotation(0);
+			rs.setPosition(0, this->_axis.y * this->_zoom);
+			rs.setFillColor(sf::Color::Cyan);
+			target.draw(rs, states);
+		}
+		if (this->_symmetry.y) {
+			sf::RectangleShape rs;
+			rs.setSize({this->_size.y * this->_zoom, 1});
+			rs.setRotation(90);
+			rs.setPosition(this->_axis.x * this->_zoom, 0);
+			rs.setFillColor(sf::Color::Cyan);
+			target.draw(rs, states);
 		}
 	}
 
@@ -235,5 +252,17 @@ namespace Mimp
 	{
 		if (this->_gridSize > 10)
 			this->_gridSize -= 10;
+	}
+
+	void CanvasWidget::setSymmetry(Vector2<bool> &symmetry)
+	{
+		this->_layers.getSelectedLayer().buffer->setSymmetry(symmetry);
+		this->_symmetry = symmetry;
+	}
+
+	void CanvasWidget::setSymmetryAxis(Vector2<int> &axis)
+	{
+		this->_layers.getSelectedLayer().buffer->setSymmetryAxis(axis);
+		this->_axis = axis;
 	}
 }

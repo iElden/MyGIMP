@@ -30,6 +30,9 @@ namespace Mimp
 		bool _drawGrid = false;
 		int _gridSize = 10;
 
+		Vector2<bool> _symmetry = {false, false};
+		Vector2<int> _axis = {0, 0};
+
 		mutable unsigned char _colorCounter = 0;
 
 		mutable sf::Texture _drawBuffer;
@@ -111,6 +114,10 @@ namespace Mimp
 		void increaseGrid();
 
 		void decreaseGrid();
+
+		void setSymmetry(Vector2<bool> &symmetry);
+
+		void setSymmetryAxis(Vector2<int> &axis);
 	};
 }
 

@@ -1,6 +1,7 @@
 #include <TGUI/TGUI.hpp>
 #include <filesystem>
 #include <algorithm>
+#include <iostream>
 #include "Text.hpp"
 #include "../Exceptions.hpp"
 #include "../Utils.hpp"

@@ -24,6 +24,9 @@ namespace Mimp
 		void _drawSquareAt(Vector2<int> pos, const Color &color, unsigned short radius, DrawStrategy drawStrategy) noexcept;
 		void _drawDiamondAt(Vector2<int> pos, const Color &color, unsigned short radius, DrawStrategy drawStrategy) noexcept;
 
+		Vector2<bool> _symmetry = {false, false};
+		Vector2<int> _axis = {0, 0};
+
 	public:
 		//! @brief Copy Constructor of the framebuffer.
 		//! @param other FrameBuffer to copy.
@@ -129,6 +132,10 @@ namespace Mimp
 		//! @brief Clear the FrameBuffer with a color
 		//! @param color Color used to clear
 		void clear(const Color &color) noexcept;
+
+		void setSymmetry(Vector2<bool> &symmetry) { this->_symmetry = symmetry; };
+
+		void setSymmetryAxis(Vector2<int> &axis) { this->_axis = axis; };
 	};
 }
 

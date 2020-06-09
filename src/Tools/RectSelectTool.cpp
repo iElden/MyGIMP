@@ -10,8 +10,6 @@
 #include "RectSelectTool.hpp"
 #include "EllipseSelectionTool.hpp"
 
-#include <iostream>
-
 Mimp::RectSelectTool::RectSelectTool(ToolBox &toolBox) :
 		SelectionTool("RectSelect", toolBox), _esp(toolBox)
 {

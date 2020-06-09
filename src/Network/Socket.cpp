@@ -15,7 +15,6 @@
 	typedef fd_set FD_SET;
 #endif
 
-#include <iostream>
 namespace Mimp
 {
 	Socket::Socket()

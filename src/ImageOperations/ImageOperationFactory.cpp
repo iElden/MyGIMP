@@ -30,6 +30,7 @@
 #include "Grid/DrawGrid.hpp"
 #include "Grid/IncreaseGrid.hpp"
 #include "Grid/DecreaseGrid.hpp"
+#include "Effects.hpp"
 
 namespace Mimp
 {
@@ -114,6 +115,9 @@ namespace Mimp
 		},
 		[]{
 			return std::make_shared<DecreaseGrid>();
+		},
+		[]{
+			return std::make_shared<Effects>();
 		}
 	};
 
