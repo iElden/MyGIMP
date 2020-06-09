@@ -11,7 +11,7 @@ namespace Mimp {
 	public:
 		Effect(std::shared_ptr<tgui::ChildWindow>) {};
 
-		void setImage(CanvasWidget::Ptr image) { this->_image = image; }
+		void setImage(CanvasWidget::Ptr &image) { this->_image = image; }
 
 	protected:
 		CanvasWidget::Ptr _image;
