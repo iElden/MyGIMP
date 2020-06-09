@@ -36,4 +36,11 @@ namespace Mimp {
 		sliderX->connect("ValueChanged", sliderCallback, sliderX, textX, 0);
 		sliderY->connect("ValueChanged", sliderCallback, sliderY, textY, 1);
 	}
+
+	void Symmetry::setImage(CanvasWidget::Ptr &image)
+	{
+		image->setSymmetry(this->_symmetry);
+		image->setSymmetryAxis(this->_axis);
+		Effect::setImage(image);
+	}
 }

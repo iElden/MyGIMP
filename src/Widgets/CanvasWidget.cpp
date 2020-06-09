@@ -128,6 +128,7 @@ namespace Mimp
 			rs.setSize({this->_size.x * this->_zoom, 1});
 			rs.setRotation(0);
 			rs.setPosition(0, this->_axis.y * this->_zoom);
+			rs.setFillColor(sf::Color::Cyan);
 			target.draw(rs, states);
 		}
 		if (this->_symmetry.y) {
@@ -135,6 +136,7 @@ namespace Mimp
 			rs.setSize({this->_size.y * this->_zoom, 1});
 			rs.setRotation(90);
 			rs.setPosition(this->_axis.x * this->_zoom, 0);
+			rs.setFillColor(sf::Color::Cyan);
 			target.draw(rs, states);
 		}
 	}
@@ -251,13 +253,13 @@ namespace Mimp
 			this->_gridSize -= 10;
 	}
 
-	void CanvasWidget::setSymmetry(Vector2<bool> &symmetry)
+	void CanvasWidget::setSymmetry(Vector2<bool> symmetry)
 	{
 		this->_layers.getSelectedLayer().buffer->setSymmetry(symmetry);
 		this->_symmetry = symmetry;
 	}
 
-	void CanvasWidget::setSymmetryAxis(Vector2<int> &axis)
+	void CanvasWidget::setSymmetryAxis(Vector2<int> axis)
 	{
 		this->_layers.getSelectedLayer().buffer->setSymmetryAxis(axis);
 		this->_axis = axis;
