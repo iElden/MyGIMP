@@ -19,7 +19,7 @@ namespace Mimp {
 
 	void Effects::click(tgui::Gui &gui, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr window, Editor &editor) const
 	{
-		this->_win->setTitle("Effects (" + window->getTitle().toAnsiString() + ")");
+		this->_win->setTitle("Effects (" + window->getTitle().toAnsiString() + "/" + image->getSelectedLayer().name + ")");
 		for (auto &e : this->_effects) {
 			e->setImage(image);
 		}

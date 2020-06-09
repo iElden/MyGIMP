@@ -133,9 +133,9 @@ namespace Mimp
 		//! @param color Color used to clear
 		void clear(const Color &color) noexcept;
 
-		void setSymmetry(Vector2<bool> &symmetry) { this->_symmetry = symmetry; };
+		void setSymmetry(Vector2<bool> symmetry) { this->_symmetry = symmetry; };
 
-		void setSymmetryAxis(Vector2<int> &axis) { this->_axis = axis; };
+		void setSymmetryAxis(Vector2<int> axis) { this->_axis = axis; };
 	};
 }
 
