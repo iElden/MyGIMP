@@ -3,7 +3,6 @@
 //
 
 #include <SFML/Graphics/Sprite.hpp>
-#include <iostream>
 #include "LayerWidget.hpp"
 
 namespace Mimp

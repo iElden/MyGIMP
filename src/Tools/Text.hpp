@@ -4,8 +4,6 @@
 #include "Tool.hpp"
 #include "../ToolBox.hpp"
 
-#include <iostream>
-
 namespace Mimp {
 	//! @brief Define a Text Tool.
 	class Text : public Tool {

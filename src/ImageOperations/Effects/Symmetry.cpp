@@ -1,8 +1,6 @@
 #include <TGUI/TGUI.hpp>
 #include "Symmetry.hpp"
 
-#include <iostream>
-
 namespace Mimp {
 
 	Symmetry::Symmetry(std::shared_ptr<tgui::ChildWindow> window) : Effect(window)

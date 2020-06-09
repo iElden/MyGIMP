@@ -8,6 +8,8 @@
 #include "FrameBuffer.hpp"
 #include "../Exceptions.hpp"
 
+#include <iostream>
+
 namespace Mimp
 {
 
@@ -368,11 +370,38 @@ namespace Mimp
 	{
 		switch (shape) {
 		case DrawShape::CIRCLE:
-			return this->_drawCircleAt(pos, color, radius, drawStrategy);
+			this->_drawCircleAt(pos, color, radius, drawStrategy);
+			if (this->_symmetry.x) {
+				int diff = this->_axis.y - pos.y;
+				this->_drawCircleAt({pos.x, std::abs(diff) * (diff < 0 ? -1 : 1) + this->_axis.y}, color, radius, drawStrategy);
+			}
+			if (this->_symmetry.y) {
+				int diff = this->_axis.x - pos.x;
+				this->_drawCircleAt({std::abs(diff) * (diff < 0 ? -1 : 1) + this->_axis.x, pos.y}, color, radius, drawStrategy);
+			}
+			break;
 		case DrawShape::SQUARE:
-			return this->_drawSquareAt(pos, color, radius, drawStrategy);
+			this->_drawSquareAt(pos, color, radius, drawStrategy);
+			if (this->_symmetry.x) {
+				int diff = this->_axis.y - pos.y;
+				this->_drawSquareAt({pos.x, std::abs(diff) * (diff < 0 ? -1 : 1) + this->_axis.y}, color, radius, drawStrategy);
+			}
+			if (this->_symmetry.y) {
+				int diff = this->_axis.x - pos.x;
+				this->_drawSquareAt({std::abs(diff) * (diff < 0 ? -1 : 1) + this->_axis.x, pos.y}, color, radius, drawStrategy);
+			}
+			break;
 		case DrawShape::DIAMOND:
-			return this->_drawDiamondAt(pos, color, radius, drawStrategy);
+			this->_drawDiamondAt(pos, color, radius, drawStrategy);
+			if (this->_symmetry.x) {
+				int diff = this->_axis.y - pos.y;
+				this->_drawDiamondAt({pos.x, std::abs(diff) * (diff < 0 ? -1 : 1) + this->_axis.y}, color, radius, drawStrategy);
+			}
+			if (this->_symmetry.y) {
+				int diff = this->_axis.x - pos.x;
+				this->_drawDiamondAt({std::abs(diff) * (diff < 0 ? -1 : 1) + this->_axis.x, pos.y}, color, radius, drawStrategy);
+			}
+			break;
 		case DrawShape::NB_OF_SHAPES:
 			return;
 		}

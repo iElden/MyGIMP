@@ -3,7 +3,6 @@
 //
 
 #include <SFML/Graphics/Sprite.hpp>
-#include <iostream>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTexture.hpp>
 #include "CanvasWidget.hpp"
@@ -250,5 +249,17 @@ namespace Mimp
 	{
 		if (this->_gridSize > 10)
 			this->_gridSize -= 10;
+	}
+
+	void CanvasWidget::setSymmetry(Vector2<bool> &symmetry)
+	{
+		this->_layers.getSelectedLayer().buffer->setSymmetry(symmetry);
+		this->_symmetry = symmetry;
+	}
+
+	void CanvasWidget::setSymmetryAxis(Vector2<int> &axis)
+	{
+		this->_layers.getSelectedLayer().buffer->setSymmetryAxis(axis);
+		this->_axis = axis;
 	}
 }

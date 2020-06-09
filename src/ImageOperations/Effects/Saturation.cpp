@@ -1,8 +1,6 @@
 #include <TGUI/TGUI.hpp>
 #include "Saturation.hpp"
 
-#include <iostream>
-
 namespace Mimp {
 	Saturation::Saturation(std::shared_ptr<tgui::ChildWindow> window) : Effect(window)
 	{

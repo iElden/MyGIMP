@@ -3,8 +3,6 @@
 #include "Effects/Saturation.hpp"
 #include "Effects/Symmetry.hpp"
 
-#include <iostream>
-
 namespace Mimp {
 
 	Effects::Effects() : ImageOperation({"Window", "Effects"}, {Keys::KEY_E, true, false, false})

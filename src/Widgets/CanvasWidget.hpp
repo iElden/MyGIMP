@@ -115,9 +115,9 @@ namespace Mimp
 
 		void decreaseGrid();
 
-		void setSymmetry(Vector2<bool> &symmetry) { this->_symmetry = symmetry; };
+		void setSymmetry(Vector2<bool> &symmetry);
 
-		void setSymmetryAxis(Vector2<int> &axis) { this->_axis = axis; };
+		void setSymmetryAxis(Vector2<int> &axis);
 	};
 }
 
