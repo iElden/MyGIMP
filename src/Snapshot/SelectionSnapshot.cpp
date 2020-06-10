@@ -10,7 +10,9 @@
 
 Mimp::SelectionSnapshot::SelectionSnapshot(const Mimp::SelectedArea &oldSelection):
 	_oldSelection(std::make_shared<SelectedArea>(oldSelection))
-{}
+{
+
+}
 
 void Mimp::SelectionSnapshot::undo(Mimp::Image &image)
 {

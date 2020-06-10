@@ -4,6 +4,7 @@
 ** File description:
 ** SelectedArea.cpp
 */
+
 #include <cstring>
 #include <thread>
 #include <iostream>
@@ -22,8 +23,11 @@ namespace Mimp
 		_map(new bool[size.x * size.y])
 	{
 		this->clear();
-		if (map)
+		if (map) {
 			std::memcpy(this->_map, map, size.x * size.y);
+			for (unsigned i = 0; i < size.x * size.y; i++)
+				this->_nbPoints += this->_map[i];
+		}
 	}
 
 	SelectedArea::SelectedArea(const SelectedArea &other) :
