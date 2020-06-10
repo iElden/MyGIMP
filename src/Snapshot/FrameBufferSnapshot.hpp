@@ -17,8 +17,8 @@ namespace Mimp {
 		std::shared_ptr<FrameBuffer> oldBuffer;
 	public:
 		FrameBufferSnapshot(const FrameBuffer &frameBuffer, int layerNb);
-		void undo(Image &image) override;
-		void redo(Image &image) override;
+		void undo(Image &image, Editor &editor) override;
+		void redo(Image &image, Editor &editor) override;
 	};
 }
 

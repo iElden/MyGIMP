@@ -10,6 +10,7 @@
 #include "Snapshot/FrameBufferSnapshot.hpp"
 #include "Snapshot/LayerSnapshot.hpp"
 #include "Snapshot/SelectionSnapshot.hpp"
+#include "Editor.hpp"
 
 namespace Mimp {
 	Layer &Image::getSelectedLayer() noexcept
@@ -71,14 +72,14 @@ namespace Mimp {
 			throw ExportErrorException("Cannot export to file " + path);
 	}
 
-	int Image::getMaxSnapshots() const noexcept
+	unsigned int Image::getMaxSnapshots() const noexcept
 	{
-		return _max_snapshots;
+		return this->_max_snapshots;
 	}
 
-	void Image::setMaxSnapshots(int maxSnapshots) noexcept
+	void Image::setMaxSnapshots(unsigned int maxSnapshots) noexcept
 	{
-		_max_snapshots = maxSnapshots;
+		this->_max_snapshots = maxSnapshots;
 	}
 
 	void Image::takeSnapshot(std::shared_ptr<Snapshot> snapshot) noexcept
@@ -92,41 +93,45 @@ namespace Mimp {
 	void Image::takeFrameBufferSnapshot() noexcept
 	{
 		this->takeSnapshot(std::make_shared<FrameBufferSnapshot>(
-				*this->getSelectedLayer().buffer, this->_layers.getSelectedLayerIndex()
+			*this->getSelectedLayer().buffer, this->_layers.getSelectedLayerIndex()
 		));
 	}
 
-
 	void Image::takeLayerSnapshot() noexcept
 	{
+		this->takeLayerSnapshot(this->_layers.getSelectedLayerIndex());
+	}
+
+	void Image::takeLayerSnapshot(unsigned index) noexcept
+	{
 		this->takeSnapshot(std::make_shared<LayerSnapshot>(
-				this->getSelectedLayer(), this->_layers.getSelectedLayerIndex()
+			this->getLayers()[index], index
 		));
 	}
 
 	void Image::takeSelectionSnapshot() noexcept
 	{
 		this->takeSnapshot(std::make_shared<SelectionSnapshot>(
-				*this->selectedArea
+			*this->selectedArea
 		));
 	}
 
-	void Image::undoLastAction() noexcept
+	void Image::undoLastAction(Editor &editor) noexcept
 	{
 		if (this->_snapshots.empty())
 			return;
 		std::shared_ptr<Snapshot> snapshot = this->_snapshots.back();
-		snapshot->undo(*this);
+		snapshot->undo(*this, editor);
 		this->_redoSnapshots.emplace_back(snapshot);
 		this->_snapshots.pop_back();
 	}
 
-	void Image::redoLastUndo() noexcept
+	void Image::redoLastUndo(Editor &editor) noexcept
 	{
 		if (this->_redoSnapshots.empty())
 			return;
 		std::shared_ptr<Snapshot> snapshot = this->_redoSnapshots.back();
-		snapshot->redo(*this);
+		snapshot->redo(*this, editor);
 		this->_snapshots.emplace_back(snapshot);
 		this->_redoSnapshots.pop_back();
 	}

@@ -12,7 +12,9 @@
 #include "Snapshot/Snapshot.hpp"
 
 namespace Mimp {
-    //! @brief Define the SelectedArea.
+	class Editor;
+
+	//! @brief Define the SelectedArea.
 	class Image {
 	protected:
 		Vector2<unsigned> _size; //!< Size of the Image
@@ -56,14 +58,15 @@ namespace Mimp {
 		//! @return Vector2<unsigned> Size of the image
 		Vector2<unsigned> getImageSize() const noexcept;
 
-		int getMaxSnapshots() const noexcept;
-		void setMaxSnapshots(int maxSnapshots) noexcept;
+		unsigned int getMaxSnapshots() const noexcept;
+		void setMaxSnapshots(unsigned int maxSnapshots) noexcept;
 		void takeSnapshot(std::shared_ptr<Snapshot> snapshot) noexcept;
 		void takeFrameBufferSnapshot() noexcept;
 		void takeLayerSnapshot() noexcept;
+		void takeLayerSnapshot(unsigned index) noexcept;
 		void takeSelectionSnapshot() noexcept;
-		void undoLastAction() noexcept;
-		void redoLastUndo() noexcept;
+		void undoLastAction(Editor &editor) noexcept;
+		void redoLastUndo(Editor &editor) noexcept;
 	};
 }
 

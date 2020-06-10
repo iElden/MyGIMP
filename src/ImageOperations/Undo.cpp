@@ -10,8 +10,7 @@ Mimp::Undo::Undo():
 	ImageOperation({"Edit", "Undo"}, {Keys::KEY_Z, true, false, false})
 {}
 
-void Mimp::Undo::click(tgui::Gui &, Mimp::CanvasWidget::Ptr image, tgui::ChildWindow::Ptr,
-					   Mimp::Editor &) const
+void Mimp::Undo::click(tgui::Gui &, Mimp::CanvasWidget::Ptr image, tgui::ChildWindow::Ptr, Mimp::Editor &editor) const
 {
-	image->undoLastAction();
+	image->undoLastAction(editor);
 }

@@ -727,13 +727,13 @@ namespace Mimp {
 
 		visible->setText(layer.visible ? "Hide" : "Show");
 		visible->connect("Pressed", [canvas, &layer, visible, index, layersPanel] {
-			canvas->takeLayerSnapshot();
+			canvas->takeLayerSnapshot(index);
 			layer.visible = !layer.visible;
 			layersPanel->get<tgui::Widget>("VisibleCancel" + std::to_string(index))->setVisible(!layer.visible);
 		});
 		locked->setText(layer.locked ? "Unlock" : "Lock");
 		locked->connect("Pressed", [canvas, &layer, locked, index, layersPanel] {
-			canvas->takeLayerSnapshot();
+			canvas->takeLayerSnapshot(index);
 			layer.locked = !layer.locked;
 			layersPanel->get<tgui::Widget>("LockedCancel" + std::to_string(index))->setVisible(!layer.locked);
 		});
@@ -783,7 +783,7 @@ namespace Mimp {
 			width->setText(std::to_string(layer.getSize().x));
 			height->setText(std::to_string(layer.getSize().y));
 			cancel->connect("Pressed", [win] { win->close(); });
-			ok->connect("Pressed", [canvas, this, win, &layer, width, height] {
+			ok->connect("Pressed", [canvas, win, &layer, width, height] {
 				canvas->takeLayerSnapshot();
 				std::string wid = width->getText();
 				std::string hei = height->getText();
@@ -798,8 +798,8 @@ namespace Mimp {
 				win->close();
 			});
 		});
-		move->connect("Pressed", [&layer, this, canvas] {
-			canvas->takeLayerSnapshot();
+		move->connect("Pressed", [&layer, this, canvas, index] {
+			canvas->takeLayerSnapshot(index);
 			auto win = Utils::openWindowWithFocus(this->_gui, 200, 110);
 
 			win->loadWidgetsFromFile("widgets/new.gui");
@@ -828,7 +828,7 @@ namespace Mimp {
 			});
 		});
 		rename->connect("Pressed", [layersPanel, &layer, this, canvas, index] {
-			canvas->takeLayerSnapshot();
+			canvas->takeLayerSnapshot(index);
 			auto win = Utils::openWindowWithFocus(this->_gui, 200, 80);
 
 			win->loadWidgetsFromFile("widgets/rename.gui");
@@ -880,7 +880,8 @@ namespace Mimp {
 			locked->setImage("icons/locked.png");
 			locked->setSize(18, 18);
 			locked->setPosition(2 + 66, (size - i - 1) * 66 + 2);
-			locked->connect("Pressed", [lockedCancel, &layer] {
+			locked->connect("Pressed", [lockedCancel, &layer, i, canvas] {
+				canvas->takeLayerSnapshot(i);
 				layer.locked = !layer.locked;
 				lockedCancel->setVisible(!layer.locked);
 			});
@@ -891,7 +892,8 @@ namespace Mimp {
 			visible->setSize(18, 18);
 			visible->setPosition(2 + 66 + 18, (size - i - 1) * 66 + 2);
 			visible->setImage("icons/visible.png");
-			visible->connect("Pressed", [visibleCancel, &layer] {
+			visible->connect("Pressed", [canvas, visibleCancel, &layer, i] {
+				canvas->takeLayerSnapshot(i);
 				layer.visible = !layer.visible;
 				visibleCancel->setVisible(!layer.visible);
 			});
@@ -1163,5 +1165,15 @@ namespace Mimp {
 					}
 			}));
 		}
+	}
+
+	void Editor::refreshSelectedLayerWidgets()
+	{
+		this->_selectedImageWindow->remove(this->_selectedImageWindow->get<tgui::Panel>("Layers"));
+
+		auto panel = this->_makeLayersPanel(this->_selectedImageWindow, this->_getSelectedCanvas());
+
+		panel->setPosition(10, 10);
+		this->_selectedImageWindow->add(panel , "Layers");
 	}
 }

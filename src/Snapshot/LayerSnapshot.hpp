@@ -10,6 +10,7 @@
 #include <memory>
 #include "Snapshot.hpp"
 #include "../Layer/Layer.hpp"
+#include "../Editor.hpp"
 
 namespace Mimp {
 	class LayerSnapshot : public Snapshot {
@@ -17,8 +18,8 @@ namespace Mimp {
 		std::shared_ptr<Layer> oldLayer;
 	public:
 		LayerSnapshot(const Layer &layer, int layerNb);
-		void undo(Image &image) override;
-		void redo(Image &image) override;
+		void undo(Image &image, Editor &editor) override;
+		void redo(Image &image, Editor &editor) override;
 	};
 }
 

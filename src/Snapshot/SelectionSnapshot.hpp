@@ -17,8 +17,8 @@ namespace Mimp {
 		std::shared_ptr<SelectedArea> _oldSelection;
 	public:
 		SelectionSnapshot(const SelectedArea &oldSelection);
-		void undo(Image &image) override;
-		void redo(Image &image) override;
+		void undo(Image &image, Editor &editor) override;
+		void redo(Image &image, Editor &editor) override;
 	};
 }
 

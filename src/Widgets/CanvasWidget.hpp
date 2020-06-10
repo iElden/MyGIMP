@@ -69,16 +69,16 @@ namespace Mimp
 		static CanvasWidget::Ptr create(const ToolBox &box, Vector2<unsigned int> size);
 
 		//! @brief Create a new CanvasWidget pointer
-        //! @param box ToolBox linked to the CanvasWidget
-        //! @param path Path of the CanvasWidget file
-        //! @return CanvasWidget::Ptr
+		//! @param box ToolBox linked to the CanvasWidget
+		//! @param path Path of the CanvasWidget file
+		//! @return CanvasWidget::Ptr
 		static CanvasWidget::Ptr create(const ToolBox &box, const std::string &path);
 
 		//! @brief Get the status of the Canvas
 		bool isEdited() const;
 
-        //! @brief Set the status of the CanvasWidget.
-        //! @param edited The status of the CanvasWidget. Default is true
+		//! @brief Set the status of the CanvasWidget.
+		//! @param edited The status of the CanvasWidget. Default is true
 		void setEdited(bool edited = true);
 
 		//! @brief Set the zoom level of the canvas
@@ -94,7 +94,7 @@ namespace Mimp
 
 		//! @brief Draw the canvas
 		//! @param target Where to draw
-        //! @param states How to draw
+		//! @param states How to draw
 		void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 		//! @brief Clone the CanvasWidget

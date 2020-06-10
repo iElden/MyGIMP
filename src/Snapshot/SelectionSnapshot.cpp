@@ -6,7 +6,7 @@
 */
 
 #include "SelectionSnapshot.hpp"
-#include "../Image.hpp"
+#include "../Editor.hpp"
 
 Mimp::SelectionSnapshot::SelectionSnapshot(const Mimp::SelectedArea &oldSelection):
 	_oldSelection(std::make_shared<SelectedArea>(oldSelection))
@@ -14,14 +14,14 @@ Mimp::SelectionSnapshot::SelectionSnapshot(const Mimp::SelectedArea &oldSelectio
 
 }
 
-void Mimp::SelectionSnapshot::undo(Mimp::Image &image)
+void Mimp::SelectionSnapshot::undo(Image &image, Editor &)
 {
 	image.selectedArea->printDebug();
 	_oldSelection->printDebug();
 	image.selectedArea.swap(this->_oldSelection);
 }
 
-void Mimp::SelectionSnapshot::redo(Mimp::Image &image)
+void Mimp::SelectionSnapshot::redo(Image &image, Editor &editor)
 {
-	this->undo(image);
+	this->undo(image, editor);
 }

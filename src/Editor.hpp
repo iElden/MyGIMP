@@ -78,6 +78,8 @@ namespace Mimp
 		//! @return tgui::ChildWindow::Ptr Selected image build into a Child window
 		tgui::ChildWindow::Ptr getSelectedImage() const;
 
+		void refreshSelectedLayerWidgets();
+
 		//! @brief Run the editor
 		//! @return int Errors
 		int run();
