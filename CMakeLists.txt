@@ -181,7 +181,7 @@ set(MIMP_SRCS
     src/Snapshot/LayerSnapshot.cpp
     src/Snapshot/LayerSnapshot.hpp
 
-    )
+    src/Snapshot/SelectionSnapshot.cpp src/Snapshot/SelectionSnapshot.hpp)
 
 
 find_library(PNG_LIBRARY png)

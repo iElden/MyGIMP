@@ -9,6 +9,7 @@
 #include "Exceptions.hpp"
 #include "Snapshot/FrameBufferSnapshot.hpp"
 #include "Snapshot/LayerSnapshot.hpp"
+#include "Snapshot/SelectionSnapshot.hpp"
 
 namespace Mimp {
 	Layer &Image::getSelectedLayer() noexcept
@@ -24,13 +25,13 @@ namespace Mimp {
 	Image::Image(Vector2<unsigned> size):
 		_size(size),
 		_layers(size),
-		selectedArea(size)
+		selectedArea(std::make_shared<SelectedArea>(size))
 	{}
 
 	Image::Image(Vector2<unsigned> size, const LayerManager &layers):
 		_size(size),
 		_layers(layers),
-		selectedArea(size)
+		selectedArea(std::make_shared<SelectedArea>(size))
 	{
 	}
 
@@ -100,6 +101,13 @@ namespace Mimp {
 	{
 		this->takeSnapshot(std::make_shared<LayerSnapshot>(
 				this->getSelectedLayer(), this->_layers.getSelectedLayerIndex()
+		));
+	}
+
+	void Image::takeSelectionSnapshot() noexcept
+	{
+		this->takeSnapshot(std::make_shared<SelectionSnapshot>(
+				*this->selectedArea
 		));
 	}
 

@@ -40,10 +40,10 @@ TEST(FillSelectionOperation, selectOnePoint) {
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::Red);
     }
-    image.selectedArea.add(pt);
+    image.selectedArea->add(pt);
     fso.fill(image, Mimp::Color::Yellow);
 
-    ASSERT_TRUE(image.selectedArea.pointInMap(pt));
+    ASSERT_TRUE(image.selectedArea->pointInMap(pt));
     buffer = image.getLayers()[0]->buffer.getBuffer();
 
     for (int i = 0; i < 10; i += 1) {

@@ -29,7 +29,7 @@ TEST(CutOperation, clickSelectAllLayer) {
 	Mimp::CanvasWidget::Ptr cw = Mimp::CanvasWidget::create(toolBox, Mimp::Vector2<unsigned int>{10, 10});
 	Mimp::CutOperation co;
 
-	cw->selectedArea.selectAll();
+	cw->selectedArea->selectAll();
 	co.click(gui, cw, nullptr, e);
 
 	clip::image i;
@@ -46,7 +46,7 @@ TEST(CutOperation, clickSelectOnePixel) {
 	Mimp::CanvasWidget::Ptr cw = Mimp::CanvasWidget::create(toolBox, Mimp::Vector2<unsigned int>{10, 10});
 	Mimp::CutOperation co;
 
-	cw->selectedArea.add(5, 5);
+	cw->selectedArea->add(5, 5);
 	co.click(gui, cw, nullptr, e);
 
 	clip::image i;
@@ -64,7 +64,7 @@ TEST(CutOperation, clickWholeLayerSquare) {
 	Mimp::CutOperation co;
 
 	cw->getSelectedLayer()->buffer.drawAt({5, 5}, Mimp::Color::Green, 2, Mimp::SQUARE);
-	cw->selectedArea.selectAll();
+	cw->selectedArea->selectAll();
 	co.click(gui, cw, nullptr, e);
 
 	clip::image i;

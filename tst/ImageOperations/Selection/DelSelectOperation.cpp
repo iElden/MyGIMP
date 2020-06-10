@@ -15,8 +15,8 @@ TEST(DelSelectOperation, wholeLayer) {
     for (int i = 0; i < 100; i += 1)
         ASSERT_TRUE(buffer[i] == Mimp::Color::Red);
 
-    cw->selectedArea.selectAll();
-    ASSERT_TRUE(cw->selectedArea.getPoints().size() == 100);
+    cw->selectedArea->selectAll();
+    ASSERT_TRUE(cw->selectedArea->getPoints().size() == 100);
 
 	dso.click(gui, cw, nullptr, e);
     buffer = cw->getSelectedLayer()->buffer.getBuffer();

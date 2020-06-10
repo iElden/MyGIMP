@@ -21,7 +21,7 @@ namespace Mimp {
 		std::vector<std::shared_ptr<Snapshot>> _redoSnapshots = {};
 		unsigned _max_snapshots = 10;
 	public:
-		SelectedArea selectedArea; //!< SelectedArea of the Image
+		std::shared_ptr<SelectedArea> selectedArea; //!< SelectedArea of the Image
 
 		//! @brief Constructor of Image
 		//! @param size Size of the Image
@@ -61,6 +61,7 @@ namespace Mimp {
 		void takeSnapshot(std::shared_ptr<Snapshot> snapshot) noexcept;
 		void takeFrameBufferSnapshot() noexcept;
 		void takeLayerSnapshot() noexcept;
+		void takeSelectionSnapshot() noexcept;
 		void undoLastAction() noexcept;
 		void redoLastUndo() noexcept;
 	};

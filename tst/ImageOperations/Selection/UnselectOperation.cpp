@@ -11,9 +11,9 @@ TEST(UnselectOperation, wholeLayer) {
     Mimp::UnselectOperation uo;
 
 
-    cw->selectedArea.selectAll();
-    ASSERT_TRUE(cw->selectedArea.getPoints().size() == 100);
+    cw->selectedArea->selectAll();
+    ASSERT_TRUE(cw->selectedArea->getPoints().size() == 100);
 
 	uo.click(gui, cw, nullptr, e);
-    ASSERT_TRUE(cw->selectedArea.getPoints().size() == 0);
+    ASSERT_TRUE(cw->selectedArea->getPoints().size() == 0);
 }

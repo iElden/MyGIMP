@@ -14,7 +14,7 @@ namespace Mimp
 	{
 		this->_size = this->_layers.getSize();
 		this->m_size = {this->_size.x, this->_size.y};
-		this->selectedArea.setSize(this->_size);
+		this->selectedArea->setSize(this->_size);
 	}
 
 	CanvasWidget::CanvasWidget(const ToolBox &box, Vector2<unsigned int> size, const LayerManager &layers):
@@ -67,8 +67,8 @@ namespace Mimp
 
 		this->_colorCounter += (this->_counterUp * 2 - 1) * 20;
 		this->_counterUp = (this->_counterUp && this->_colorCounter < 240) || !this->_colorCounter;
-		if (this->selectedArea.isAnAreaSelected())
-			for (auto &pt : this->selectedArea.getPoints())
+		if (this->selectedArea->isAnAreaSelected())
+			for (auto &pt : this->selectedArea->getPoints())
 				buffer.drawPixel(pt, color, SET);
 
 		states.transform.translate(getPosition());
@@ -164,7 +164,7 @@ namespace Mimp
 			this->_size.y
 		};
 		this->_drawBuffer.create(this->_size.x, this->_size.y);
-		this->selectedArea.setSize(this->_size);
+		this->selectedArea->setSize(this->_size);
 	}
 
 	void CanvasWidget::importImageFromMemory(const std::string &path)
@@ -179,7 +179,7 @@ namespace Mimp
 			this->_size.y
 		};
 		this->_drawBuffer.create(this->_size.x, this->_size.y);
-		this->selectedArea.setSize(this->_size);
+		this->selectedArea->setSize(this->_size);
 	}
 
 	void CanvasWidget::setZoomLevel(float zoom)

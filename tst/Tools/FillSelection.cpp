@@ -37,7 +37,7 @@ TEST(FillSelection, fillDefaultColorWholeLayer) {
     Mimp::LayerManager lm({10, 10}, 1, Mimp::Color::White);
     Mimp::Image image({10, 10}, lm);
 
-    image.selectedArea.selectAll();
+    image.selectedArea->selectAll();
 
     ASSERT_TRUE(image.getLayers().size() == 1);
     auto buffer = image.getLayers()[0]->buffer.getBuffer();
@@ -58,7 +58,7 @@ TEST(FillSelection, fillDefaultColorPartLayer) {
     Mimp::LayerManager lm({10, 10}, 1, Mimp::Color::White);
     Mimp::Image image({10, 10}, lm);
 
-    image.selectedArea.selectAll();
+    image.selectedArea->selectAll();
 
     ASSERT_TRUE(image.getLayers().size() == 1);
     auto buffer = image.getLayers()[0]->buffer.getBuffer();
@@ -79,7 +79,7 @@ TEST(FillSelection, fillWithCustomLeftColorWholeLayer) {
     Mimp::LayerManager lm({10, 10}, 1, Mimp::Color::White);
     Mimp::Image image({10, 10}, lm);
 
-    image.selectedArea.selectAll();
+    image.selectedArea->selectAll();
 
     ASSERT_TRUE(image.getLayers().size() == 1);
     auto buffer = image.getLayers()[0]->buffer.getBuffer();
@@ -101,7 +101,7 @@ TEST(FillSelection, fillWhenLayerIsLocked) {
     Mimp::LayerManager lm({10, 10}, 1, Mimp::Color::White);
     Mimp::Image image({10, 10}, lm);
 
-    image.selectedArea.selectAll();
+    image.selectedArea->selectAll();
 
     ASSERT_TRUE(image.getLayers().size() == 1);
     image.getLayers()[0].locked = true;

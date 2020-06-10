@@ -17,13 +17,14 @@ void Mimp::ShrinkSelection::_removePointIfNoPointNearby(unsigned i, unsigned j, 
 	for (int a = -range; a <= range; a++)
 		for (int b = -range; b <= range; b++)
 			if (!area.pointInMap(i + a, j + b))
-				return image.selectedArea.remove(i, j);
+				return image.selectedArea->remove(i, j);
 }
 
 void Mimp::ShrinkSelection::_run(Mimp::Image &image, int range) noexcept
 {
-	auto selectedArea = image.selectedArea;
-	for (auto pt : image.selectedArea.getPoints())
+	image.takeSelectionSnapshot();
+	SelectedArea selectedArea = *image.selectedArea;
+	for (auto pt : image.selectedArea->getPoints())
 		ShrinkSelection::_removePointIfNoPointNearby(pt.x, pt.y, image, selectedArea, range);
 }
 

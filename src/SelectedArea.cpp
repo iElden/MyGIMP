@@ -6,6 +6,7 @@
 */
 #include <cstring>
 #include <thread>
+#include <iostream>
 #include "SelectedArea.hpp"
 #include "Utils.hpp"
 
@@ -143,4 +144,11 @@ namespace Mimp
 		this->_map = new bool[size.x * size.y];
 		this->clear();
 	}
+
+	void SelectedArea::printDebug() const noexcept
+	{
+		std::cerr << "[DEBUG] " << this->_nbPoints << " points in Selection" << std::endl;
+	}
 }
+
+

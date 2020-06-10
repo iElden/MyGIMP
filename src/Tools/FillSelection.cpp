@@ -21,8 +21,8 @@ void Mimp::FillSelection::onClick(Mimp::Vector2<int>, Mimp::MouseClick click, Mi
 	image.takeFrameBufferSnapshot();
 	auto &layer = image.getSelectedLayer();
 
-	if (image.selectedArea.isAnAreaSelected())
-		for (Vector2<int> pt : image.selectedArea.getPoints())
+	if (image.selectedArea->isAnAreaSelected())
+		for (Vector2<int> pt : image.selectedArea->getPoints())
 			layer.buffer->drawPixel(pt, this->_toolBox.getSelectedColor(click));
 }
 

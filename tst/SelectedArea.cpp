@@ -4,28 +4,28 @@
 TEST(SelectedArea, addPointInsideArea) {
     Mimp::SelectedArea selectedArea(10, 10);
 
-    selectedArea.add(5, 5);
-    selectedArea.add({10, 10});
+    selectedArea->add(5, 5);
+    selectedArea->add({10, 10});
 
-    ASSERT_EQ(selectedArea.isAnAreaSelected(), true);
+    ASSERT_EQ(selectedArea->isAnAreaSelected(), true);
 }
 
 TEST(SelectedArea, addPointInsideAreaAndClear) {
     Mimp::SelectedArea selectedArea(10, 10);
 
-    selectedArea.add(5, 5);
-    selectedArea.add({10, 10});
+    selectedArea->add(5, 5);
+    selectedArea->add({10, 10});
 
-    selectedArea.clear();
+    selectedArea->clear();
 
-    ASSERT_EQ(selectedArea.isAnAreaSelected(), false);
+    ASSERT_EQ(selectedArea->isAnAreaSelected(), false);
 }
 
 TEST(SelectedArea, getSize) {
     Mimp::Vector2<unsigned > size = {10, 10};
     Mimp::SelectedArea selectedArea(size.x, size.y);
 
-    ASSERT_TRUE(selectedArea.getSize() == size);
+    ASSERT_TRUE(selectedArea->getSize() == size);
 }
 
 TEST(SelectedArea, setSize) {
@@ -34,20 +34,20 @@ TEST(SelectedArea, setSize) {
     Mimp::Vector2<unsigned > newSize2 = {100, 70};
     Mimp::SelectedArea selectedArea(size.x, size.y);
 
-    ASSERT_TRUE(selectedArea.getSize() == size);
-    selectedArea.setSize(newSize1);
-    ASSERT_TRUE(selectedArea.getSize() == size);
-    selectedArea.setSize(newSize2);
-    ASSERT_FALSE(selectedArea.getSize() == size);
-    ASSERT_TRUE(selectedArea.getSize() == newSize2);
+    ASSERT_TRUE(selectedArea->getSize() == size);
+    selectedArea->setSize(newSize1);
+    ASSERT_TRUE(selectedArea->getSize() == size);
+    selectedArea->setSize(newSize2);
+    ASSERT_FALSE(selectedArea->getSize() == size);
+    ASSERT_TRUE(selectedArea->getSize() == newSize2);
 }
 
 TEST(SelectArea, selectAll) {
     Mimp::SelectedArea selectedArea(10, 48);
 
-    ASSERT_TRUE(selectedArea.getPoints().size() == 0);
-    selectedArea.selectAll();
-    ASSERT_TRUE(selectedArea.getPoints().size() == 480);
+    ASSERT_TRUE(selectedArea->getPoints().size() == 0);
+    selectedArea->selectAll();
+    ASSERT_TRUE(selectedArea->getPoints().size() == 480);
 }
 
 TEST(SelectedArea, createFromExisting) {
@@ -62,18 +62,18 @@ TEST(SelectedArea, createFromExisting) {
 TEST(SelectedArea, invertFullSelection) {
     Mimp::SelectedArea selectedArea(10, 10);
 
-    selectedArea.selectAll();
-    ASSERT_TRUE(selectedArea.getPoints().size() == 100);
-    selectedArea.invert();
-    ASSERT_TRUE(selectedArea.getPoints().size() == 0);
+    selectedArea->selectAll();
+    ASSERT_TRUE(selectedArea->getPoints().size() == 100);
+    selectedArea->invert();
+    ASSERT_TRUE(selectedArea->getPoints().size() == 0);
 }
 
 TEST(SelectedArea, fillWholeSelection) {
     Mimp::SelectedArea selectedArea(10, 10);
     Mimp::Layer l({10, 10});
 
-    selectedArea.selectAll();
-    selectedArea.fill(l, Mimp::Color::Green);
+    selectedArea->selectAll();
+    selectedArea->fill(l, Mimp::Color::Green);
 
     auto pxs = l->buffer.getBuffer();
     for (int i = 0; i < 100; i += 1) {
@@ -84,49 +84,49 @@ TEST(SelectedArea, fillWholeSelection) {
 TEST(SelectedArea, pointsOutsideSelectedArea) {
     Mimp::SelectedArea selectedArea(10, 10);
 
-    ASSERT_FALSE(selectedArea.pointInMap(11, 10));
-    ASSERT_FALSE(selectedArea.pointInMap(10, 11));
+    ASSERT_FALSE(selectedArea->pointInMap(11, 10));
+    ASSERT_FALSE(selectedArea->pointInMap(10, 11));
 }
 
 TEST(SelectedArea, pointsInsideSelectedArea) {
     Mimp::SelectedArea selectedArea(10, 10);
 
-    selectedArea.add(5, 8);
-    ASSERT_TRUE(selectedArea.pointInMap(5, 8));
+    selectedArea->add(5, 8);
+    ASSERT_TRUE(selectedArea->pointInMap(5, 8));
 }
 
 TEST(SelectedArea, vectorPointOutsiteSelectedArea) {
     Mimp::SelectedArea selectedArea(10, 10);
 
-    ASSERT_FALSE(selectedArea.pointInMap({11, 10}));
-    ASSERT_FALSE(selectedArea.pointInMap({10, 11}));
+    ASSERT_FALSE(selectedArea->pointInMap({11, 10}));
+    ASSERT_FALSE(selectedArea->pointInMap({10, 11}));
 }
 
 TEST(SelectedArea, vectorPointInsiteSelectedArea) {
     Mimp::SelectedArea selectedArea(10, 10);
 
-    selectedArea.add({5, 8});
-    ASSERT_TRUE(selectedArea.pointInMap({5, 8}));
+    selectedArea->add({5, 8});
+    ASSERT_TRUE(selectedArea->pointInMap({5, 8}));
 }
 
 TEST(SelectedArea, removePointFromArea) {
     Mimp::SelectedArea selectedArea(10, 10);
-    selectedArea.selectAll();
+    selectedArea->selectAll();
 
-    selectedArea.remove(5, 5);
-    selectedArea.remove({7, 7});
+    selectedArea->remove(5, 5);
+    selectedArea->remove({7, 7});
 
-    ASSERT_TRUE(selectedArea.getPoints().size() != 100);
-    ASSERT_TRUE(selectedArea.pointInMap(5, 4));
-    ASSERT_FALSE(selectedArea.pointInMap(5, 5));
-    ASSERT_FALSE(selectedArea.pointInMap(7, 7));
+    ASSERT_TRUE(selectedArea->getPoints().size() != 100);
+    ASSERT_TRUE(selectedArea->pointInMap(5, 4));
+    ASSERT_FALSE(selectedArea->pointInMap(5, 5));
+    ASSERT_FALSE(selectedArea->pointInMap(7, 7));
 }
 
 TEST(SelectedArea, removePointFromOutsideArea) {
     Mimp::SelectedArea selectedArea(10, 10);
-    selectedArea.selectAll();
+    selectedArea->selectAll();
 
-    selectedArea.remove(5, 12);
+    selectedArea->remove(5, 12);
 
-    ASSERT_TRUE(selectedArea.getPoints().size() == 100);
+    ASSERT_TRUE(selectedArea->getPoints().size() == 100);
 }

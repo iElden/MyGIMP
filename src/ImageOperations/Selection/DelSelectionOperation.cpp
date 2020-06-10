@@ -13,6 +13,7 @@ Mimp::DelSelectionOperation::DelSelectionOperation():
 
 void Mimp::DelSelectionOperation::click(tgui::Gui &, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr, Editor &) const
 {
-	image->selectedArea.fill(image->getSelectedLayer(), Color::Transparent);
+	image->takeFrameBufferSnapshot();
+	image->selectedArea->fill(image->getSelectedLayer(), Color::Transparent);
 }
 

@@ -15,7 +15,6 @@ Mimp::LayerSnapshot::LayerSnapshot(const Layer &layer, int layerNb):
 
 void Mimp::LayerSnapshot::undo(Mimp::Image &image)
 {
-	printf("(%d;%d) <=> (%d;%d)\n", this->oldLayer->pos.x, this->oldLayer->pos.y, image.getSelectedLayer().pos.x, image.getSelectedLayer().pos.y);
 	image.getLayers().getLayerPtr(this->layerNumber).swap(this->oldLayer);
 }
 

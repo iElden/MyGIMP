@@ -15,5 +15,6 @@ Mimp::UnselectOperation::UnselectOperation():
 
 void Mimp::UnselectOperation::click(tgui::Gui &, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr, Editor &) const
 {
-	image->selectedArea.clear();
+	image->takeSelectionSnapshot();
+	image->selectedArea->clear();
 }

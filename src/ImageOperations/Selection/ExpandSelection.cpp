@@ -18,13 +18,14 @@ void Mimp::ExpandSelection::_addPointIfPointNearby(unsigned i, unsigned j, Mimp:
 	for (int a = -range; a <= range; a++)
 		for (int b = -range; b <= range; b++)
 			if (area.pointInMap(i + a, j + b))
-				return image.selectedArea.add(i, j);
+				return image.selectedArea->add(i, j);
 }
 
 void Mimp::ExpandSelection::_run(Mimp::Image &image, int range) noexcept
 {
+	image.takeSelectionSnapshot();
 	auto size = image.getImageSize();
-	SelectedArea selectedArea = image.selectedArea;
+	SelectedArea selectedArea = *image.selectedArea;
 
 	for (unsigned j = 0; j < size.y; j++) {
 		for (unsigned i = 0; i < size.x; i++) {

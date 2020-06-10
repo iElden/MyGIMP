@@ -44,7 +44,7 @@ tgui::ScrollablePanel::Ptr Mimp::EllipseSelectionTool::getParametersPanel()
 
 void Mimp::EllipseSelectionTool::_updateSelectedArea(Mimp::Image &image)
 {
-	image.selectedArea.clear();
+	image.selectedArea->clear();
 
 	Vector2<int> center = {(this->_pt1.x + this->_pt2.x) / 2, (this->_pt1.y + this->_pt2.y) / 2};
 	int min_x = std::min(this->_pt1.x, this->_pt2.x);
@@ -56,7 +56,11 @@ void Mimp::EllipseSelectionTool::_updateSelectedArea(Mimp::Image &image)
 	for (int j = min_y; j < max_y; j++)
 		for (int i = min_x; i < max_x; i++)
 			if (this->point_in_ellipse(i - center.x, j - center.y, rx, ry))
-				image.selectedArea.add(i, j);
+				image.selectedArea->add(i, j);
+}
+
+void Mimp::EllipseSelectionTool::onMouseRelease(Mimp::Vector2<int>, Mimp::MouseClick, Mimp::Image &image)
+{
 }
 
 bool Mimp::EllipseSelectionTool::point_in_ellipse(int x, int y, int rx, int ry)

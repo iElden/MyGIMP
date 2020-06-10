@@ -36,6 +36,11 @@ void Mimp::RectSelectTool::onMouseDrag(Mimp::Vector2<int>, Mimp::Vector2<int> ne
 	this->_updateSelectedArea(image); // TODO: Add onMouseRelease event for optimisation
 }
 
+void Mimp::RectSelectTool::onMouseRelease(Mimp::Vector2<int> pos, Mimp::MouseClick click, Mimp::Image &image)
+{
+
+}
+
 void Mimp::RectSelectTool::_updateSelectedArea(Image &image)
 {
 	int min_x = std::min(this->_pt1.x, this->_pt2.x);
@@ -43,10 +48,10 @@ void Mimp::RectSelectTool::_updateSelectedArea(Image &image)
 	int min_y = std::min(this->_pt1.y, this->_pt2.y);
 	int max_y = std::max(this->_pt1.y, this->_pt2.y);
 
-	image.selectedArea.clear();
+	image.selectedArea->clear();
 	for (int j = min_y; j < max_y; j++) {
 		for (int i = min_x; i < max_x; i++) {
-			image.selectedArea.add(i, j);
+			image.selectedArea->add(i, j);
 		}
 	}
 
@@ -57,10 +62,10 @@ void Mimp::RectSelectTool::_updateSelectedArea(Image &image)
 	for (int j = 0; j <= radius; j++) {
 		for (int i = 0; i <= radius; i++) {
 			if (!this->_esp.point_in_ellipse(i, j, radius, radius)) {
-				image.selectedArea.remove(min_x - i + radius, min_y - j + radius); // Upper-left corner
-				image.selectedArea.remove(max_x + i - radius, min_y - j + radius); // Upper-right corner
-				image.selectedArea.remove(min_x - i + radius, max_y + j - radius); // Lower-left corner
-				image.selectedArea.remove(max_x + i - radius, max_y + j - radius); // Lower-right corner
+				image.selectedArea->remove(min_x - i + radius, min_y - j + radius); // Upper-left corner
+				image.selectedArea->remove(max_x + i - radius, min_y - j + radius); // Upper-right corner
+				image.selectedArea->remove(min_x - i + radius, max_y + j - radius); // Lower-left corner
+				image.selectedArea->remove(max_x + i - radius, max_y + j - radius); // Lower-right corner
 			}
 		}
 	}

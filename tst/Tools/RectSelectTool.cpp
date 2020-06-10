@@ -20,7 +20,7 @@ TEST(RectSelectTool, selectOnlyAPixel) {
 
     rst.onClick({4, 6}, Mimp::MIMP_LEFT_CLICK, image);
 
-    ASSERT_TRUE(image.selectedArea.pointInMap({4, 6}));
+    ASSERT_TRUE(image.selectedArea->pointInMap({4, 6}));
 }
 
 TEST(RectSelectTool, selectOnDrag) {
@@ -32,10 +32,10 @@ TEST(RectSelectTool, selectOnDrag) {
 
     rst.onMouseDrag({0, 0}, {4, 7}, Mimp::MIMP_LEFT_CLICK, image);
 
-    ASSERT_TRUE(image.selectedArea.pointInMap({4, 6}));
-    ASSERT_TRUE(image.selectedArea.pointInMap({0, 7}));
-    ASSERT_FALSE(image.selectedArea.pointInMap({5, 7}));
-    ASSERT_FALSE(image.selectedArea.pointInMap({11, 3}));
+    ASSERT_TRUE(image.selectedArea->pointInMap({4, 6}));
+    ASSERT_TRUE(image.selectedArea->pointInMap({0, 7}));
+    ASSERT_FALSE(image.selectedArea->pointInMap({5, 7}));
+    ASSERT_FALSE(image.selectedArea->pointInMap({11, 3}));
 }
 
 /*

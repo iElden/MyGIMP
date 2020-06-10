@@ -20,7 +20,7 @@ namespace Mimp
 		Vector2<int> bottomRight = {INT32_MIN, INT32_MIN};
 		unsigned *pxBuffer;
 
-		for (auto &pt : image->selectedArea.getPoints()) {
+		for (auto &pt : image->selectedArea->getPoints()) {
 			topLeft.x = std::min(topLeft.x, pt.x);
 			topLeft.y = std::min(topLeft.y, pt.y);
 			bottomRight.x = std::max(bottomRight.x, pt.x);
@@ -33,7 +33,7 @@ namespace Mimp
 
 		pxBuffer = new unsigned[size.x * size.y];
 		std::memset(pxBuffer, 0, size.x * size.y * sizeof(*pxBuffer));
-		for (auto &pt : image->selectedArea.getPoints()){
+		for (auto &pt : image->selectedArea->getPoints()){
 			auto coord = (pt - topLeft);
 
 			pxBuffer[coord.x + coord.y * size.x] =  layer.buffer->getPixel(pt);

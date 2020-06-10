@@ -13,5 +13,6 @@ Mimp::InvertSelectionOperation::InvertSelectionOperation():
 
 void Mimp::InvertSelectionOperation::click(tgui::Gui &, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr, Editor &) const
 {
-	image->selectedArea.invert();
+	image->takeSelectionSnapshot();
+	image->selectedArea->invert();
 }

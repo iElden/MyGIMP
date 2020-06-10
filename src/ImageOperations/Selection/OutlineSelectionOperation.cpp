@@ -21,9 +21,10 @@ Mimp::OutlineSelectionOperation::click(tgui::Gui &, CanvasWidget::Ptr image, tgu
 
 void Mimp::OutlineSelectionOperation::_run(Mimp::Image &image, int range) noexcept
 {
+	image.takeSelectionSnapshot();
 	auto selectedArea = image.selectedArea;
-	for (auto pt : image.selectedArea.getPoints())
-		OutlineSelectionOperation::_keepPointIfNoPointNearby(pt.x, pt.y, image, selectedArea);
+	for (auto pt : image.selectedArea->getPoints())
+		OutlineSelectionOperation::_keepPointIfNoPointNearby(pt.x, pt.y, image, *selectedArea);
 	if (range > 0)
 	    ExpandSelection::_run(image, range - 1);
 }
@@ -34,6 +35,6 @@ void Mimp::OutlineSelectionOperation::_keepPointIfNoPointNearby(unsigned i, unsi
 		for (int b = -1; b <= 1; b++)
 			if (!area.pointInMap(i + a, j + b))
 				return;
-	image.selectedArea.remove(i, j);
+	image.selectedArea->remove(i, j);
 }
 

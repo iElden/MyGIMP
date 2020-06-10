@@ -9,9 +9,9 @@ TEST(UnelectOperation, wholeLayer) {
     Mimp::CanvasWidget::Ptr cw = Mimp::CanvasWidget::create(toolBox, Mimp::Vector2<unsigned int>{10, 10});
     Mimp::InvertSelectionOperation iso;
 
-    cw->selectedArea.selectAll();
-    ASSERT_TRUE(cw->selectedArea.getPoints().size() == 100);
+    cw->selectedArea->selectAll();
+    ASSERT_TRUE(cw->selectedArea->getPoints().size() == 100);
 
 	iso.click(gui, cw, nullptr, e);
-    ASSERT_TRUE(cw->selectedArea.getPoints().size() == 0);
+    ASSERT_TRUE(cw->selectedArea->getPoints().size() == 0);
 }
