@@ -42,7 +42,6 @@ namespace Mimp {
         //! @param click Mouse click state
         //! @param image The Image to edit
 		void onClick(Vector2<int> pos, MouseClick click, Image &image) override;
-		void onMouseRelease([[maybe_unused]] Vector2<int> pos, [[maybe_unused]] MouseClick click, Image &image) override;
 
         //! @brief Get the parameters panel for the Tool.
         //! @return tgui::ScrollablePanel::Ptr Pointer containing the parameters panel

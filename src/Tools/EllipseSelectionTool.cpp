@@ -23,6 +23,7 @@ void Mimp::EllipseSelectionTool::clear()
 
 void Mimp::EllipseSelectionTool::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick, Mimp::Image &image)
 {
+	image.takeSelectionSnapshot();
 	this->_pt1 = pos;
 	this->_pt2 = pos;
 	this->_state = 1;
@@ -57,10 +58,6 @@ void Mimp::EllipseSelectionTool::_updateSelectedArea(Mimp::Image &image)
 		for (int i = min_x; i < max_x; i++)
 			if (this->point_in_ellipse(i - center.x, j - center.y, rx, ry))
 				image.selectedArea->add(i, j);
-}
-
-void Mimp::EllipseSelectionTool::onMouseRelease(Mimp::Vector2<int>, Mimp::MouseClick, Mimp::Image &image)
-{
 }
 
 bool Mimp::EllipseSelectionTool::point_in_ellipse(int x, int y, int rx, int ry)
