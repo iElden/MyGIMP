@@ -15,6 +15,7 @@ Mimp::SelectByColorTool::SelectByColorTool(ToolBox &toolBox):
 
 void Mimp::SelectByColorTool::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick click, Mimp::Image &image)
 {
+	image.takeSelectionSnapshot();
 	if (click == MouseClick::MIMP_LEFT_CLICK) {
 		image.takeSelectionSnapshot();
 		auto &layer = image.getSelectedLayer();
