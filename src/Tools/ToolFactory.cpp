@@ -1,4 +1,4 @@
-	//
+//
 // Created by Gegel85 on 07/04/2020.
 //
 
@@ -13,6 +13,7 @@
 #include "Eraser.hpp"
 #include "Move.hpp"
 #include "Text.hpp"
+#include "PolygonSelection.hpp"
 
 namespace Mimp {
 	const std::vector<std::function<std::shared_ptr<Tool>(ToolBox &)>> ToolFactory::_builders{
@@ -45,6 +46,9 @@ namespace Mimp {
 		},
 		[](ToolBox &box){
 			return std::make_shared<Text>(box);
+		},
+		[](ToolBox &box){
+			return std::make_shared<PolygonSelection>(box);
 		}
 	};
 
