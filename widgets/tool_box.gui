@@ -114,7 +114,7 @@ ScrollablePanel.Panel {
     BitmapButton.Tool6 {
         Image = "icons/select_color.png";
         ImageScaling = 0;
-        Position = (110, 50);
+        Position = (150, 50);
         Size = (30, 30);
         TextSize = 13;
         renderer = &1;
@@ -141,7 +141,7 @@ ScrollablePanel.Panel {
     BitmapButton.Tool8 {
         Image = "icons/move.png";
         ImageScaling = 0;
-        Position = (150, 50);
+        Position = (110, 90);
         Size = (30, 30);
         TextSize = 13;
         renderer = &1;
@@ -154,5 +154,14 @@ ScrollablePanel.Panel {
         Size = (30, 30);
         TextSize = 13;
         renderer = &1;
+    }
+
+    BitmapButton.Tool10 {
+            Image = "icons/select_rect.png";
+            ImageScaling = 0;
+            Position = (110, 50);
+            Size = (30, 30);
+            TextSize = 13;
+            renderer = &1;
     }
 }
