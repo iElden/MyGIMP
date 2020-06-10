@@ -63,8 +63,8 @@ namespace Mimp {
 		auto v = this->_vertices;
 
 		for (unsigned int i = 0, j = v.size() - 1; i < v.size(); j = i, i++) {
-			if ((((pt.y > v.at(i).y) && (pt.y < v.at(j).y)) || ((pt.y > v.at(j).y) && (pt.y < v.at(i).y))) &&
-			    (pt.x < ((v.at(j).x - v.at(i).x) * (pt.y - v.at(i).y) / (v.at(j).y - v.at(i).y) + v.at(i).x)))
+			if ((((v.at(i).y <= pt.y) && (pt.y < v.at(j).y)) || ((v.at(j).y <= pt.y) && (pt.y < v.at(i).y))) &&
+			    (pt.x < (v.at(j).x - v.at(i).x) * (pt.y - v.at(i).y) / (v.at(j).y - v.at(i).y) + v.at(i).x))
 				isInside = !isInside;
 		}
 
