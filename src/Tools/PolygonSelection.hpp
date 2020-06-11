@@ -4,6 +4,7 @@
 #include <TGUI/TGUI.hpp>
 #include "SelectionTool.hpp"
 #include "../ToolBox.hpp"
+#include "Polygon.hpp"
 
 namespace Mimp {
 	class PolygonSelection : public SelectionTool {
@@ -20,19 +21,10 @@ namespace Mimp {
 		tgui::ScrollablePanel::Ptr getParametersPanel() override;
 
 	private:
-		void _addVertex(Vector2<int> point);
-
-		void _removeLastVertex();
-
-		bool _isInside(Vector2<int> point);
-
-	private:
-		std::vector<Vector2<int>> _vertices;
-
-		Vector2<int> _min = {INT32_MAX, INT32_MAX};
-		Vector2<int> _max = {INT32_MIN, INT32_MIN};
 
 		tgui::EditBox::Ptr _box;
+
+		Polygon _polygon;
 	};
 }
 

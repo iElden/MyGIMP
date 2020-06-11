@@ -14,6 +14,7 @@
 #include "Move.hpp"
 #include "Text.hpp"
 #include "PolygonSelection.hpp"
+#include "Lasso.hpp"
 
 namespace Mimp {
 	const std::vector<std::function<std::shared_ptr<Tool>(ToolBox &)>> ToolFactory::_builders{
@@ -49,6 +50,9 @@ namespace Mimp {
 		},
 		[](ToolBox &box){
 			return std::make_shared<PolygonSelection>(box);
+		},
+		[](ToolBox &box){
+			return std::make_shared<Lasso>(box);
 		}
 	};
 

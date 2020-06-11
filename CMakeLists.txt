@@ -180,9 +180,14 @@ set(MIMP_SRCS
     src/ImageOperations/Effects/Symmetry.hpp
     src/Snapshot/LayerSnapshot.cpp
     src/Snapshot/LayerSnapshot.hpp
-    src/Snapshot/SelectionSnapshot.cpp src/Snapshot/SelectionSnapshot.hpp
+    src/Snapshot/SelectionSnapshot.cpp
+    src/Snapshot/SelectionSnapshot.hpp
     src/Tools/PolygonSelection.cpp
-    src/Tools/PolygonSelection.hpp)
+    src/Tools/PolygonSelection.hpp
+    src/Tools/Lasso.cpp
+    src/Tools/Lasso.hpp
+    src/Tools/Polygon.cpp
+    src/Tools/Polygon.hpp)
 
 
 find_library(PNG_LIBRARY png)
