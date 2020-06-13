@@ -29,7 +29,7 @@ namespace Mimp
 		//! @param angle Angle of rotation in degree
 		//! @param center Center of rotation
 		template <typename T>
-		Vector2<float> rotate(float angle, Vector2<T> center)
+		Vector2<double> rotate(float angle, Vector2<T> center)
 		{
 			angle = std::fmod(angle * M_PI / 180, 2 * M_PI);
 
@@ -42,7 +42,7 @@ namespace Mimp
 			float c = cos(angle);
 			float s = sin(angle);
 
-			Vector2<float> result {
+			Vector2<double> result{
 				c * (static_cast<float>(x) - center.x) - s * (static_cast<float>(y) - center.y) + center.x,
 				s * (static_cast<float>(x) - center.x) + c * (static_cast<float>(y) - center.y) + center.y
 			};
@@ -64,9 +64,9 @@ namespace Mimp
 		//! @param other The other Vector2 to add.
 		//! @return Vector2<type>
 		template <typename type2>
-		Vector2<type> operator+(const Vector2<type2> &other)
+		auto operator+(const Vector2<type2> &other)
 		{
-			return {
+			return Vector2<decltype(this->x + other.x)>{
 				this->x + other.x,
 				this->y + other.y
 			};
@@ -77,9 +77,9 @@ namespace Mimp
 		//! @param other The other Vector2 to sub
 		//! @return Vector2<type>
 		template <typename type2>
-		Vector2<type> operator-(const Vector2<type2> &other)
+		auto operator-(const Vector2<type2> &other)
 		{
-			return {
+			return Vector2<decltype(this->x - other.x)>{
 				this->x - other.x,
 				this->y - other.y
 			};

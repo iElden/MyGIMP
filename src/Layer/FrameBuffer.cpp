@@ -301,23 +301,14 @@ namespace Mimp
 	{
 		auto size = buffer->getSize();
 
-		rotation = rotation * M_PI / 180;
 		for (unsigned x = 0; x < size.x; x++)
-			for (unsigned y = 0; y < size.x; y++) {
+			for (unsigned y = 0; y < size.y; y++) {
 				auto col = buffer->getPixel({static_cast<int>(x), static_cast<int>(y)});
-				auto c = cos(rotation);
-				auto s = sin(rotation);
 
 				if (rotation == 0)
-					this->drawPixel({
-						static_cast<int>(x + pos.x),
-						static_cast<int>(y + pos.y)
-					}, col, drawStrategy);
+					this->drawPixel((pos + Vector2<unsigned>{x, y}).to<int>(), col, drawStrategy);
 				else
-					this->drawPoint({
-						static_cast<float>(c * (x - size.x / 2.) - s * (y - size.y / 2.) + size.x / 2. + pos.x),
-						static_cast<float>(s * (x - size.x / 2.) + c * (y - size.y / 2.) + size.y / 2. + pos.y)
-					}, col, drawStrategy);
+					this->drawPoint(Vector2<unsigned>{x, y}.rotate(rotation, size / 2) + pos, col, drawStrategy);
 			}
 	}
 
@@ -326,15 +317,8 @@ namespace Mimp
 		FrameBuffer result(size);
 
 		for (unsigned x = 0; x < size.x; x++)
-			for (unsigned y = 0; y < size.x; y++) {
-				result.setPixel({
-					static_cast<int>(x),
-					static_cast<int>(y)
-				}, this->getPixel({
-					static_cast<int>(x + pos.x),
-					static_cast<int>(y + pos.y)
-				}, fill));
-			}
+			for (unsigned y = 0; y < size.x; y++)
+				result.setPixel(Vector2<int>(x, y), this->getPixel(Vector2<int>(x + pos.x, y + pos.y), fill));
 		return result;
 	}
 
@@ -457,7 +441,7 @@ namespace Mimp
 		return reinterpret_cast<sf::Uint8 *>(this->_drawBuffer);
 	}
 
-	void FrameBuffer::drawPoint(Vector2<float> pos, const Color &color, DrawStrategy drawStrategy) noexcept
+	void FrameBuffer::drawPoint(Vector2<double> pos, const Color &color, DrawStrategy drawStrategy) noexcept
 	{
 		this->drawPixel({static_cast<int>(pos.x), static_cast<int>(pos.y)}, color, drawStrategy);
 		if (std::floor(pos.x) != pos.x)

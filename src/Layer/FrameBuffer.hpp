@@ -100,7 +100,7 @@ namespace Mimp
 		//! @param pos Position
 		//! @param color Color of the pixel
 		//! \param drawStrategy How the shape has to be drawn. Default is ADD.
-		void drawPoint(Vector2<float> pos, const Color &color, DrawStrategy drawStrategy=ADD) noexcept;
+		void drawPoint(Vector2<double> pos, const Color &color, DrawStrategy drawStrategy=ADD) noexcept;
 
 		//! @brief Set a pixel in the FrameBuffer
 		//! @param pos Position of the pixel.

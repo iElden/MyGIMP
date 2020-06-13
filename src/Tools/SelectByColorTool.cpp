@@ -33,8 +33,14 @@ void Mimp::SelectByColorTool::_updateSelectedArea(Image &image, const Color &tar
 
 	for (unsigned j = 0; j < max_y; j++)
 		for (unsigned i = 0; i < max_x; i++) {
-			if (layer.buffer->operator[](j * max_x + i).diff(target_color, this->_alpha_in_tolerance) <= this->_tolerance)
-				image.selectedArea->add(Vector2<unsigned>{i, j}.rotate(layer.rotation, layer.getSize() / 2).to<int>() + layer.pos);
+			if (layer.buffer->operator[](j * max_x + i).diff(target_color, this->_alpha_in_tolerance) <= this->_tolerance) {
+				auto vec = Vector2<unsigned>{i, j}.rotate(layer.rotation, layer.getSize() / 2);
+
+				image.selectedArea->add(vec.to<int>() + layer.pos);
+				image.selectedArea->add(Vector2<float>(vec.x, std::ceil(vec.y)).to<int>() + layer.pos);
+				image.selectedArea->add(Vector2<float>(std::ceil(vec.x), vec.y).to<int>() + layer.pos);
+				image.selectedArea->add(Vector2<float>(std::ceil(vec.x), std::ceil(vec.y)).to<int>() + layer.pos);
+			}
 		}
 }
 
