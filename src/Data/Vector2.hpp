@@ -34,10 +34,10 @@ namespace Mimp
 			angle = std::fmod(angle * M_PI / 180, 2 * M_PI);
 
 			if (angle == 0.f)
-				return {
-					static_cast<float>(this->x),
-					static_cast<float>(this->y)
-				};
+				return Vector2<double>(
+					this->x,
+					this->y
+				);
 
 			float c = cos(angle);
 			float s = sin(angle);
