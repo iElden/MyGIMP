@@ -45,8 +45,11 @@ namespace Mimp {
 		auto v = *this;
 
 		for (unsigned int i = 0, j = v.size() - 1; i < v.size(); j = i, i++) {
-			if ((((v.at(i).y <= pt.y) && (pt.y < v.at(j).y)) || ((v.at(j).y <= pt.y) && (pt.y < v.at(i).y))) &&
-			    (pt.x < (v.at(j).x - v.at(i).x) * (pt.y - v.at(i).y) / (v.at(j).y - v.at(i).y) + v.at(i).x))
+			auto &pt1 = v[i];
+			auto &pt2 = v[j];
+
+			if ((((pt1.y <= pt.y) && (pt.y < pt2.y)) || ((pt2.y <= pt.y) && (pt.y < pt1.y))) &&
+			    (pt.x < (pt2.x - pt1.x) * (pt.y - pt1.y) / (pt2.y - pt1.y) + pt1.x))
 				isInside = !isInside;
 		}
 

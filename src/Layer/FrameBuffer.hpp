@@ -13,7 +13,7 @@
 
 namespace Mimp
 {
-    //! @brief Define a FrameBuffer.
+	//! @brief Define a FrameBuffer.
 	class FrameBuffer {
 	private:
 		Vector2<unsigned int> _size;

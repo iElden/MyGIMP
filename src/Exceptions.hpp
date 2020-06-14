@@ -12,8 +12,8 @@
 
 namespace Mimp
 {
-    //! @brief Define the BaseException. All exceptions in Mimp must be inherited from here.
-    class BaseException : public std::exception {
+	//! @brief Define the BaseException. All exceptions in Mimp must be inherited from here.
+	class BaseException : public std::exception {
 	private:
 		std::string _msg; //!< Message of the exception
 
@@ -31,108 +31,108 @@ namespace Mimp
 		~BaseException() override = default;
 	};
 
-    //! @brief Define a CorruptedGuiFileException.
-    class CorruptedGuiFileException : public BaseException {
+	//! @brief Define a CorruptedGuiFileException.
+	class CorruptedGuiFileException : public BaseException {
 	public:
-        //! @brief Create a CorruptedGuiFileException with a message.
-        //! @param msg The error message.
+		//! @brief Create a CorruptedGuiFileException with a message.
+		//! @param msg The error message.
 		explicit CorruptedGuiFileException(const std::string &&msg) :
 			BaseException(static_cast<const std::string &&>(msg))
 		{};
 	};
 
-    //! @brief Define a InvalidArgumentException.
-    class InvalidArgumentException : public BaseException {
+	//! @brief Define a InvalidArgumentException.
+	class InvalidArgumentException : public BaseException {
 	public:
-        //! @brief Create a InvalidArgumentException with a message.
-        //! @param msg The error message.
+		//! @brief Create a InvalidArgumentException with a message.
+		//! @param msg The error message.
 		explicit InvalidArgumentException(const std::string &&msg) :
 			BaseException(static_cast<const std::string &&>(msg))
 		{};
 	};
 
-    //! @brief Define a OutOfBoundException.
-    class OutOfBoundException : public BaseException {
+	//! @brief Define a OutOfBoundException.
+	class OutOfBoundException : public BaseException {
 	public:
-        //! @brief Create a OutOfBoundException with a message.
-        //! @param msg The error message.
+		//! @brief Create a OutOfBoundException with a message.
+		//! @param msg The error message.
 		explicit OutOfBoundException(const std::string &&msg) :
 			BaseException(static_cast<const std::string &&>(msg))
 		{};
 	};
 
-    //! @brief Define a InvalidImageException.
-    class InvalidImageException : public BaseException {
+	//! @brief Define a InvalidImageException.
+	class InvalidImageException : public BaseException {
 	public:
-        //! @brief Create a InvalidImageException with a message.
-        //! @param msg The error message.
+		//! @brief Create a InvalidImageException with a message.
+		//! @param msg The error message.
 		explicit InvalidImageException(const std::string &&msg) :
 			BaseException(static_cast<const std::string &&>(msg))
 		{};
 	};
 
-    //! @brief Define a ExportErrorException.
-    class ExportErrorException : public BaseException {
+	//! @brief Define a ExportErrorException.
+	class ExportErrorException : public BaseException {
 	public:
-        //! @brief Create a ExportErrorException with a message.
-        //! @param msg The error message.
+		//! @brief Create a ExportErrorException with a message.
+		//! @param msg The error message.
 		explicit ExportErrorException(const std::string &&msg) :
 			BaseException(static_cast<const std::string &&>(msg))
 		{};
 	};
 
-    //! @brief Define a InvalidDrawShapeException.
-    class InvalidDrawShapeException : public BaseException {
+	//! @brief Define a InvalidDrawShapeException.
+	class InvalidDrawShapeException : public BaseException {
 	public:
-        //! @brief Create a InvalidDrawShapeException with a message.
-        //! @param msg The error message.
+		//! @brief Create a InvalidDrawShapeException with a message.
+		//! @param msg The error message.
 		explicit InvalidDrawShapeException(const std::string &&msg) :
 			BaseException(static_cast<const std::string &&>(msg))
 		{};
 	};
 
-    //! @brief Define a UnsupportedProtocolException.
+	//! @brief Define a UnsupportedProtocolException.
 	class UnsupportedProtocolException : public BaseException {
 	public:
-        //! @brief Create a UnsupportedProtocolException with a message.
-        //! @param msg The error message.
+		//! @brief Create a UnsupportedProtocolException with a message.
+		//! @param msg The error message.
 		explicit UnsupportedProtocolException(const std::string &&msg) :
 			BaseException(static_cast<const std::string &&>(msg))
 		{};
 	};
 
-    //! @brief Define a NotImplementedException.
-    class NotImplementedException : public BaseException {
+	//! @brief Define a NotImplementedException.
+	class NotImplementedException : public BaseException {
 	public:
-        //! @brief Create a NotImplementedException with a message.
-        //! @param msg The error message.
+		//! @brief Create a NotImplementedException with a message.
+		//! @param msg The error message.
 		explicit NotImplementedException() :
 			BaseException("Not implemented")
 		{};
 	};
 
-    //! @brief Define a FileNotFoundException.
-    class FileNotFoundException : public BaseException {
+	//! @brief Define a FileNotFoundException.
+	class FileNotFoundException : public BaseException {
 	public:
-        //! @brief Create a FileNotFoundException with a message.
-        //! @param path The error message.
+		//! @brief Create a FileNotFoundException with a message.
+		//! @param path The error message.
 		explicit FileNotFoundException(const std::string &path) :
 			BaseException(path + ": " + strerror(errno))
 		{};
 	};
 
-    //! @brief Define a TooMuchRecursionException.
-    class TooMuchRecursionException : public BaseException {
+	//! @brief Define a TooMuchRecursionException.
+	class TooMuchRecursionException : public BaseException {
 	public:
-        //! @brief Create a TooMuchRecursionException with a message.
-        //! @param msg The error message.
+		//! @brief Create a TooMuchRecursionException with a message.
+		//! @param msg The error message.
 		explicit TooMuchRecursionException(const std::string &&msg) :
 			BaseException(static_cast<const std::string &&>(msg))
 		{};
 
-        //! @brief Create a TooMuchRecursionException with a message.
-        //! @param e The previous recursion exception.
-        //! @param msg The error message.
+		//! @brief Create a TooMuchRecursionException with a message.
+		//! @param e The previous recursion exception.
+		//! @param msg The error message.
 		explicit TooMuchRecursionException(TooMuchRecursionException &e, const std::string &&msg) :
 			BaseException(static_cast<const std::string &&>(msg) + "\n" + e.what())
 		{};

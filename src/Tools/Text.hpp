@@ -25,7 +25,7 @@ namespace Mimp {
 		//! @param newPos New position of the mouse
 		//! @param click Mouse click state
 		//! @param image The Image to edit
-		void onMouseDrag([[maybe_unused]] Vector2<int> oldPos, [[maybe_unused]] Vector2<int> newPos, [[maybe_unused]] MouseClick click, [[maybe_unused]] Image &image) override
+		void onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Image &image) override
 		{};
 
 		//! @brief Get the parameters panel for the Tool.

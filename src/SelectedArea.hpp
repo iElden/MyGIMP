@@ -96,7 +96,6 @@ namespace Mimp {
 		//! @param y Y position of the point
 		//! @return bool
 		bool pointInMap(int x, int y) const;
-		void printDebug() const noexcept;
 	};
 }
 

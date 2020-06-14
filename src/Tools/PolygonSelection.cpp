@@ -40,4 +40,8 @@ namespace Mimp {
 		this->_box->setText("0");
 		this->_polygon.reset();
 	}
+
+	void PolygonSelection::onMouseDrag(Vector2<int>, Vector2<int>, MouseClick, Image &)
+	{
+	}
 }

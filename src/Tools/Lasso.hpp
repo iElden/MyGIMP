@@ -9,15 +9,10 @@
 namespace Mimp {
 	class Lasso : public SelectionTool {
 	public:
-
 		Lasso(ToolBox &box);
-
 		void onClick(Vector2<int> pos, MouseClick click, Image &image) override;
-
 		void onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Image &image) override;
-
 		tgui::ScrollablePanel::Ptr getParametersPanel() override;
-
 		void clear() override;
 
 	private:
