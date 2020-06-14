@@ -349,8 +349,7 @@ namespace Mimp
 		this->_pixelBuffer[pos.x + pos.y * this->_size.x] = color;
 	}
 
-	void FrameBuffer::drawAt(Vector2<int> pos, const Color &color, unsigned short radius, DrawShape shape,
-							 DrawStrategy drawStrategy) noexcept
+	void FrameBuffer::drawAt(Vector2<int> pos, const Color &color, unsigned short radius, DrawShape shape, DrawStrategy drawStrategy) noexcept
 	{
 		switch (shape) {
 		case DrawShape::CIRCLE:

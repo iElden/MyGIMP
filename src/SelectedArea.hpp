@@ -55,7 +55,7 @@ namespace Mimp {
 		//! @brief Fill a Layer with a Color.
 		//! @param layer The Layer to fill.
 		//! @param color The Color used to fill.
-		void fill(Layer &layer, const Color &color);
+		void fill(Layer &layer, const Color &color) const noexcept;
 
 		//! @brief Is the AreaSelected selected ?
 		//! @return bool

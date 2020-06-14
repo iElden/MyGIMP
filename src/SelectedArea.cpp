@@ -114,11 +114,17 @@ namespace Mimp
 			}
 	}
 
-	void SelectedArea::fill(Layer &layer, const Color &color)
+	void SelectedArea::fill(Layer &layer, const Color &color) const noexcept
 	{
 		if (this->isAnAreaSelected())
-			for (const auto &pt : this->getPoints())
-				layer.buffer->setPixel(pt, color);
+			for (const auto &pt : this->getPoints()) {
+				auto newPt = (pt - layer.pos).rotate(-layer.rotation, layer.getSize() / 2);
+
+				layer.buffer->setPixel(Vector2<int>(std::floor(newPt.x), std::floor(newPt.y)), color);
+				layer.buffer->setPixel(Vector2<int>(std::ceil(newPt.x),  std::floor(newPt.y)), color);
+				layer.buffer->setPixel(Vector2<int>(std::floor(newPt.x), std::ceil(newPt.y)),  color);
+				layer.buffer->setPixel(Vector2<int>(std::ceil(newPt.x),  std::ceil(newPt.y)),  color);
+			}
 	}
 
 	bool SelectedArea::pointInMap(Vector2<int> point) const

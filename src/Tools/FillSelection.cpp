@@ -22,8 +22,14 @@ void Mimp::FillSelection::onClick(Mimp::Vector2<int>, Mimp::MouseClick click, Mi
 	auto &layer = image.getSelectedLayer();
 
 	if (image.selectedArea->isAnAreaSelected())
-		for (Vector2<int> pt : image.selectedArea->getPoints())
-			layer.buffer->drawPixel(pt, this->_toolBox.getSelectedColor(click));
+		for (Vector2<int> pt : image.selectedArea->getPoints()) {
+			auto newPt = (pt - layer.pos).rotate(-layer.rotation, layer.getSize() / 2);
+
+			layer.buffer->setPixel(Vector2<int>(std::floor(newPt.x), std::floor(newPt.y)), this->_toolBox.getSelectedColor(click));
+			layer.buffer->setPixel(Vector2<int>(std::ceil(newPt.x),  std::floor(newPt.y)), this->_toolBox.getSelectedColor(click));
+			layer.buffer->setPixel(Vector2<int>(std::floor(newPt.x), std::ceil(newPt.y)),  this->_toolBox.getSelectedColor(click));
+			layer.buffer->setPixel(Vector2<int>(std::ceil(newPt.x),  std::ceil(newPt.y)),  this->_toolBox.getSelectedColor(click));
+		}
 }
 
 tgui::ScrollablePanel::Ptr Mimp::FillSelection::getParametersPanel()

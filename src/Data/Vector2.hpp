@@ -20,7 +20,7 @@ namespace Mimp
 		//! @brief Constructor of a templated Vector2
 		//! @param x_ The x value of the vector
 		//! @param y_ The y value of the vector
-		Vector2(type x_, type y_): x(x_), y(y_) {};
+		Vector2(const type &x_, const type &y_): x(x_), y(y_) {};
 
 		//! \brief Default Vector2 constructor
 		Vector2<type>() = default;
@@ -29,7 +29,7 @@ namespace Mimp
 		//! @param angle Angle of rotation in degree
 		//! @param center Center of rotation
 		template <typename T>
-		Vector2<double> rotate(float angle, Vector2<T> center)
+		Vector2<double> rotate(float angle, Vector2<T> center) const noexcept
 		{
 			angle = std::fmod(angle * M_PI / 180, 2 * M_PI);
 
@@ -51,7 +51,7 @@ namespace Mimp
 		}
 
 		template <typename T>
-		Vector2<T> to()
+		Vector2<T> to() const noexcept
 		{
 			return {
 				static_cast<T>(this->x),
@@ -64,7 +64,7 @@ namespace Mimp
 		//! @param other The other Vector2 to add.
 		//! @return Vector2<type>
 		template <typename type2>
-		auto operator+(const Vector2<type2> &other)
+		auto operator+(const Vector2<type2> &other) const noexcept
 		{
 			return Vector2<decltype(this->x + other.x)>{
 				this->x + other.x,
@@ -77,7 +77,7 @@ namespace Mimp
 		//! @param other The other Vector2 to sub
 		//! @return Vector2<type>
 		template <typename type2>
-		auto operator-(const Vector2<type2> &other)
+		auto operator-(const Vector2<type2> &other) const noexcept
 		{
 			return Vector2<decltype(this->x - other.x)>{
 				this->x - other.x,
@@ -90,7 +90,7 @@ namespace Mimp
 		//! @param other The Vector2 to add.
 		//! @return Vector2<type>
 		template <typename type2>
-		Vector2<type> &operator+=(const Vector2<type2> &other)
+		Vector2<type> &operator+=(const Vector2<type2> &other) noexcept
 		{
 			this->x += other.x;
 			this->y += other.y;
@@ -102,7 +102,7 @@ namespace Mimp
 		//! @param other The other Vector2 to subtract.
 		//! @return Vector2<type>
 		template <typename type2>
-		Vector2<type> operator-=(const Vector2<type2> &other)
+		Vector2<type> operator-=(const Vector2<type2> &other) noexcept
 		{
 			this->x -= other.x;
 			this->y -= other.y;
@@ -114,7 +114,7 @@ namespace Mimp
 		//! \param other The factor of the multiplication.
 		//! \return A Vector2 of the better storage type between type and type2 and containing the result of the multiplication.
 		template <typename type2>
-		auto operator*(type2 other)
+		auto operator*(type2 other) const noexcept
 		{
 			return Vector2<decltype(this->x * other)>{
 				this->x * other,
@@ -127,7 +127,7 @@ namespace Mimp
 		//! \param other The factor of the division.
 		//! \return A Vector2 of the better storage type between type and type2 and containing the result of the multiplication.
 		template <typename type2>
-		auto operator/(type2 other)
+		auto operator/(type2 other) const noexcept
 		{
 			return Vector2<decltype(this->x * other)>{
 				this->x / other,
@@ -139,7 +139,7 @@ namespace Mimp
 		//! @details Is the Vector2 in parameter equal to the first Vector2 ?
 		//! @param other The other Vector2 to sub
 		//! @return bool
-		bool operator==(const Vector2<type> &other)
+		bool operator==(const Vector2<type> &other) const noexcept
 		{
 			return this->x == other.x && this->y == other.y;
 		}
