@@ -23,12 +23,7 @@ namespace Mimp {
 		//! @param toolBox ToolBox containing the SelectByColorTool Tool
 		SelectByColorTool(ToolBox &toolBox);
 
-		//! @brief Handle the mouse dragging of the Tool.
-		//! @param oldPos Old position of the mouse
-		//! @param newPos New position of the mouse
-		//! @param click Mouse click state
-		//! @param image The Image to edit
-		void onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Image &image) override {};
+		void onMouseDrag(Vector2<int>, Vector2<int>, MouseClick, Image &) override {};
 
 		//! @brief Handle the mouse click of the Tool.
 		//! @param pos Position of the tool

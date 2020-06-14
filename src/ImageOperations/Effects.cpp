@@ -17,7 +17,7 @@ namespace Mimp {
 		this->_effects.push_back(std::make_shared<Symmetry>(this->_win));
 	}
 
-	void Effects::click(tgui::Gui &gui, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr window, Editor &editor) const
+	void Effects::click(tgui::Gui &gui, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr window, Editor &) const
 	{
 		this->_win->setTitle("Effects (" + window->getTitle().toAnsiString() + "/" + image->getSelectedLayer().name + ")");
 		for (auto &e : this->_effects) {
