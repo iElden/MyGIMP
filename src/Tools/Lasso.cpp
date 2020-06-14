@@ -12,20 +12,14 @@ namespace Mimp {
 	void Lasso::onMouseDrag(Vector2<int>, Vector2<int> newPos, MouseClick click, Image &image)
 	{
 		if (click == MouseClick::MIMP_LEFT_CLICK) {
-			image.selectedArea->clear();
 			this->_polygon.add(newPos);
-			this->_polygon.update([&image](Vector2<int> pt) { image.selectedArea->add(pt); });
 		}
 	}
 
 	void Lasso::onClick(Vector2<int>, MouseClick click, Image &image)
 	{
 		image.takeSelectionSnapshot();
-
-		if (click == MouseClick::MIMP_RIGHT_CLICK) {
-			image.selectedArea->clear();
-			this->_polygon.update([&image](Vector2<int> pt) { image.selectedArea->add(pt); });
-		}
+		image.selectedArea->clear();
 	}
 
 	tgui::ScrollablePanel::Ptr Lasso::getParametersPanel()
@@ -44,5 +38,12 @@ namespace Mimp {
 	void Lasso::clear()
 	{
 		this->_polygon.reset();
+	}
+
+	void Lasso::onMouseRelease(Vector2<int> vector2, MouseClick click, Image &image)
+	{
+		image.takeSelectionSnapshot();
+		image.selectedArea->clear();
+		this->_polygon.update([&image](Vector2<int> pt) { image.selectedArea->add(pt); });
 	}
 }
