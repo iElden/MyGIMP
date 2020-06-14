@@ -12,8 +12,9 @@ namespace Mimp {
 	void Lasso::onMouseDrag(Vector2<int>, Vector2<int> newPos, MouseClick click, Image &image)
 	{
 		if (click == MouseClick::MIMP_LEFT_CLICK) {
-			image.selectedArea->add(newPos);
+			image.selectedArea->clear();
 			this->_polygon.add(newPos);
+			this->_polygon.update([&image](Vector2<int> pt) { image.selectedArea->add(pt); });
 		}
 	}
 
