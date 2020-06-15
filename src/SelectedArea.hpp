@@ -96,6 +96,8 @@ namespace Mimp {
 		//! @param y Y position of the point
 		//! @return bool
 		bool pointInMap(int x, int y) const;
+
+		void addLine(Vector2<int> pt1, Vector2<int> pt2) noexcept;
 	};
 }
 
