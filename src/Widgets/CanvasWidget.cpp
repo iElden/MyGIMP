@@ -124,7 +124,7 @@ namespace Mimp
 		}
 
 		//! @todo Basic symmetry implementation. Optimization with sf::Vertex ?
-		if (this->_symmetry.x) {
+		if (this->_symmetry.x || this->_axialSymmetry) {
 			sf::RectangleShape rs;
 			rs.setSize({this->_size.x * this->_zoom, 1});
 			rs.setRotation(0);
@@ -132,7 +132,7 @@ namespace Mimp
 			rs.setFillColor(sf::Color::Cyan);
 			target.draw(rs, states);
 		}
-		if (this->_symmetry.y) {
+		if (this->_symmetry.y || this->_axialSymmetry) {
 			sf::RectangleShape rs;
 			rs.setSize({this->_size.y * this->_zoom, 1});
 			rs.setRotation(90);
@@ -264,5 +264,11 @@ namespace Mimp
 	{
 		this->_layers.getSelectedLayer().buffer->setSymmetryAxis(axis);
 		this->_axis = axis;
+	}
+
+	void CanvasWidget::setAxialSymmetry(bool axialSymmetry)
+	{
+		this->_layers.getSelectedLayer().buffer->setAxialSymmetry(axialSymmetry);
+		this->_axialSymmetry = axialSymmetry;
 	}
 }
