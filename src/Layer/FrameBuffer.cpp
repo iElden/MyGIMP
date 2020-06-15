@@ -360,7 +360,7 @@ namespace Mimp
 			if (this->_symmetry.y) {
 				this->_drawCircleAt({this->_axis.x - pos.x + this->_axis.x, pos.y}, color, radius, drawStrategy);
 			}
-			if (this->_axialSymmetry) {
+			if (this->_centralSymmetry) {
 				this->_drawCircleAt({this->_axis.x - pos.x + this->_axis.x, this->_axis.y - pos.y + this->_axis.y}, color, radius, drawStrategy);
 			}
 			break;
@@ -372,7 +372,7 @@ namespace Mimp
 			if (this->_symmetry.y) {
 				this->_drawSquareAt({this->_axis.x - pos.x + this->_axis.x, pos.y}, color, radius, drawStrategy);
 			}
-			if (this->_axialSymmetry) {
+			if (this->_centralSymmetry) {
 				this->_drawSquareAt({this->_axis.x - pos.x + this->_axis.x, this->_axis.y - pos.y + this->_axis.y}, color, radius, drawStrategy);
 			}
 			break;
@@ -384,7 +384,7 @@ namespace Mimp
 			if (this->_symmetry.y) {
 				this->_drawDiamondAt({this->_axis.x - pos.x + this->_axis.x, pos.y}, color, radius, drawStrategy);
 			}
-			if (this->_axialSymmetry) {
+			if (this->_centralSymmetry) {
 				this->_drawDiamondAt({this->_axis.x - pos.x + this->_axis.x, this->_axis.y - pos.y + this->_axis.y}, color, radius, drawStrategy);
 			}
 			break;

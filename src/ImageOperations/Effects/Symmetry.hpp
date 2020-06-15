@@ -13,7 +13,7 @@ namespace Mimp {
 	private:
 		Vector2<bool> _symmetry = {false, false};
 		Vector2<int> _axis = {0, 0};
-		bool _axialSymmetry = false;
+		bool _centralSymmetry = false;
 	};
 }
 

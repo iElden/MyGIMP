@@ -14,7 +14,7 @@ namespace Mimp {
 		auto textX = window->get<tgui::TextBox>("SymmetryXPreview");
 		auto textY = window->get<tgui::TextBox>("SymmetryYPreview");
 
-		auto axialCheck =  window->get<tgui::CheckBox>("AxialSymmetryCheck");
+		auto centralCheck =  window->get<tgui::CheckBox>("CentralSymmetryCheck");
 
 		auto checkboxCallback = [this](tgui::CheckBox::Ptr box, tgui::Slider::Ptr slider, bool b) {
 			bool isChecked = box->isChecked();
@@ -27,12 +27,13 @@ namespace Mimp {
 		checkboxX->connect("Changed", checkboxCallback, checkboxX, sliderX, 0);
 		checkboxY->connect("Changed", checkboxCallback, checkboxY, sliderY, 1);
 
-		axialCheck->connect("Changed", [this, sliderX, sliderY, axialCheck]() {
-			bool isChecked = axialCheck->isChecked();
+		centralCheck->connect("Changed", [this, sliderX, sliderY, centralCheck]() {
+			bool isChecked = centralCheck->isChecked();
 
 			sliderX->setEnabled(isChecked);
 			sliderY->setEnabled(isChecked);
-			this->_image->setAxialSymmetry(isChecked);
+			this->_centralSymmetry = isChecked;
+			this->_image->setCentralSymmetry(isChecked);
 		});
 
 		auto sliderCallback = [this](tgui::Slider::Ptr slider, tgui::TextBox::Ptr box, bool b) {
@@ -51,7 +52,7 @@ namespace Mimp {
 	{
 		image->setSymmetry(this->_symmetry);
 		image->setSymmetryAxis(this->_axis);
-		image->setAxialSymmetry(this->_axialSymmetry);
+		image->setCentralSymmetry(this->_centralSymmetry);
 		Effect::setImage(image);
 	}
 }

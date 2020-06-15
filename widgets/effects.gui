@@ -296,18 +296,18 @@ TextBox.SymmetryYPreview {
     }
 }
 
-Label.AxialSymmetryLabel {
+Label.CentralSymmetryLabel {
     AutoSize = true;
     Position = (10, (symmetryyaxis.y + symmetryyaxis.h) + 10);
     ScrollbarPolicy = Never;
     Size = (105.2, 18);
-    Text = "Axial symmetry";
+    Text = "Central symmetry";
     TextSize = 13;
     renderer = &2;
 }
 
-CheckBox.AxialSymmetryCheck {
-    Position = ((axialsymmetrylabel.x + axialsymmetrylabel.w) + 10, axialsymmetrylabel.y);
+CheckBox.CentralSymmetryCheck {
+    Position = ((centralsymmetrylabel.x + centralsymmetrylabel.w) + 10, centralsymmetrylabel.y);
     Size = (18, 18);
     TextSize = 13;
     renderer = &1;

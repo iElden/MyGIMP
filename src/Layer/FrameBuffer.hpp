@@ -27,7 +27,7 @@ namespace Mimp
 		Vector2<bool> _symmetry = {false, false};
 		Vector2<int> _axis = {0, 0};
 
-		bool _axialSymmetry = false;
+		bool _centralSymmetry = false;
 		bool _clockwise = false;
 
 	public:
@@ -140,7 +140,7 @@ namespace Mimp
 
 		void setSymmetryAxis(Vector2<int> axis) { this->_axis = axis; };
 
-		void setAxialSymmetry(bool axialSymmetry) { this->_axialSymmetry = axialSymmetry; };
+		void setCentralSymmetry(bool centralSymmetry) { this->_centralSymmetry = centralSymmetry; };
 	};
 }
 
