@@ -27,6 +27,9 @@ namespace Mimp
 		Vector2<bool> _symmetry = {false, false};
 		Vector2<int> _axis = {0, 0};
 
+		bool _centralSymmetry = false;
+		bool _clockwise = false;
+
 	public:
 		//! @brief Copy Constructor of the framebuffer.
 		//! @param other FrameBuffer to copy.
@@ -136,6 +139,8 @@ namespace Mimp
 		void setSymmetry(Vector2<bool> symmetry) { this->_symmetry = symmetry; };
 
 		void setSymmetryAxis(Vector2<int> axis) { this->_axis = axis; };
+
+		void setCentralSymmetry(bool centralSymmetry) { this->_centralSymmetry = centralSymmetry; };
 	};
 }
 
