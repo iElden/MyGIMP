@@ -40,7 +40,7 @@ void Mimp::Fill::apply(Mimp::Vector2<int> pos, Mimp::Layer &layer, MouseClick &c
 		return;
 	auto target_color = layer.buffer->getPixel(pos);
 	auto fill_color = this->_box.getSelectedColor(click);
-	if (fill_color == target_color)
+	if (fill_color.diff(target_color, this->_alpha_in_tolerance) <= this->_tolerance)
 		return;
 	this->_spread_color(pos, layer, target_color, fill_color);
 }
@@ -51,14 +51,14 @@ void Mimp::Fill::_spread_color(Vector2<int> pos, Layer &layer, Color target_colo
 	std::vector<Vector2<int>> points = {pos};
 	std::vector<Vector2<int>> new_points;
 
-	layer.buffer->drawPixel(pos, fill_color);
+	layer.buffer->setPixel(pos, fill_color);
 	while (!points.empty()) {
 		new_points.clear();
 		for (auto pt : points)
 			for (auto sp : spread_pos) {
 				auto new_pos = pt + sp;
 				if (!layer.buffer->posIsOutOfBound(new_pos) && layer.buffer->getPixel(new_pos).diff(target_color, this->_alpha_in_tolerance) <= this->_tolerance) {
-					layer.buffer->drawPixel(new_pos, fill_color, SET);
+					layer.buffer->setPixel(new_pos, fill_color);
 					new_points.push_back(new_pos);
 				}
 			}
