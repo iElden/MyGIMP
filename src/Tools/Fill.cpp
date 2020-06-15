@@ -26,8 +26,7 @@ void Mimp::Fill::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick click, Mimp::I
 	this->apply((pos - layer.pos).rotate(-layer.rotation, layer.getSize() / 2).to<int>(), layer, click);
 }
 
-void Mimp::Fill::onMouseDrag(Mimp::Vector2<int>, Mimp::Vector2<int> newPos, Mimp::MouseClick click,
-							 Mimp::Image &image)
+void Mimp::Fill::onMouseDrag(Mimp::Vector2<int>, Mimp::Vector2<int> newPos, Mimp::MouseClick click, Mimp::Image &image)
 {
 	auto &layer = image.getSelectedLayer();
 
@@ -40,7 +39,7 @@ void Mimp::Fill::apply(Mimp::Vector2<int> pos, Mimp::Layer &layer, MouseClick &c
 		return;
 	auto target_color = layer.buffer->getPixel(pos);
 	auto fill_color = this->_box.getSelectedColor(click);
-	if (fill_color.diff(target_color, this->_alpha_in_tolerance) <= this->_tolerance)
+	if (fill_color.diff(target_color, this->_alphaInTolerance) <= this->_tolerance)
 		return;
 	this->_spread_color(pos, layer, target_color, fill_color);
 }
@@ -57,7 +56,7 @@ void Mimp::Fill::_spread_color(Vector2<int> pos, Layer &layer, Color target_colo
 		for (auto pt : points)
 			for (auto sp : spread_pos) {
 				auto new_pos = pt + sp;
-				if (!layer.buffer->posIsOutOfBound(new_pos) && layer.buffer->getPixel(new_pos).diff(target_color, this->_alpha_in_tolerance) <= this->_tolerance) {
+				if (!layer.buffer->posIsOutOfBound(new_pos) && layer.buffer->getPixel(new_pos).diff(target_color, this->_alphaInTolerance) <= this->_tolerance) {
 					layer.buffer->setPixel(new_pos, fill_color);
 					new_points.push_back(new_pos);
 				}
@@ -78,11 +77,14 @@ tgui::ScrollablePanel::Ptr Mimp::Fill::getParametersPanel()
 
 	tolerancePreview->setText(std::to_string(this->_tolerance));
 	toleranceSlider->setValue(this->_tolerance);
-	alpha->setChecked(true);
+	alpha->setChecked(this->_alphaInTolerance);
 
 	toleranceSlider->connect("ValueChanged", [tolerancePreview, this, toleranceSlider]{
 		this->_tolerance = toleranceSlider->getValue();
 		tolerancePreview->setText(std::to_string(this->_tolerance));
+	});
+	alpha->connect("Changed", [alpha, this]{
+		this->_alphaInTolerance = alpha->isChecked();
 	});
 	return panel;
 }

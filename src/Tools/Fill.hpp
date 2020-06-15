@@ -17,7 +17,7 @@ namespace Mimp
 		ToolBox &_box; //!< Reference to the ToolBox containing the Fill
 
 		unsigned _tolerance = 0; //!< The tolerance of the Fill
-		bool _alpha_in_tolerance = false; //!< Include or not the alpha when filling
+		bool _alphaInTolerance = true; //!< Include or not the alpha when filling
 
 		//! @brief Apply the Fill Tool
 		//! @param pos Position of the Fill application
