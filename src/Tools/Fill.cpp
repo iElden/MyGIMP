@@ -86,4 +86,3 @@ tgui::ScrollablePanel::Ptr Mimp::Fill::getParametersPanel()
 	});
 	return panel;
 }
-
