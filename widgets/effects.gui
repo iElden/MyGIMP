@@ -47,7 +47,7 @@ Renderer.3 {
 }
 
 Label.LightLabel {
-    Position = (10, 30);
+    Position = (10, 10);
     ScrollbarPolicy = Never;
     Size = (70, 16);
     Text = Light;
@@ -86,7 +86,7 @@ TextBox.LightPreview {
 }
 
 Label.SaturationRedLabel {
-    Position = (10, 50);
+    Position = (10, 60);
     ScrollbarPolicy = Never;
     Size = (70, 16);
     Text = Red;
@@ -125,7 +125,7 @@ TextBox.SaturationRedPreview {
 }
 
 Label.SaturationGreenLabel {
-    Position = (10, 110);
+    Position = (10, (saturationredlabel.y + saturationredlabel.h) + 10);
     ScrollbarPolicy = Never;
     Size = (70, 16);
     Text = Green;
@@ -164,7 +164,7 @@ TextBox.SaturationGreenPreview {
 }
 
 Label.SaturationBlueLabel {
-    Position = (10, 80);
+    Position = (10, (saturationgreenlabel.y + saturationgreenlabel.h) + 10);
     ScrollbarPolicy = Never;
     Size = (70, 16);
     Text = Blue;
@@ -203,7 +203,7 @@ TextBox.SaturationBluePreview {
 }
 
 Label.SymmetryXAxis {
-    Position = (10, 150);
+    Position = (10, 160);
     ScrollbarPolicy = Never;
     Size = (70, 16);
     Text = X;
@@ -250,7 +250,7 @@ TextBox.SymmetryXPreview {
 }
 
 Label.SymmetryYAxis {
-    Position = (10, 170);
+    Position = (10, (symmetryxaxis.y + symmetryxaxis.h) + 10);
     ScrollbarPolicy = Never;
     Size = (70, 16);
     Text = Y;
@@ -294,4 +294,21 @@ TextBox.SymmetryYPreview {
         textcolor = #3C3C3C;
         texturebackground = None;
     }
+}
+
+Label.CentralSymmetryLabel {
+    AutoSize = true;
+    Position = (10, (symmetryyaxis.y + symmetryyaxis.h) + 10);
+    ScrollbarPolicy = Never;
+    Size = (105.2, 18);
+    Text = "Central symmetry";
+    TextSize = 13;
+    renderer = &2;
+}
+
+CheckBox.CentralSymmetryCheck {
+    Position = ((centralsymmetrylabel.x + centralsymmetrylabel.w) + 10, centralsymmetrylabel.y);
+    Size = (18, 18);
+    TextSize = 13;
+    renderer = &1;
 }

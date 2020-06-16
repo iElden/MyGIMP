@@ -15,14 +15,14 @@ Mimp::SelectByColorTool::SelectByColorTool(ToolBox &toolBox):
 
 void Mimp::SelectByColorTool::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick click, Mimp::Image &image)
 {
-	image.takeSelectionSnapshot();
-	if (click == MouseClick::MIMP_LEFT_CLICK) {
-		image.takeSelectionSnapshot();
-		auto &layer = image.getSelectedLayer();
+	auto &layer = image.getSelectedLayer();
 
-		image.selectedArea->clear();
-		this->_updateSelectedArea(image, layer.buffer->getPixel((pos - layer.pos).rotate(-layer.rotation, layer.getSize() / 2).to<int>()));
-	}
+	image.takeSelectionSnapshot();
+	image.selectedArea->clear();
+	this->_updateSelectedArea(image, layer.buffer->getPixel((pos - layer.pos).rotate(-layer.rotation, layer.getSize() / 2).to<int>()));
+
+	if (click == MouseClick::MIMP_RIGHT_CLICK)
+		image.selectedArea->invert();
 }
 
 void Mimp::SelectByColorTool::_updateSelectedArea(Image &image, const Color &target_color)

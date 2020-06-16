@@ -108,7 +108,7 @@ TEST(FrameBuffer, outOfBoundException) {
     Mimp::FrameBuffer fb(size, Mimp::Color::Green);
 
     try {
-        [[maybe_unused]] auto px = fb[10000];
+        auto px = fb[10000];
     } catch (Mimp::OutOfBoundException &e) {
         ASSERT_EQ(std::string(e.what()), "10000 >= 10 * 10");
     }

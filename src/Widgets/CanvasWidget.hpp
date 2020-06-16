@@ -32,6 +32,7 @@ namespace Mimp
 
 		Vector2<bool> _symmetry = {false, false};
 		Vector2<int> _axis = {0, 0};
+		bool _centralSymmetry = false;
 
 		mutable unsigned char _colorCounter = 0;
 
@@ -118,6 +119,8 @@ namespace Mimp
 		void setSymmetry(Vector2<bool> symmetry);
 
 		void setSymmetryAxis(Vector2<int> axis);
+
+		void setCentralSymmetry(bool central);
 	};
 }
 

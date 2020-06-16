@@ -11,7 +11,7 @@
 
 namespace Mimp
 {
-    //! @brief Define the LayerWidget.
+	//! @brief Define the LayerWidget.
 	class LayerWidget : public tgui::ClickableWidget {
 	private:
 		const std::shared_ptr<Layer> &_layer;

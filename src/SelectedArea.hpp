@@ -55,7 +55,7 @@ namespace Mimp {
 		//! @brief Fill a Layer with a Color.
 		//! @param layer The Layer to fill.
 		//! @param color The Color used to fill.
-		void fill(Layer &layer, const Color &color);
+		void fill(Layer &layer, const Color &color) const noexcept;
 
 		//! @brief Is the AreaSelected selected ?
 		//! @return bool
@@ -96,7 +96,8 @@ namespace Mimp {
 		//! @param y Y position of the point
 		//! @return bool
 		bool pointInMap(int x, int y) const;
-		void printDebug() const noexcept;
+
+		void addLine(Vector2<int> pt1, Vector2<int> pt2) noexcept;
 	};
 }
 

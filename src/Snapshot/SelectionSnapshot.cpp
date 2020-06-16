@@ -16,8 +16,6 @@ Mimp::SelectionSnapshot::SelectionSnapshot(const Mimp::SelectedArea &oldSelectio
 
 void Mimp::SelectionSnapshot::undo(Image &image, Editor &)
 {
-	image.selectedArea->printDebug();
-	_oldSelection->printDebug();
 	image.selectedArea.swap(this->_oldSelection);
 }
 
