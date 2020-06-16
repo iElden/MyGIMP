@@ -55,7 +55,6 @@ TextBox.Preview {
         borders = (1, 1, 1, 1);
         caretcolor = black;
         caretwidth = 1;
-        defaulttextcolor = #A0A0A0;
         padding = (0, 0, 0, 0);
         selectedtextbackgroundcolor = #006EFF;
         selectedtextcolor = white;

@@ -132,33 +132,16 @@ namespace Mimp
 	void ToolBox::selectTool(Keys::KeyCombination kc)
 	{
 		auto panel = this->_window->get<tgui::ScrollablePanel>("Panel");
-		try {
-			for (std::size_t i = 0; i < _tools.size(); i += 1) {
-				auto tool = _tools[i];
-				if (tool->getKeyCombination() == kc) {
-					this->getSelectedTool()->onUnselect();
-					this->_selectedTool = i;
-					this->_addSelectedToolConfigPanel(panel);
-					this->getSelectedTool()->onSelect();
 
-					auto panel = this->_window->get<tgui::ScrollablePanel>("Panel");
-
-					for (auto &widget : panel->getWidgets()) {
-						auto name = panel->getWidgetName(widget);
-
-						try {
-							size_t index = std::stol(static_cast<std::string>(name.substr(strlen("Tool"))));
-							if (this->_tools[index]->getName() == this->_tools[this->_selectedTool]->getName()) {
-								widget->setFocused(true);
-								return;
-							}
-						} catch (...) {}
-					}
-					return;
-				}
+		for (std::size_t i = 0; i < this->_tools.size(); i += 1) {
+			if (this->_tools[i]->getKeyCombination() == kc) {
+				this->getSelectedTool()->onUnselect();
+				this->_selectedTool = i;
+				this->_addSelectedToolConfigPanel(panel);
+				this->getSelectedTool()->onSelect();
+				return;
 			}
 		}
-		 catch (...) {}
 	}
 
 	void ToolBox::refreshToolBox()

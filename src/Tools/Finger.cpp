@@ -8,12 +8,36 @@ namespace Mimp {
 		this->setKeyCombination({Keys::KEY_F, false, true, false});
 	}
 
-	void Finger::onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Image &image)
+	void Finger::onMouseDrag(Vector2<int>, Vector2<int> newPos, MouseClick, Image &image)
 	{
-		this->onClick(newPos, click, image);
+		this->_apply(newPos, image);
 	}
 
-	void Finger::onClick(Vector2<int> pos, MouseClick click, Image &image)
+	void Finger::onClick(Vector2<int> pos, MouseClick, Image &image)
+	{
+		image.takeFrameBufferSnapshot();
+		this->_apply(pos, image);
+	}
+
+	tgui::ScrollablePanel::Ptr Finger::getParametersPanel()
+	{
+		auto panel = tgui::ScrollablePanel::create();
+
+		panel->loadWidgetsFromFile("widgets/tools_cfg/finger_cfg.gui");
+
+		auto radiusSlider = panel->get<tgui::Slider>("Radius");
+		auto radiusPreview = panel->get<tgui::TextBox>("Preview");
+
+		radiusPreview->setText(std::to_string(this->_radius));
+		radiusSlider->setValue(this->_radius);
+		radiusSlider->connect("ValueChanged", [radiusPreview, this, radiusSlider]{
+			this->_radius = radiusSlider->getValue();
+			radiusPreview->setText(std::to_string(this->_radius));
+		});
+		return panel;
+	}
+
+	void Finger::_apply(Vector2<int> pos, Image &image)
 	{
 		int xmin = pos.x - this->_radius;
 		int xmax = pos.x + this->_radius;
@@ -34,7 +58,6 @@ namespace Mimp {
 
 		if (pixels.empty())
 			return;
-		image.takeFrameBufferSnapshot();
 
 		int r = 0;
 		int g = 0;
@@ -63,23 +86,5 @@ namespace Mimp {
 				}
 			}
 		}
-	}
-
-	tgui::ScrollablePanel::Ptr Finger::getParametersPanel()
-	{
-		auto panel = tgui::ScrollablePanel::create();
-
-		panel->loadWidgetsFromFile("widgets/tools_cfg/finger_cfg.gui");
-
-		auto radiusSlider = panel->get<tgui::Slider>("Radius");
-		auto radiusPreview = panel->get<tgui::TextBox>("Preview");
-
-		radiusPreview->setText(std::to_string(this->_radius));
-		radiusSlider->setValue(this->_radius);
-		radiusSlider->connect("ValueChanged", [radiusPreview, this, radiusSlider]{
-			this->_radius = radiusSlider->getValue();
-			radiusPreview->setText(std::to_string(this->_radius));
-		});
-		return panel;
 	}
 }
