@@ -1,7 +1,13 @@
+#include <filesystem>
 #include "Editor.hpp"
 #include "Utils.hpp"
+#ifdef _WIN32
+#include <direct.h>
+#else
+#include <unistd.h>
+#endif
 
-int main()
+int main(int, char **argv)
 {
 #ifndef _DEBUG
 	try {
@@ -9,6 +15,7 @@ int main()
 
 	Mimp::Editor editor;
 
+	chdir(std::filesystem::path(argv[0]).parent_path().string().c_str());
 	return editor.run();
 
 #ifndef _DEBUG

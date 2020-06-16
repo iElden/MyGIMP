@@ -8,71 +8,36 @@
 
 #include <TGUI/Gui.hpp>
 #include "../Image.hpp"
+#include "../Widgets/CanvasWidget.hpp"
+#include "../Keys.hpp"
 
 namespace Mimp
 {
-	enum Key {
-		KEY_UNKNOWN = -1,
-		KEY_A,
-		KEY_B,
-		KEY_C,
-		KEY_D,
-		KEY_E,
-		KEY_F,
-		KEY_G,
-		KEY_H,
-		KEY_I,
-		KEY_J,
-		KEY_K,
-		KEY_L,
-		KEY_M,
-		KEY_N,
-		KEY_O,
-		KEY_P,
-		KEY_Q,
-		KEY_R,
-		KEY_S,
-		KEY_T,
-		KEY_U,
-		KEY_V,
-		KEY_W,
-		KEY_X,
-		KEY_Y,
-		KEY_Z,
-		KEY_DEL,
-		KEY_ESC,
-		KEY_UP,
-		KEY_DOWN,
-		KEY_LEFT,
-		KEY_RIGHT,
-		NB_OF_KEYS
-	};
+	class Editor;
 
-	std::string KeyToString(Key key);
-
-	struct KeyCombination {
-		Key key;
-		bool control;
-		bool shift;
-		bool alt;
-
-		bool operator<(const KeyCombination &) const;
-		std::string toString() const;
-	};
-
-	class ImageOperation {
+	//! @brief Define the ImageOperation base class.
+	class ImageOperation : public Action {
 	private:
 		std::vector<std::string> _hierarchy;
-		std::optional<KeyCombination> _keys;
+		std::optional<Keys::KeyCombination> _keys;
 
 	protected:
+		//! @brief Constructor of ImageOperation
+		//! @param hierarchy A vector of the hierarchy (ie : Menu title -> operation name)
 		ImageOperation(const std::vector<std::string> &&hierarchy);
-		ImageOperation(const std::vector<std::string> &&hierarchy, const KeyCombination &keys);
+
+		//! @brief Constructor of ImageOperation
+		//! @param hierarchy A vector of the hierarchy (ie : Menu title -> operation name)
+		//! @param keys The key combination to invoke the operation.
+		ImageOperation(const std::vector<std::string> &&hierarchy, const Keys::KeyCombination &keys);
 
 	public:
-		virtual void click(tgui::Gui &, Image &) const = 0;
+		//! @brief Handles the click. Must be override.
+		virtual void click(tgui::Gui &gui, CanvasWidget::Ptr, tgui::ChildWindow::Ptr window, Editor &editor) const = 0;
+
+		//! @brief Get the hierarchy of a menu item.
+		//! @return A vector of all the menu hierarchy.
 		const std::vector<std::string> &getMenuHierarchy() const;
-		std::optional<KeyCombination> getKeyStroke() const;
 	};
 }
 

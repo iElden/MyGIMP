@@ -19,7 +19,7 @@ TEST(Utils, resolveUrlBadProtocol) {
     }
 }
 
-TEST(Utils, resolveUrlBadHost1) {
+TEST(Utils, resolveHttpBadHost) {
     try {
         Mimp::Utils::resolveUrl("http://www.mygimp.fr");
     } catch (Mimp::HostNotFoundException &e) {
@@ -27,7 +27,15 @@ TEST(Utils, resolveUrlBadHost1) {
     }
 }
 
-TEST(Utils, resolveUrlBadHost2) {
+TEST(Utils, resolveHttpBadHostInUrl) {
+	try {
+		Mimp::Utils::resolveUrl("www.mygimp.fr");
+	} catch (Mimp::HostNotFoundException &e) {
+		ASSERT_EQ(std::string(e.what()), "Cannot find host 'www.mygimp.fr'");
+	}
+}
+
+TEST(Utils, resolveHttpsBadHost) {
     try {
         Mimp::Utils::resolveUrl("https://www.mygimp.fr");
     } catch (Mimp::HostNotFoundException &e) {
@@ -41,6 +49,29 @@ TEST(Utils, resolveUrlBadFile) {
     } catch (Mimp::FileNotFoundException &e) {
         ASSERT_EQ(std::string(e.what()), "MIMP: No such file or directory");
     }
+}
+
+TEST(Utils, resolveValidUrl) {
+    auto body = Mimp::Utils::resolveUrl("https://www.google.com");
+
+    ASSERT_NE(body.size(), 0);
+}
+
+TEST(Utils, resolveValidUrlInUrl) {
+	auto body = Mimp::Utils::resolveUrl("www.google.com");
+
+	ASSERT_NE(body.size(), 0);
+}
+
+TEST(Utils, resolveExistingFile) {
+#ifdef _WIN32
+    std::string testFilePath = std::filesystem::current_path().string() + "/MyGimp_test.exe";
+#else
+    std::string testFilePath = std::filesystem::current_path().string() + "/MyGimp_test";
+#endif
+    auto content = Mimp::Utils::resolveUrl("file://" + testFilePath);
+
+    ASSERT_NE(content.size(), 0);
 }
 
 TEST(Utils, drawshapeToString) {
@@ -78,13 +109,16 @@ TEST(Utils, stringToDrawshape) {
 }
 
 
-inline std::string PATH(const std::string &path){
+inline std::string PATH(const std::string &path) {
     std::string newPath;
     for (auto &c : path)
         newPath += c == '/' ? std::filesystem::path::preferred_separator : c;
+#ifdef _WIN32
+    if (newPath[0] == std::filesystem::path::preferred_separator)
+    	return newPath.substr(1);
+#endif
     return newPath;
 }
-
 
 TEST(Utils, cleanPathParent1) {
 
@@ -101,4 +135,60 @@ TEST(Utils, cleanPathParent3) {
 
 TEST(Utils, cleanPathParent4) {
     ASSERT_EQ(Mimp::Utils::cleanPath(PATH("test1/./test2/..")), PATH("/test1"));
+}
+
+TEST(Utils, getLastExceptionNoException) {
+#ifdef __GNUG__
+    ASSERT_EQ(Mimp::Utils::getLastExceptionName(), "No exception");
+#else
+    ASSERT_EQ(Mimp::Utils::getLastExceptionName(), "Unknown exception");
+#endif
+}
+
+TEST(Utils, getLastExceptionFileNotFound) {
+#ifdef __GNUG__
+    try {
+        throw Mimp::FileNotFoundException("file");
+    } catch (std::exception &e) {
+        ASSERT_EQ(Mimp::Utils::getLastExceptionName(), "Mimp::FileNotFoundException");
+    }
+#else
+    ASSERT_EQ(Mimp::Utils::getLastExceptionName(), "Unknown exception");
+#endif
+}
+
+TEST(Utils, isOutOfBounds) {
+    Mimp::Vector2<int> ptXNeg = {-1, 0};
+    Mimp::Vector2<int> ptYNeg = {0, -1};
+    Mimp::Vector2<int> pt = {2, 9};
+
+    ASSERT_TRUE(Mimp::Utils::isOutOfBound(ptXNeg, {0, 0}));
+    ASSERT_TRUE(Mimp::Utils::isOutOfBound(ptYNeg, {0, 0}));
+
+    ASSERT_TRUE(Mimp::Utils::isOutOfBound(pt, {1, 10}));
+    ASSERT_TRUE(Mimp::Utils::isOutOfBound(pt, {6, 8}));
+}
+
+TEST(Utils, sliderValue) {
+    tgui::Gui gui{};
+
+    auto window = Mimp::Utils::makeSliderWindow(gui, [](unsigned short){});
+
+    auto slider = window->get<tgui::Slider>("Slider");
+    ASSERT_TRUE(slider->getValue() == 0);
+}
+
+TEST(Utils, colorPickerWindow) {
+    tgui::Gui gui{};
+
+    auto window = Mimp::Utils::makeColorPickWindow(gui, [](unsigned short){}, Mimp::Color::Black);
+
+    auto edit = window->get<tgui::EditBox>("Edit");
+    ASSERT_TRUE(edit->getText() == "#000000");
+
+    window = Mimp::Utils::makeColorPickWindow(gui, [](unsigned short){}, Mimp::Color::Red);
+
+    edit = window->get<tgui::EditBox>("Edit");
+    ASSERT_TRUE(edit->getText() == "#FF0000");
+
 }

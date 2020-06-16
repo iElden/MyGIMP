@@ -9,11 +9,14 @@
 #include "FillSelection.hpp"
 #include "RectSelectTool.hpp"
 #include "SelectByColorTool.hpp"
-#include "ElipseSelectionTool.hpp"
+#include "EllipseSelectionTool.hpp"
 #include "Eraser.hpp"
+#include "Move.hpp"
+#include "Text.hpp"
+#include "PolygonSelection.hpp"
+#include "Lasso.hpp"
 
-namespace Mimp
-{
+namespace Mimp {
 	const std::vector<std::function<std::shared_ptr<Tool>(ToolBox &)>> ToolFactory::_builders{
 		[](ToolBox &box){
 			return std::make_shared<Pencil>(box);
@@ -31,23 +34,44 @@ namespace Mimp
 			return std::make_shared<RectSelectTool>(box);
 		},
 		[](ToolBox &box){
-			return std::make_shared<ElipseSelectionTool>(box);
+			return std::make_shared<EllipseSelectionTool>(box);
 		},
 		[](ToolBox &box){
 			return std::make_shared<SelectByColorTool>(box);
 		},
 		[](ToolBox &box){
 			return std::make_shared<Eraser>(box);
+		},
+		[](ToolBox &){
+			return std::make_shared<Move>();
+		},
+		[](ToolBox &box){
+			return std::make_shared<Text>(box);
+		},
+		[](ToolBox &box){
+			return std::make_shared<PolygonSelection>(box);
+		},
+		[](ToolBox &box){
+			return std::make_shared<Lasso>(box);
 		}
 	};
 
+	std::vector<std::shared_ptr<Tool>> ToolFactory::tls{};
+
 	std::vector<std::shared_ptr<Tool>> ToolFactory::buildAll(ToolBox &box)
 	{
-		std::vector<std::shared_ptr<Tool>> array;
-
-		array.reserve(ToolFactory::_builders.size());
 		for (auto &func : ToolFactory::_builders)
-			array.push_back(func(box));
-		return array;
+			tls.push_back(func(box));
+		return tls;
+	}
+
+	std::map<std::string, std::shared_ptr<Tool>> ToolFactory::get()
+	{
+		std::map<std::string, std::shared_ptr<Tool>> result;
+
+		for (auto &tl : ToolFactory::tls) {
+			result[tl->getName()] = tl;
+		}
+		return result;
 	}
 }

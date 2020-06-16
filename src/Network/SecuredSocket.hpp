@@ -11,20 +11,40 @@
 
 namespace Mimp
 {
+	//! @brief Define a SecuredSocket
 	class SecuredSocket : public Socket {
 	protected:
-		SSL_CTX *_ssl_ctx;
-		SSL	*_connection;
+		SSL_CTX *_ssl_ctx; //!< The context of the SecuredSocket.
+		SSL *_connection; //!< The SSL buffer.
 
 	public:
 		using Socket::connect;
 
+		//! @brief Construct a SecuredSocket.
 		SecuredSocket();
+
+		//! @brief SecuredSocket Destructor
 		~SecuredSocket();
-		void        connect(unsigned int ip, unsigned short portno) override;
-		void        disconnect() override;
-		void        send(const std::string &) override;
+
+		//! @brief Connect the socket to an ip.
+		//! @param ip The ip to connect to.
+		//! @param portno The port number used to connect to the ip address.
+		void connect(unsigned int ip, unsigned short portno) override;
+
+		//! @brief Disconnect the SecuredSocket.
+		void disconnect() override;
+
+		//! @brief Send a message.
+		//! @param msg The message to send.
+		void send(const std::string &msg) override;
+
+		//! @brief Read the Socket buffer.
+		//! @param size How much must be read.
+		//! @return std::string
 		std::string read(int size) override;
+
+		//! @brief Read the Socket buffer until it is empty.
+		//! @return std::string
 		std::string readUntilEOF() override;
 	};
 }

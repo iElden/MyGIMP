@@ -9,44 +9,64 @@
 
 #include "Layer/LayerManager.hpp"
 #include "SelectedArea.hpp"
+#include "Snapshot/Snapshot.hpp"
 
 namespace Mimp {
-	//! @brief Class Image
+	class Editor;
+
+	//! @brief Define the SelectedArea.
 	class Image {
 	protected:
-		//! @brief Size of the Image
-		Vector2<unsigned> _size;
-		//! @brief Layers of the Image
-		LayerManager _layers;
+		Vector2<unsigned> _size; //!< Size of the Image
+		LayerManager _layers; //!< Layers of the Image
+		std::vector<std::shared_ptr<Snapshot>> _snapshots = {};
+		std::vector<std::shared_ptr<Snapshot>> _redoSnapshots = {};
+		unsigned _max_snapshots = 10;
 	public:
-		//! @brief Selected Area of the Image
-		SelectedArea selectedArea;
+		std::shared_ptr<SelectedArea> selectedArea; //!< SelectedArea of the Image
 
 		//! @brief Constructor of Image
 		//! @param size Size of the Image
 		Image(Vector2<unsigned> size);
+
 		//! @brief Constructor of Image
 		//! @param size Size of the Image
 		//! @param layers Layers of the image
 		Image(Vector2<unsigned> size, const LayerManager &layers);
+
 		//! @brief Get the selected layer
 		//! @return Layer The selected Layer
 		Layer &getSelectedLayer() noexcept;
+
 		//! @brief Get the selected layer
 		//! @return Layer The selected Layer
 		const Layer &getSelectedLayer() const noexcept;
+
 		//! @brief Get all the layers
 		//! @return LayerManager All the layers
 		LayerManager &getLayers() noexcept;
+
 		//! @brief Export an image
 		//! @param path Path to the exported image
 		void exportImage(const std::string &path) const;
+
 		//! @brief Get all the layers
 		//! @return LayerManager All the layers
 		const LayerManager &getLayers() const noexcept;
+
 		//! @brief Get the image size
 		//! @return Vector2<unsigned> Size of the image
 		Vector2<unsigned> getImageSize() const noexcept;
+
+		unsigned int getMaxSnapshots() const noexcept;
+		void setMaxSnapshots(unsigned int maxSnapshots) noexcept;
+		void takeSnapshot(std::shared_ptr<Snapshot> snapshot) noexcept;
+		void takeFrameBufferSnapshot() noexcept;
+		void takeLayerSnapshot() noexcept;
+		void takeLayerSnapshot(unsigned index) noexcept;
+		void takeSelectionSnapshot() noexcept;
+		void undoLastAction(Editor &editor) noexcept;
+		void redoLastUndo(Editor &editor) noexcept;
 	};
 }
 

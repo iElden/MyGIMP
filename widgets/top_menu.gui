@@ -24,6 +24,10 @@ MenuBar.main_bar {
         }
 
         Menu {
+            Text = "Recents";
+        }
+
+        Menu {
             Text = Save;
             Enabled = false;
         }

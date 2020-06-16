@@ -12,12 +12,20 @@
 #include "../ToolBox.hpp"
 
 namespace Mimp {
+	//! @brief Define a SelectionTool
 	class SelectionTool : public Tool {
 	protected:
-		ToolBox &_toolBox;
+		ToolBox &_toolBox; //!< Define the ToolBox containing the Tool.
 	public:
-		SelectionTool(const std::string &name, ToolBox &);
+		//! @brief Construct a Selection Tool.
+		//! @param name Name of the Tool
+		//! @param tb ToolBox containing the SelectionTool
+		SelectionTool(const std::string &name, ToolBox &tb);
+
+		//! @brief Clear the selection.
 		void onSelect() override;
+
+		//! @brief Does nothing.
 		virtual void clear() {};
 	};
 }

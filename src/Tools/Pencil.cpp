@@ -3,7 +3,6 @@
 //
 
 #include <TGUI/TGUI.hpp>
-#include <iostream>
 #include "Pencil.hpp"
 #include "../Utils.hpp"
 
@@ -13,20 +12,34 @@ namespace Mimp
 		Tool("Pencil"),
 		_box(box)
 	{
+		this->setKeyCombination({Keys::KEY_P, false, false, false});
 	}
 
 	void Pencil::onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Image &image)
 	{
 		if (image.getSelectedLayer().isLocked())
 			return;
-		image.getSelectedLayer().buffer.drawLine(oldPos, newPos, this->_box.getSelectedColor(click), this->_radius, this->_shape);
+
+		auto &layer = image.getSelectedLayer();
+
+		layer.buffer->drawLine(
+			(oldPos - layer.pos).rotate(-layer.rotation, layer.getSize() / 2).to<int>(),
+			(newPos - layer.pos).rotate(-layer.rotation, layer.getSize() / 2).to<int>(),
+			this->_box.getSelectedColor(click),
+			this->_radius,
+			this->_shape
+		);
 	}
 
 	void Pencil::onClick(Vector2<int> pos, MouseClick click, Image &image)
 	{
 		if (image.getSelectedLayer().isLocked())
 			return;
-		image.getSelectedLayer().buffer.drawAt(pos, this->_box.getSelectedColor(click), this->_radius, this->_shape);
+
+		image.takeFrameBufferSnapshot();
+		auto &layer = image.getSelectedLayer();
+
+		layer.buffer->drawAt((pos - layer.pos).rotate(-layer.rotation, layer.getSize() / 2).to<int>(), this->_box.getSelectedColor(click), this->_radius, this->_shape);
 	}
 
 	tgui::ScrollablePanel::Ptr Pencil::getParametersPanel()

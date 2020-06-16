@@ -7,12 +7,13 @@
 #include "SelectAllOperation.hpp"
 
 Mimp::SelectAllOperation::SelectAllOperation():
-	ImageOperation({"Selection", "Select all"}, {KEY_A, true, false, false})
+	ImageOperation({"Selection", "Select all"}, {Keys::KEY_A, true, false, false})
 {
 
 }
 
-void Mimp::SelectAllOperation::click(tgui::Gui &, Image &image) const
+void Mimp::SelectAllOperation::click(tgui::Gui &, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr, Editor &) const
 {
-	image.selectedArea.selectAll();
+	image->takeSelectionSnapshot();
+	image->selectedArea->selectAll();
 }

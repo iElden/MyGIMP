@@ -9,21 +9,15 @@
 namespace Mimp
 {
 	FillSelectionOperation::FillSelectionOperation() :
-		ImageOperation({"Selection", "Fill area"}/*, {KEY_A, true, false, false}*/)
+		ImageOperation({"Selection", "Fill area"})
 	{
 	}
 
-	void FillSelectionOperation::click(tgui::Gui &gui, Image &image) const
+	void FillSelectionOperation::click(tgui::Gui &gui, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr, Editor &) const
 	{
-		Utils::makeColorPickWindow(gui, [&image](Color color){
-			FillSelectionOperation::_fill(image.getSelectedLayer(), image.selectedArea, color);
-		});
-	}
-
-	void FillSelectionOperation::_fill(Layer &layer, const SelectedArea &area, const Color &color)
-	{
-		if (area.isAnAreaSelected())
-			for (const auto &pt : area.getPoints())
-				layer.buffer.setPixel(pt, color);
+		Utils::makeColorPickWindow(gui, [image](Color color){
+			image->takeFrameBufferSnapshot();
+			image->selectedArea->fill(image->getSelectedLayer(), color);
+		}, Color::Black);
 	}
 }

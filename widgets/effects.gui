@@ -1,0 +1,314 @@
+Renderer.1 {
+    backgroundcolor = #F5F5F5;
+    backgroundcolordisabled = #E6E6E6;
+    backgroundcolorhover = white;
+    bordercolor = #3C3C3C;
+    bordercolordisabled = #7D7D7D;
+    bordercolorfocused = #1E1EB4;
+    bordercolorhover = black;
+    borders = (1, 1, 1, 1);
+    checkcolor = #3C3C3C;
+    checkcolordisabled = #7D7D7D;
+    checkcolorhover = black;
+    textcolor = #3C3C3C;
+    textcolordisabled = #7D7D7D;
+    textcolorhover = black;
+    textdistanceratio = 0.2;
+    texturechecked = None;
+    texturecheckeddisabled = None;
+    texturecheckedfocused = None;
+    texturecheckedhover = None;
+    textureunchecked = None;
+    textureuncheckeddisabled = None;
+    textureuncheckedfocused = None;
+    textureuncheckedhover = None;
+}
+
+Renderer.2 {
+    backgroundcolor = transparent;
+    bordercolor = #3C3C3C;
+    borders = (0, 0, 0, 0);
+    textcolor = #3C3C3C;
+    texturebackground = None;
+}
+
+Renderer.3 {
+    bordercolor = #3C3C3C;
+    bordercolorhover = black;
+    borders = (1, 1, 1, 1);
+    texturethumb = None;
+    texturethumbhover = None;
+    texturetrack = None;
+    texturetrackhover = None;
+    thumbcolor = #F5F5F5;
+    thumbcolorhover = white;
+    trackcolor = #F5F5F5;
+    trackcolorhover = white;
+}
+
+Label.LightLabel {
+    Position = (10, 10);
+    ScrollbarPolicy = Never;
+    Size = (70, 16);
+    Text = Light;
+    TextSize = 13;
+    renderer = &2;
+}
+
+Slider.LightSlider {
+    ChangeValueOnScroll = false;
+    InvertedDirection = false;
+    Maximum = 255;
+    Minimum = -255;
+    Position = ((lightlabel.x + lightlabel.w) + 10, lightlabel.y);
+    Size = (200, 16);
+    Step = 1;
+    Value = 0;
+    renderer = &3;
+}
+
+TextBox.LightPreview {
+    HorizontalScrollbarPolicy = Never;
+    MaximumCharacters = 4;
+    Position = ((lightslider.x + lightslider.w) + 10, lightslider.y);
+    Size = (55, 16);
+    Text = 0;
+    TextSize = 13;
+    VerticalScrollbarPolicy = Never;
+
+    Renderer {
+        backgroundcolor = transparent;
+        bordercolor = #3C3C3C;
+        borders = (0, 0, 0, 0);
+        textcolor = #3C3C3C;
+        texturebackground = None;
+    }
+}
+
+Label.SaturationRedLabel {
+    Position = (10, 60);
+    ScrollbarPolicy = Never;
+    Size = (70, 16);
+    Text = Red;
+    TextSize = 13;
+    renderer = &2;
+}
+
+Slider.SaturationRedSlider {
+    ChangeValueOnScroll = false;
+    InvertedDirection = false;
+    Maximum = 255;
+    Minimum = -255;
+    Position = ((saturationredlabel.x + saturationredlabel.w) + 10, saturationredlabel.y);
+    Size = (200, 16);
+    Step = 1;
+    Value = 0;
+    renderer = &3;
+}
+
+TextBox.SaturationRedPreview {
+    HorizontalScrollbarPolicy = Never;
+    MaximumCharacters = 4;
+    Position = ((saturationredslider.x + saturationredslider.w) + 10, saturationredslider.y);
+    Size = (55, 16);
+    Text = 0;
+    TextSize = 13;
+    VerticalScrollbarPolicy = Never;
+
+    Renderer {
+        backgroundcolor = transparent;
+        bordercolor = #3C3C3C;
+        borders = (0, 0, 0, 0);
+        textcolor = #3C3C3C;
+        texturebackground = None;
+    }
+}
+
+Label.SaturationGreenLabel {
+    Position = (10, (saturationredlabel.y + saturationredlabel.h) + 10);
+    ScrollbarPolicy = Never;
+    Size = (70, 16);
+    Text = Green;
+    TextSize = 13;
+    renderer = &2;
+}
+
+Slider.SaturationGreenSlider {
+    ChangeValueOnScroll = false;
+    InvertedDirection = false;
+    Maximum = 255;
+    Minimum = -255;
+    Position = ((saturationgreenlabel.x + saturationgreenlabel.w) + 10, saturationgreenlabel.y);
+    Size = (200, 16);
+    Step = 1;
+    Value = 0;
+    renderer = &3;
+}
+
+TextBox.SaturationGreenPreview {
+    HorizontalScrollbarPolicy = Never;
+    MaximumCharacters = 4;
+    Position = ((saturationgreenslider.x + saturationgreenslider.w) + 10, saturationgreenslider.y);
+    Size = (55, 16);
+    Text = 0;
+    TextSize = 13;
+    VerticalScrollbarPolicy = Never;
+
+    Renderer {
+        backgroundcolor = transparent;
+        bordercolor = #3C3C3C;
+        borders = (0, 0, 0, 0);
+        textcolor = #3C3C3C;
+        texturebackground = None;
+    }
+}
+
+Label.SaturationBlueLabel {
+    Position = (10, (saturationgreenlabel.y + saturationgreenlabel.h) + 10);
+    ScrollbarPolicy = Never;
+    Size = (70, 16);
+    Text = Blue;
+    TextSize = 13;
+    renderer = &2;
+}
+
+Slider.SaturationBlueSlider {
+    ChangeValueOnScroll = false;
+    InvertedDirection = false;
+    Maximum = 255;
+    Minimum = -255;
+    Position = ((saturationbluelabel.x + saturationbluelabel.w) + 10, saturationbluelabel.y);
+    Size = (200, 16);
+    Step = 1;
+    Value = 0;
+    renderer = &3;
+}
+
+TextBox.SaturationBluePreview {
+    HorizontalScrollbarPolicy = Never;
+    MaximumCharacters = 4;
+    Position = ((saturationblueslider.x + saturationblueslider.w) + 10, saturationblueslider.y);
+    Size = (55, 16);
+    Text = 0;
+    TextSize = 13;
+    VerticalScrollbarPolicy = Never;
+
+    Renderer {
+        backgroundcolor = transparent;
+        bordercolor = #3C3C3C;
+        borders = (0, 0, 0, 0);
+        textcolor = #3C3C3C;
+        texturebackground = None;
+    }
+}
+
+Label.SymmetryXAxis {
+    Position = (10, 160);
+    ScrollbarPolicy = Never;
+    Size = (70, 16);
+    Text = X;
+    TextSize = 13;
+    renderer = &2;
+}
+
+CheckBox.SymmetryXCheck {
+    Position = ((symmetryxaxis.x + symmetryxaxis.w) + 10, symmetryxaxis.y);
+    Size = (16, 16);
+    TextSize = 13;
+    renderer = &1;
+}
+
+Slider.SymmetryXSlider {
+    ChangeValueOnScroll = false;
+    Enabled = false;
+    InvertedDirection = false;
+    Maximum = 100;
+    Minimum = 0;
+    Position = ((symmetryxcheck.x + symmetryxcheck.w) + 10, symmetryxcheck.y);
+    Size = (200, 16);
+    Step = 1;
+    Value = 0;
+    renderer = &3;
+}
+
+TextBox.SymmetryXPreview {
+    HorizontalScrollbarPolicy = Never;
+    MaximumCharacters = 4;
+    Position = ((symmetryxslider.x + symmetryxslider.w) + 10, symmetryxslider.y);
+    Size = (55, 16);
+    Text = 0;
+    TextSize = 13;
+    VerticalScrollbarPolicy = Never;
+
+    Renderer {
+        backgroundcolor = transparent;
+        bordercolor = #3C3C3C;
+        borders = (0, 0, 0, 0);
+        textcolor = #3C3C3C;
+        texturebackground = None;
+    }
+}
+
+Label.SymmetryYAxis {
+    Position = (10, (symmetryxaxis.y + symmetryxaxis.h) + 10);
+    ScrollbarPolicy = Never;
+    Size = (70, 16);
+    Text = Y;
+    TextSize = 13;
+    renderer = &2;
+}
+
+CheckBox.SymmetryYCheck {
+    Position = ((symmetryyaxis.x + symmetryyaxis.w) + 10, symmetryyaxis.y);
+    Size = (16, 16);
+    TextSize = 13;
+    renderer = &1;
+}
+
+Slider.SymmetryYSlider {
+    ChangeValueOnScroll = false;
+    Enabled = false;
+    InvertedDirection = false;
+    Maximum = 100;
+    Minimum = 0;
+    Position = (116, symmetryycheck.y);
+    Size = (200, 16);
+    Step = 1;
+    Value = 0;
+    renderer = &3;
+}
+
+TextBox.SymmetryYPreview {
+    HorizontalScrollbarPolicy = Never;
+    MaximumCharacters = 4;
+    Position = ((symmetryyslider.x + symmetryyslider.w) + 10, symmetryyslider.y);
+    Size = (55, 16);
+    Text = 0;
+    TextSize = 13;
+    VerticalScrollbarPolicy = Never;
+
+    Renderer {
+        backgroundcolor = transparent;
+        bordercolor = #3C3C3C;
+        borders = (0, 0, 0, 0);
+        textcolor = #3C3C3C;
+        texturebackground = None;
+    }
+}
+
+Label.CentralSymmetryLabel {
+    AutoSize = true;
+    Position = (10, (symmetryyaxis.y + symmetryyaxis.h) + 10);
+    ScrollbarPolicy = Never;
+    Size = (105.2, 18);
+    Text = "Central symmetry";
+    TextSize = 13;
+    renderer = &2;
+}
+
+CheckBox.CentralSymmetryCheck {
+    Position = ((centralsymmetrylabel.x + centralsymmetrylabel.w) + 10, centralsymmetrylabel.y);
+    Size = (18, 18);
+    TextSize = 13;
+    renderer = &1;
+}

@@ -7,6 +7,10 @@
 #include <SFML/Graphics/Image.hpp>
 #include "Image.hpp"
 #include "Exceptions.hpp"
+#include "Snapshot/FrameBufferSnapshot.hpp"
+#include "Snapshot/LayerSnapshot.hpp"
+#include "Snapshot/SelectionSnapshot.hpp"
+#include "Editor.hpp"
 
 namespace Mimp {
 	Layer &Image::getSelectedLayer() noexcept
@@ -22,13 +26,13 @@ namespace Mimp {
 	Image::Image(Vector2<unsigned> size):
 		_size(size),
 		_layers(size),
-		selectedArea(size)
+		selectedArea(std::make_shared<SelectedArea>(size))
 	{}
 
 	Image::Image(Vector2<unsigned> size, const LayerManager &layers):
 		_size(size),
 		_layers(layers),
-		selectedArea(size)
+		selectedArea(std::make_shared<SelectedArea>(size))
 	{
 	}
 
@@ -67,4 +71,69 @@ namespace Mimp {
 		if (!image.saveToFile(path))
 			throw ExportErrorException("Cannot export to file " + path);
 	}
+
+	unsigned int Image::getMaxSnapshots() const noexcept
+	{
+		return this->_max_snapshots;
+	}
+
+	void Image::setMaxSnapshots(unsigned int maxSnapshots) noexcept
+	{
+		this->_max_snapshots = maxSnapshots;
+	}
+
+	void Image::takeSnapshot(std::shared_ptr<Snapshot> snapshot) noexcept
+	{
+		this->_snapshots.push_back(snapshot);
+		if (this->_snapshots.size() > this->_max_snapshots)
+			this->_snapshots.erase(this->_snapshots.begin());
+		this->_redoSnapshots.clear();
+	}
+
+	void Image::takeFrameBufferSnapshot() noexcept
+	{
+		this->takeSnapshot(std::make_shared<FrameBufferSnapshot>(
+			*this->getSelectedLayer().buffer, this->_layers.getSelectedLayerIndex()
+		));
+	}
+
+	void Image::takeLayerSnapshot() noexcept
+	{
+		this->takeLayerSnapshot(this->_layers.getSelectedLayerIndex());
+	}
+
+	void Image::takeLayerSnapshot(unsigned index) noexcept
+	{
+		this->takeSnapshot(std::make_shared<LayerSnapshot>(
+			this->getLayers()[index], index
+		));
+	}
+
+	void Image::takeSelectionSnapshot() noexcept
+	{
+		this->takeSnapshot(std::make_shared<SelectionSnapshot>(
+			*this->selectedArea
+		));
+	}
+
+	void Image::undoLastAction(Editor &editor) noexcept
+	{
+		if (this->_snapshots.empty())
+			return;
+		std::shared_ptr<Snapshot> snapshot = this->_snapshots.back();
+		snapshot->undo(*this, editor);
+		this->_redoSnapshots.emplace_back(snapshot);
+		this->_snapshots.pop_back();
+	}
+
+	void Image::redoLastUndo(Editor &editor) noexcept
+	{
+		if (this->_redoSnapshots.empty())
+			return;
+		std::shared_ptr<Snapshot> snapshot = this->_redoSnapshots.back();
+		snapshot->redo(*this, editor);
+		this->_snapshots.emplace_back(snapshot);
+		this->_redoSnapshots.pop_back();
+	}
+
 }

@@ -6,28 +6,35 @@
 */
 #include "ExpandSelection.hpp"
 #include "../../Utils.hpp"
+#include "../../Widgets/CanvasWidget.hpp"
 
 
 Mimp::ExpandSelection::ExpandSelection():
-		ImageOperation({"Selection", "Expand Selection"}, {KEY_I, true, true, false})
+	ImageOperation({"Selection", "Expand Selection"}, {Keys::KEY_I, true, true, false})
 {}
 
-void Mimp::ExpandSelection::_addPointIfPointNearby(unsigned i, unsigned j, Mimp::Image &image, const SelectedArea &area) const noexcept
+void Mimp::ExpandSelection::_addPointIfPointNearby(unsigned i, unsigned j, Mimp::Image &image, const SelectedArea &area, int range) noexcept
 {
-	for (int a = -1; a <= 1; a++)
-		for (int b = -1; b <= 1; b++)
+	for (int a = -range; a <= range; a++)
+		for (int b = -range; b <= range; b++)
 			if (area.pointInMap(i + a, j + b))
-				return image.selectedArea.add(i, j);
+				return image.selectedArea->add(i, j);
 }
 
-void Mimp::ExpandSelection::click(tgui::Gui &, Mimp::Image &image) const
+void Mimp::ExpandSelection::_run(Mimp::Image &image, int range) noexcept
 {
+	image.takeSelectionSnapshot();
 	auto size = image.getImageSize();
-	SelectedArea selectedArea = image.selectedArea;
+	SelectedArea selectedArea = *image.selectedArea;
 
 	for (unsigned j = 0; j < size.y; j++) {
 		for (unsigned i = 0; i < size.x; i++) {
-			this->_addPointIfPointNearby(i, j, image, selectedArea);
+			ExpandSelection::_addPointIfPointNearby(i, j, image, selectedArea, range);
 		}
 	}
+}
+
+void Mimp::ExpandSelection::click(tgui::Gui &, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr, Editor &) const
+{
+	ExpandSelection::_run(*image);
 }

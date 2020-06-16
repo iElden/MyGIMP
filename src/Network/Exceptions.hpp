@@ -8,56 +8,85 @@
 
 namespace Mimp
 {
+	//! @brief Define a NetworkException.
 	class NetworkException : public BaseException {
 	public:
+		//! @brief Create a NetworkException with a message.
+		//! @param msg The error message.
 		explicit NetworkException(const std::string &&msg) : BaseException(static_cast<const std::string &&>(msg)) {};
 	};
 
+	//! @brief Define a SocketCreationErrorException.
 	class SocketCreationErrorException : public NetworkException {
 	public:
+		//! @brief Create a SocketCreationErrorException with a message.
+		//! @param msg The error message.
 		explicit SocketCreationErrorException(const std::string &&msg) : NetworkException(static_cast<const std::string &&>(msg)) {};
 	};
 
+	//! @brief Define a HostNotFoundException.
 	class HostNotFoundException : public NetworkException {
 	public:
+		//! @brief Create a HostNotFoundException with a message.
+		//! @param msg The error message.
 		explicit HostNotFoundException(const std::string &&msg) : NetworkException(static_cast<const std::string &&>(msg)) {};
 	};
 
+	//! @brief Define a ConnectException.
 	class ConnectException : public NetworkException {
 	public:
+		//! @brief Create a ConnectException with a message.
+		//! @param msg The error message.
 		explicit ConnectException(const std::string &&msg) : NetworkException(static_cast<const std::string &&>(msg)) {};
 	};
 
+	//! @brief Define a NotConnectedException.
 	class NotConnectedException : public NetworkException {
 	public:
+		//! @brief Create a NotConnectedException with a message.
+		//! @param msg The error message.
 		explicit NotConnectedException(const std::string &&msg) : NetworkException(static_cast<const std::string &&>(msg)) {};
 	};
 
+	//! @brief Define a AlreadyOpenedException.
 	class AlreadyOpenedException : public NetworkException {
 	public:
+		//! @brief Create a AlreadyOpenedException with a message.
+		//! @param msg The error message.
 		explicit AlreadyOpenedException(const std::string &&msg) : NetworkException(static_cast<const std::string &&>(msg)) {};
 	};
 
+	//! @brief Define a EOFException.
 	class EOFException : public NetworkException {
 	public:
+		//! @brief Create a EOFException with a message.
+		//! @param msg The error message.
 		explicit EOFException(const std::string &&msg) : NetworkException(static_cast<const std::string &&>(msg)) {};
 	};
 
+	//! @brief Define a InvalidHTTPAnswerException.
 	class InvalidHTTPAnswerException : public NetworkException {
 	public:
+		//! @brief Create a InvalidHTTPAnswerException with a message.
+		//! @param msg The error message.
 		explicit InvalidHTTPAnswerException(const std::string &&msg) : NetworkException(static_cast<const std::string &&>(msg)) {};
 	};
 
+	//! @brief Define a HTTPErrorException.
 	class HTTPErrorException : public NetworkException {
 	private:
 		Socket::HttpResponse _response;
 
 	public:
+		//! @brief Create a HTTPErrorException with a message.
+		//! @param response The response from a Socket.
 		HTTPErrorException(const Socket::HttpResponse &response) :
 			NetworkException(response.request.host + " responded with code " + std::to_string(response.returnCode) + " " + response.codeName),
 			_response(response)
 		{}
 
+		//! @brief Return the response of the last Socket Exception.
+		//! @return Socket::HttpResponse
 		Socket::HttpResponse getResponse() const { return this->_response; }
 	};
 }

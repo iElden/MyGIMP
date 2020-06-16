@@ -10,12 +10,25 @@
 #include "../ImageOperation.hpp"
 
 namespace Mimp {
+	//! @brief Define the ExpandSelection.
 	class ExpandSelection : public ImageOperation {
-	private:
-		void _addPointIfPointNearby(unsigned i, unsigned j, Mimp::Image &image, const SelectedArea &area) const noexcept;
 	public:
+		//! @brief Do not call it directly. Use ExpandSelection::click.
+		static void _addPointIfPointNearby(unsigned i, unsigned j, Mimp::Image &image, const SelectedArea &area, int range) noexcept;
+
+		//! @brief Do not call it directly. Use ExpandSelection::click.
+		static void _run(Image &image, int range=1) noexcept;
+
+		//! @brief Constructor of the Expansion Selection Operation
 		ExpandSelection();
-		void click(tgui::Gui &gui, Image &image) const override;
+
+		//! @brief Handles the click of the Expansion.
+		//! @details Expand the selection on the image.
+		//! @param gui The global gui (unused).
+		//! @param image The image to edit.
+		//! @param window The focused window (unused).
+		//! @param editor The global editor (unused).
+		void click(tgui::Gui &gui, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr window, Editor &editor) const override;
 	};
 }
 

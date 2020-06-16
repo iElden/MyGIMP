@@ -41,6 +41,11 @@ namespace Mimp
 
 		auto &lay = this->_layers.emplace_back(new Layer(layer));
 
+#ifdef _WIN32
+		sprintf(lay->name, "Layer %llu", this->_layers.size());
+#else
+		sprintf(lay->name, "Layer %lu", this->_layers.size());
+#endif
 		this->_unsetBusy();
 		return *lay;
 	}
@@ -63,12 +68,17 @@ namespace Mimp
 		return *this->_layers.at(index);
 	}
 
+	std::shared_ptr<Layer> &LayerManager::getLayerPtr(unsigned int index)
+	{
+		return this->_layers[index];
+	}
+
 	void LayerManager::render(FrameBuffer &buffer) const noexcept
 	{
 		this->_setBusy();
 		for (auto &layer : this->_layers)
 			if (layer->visible)
-				buffer.drawFrameBuffer(layer->pos, layer->buffer);
+				buffer.drawFrameBuffer(layer->pos, layer->buffer, layer->rotation);
 		this->_unsetBusy();
 	}
 
@@ -99,7 +109,7 @@ namespace Mimp
 		if (this->_layers.size() == 1)
 			throw InvalidArgumentException("Cannot delete layer because there are only a single layer.");
 		this->_setBusy();
-		if (this->_selectedLayer >= layer)
+		if (this->_selectedLayer >= layer && this->_selectedLayer)
 			this->_selectedLayer--;
 		this->_layers.erase(this->_layers.begin() + layer);
 		this->_unsetBusy();
@@ -111,7 +121,7 @@ namespace Mimp
 			throw OutOfBoundException(
 				"Cannot move layer " + std::to_string(layerOldIndex) +
 				" to location " + std::to_string(layerNewIndex) +
-				" because there are only " + std::to_string(this->_layers.size()) + "layers");
+				" because there are only " + std::to_string(this->_layers.size()) + " layers");
 
 		auto layerIt = this->_layers.begin() + layerOldIndex;
 		auto layer = *layerIt;
@@ -186,6 +196,7 @@ namespace Mimp
 				createdLayer->visible = layer->attributes.visible;
 				createdLayer->locked = layer->attributes.locked;
 				createdLayer->pos = layer->pos;
+				createdLayer->rotation = layer->rotation;
 			}
 		} catch (...) {
 			this->_unsetBusy();
@@ -199,38 +210,21 @@ namespace Mimp
 
 	void LayerManager::importImageFromMemory(const std::string &data)
 	{
-		sf::Image image;
-
-		if (!image.loadFromMemory(data.c_str(), data.size()))
-			throw InvalidImageException("Failed to load image from memory");
-
 		this->_setBusy();
 		this->_layers.clear();
-
-		Vector2<unsigned> size{
-			image.getSize().x,
-			image.getSize().y
-		};
-		auto pixelBuffer = new Color[size.x * size.y];
-
-		this->_size = size;
-
-		for (unsigned x = 0; x < size.x; x++)
-			for (unsigned y = 0; y < size.y; y++)
-				pixelBuffer[x + y * size.x] = Color{
-					image.getPixel(x, y).r,
-					image.getPixel(x, y).g,
-					image.getPixel(x, y).b,
-					image.getPixel(x, y).a
-				};
-		auto &layer = this->_layers.emplace_back(new Layer{size, pixelBuffer});
-
-		std::strcpy(layer->name, "Layer 1");
-		delete[] pixelBuffer;
 		this->_unsetBusy();
+		this->addImageFromMemory(data);
 	}
 
 	void LayerManager::importImageFromFile(const std::string &path)
+	{
+		this->_setBusy();
+		this->_layers.clear();
+		this->_unsetBusy();
+		this->addImageFromFile(path);
+	}
+
+	void LayerManager::addImageFromFile(const std::string &path)
 	{
 		sf::Image image;
 
@@ -238,7 +232,6 @@ namespace Mimp
 			throw InvalidImageException("Failed to load file " + path);
 
 		this->_setBusy();
-		this->_layers.clear();
 
 		Vector2<unsigned> size{
 			image.getSize().x,
@@ -256,11 +249,53 @@ namespace Mimp
 					image.getPixel(x, y).b,
 					image.getPixel(x, y).a
 				};
-		auto &layer = this->_layers.emplace_back(new Layer{size, pixelBuffer});
-
-		std::strcpy(layer->name, "Layer 1");
-		delete[] pixelBuffer;
 		this->_unsetBusy();
+
+		auto &layer = this->addLayer(Layer{size, pixelBuffer});
+
+		delete[] pixelBuffer;
+#ifdef _WIN32
+		sprintf(layer.name, "Layer %llu", this->_layers.size());
+#else
+		sprintf(layer.name, "Layer %lu", this->_layers.size());
+#endif
+	}
+
+	void LayerManager::addImageFromMemory(const std::string &data)
+	{
+		sf::Image image;
+
+		if (!image.loadFromMemory(data.c_str(), data.size()))
+			throw InvalidImageException("Failed to load image from memory");
+
+		this->_setBusy();
+
+		Vector2<unsigned> size{
+			image.getSize().x,
+			image.getSize().y
+		};
+		auto pixelBuffer = new Color[size.x * size.y];
+
+		this->_size = size;
+
+		for (unsigned x = 0; x < size.x; x++)
+			for (unsigned y = 0; y < size.y; y++)
+				pixelBuffer[x + y * size.x] = Color{
+					image.getPixel(x, y).r,
+					image.getPixel(x, y).g,
+					image.getPixel(x, y).b,
+					image.getPixel(x, y).a
+				};
+		this->_unsetBusy();
+
+		auto &layer = this->addLayer(Layer{size, pixelBuffer});
+
+		delete[] pixelBuffer;
+#ifdef _WIN32
+		sprintf(layer.name, "Layer %llu", this->_layers.size());
+#else
+		sprintf(layer.name, "Layer %lu", this->_layers.size());
+#endif
 	}
 
 	Vector2<unsigned> LayerManager::getSize() const
@@ -308,10 +343,11 @@ namespace Mimp
 			std::memcpy(layer->name, layerObject->name, sizeof(layer->name));
 			layer->size = layerObject->getSize();
 			layer->pos = layerObject->pos;
+			layer->rotation = layerObject->rotation;
 			layer->attributes.visible = layerObject->visible;
 			layer->attributes.locked = layerObject->locked;
 
-			std::memcpy(layer->pixels, layerObject->buffer.getBuffer(), layer->size.x * layer->size.y * sizeof(*layer->pixels));
+			std::memcpy(layer->pixels, layerObject->buffer->getBuffer(), layer->size.x * layer->size.y * sizeof(*layer->pixels));
 
 			currentLayer = reinterpret_cast<char *>(&layer->pixels[layer->size.x * layer->size.y]);
 		}
@@ -350,5 +386,10 @@ namespace Mimp
 	std::vector<std::shared_ptr<Layer>>::const_iterator LayerManager::end() const
 	{
 		return this->_layers.end();
+	}
+
+	unsigned LayerManager::getSelectedLayerIndex() noexcept
+	{
+		return this->_selectedLayer;
 	}
 }

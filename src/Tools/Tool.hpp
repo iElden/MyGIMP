@@ -9,44 +9,63 @@
 #include <TGUI/Widgets/ScrollablePanel.hpp>
 #include "../Data/MouseClick.hpp"
 #include "../Image.hpp"
+#include "../Keys.hpp"
+#include "../Action.hpp"
 
-namespace Mimp
-{
-	//! @brief Class Tool
-	class Tool {
+namespace Mimp {
+	//! @brief Define a Tool
+	class Tool : public Action {
 	private:
-		//! @brief Name of the tool
-		std::string _name;
+		std::string _name; //!< Name of the Tool
 
 	public:
-		//! @brief Constructor of the Tool class
+		//! @brief Construct a Tool
 		//! @param name Name of the tool
-		explicit Tool(const std::string &name) : _name(name) {};
-		//! @brief Get the name of the tool
-		//! @return std::string Name of the tool
-		std::string getName() const
+		explicit Tool(const std::string &name) : _name(name)
+		{
+			this->setKeyCombination({Keys::KEY_UNKNOWN, false, false, false});
+		};
+
+		//! @brief Get the name of the Tool
+		//! @return std::string Name of the Tool
+		const std::string getName()
 		{
 			return this->_name;
 		};
-		//! @brief On Select, do the following actions
-		virtual void onSelect() {};
-		//! @brief On Unselect, do the following actions
-		virtual void onUnselect() {};
-		virtual void onMouseRelease(Vector2<int>, MouseClick, Image &) {};
-		//! @brief When mouse is dragging, apply the tool to the new position
-		//! @param oldPos Old Pos
-		//! @param newPos New Pos
+
+		//! @brief Handle the selection of the Tool.
+		virtual void onSelect()
+		{};
+
+		//! @brief Handle the unselection of the Tool.
+		virtual void onUnselect()
+		{};
+
+		//! @brief Handle the mouse release of the Tool.
+		//! @param pos The position of the mouse
 		//! @param click Mouse click state
-		//! @param layer Layer used
+		//! @param image The Image to edit
+		virtual void onMouseRelease(Vector2<int>, MouseClick, Image &)
+		{};
+
+		//! @brief Handle the mouse dragging of the Tool.
+		//! @param oldPos Old position of the mouse
+		//! @param newPos New position of the mouse
+		//! @param click Mouse click state
+		//! @param image The Image to edit
 		virtual void onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Image &image) = 0;
-		//! @brief When mouse is clicked, apply the tool to the position
+
+		//! @brief Handle the mouse click of the Tool.
 		//! @param pos Position of the tool
 		//! @param click Mouse click state
-		//! @param layer Layer used
+		//! @param image The Image to edit
 		virtual void onClick(Vector2<int> pos, MouseClick click, Image &image) = 0;
-		//! @brief Get the Parameters Panel Pointer
+
+		//! @brief Get the parameters panel for the Tool.
 		//! @return tgui::ScrollablePanel::Ptr Pointer containing the parameters panel
 		virtual tgui::ScrollablePanel::Ptr getParametersPanel() = 0;
+
+		virtual bool isEditing() { return false; }
 	};
 }
 

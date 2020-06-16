@@ -22,6 +22,7 @@ namespace Mimp
 		//! @brief Tools of the tool box
 		//! @details Contains all the Tools under shared pointers
 		static const std::vector<std::function<std::shared_ptr<Tool>(ToolBox &)>> _builders;
+		static std::vector<std::shared_ptr<Tool>> tls;
 
 	public:
 		//! @brief Build all the tools
@@ -29,8 +30,10 @@ namespace Mimp
 		//! @param toolBox ToolBox where the tools are built
 		//! @return std::vector<std::shared_ptr<Tool>> Return a vector of Tools Shared Pointers
 		static std::vector<std::shared_ptr<Tool>> buildAll(ToolBox &toolBox);
+
+		//! @brief Get all the Tools.
+		static std::map<std::string, std::shared_ptr<Tool>> get();
 	};
 }
-
 
 #endif //MYGIMP_TOOLFACTORY_HPP

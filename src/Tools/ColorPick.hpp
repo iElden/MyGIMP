@@ -11,18 +11,31 @@
 #include "../ToolBox.hpp"
 
 namespace Mimp {
-    //! @brief Class ColorPick
-    //! @inherit Tool
+	//! @brief Define a ColorPick
 	class ColorPick : public Tool {
 	private:
-	    //! @brief ToolBox
+		//! @brief ToolBox
 		ToolBox &_toolBox;
 	public:
-	    //! @brief Constructor of ColorPick class
-	    //! @param toolBox Toolbox
+		//! @brief Construct a ColorPick
+		//! @param toolBox ToolBox containing the ColorPick Tool
 		ColorPick(ToolBox &toolBox);
-		void onClick(Vector2<int> pos, MouseClick click, Image &layer) override;
-		void onMouseDrag(Vector2<int>, Vector2<int>, MouseClick, Image &) override;
+
+		//! @brief Handle the mouse click of the Tool.
+		//! @param pos Position of the tool
+		//! @param click Mouse click state
+		//! @param image The Image to edit
+		void onClick(Vector2<int> pos, MouseClick click, Image &image) override;
+
+		//! @brief Handle the mouse dragging of the Tool.
+		//! @param oldPos Old position of the mouse
+		//! @param newPos New position of the mouse
+		//! @param click Mouse click state
+		//! @param image The Image to edit
+		void onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Image &image) override;
+
+		//! @brief Get the parameters panel for the Tool.
+		//! @return tgui::ScrollablePanel::Ptr Pointer containing the parameters panel
 		tgui::ScrollablePanel::Ptr getParametersPanel() override;
 	};
 }
