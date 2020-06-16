@@ -45,7 +45,7 @@ namespace Mimp {
 		//! @param pos The position of the mouse
 		//! @param click Mouse click state
 		//! @param image The Image to edit
-		virtual void onMouseRelease([[maybe_unused]] Vector2<int> pos, [[maybe_unused]] MouseClick click, [[maybe_unused]] Image &image)
+		virtual void onMouseRelease(Vector2<int>, MouseClick, Image &)
 		{};
 
 		//! @brief Handle the mouse dragging of the Tool.

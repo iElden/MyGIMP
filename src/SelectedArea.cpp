@@ -114,11 +114,200 @@ namespace Mimp
 			}
 	}
 
-	void SelectedArea::fill(Layer &layer, const Color &color)
+	void SelectedArea::fill(Layer &layer, const Color &color) const noexcept
 	{
 		if (this->isAnAreaSelected())
-			for (const auto &pt : this->getPoints())
-				layer.buffer->setPixel(pt, color);
+			for (const auto &pt : this->getPoints()) {
+				auto newPt = (pt - layer.pos).rotate(-layer.rotation, layer.getSize() / 2);
+
+				layer.buffer->setPixel(Vector2<int>(std::floor(newPt.x), std::floor(newPt.y)), color);
+				layer.buffer->setPixel(Vector2<int>(std::ceil(newPt.x),  std::floor(newPt.y)), color);
+				layer.buffer->setPixel(Vector2<int>(std::floor(newPt.x), std::ceil(newPt.y)),  color);
+				layer.buffer->setPixel(Vector2<int>(std::ceil(newPt.x),  std::ceil(newPt.y)),  color);
+			}
+	}
+
+	void SelectedArea::addLine(Vector2<int> pt1, Vector2<int> pt2) noexcept
+	{
+		int dx = pt2.x - pt1.x;
+		int dy = pt2.y - pt1.y;
+
+		this->add(pt2);
+		if (dx > 0) {
+			if (dy > 0) {
+				// vecteur oblique dans le 1er quadran
+
+				if (dx >= dy) {
+					// vecteur diagonal ou oblique proche de l’horizontale, dans le 1er octant
+					int e = dx;
+					dx *= 2;
+					dy *= 2 ;  // e est positif
+					while (true) { // déplacements horizontaux
+						this->add(pt1);
+						pt1.x++;
+						if (pt1.x == pt2.x)
+							break;
+						e -= dy;
+						if (e < 0) {
+							pt1.y++;  // déplacement diagonal
+							e += dx ;
+						}
+					}
+				} else {
+					// vecteur oblique proche de la verticale, dans le 2d octant
+					int e = dy;
+					dy *= 2;
+					dx *= 2;  // e est positif
+					while (true) {  // déplacements verticaux
+						this->add(pt1);
+						pt1.y++;
+						if (pt1.y == pt2.y)
+							break;
+						e -= dx;
+						if (e < 0) {
+							pt1.x++;  // déplacement diagonal
+							e += dy;
+						}
+					}
+				}
+
+			} else if (dy) {  // dy < 0 (et dx > 0)
+				// vecteur oblique dans le 4e cadran
+
+				if (dx >= -dy) {
+					// vecteur diagonal ou oblique proche de l’horizontale, dans le 8e octant
+					int e = dx;
+					dx *= 2;
+					dy *= 2 ;  // e est positif
+					while (true) {  // déplacements horizontaux
+						this->add(pt1);
+						pt1.x++;
+						if (pt1.x == pt2.x)
+							break;
+						e += dy;
+						if (e < 0) {
+							pt1.y--;  // déplacement diagonal
+							e += dx;
+						}
+					}
+				} else {  // vecteur oblique proche de la verticale, dans le 7e octant
+					int e = dy;
+					dy *= 2;
+					dx *= 2;  // e est négatif
+					while (true) {  // déplacements verticaux
+						this->add(pt1);
+						pt1.y--;
+						if (pt1.y == pt2.y)
+							break;
+						e += dx;
+						if (e > 0) {
+							pt1.x++;  // déplacement diagonal
+							e += dy;
+						}
+					}
+				}
+			} else { // dy = 0 (et dx > 0)
+				do {
+					this->add(pt1);
+					pt1.x++;
+				} while (pt2.x != pt1.x);
+			}
+		} else if (dx) {  // dx < 0
+			if (dy > 0) {
+				// vecteur oblique dans le 2d quadran
+
+				if (-dx >= dy) {
+					// vecteur diagonal ou oblique proche de l’horizontale, dans le 4e octant
+					int e = dx;
+					dx *= 2;
+					dy *= 2;  // e est négatif
+					while (true) {  // déplacements horizontaux
+						this->add(pt1);
+						pt1.x--;
+						if (pt1.x == pt2.x)
+							break;
+						e += dy;
+						if (e >= 0) {
+							pt1.y++;  // déplacement diagonal
+							e += dx;
+						}
+					}
+				} else {
+					// vecteur oblique proche de la verticale, dans le 3e octant
+					int e = dy;
+					dy *= 2;
+					dx *= 2;  // e est positif
+					while (true) {  // déplacements verticaux
+						this->add(pt1);
+						pt1.y++;
+						if (pt1.y == pt2.y)
+							break;
+						e += dx;
+						if (e <= 0) {
+							pt1.x--;  // déplacement diagonal
+							e += dy;
+						}
+					}
+				}
+
+			} else if (dy) { // dy < 0 (et dx < 0)
+				// vecteur oblique dans le 3e cadran
+
+				if (dx <= dy) {
+					// vecteur diagonal ou oblique proche de l’horizontale, dans le 5e octant
+					int e = dx;
+					dx *= 2;
+					dy *= 2;  // e est négatif
+					while (true) {  // déplacements horizontaux
+						this->add(pt1);
+						pt1.x--;
+						if (pt1.x == pt2.x)
+							break;
+						e -= dy;
+						if (e >= 0) {
+							pt1.y--;  // déplacement diagonal
+							e += dx;
+						}
+					}
+				} else {  // vecteur oblique proche de la verticale, dans le 6e octant
+					int e = dy;
+
+					dy *= 2;
+					dx *= 2;  // e est négatif
+					while (true) {  // déplacements verticaux
+						this->add(pt1);
+						pt1.y--;
+						if (pt1.y == pt2.y)
+							break;
+						e -= dx;
+						if (e >= 0) {
+							pt1.x--;  // déplacement diagonal
+							e += dy;
+						}
+					}
+				}
+			} else {  // dy = 0 (et dx < 0)
+
+				// vecteur horizontal vers la gauche
+				do {
+					this->add(pt1);
+					pt1.x--;
+				} while (pt2.x != pt1.x);
+
+			}
+		} else {  // dx = 0
+			if (dy > 0) {
+				do {
+					this->add(pt1);
+					pt1.y++;
+				} while (pt1.y != pt2.y);
+			} else if (dy) {
+				do {
+					this->add(pt1);
+					pt1.y--;
+				} while (pt1.y != pt2.y);
+			}
+		}
 	}
 
 	bool SelectedArea::pointInMap(Vector2<int> point) const
@@ -147,11 +336,6 @@ namespace Mimp
 		delete[] this->_map;
 		this->_map = new bool[size.x * size.y];
 		this->clear();
-	}
-
-	void SelectedArea::printDebug() const noexcept
-	{
-		std::cerr << "[DEBUG] " << this->_nbPoints << " points in Selection" << std::endl;
 	}
 }
 

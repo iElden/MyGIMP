@@ -753,7 +753,10 @@ namespace Mimp {
 		merge->connect("Pressed", [&layer, &layers, index, this, win, canvas] {
 			canvas->takeFrameBufferSnapshot();
 			layers.selectLayer(index - 1);
-			layers.getSelectedLayer().buffer->drawFrameBuffer(layer.pos, layer.buffer, layer.rotation - layers.getSelectedLayer().rotation);
+
+			auto &lay = layers.getSelectedLayer();
+
+			lay.buffer->drawFrameBuffer(layer.pos - lay.pos, layer.buffer, layer.rotation - layers.getSelectedLayer().rotation);
 			layers.deleteLayer(index);
 			this->_makeLayersPanel(win, canvas);
 		});

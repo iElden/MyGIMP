@@ -12,36 +12,36 @@ namespace Mimp {
 	void Lasso::onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Image &image)
 	{
 		if (click == MouseClick::MIMP_LEFT_CLICK) {
-			image.selectedArea->add(newPos);
+			image.selectedArea->addLine(oldPos, newPos);
 			this->_polygon.add(newPos);
 		}
 	}
 
 	void Lasso::onClick(Vector2<int> pos, MouseClick click, Image &image)
 	{
-		image.takeSelectionSnapshot();
-
-		if (click == MouseClick::MIMP_RIGHT_CLICK) {
+		if (click == MouseClick::MIMP_LEFT_CLICK) {
+			image.takeSelectionSnapshot();
+			image.selectedArea->add(pos);
 			image.selectedArea->clear();
-			this->_polygon.update([&image](Vector2<int> pt) { image.selectedArea->add(pt); });
+			this->_polygon.clear();
 		}
 	}
 
 	tgui::ScrollablePanel::Ptr Lasso::getParametersPanel()
 	{
-		auto panel = tgui::ScrollablePanel::create();
-		panel->loadWidgetsFromFile("widgets/tools_cfg/lasso_cfg.gui");
-
-		auto button = panel->get<tgui::Button>("Clear");
-
-		button->connect("Pressed", [this] { this->clear(); });
-		panel->add(button);
-
-		return panel;
+		return tgui::ScrollablePanel::create();
 	}
 
 	void Lasso::clear()
 	{
 		this->_polygon.reset();
+	}
+
+	void Lasso::onMouseRelease(Vector2<int>, MouseClick click, Image &image)
+	{
+		if (click == MouseClick::MIMP_LEFT_CLICK) {
+			image.selectedArea->clear();
+			this->_polygon.update([&image](Vector2<int> pt) { image.selectedArea->add(pt); });
+		}
 	}
 }

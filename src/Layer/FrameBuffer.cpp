@@ -301,23 +301,14 @@ namespace Mimp
 	{
 		auto size = buffer->getSize();
 
-		rotation = rotation * M_PI / 180;
 		for (unsigned x = 0; x < size.x; x++)
-			for (unsigned y = 0; y < size.x; y++) {
+			for (unsigned y = 0; y < size.y; y++) {
 				auto col = buffer->getPixel({static_cast<int>(x), static_cast<int>(y)});
-				auto c = cos(rotation);
-				auto s = sin(rotation);
 
 				if (rotation == 0)
-					this->drawPixel({
-						static_cast<int>(x + pos.x),
-						static_cast<int>(y + pos.y)
-					}, col, drawStrategy);
+					this->drawPixel((pos + Vector2<unsigned>{x, y}).to<int>(), col, drawStrategy);
 				else
-					this->drawPoint({
-						static_cast<float>(c * (x - size.x / 2.) - s * (y - size.y / 2.) + size.x / 2. + pos.x),
-						static_cast<float>(s * (x - size.x / 2.) + c * (y - size.y / 2.) + size.y / 2. + pos.y)
-					}, col, drawStrategy);
+					this->drawPoint(Vector2<unsigned>{x, y}.rotate(rotation, size / 2) + pos, col, drawStrategy);
 			}
 	}
 
@@ -326,15 +317,8 @@ namespace Mimp
 		FrameBuffer result(size);
 
 		for (unsigned x = 0; x < size.x; x++)
-			for (unsigned y = 0; y < size.x; y++) {
-				result.setPixel({
-					static_cast<int>(x),
-					static_cast<int>(y)
-				}, this->getPixel({
-					static_cast<int>(x + pos.x),
-					static_cast<int>(y + pos.y)
-				}, fill));
-			}
+			for (unsigned y = 0; y < size.x; y++)
+				result.setPixel(Vector2<int>(x, y), this->getPixel(Vector2<int>(x + pos.x, y + pos.y), fill));
 		return result;
 	}
 
@@ -365,41 +349,43 @@ namespace Mimp
 		this->_pixelBuffer[pos.x + pos.y * this->_size.x] = color;
 	}
 
-	void FrameBuffer::drawAt(Vector2<int> pos, const Color &color, unsigned short radius, DrawShape shape,
-							 DrawStrategy drawStrategy) noexcept
+	void FrameBuffer::drawAt(Vector2<int> pos, const Color &color, unsigned short radius, DrawShape shape, DrawStrategy drawStrategy) noexcept
 	{
 		switch (shape) {
 		case DrawShape::CIRCLE:
 			this->_drawCircleAt(pos, color, radius, drawStrategy);
 			if (this->_symmetry.x) {
-				int diff = this->_axis.y - pos.y;
-				this->_drawCircleAt({pos.x, std::abs(diff) * (diff < 0 ? -1 : 1) + this->_axis.y}, color, radius, drawStrategy);
+				this->_drawCircleAt({pos.x, this->_axis.y - pos.y + this->_axis.y}, color, radius, drawStrategy);
 			}
 			if (this->_symmetry.y) {
-				int diff = this->_axis.x - pos.x;
-				this->_drawCircleAt({std::abs(diff) * (diff < 0 ? -1 : 1) + this->_axis.x, pos.y}, color, radius, drawStrategy);
+				this->_drawCircleAt({this->_axis.x - pos.x + this->_axis.x, pos.y}, color, radius, drawStrategy);
+			}
+			if (this->_centralSymmetry) {
+				this->_drawCircleAt({this->_axis.x - pos.x + this->_axis.x, this->_axis.y - pos.y + this->_axis.y}, color, radius, drawStrategy);
 			}
 			break;
 		case DrawShape::SQUARE:
 			this->_drawSquareAt(pos, color, radius, drawStrategy);
 			if (this->_symmetry.x) {
-				int diff = this->_axis.y - pos.y;
-				this->_drawSquareAt({pos.x, std::abs(diff) * (diff < 0 ? -1 : 1) + this->_axis.y}, color, radius, drawStrategy);
+				this->_drawSquareAt({pos.x, this->_axis.y - pos.y + this->_axis.y}, color, radius, drawStrategy);
 			}
 			if (this->_symmetry.y) {
-				int diff = this->_axis.x - pos.x;
-				this->_drawSquareAt({std::abs(diff) * (diff < 0 ? -1 : 1) + this->_axis.x, pos.y}, color, radius, drawStrategy);
+				this->_drawSquareAt({this->_axis.x - pos.x + this->_axis.x, pos.y}, color, radius, drawStrategy);
+			}
+			if (this->_centralSymmetry) {
+				this->_drawSquareAt({this->_axis.x - pos.x + this->_axis.x, this->_axis.y - pos.y + this->_axis.y}, color, radius, drawStrategy);
 			}
 			break;
 		case DrawShape::DIAMOND:
 			this->_drawDiamondAt(pos, color, radius, drawStrategy);
 			if (this->_symmetry.x) {
-				int diff = this->_axis.y - pos.y;
-				this->_drawDiamondAt({pos.x, std::abs(diff) * (diff < 0 ? -1 : 1) + this->_axis.y}, color, radius, drawStrategy);
+				this->_drawDiamondAt({pos.x, this->_axis.y - pos.y + this->_axis.y}, color, radius, drawStrategy);
 			}
 			if (this->_symmetry.y) {
-				int diff = this->_axis.x - pos.x;
-				this->_drawDiamondAt({std::abs(diff) * (diff < 0 ? -1 : 1) + this->_axis.x, pos.y}, color, radius, drawStrategy);
+				this->_drawDiamondAt({this->_axis.x - pos.x + this->_axis.x, pos.y}, color, radius, drawStrategy);
+			}
+			if (this->_centralSymmetry) {
+				this->_drawDiamondAt({this->_axis.x - pos.x + this->_axis.x, this->_axis.y - pos.y + this->_axis.y}, color, radius, drawStrategy);
 			}
 			break;
 		case DrawShape::NB_OF_SHAPES:
@@ -457,7 +443,7 @@ namespace Mimp
 		return reinterpret_cast<sf::Uint8 *>(this->_drawBuffer);
 	}
 
-	void FrameBuffer::drawPoint(Vector2<float> pos, const Color &color, DrawStrategy drawStrategy) noexcept
+	void FrameBuffer::drawPoint(Vector2<double> pos, const Color &color, DrawStrategy drawStrategy) noexcept
 	{
 		this->drawPixel({static_cast<int>(pos.x), static_cast<int>(pos.y)}, color, drawStrategy);
 		if (std::floor(pos.x) != pos.x)

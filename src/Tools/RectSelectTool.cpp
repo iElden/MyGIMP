@@ -51,9 +51,10 @@ void Mimp::RectSelectTool::_updateSelectedArea(Image &image)
 		}
 	}
 
-	int min = std::min(max_x - min_x, max_y - min_y);
-	int middle = min / 2;
-	int radius = middle * (this->_percentage / 100);
+	int radius = std::min(max_x - min_x, max_y - min_y) / 2 * (this->_percentage / 100);
+
+	if (!radius)
+		return;
 
 	for (int j = 0; j <= radius; j++) {
 		for (int i = 0; i <= radius; i++) {

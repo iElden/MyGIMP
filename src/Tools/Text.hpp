@@ -8,7 +8,6 @@ namespace Mimp {
 	//! @brief Define a Text Tool.
 	class Text : public Tool {
 	public:
-
 		//! @brief Construct a Text Tool
 		//! @param toolBox ToolBox containing the Text Tool
 		Text(ToolBox &toolBox);
@@ -25,7 +24,7 @@ namespace Mimp {
 		//! @param newPos New position of the mouse
 		//! @param click Mouse click state
 		//! @param image The Image to edit
-		void onMouseDrag([[maybe_unused]] Vector2<int> oldPos, [[maybe_unused]] Vector2<int> newPos, [[maybe_unused]] MouseClick click, [[maybe_unused]] Image &image) override
+		void onMouseDrag(Vector2<int>, Vector2<int>, MouseClick, Image &) override
 		{};
 
 		//! @brief Get the parameters panel for the Tool.
@@ -41,11 +40,8 @@ namespace Mimp {
 
 	private:
 		void getFontsFromPath(std::string systemPath);
-
 		void getSystemFonts();
-
 		void getCustomFonts();
-
 		void getFonts();
 
 	private:

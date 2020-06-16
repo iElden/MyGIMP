@@ -12,8 +12,8 @@
 
 namespace Mimp
 {
-    //! @brief Define the ToolBox.
-    class ToolBox {
+	//! @brief Define the ToolBox.
+	class ToolBox {
 	private:
 		std::vector<std::shared_ptr<Tool>> _tools; //!< Tools as shared pointers
 		unsigned int _selectedTool = 0; //!< Index of the selected tool.
@@ -61,15 +61,12 @@ namespace Mimp
 		void setSelectedColor(MouseClick click, Color newColor);
 
 		//! @brief Get the tools of the ToolBox.
-	    std::map<std::string, std::shared_ptr<Tool>> getTools();
+		std::map<std::string, std::shared_ptr<Tool>> getTools();
 
-	    void selectTool(Keys::KeyCombination kc);
-
-	    void refreshToolBox();
-
-	    bool isTextEditing();
-
-	    tgui::Gui &getParent() { return this->_parent; }
+		void selectTool(Keys::KeyCombination kc);
+		void refreshToolBox();
+		bool isTextEditing();
+		tgui::Gui &getParent() { return this->_parent; }
 	};
 }
 
