@@ -15,6 +15,7 @@
 #include "Text.hpp"
 #include "PolygonSelection.hpp"
 #include "Lasso.hpp"
+#include "Finger.hpp"
 
 namespace Mimp {
 	const std::vector<std::function<std::shared_ptr<Tool>(ToolBox &)>> ToolFactory::_builders{
@@ -53,6 +54,9 @@ namespace Mimp {
 		},
 		[](ToolBox &box){
 			return std::make_shared<Lasso>(box);
+		},
+		[](ToolBox &box){
+			return std::make_shared<Finger>(box);
 		}
 	};
 
