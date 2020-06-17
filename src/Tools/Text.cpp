@@ -67,7 +67,7 @@ namespace Mimp {
 		}
 	}
 
-	void Text::onClick(Vector2<int> pos, MouseClick, Image &image)
+	void Text::onClick(Vector2<int> pos, MouseClick click, Image &image)
 	{
 		if (!this->_text.empty()) {
 			int xpos = 0;
@@ -94,7 +94,8 @@ namespace Mimp {
 					for (int y = 0; y < glyph.textureRect.height; y += 1) {
 						for (int x = 0; x < glyph.textureRect.width; x += 1) {
 							if (buffer.getPixel(x + glyph.textureRect.left, y + glyph.textureRect.top).a >= 100) {
-								layer.buffer->setPixel({pos.x + x + xpos, pos.y + y + ypos + spacing}, this->_color);
+								//layer.buffer->setPixel({pos.x + x + xpos, pos.y + y + ypos + spacing}, this->_color);
+								layer.buffer->setPixel({pos.x + x + xpos, pos.y + y + ypos + spacing}, this->_toolBox.getSelectedColor(click));
 							}
 						}
 					}
@@ -124,7 +125,7 @@ namespace Mimp {
 		auto input = panel->get<tgui::TextBox>("Input");
 		auto fonts = panel->get<tgui::ListBox>("Fonts");
 		auto fontDisplay = panel->get<tgui::TextBox>("FontDisplay");
-		auto color = panel->get<tgui::Button>("Color");
+		//auto color = panel->get<tgui::Button>("Color");
 
 		auto choose = tgui::Button::create("Custom Fonts");
 		choose->setPosition("FontDisplay.x + FontDisplay.w + 10", "FontDisplay.y");
@@ -208,7 +209,7 @@ namespace Mimp {
 			this->_system = !this->_system;
 		});
 
-		color->connect("Pressed", [color, this] {
+		/*color->connect("Pressed", [color, this] {
 			Utils::makeColorPickWindow(this->_toolBox.getParent(), [this, color](Color newColor) {
 				this->_color = newColor;
 
@@ -222,7 +223,7 @@ namespace Mimp {
 		color->getRenderer()->setBackgroundColor(buffer);
 		color->getRenderer()->setBackgroundColorHover(buffer);
 		color->getRenderer()->setBackgroundColorDown(buffer);
-
+		*/
 		return panel;
 	}
 
