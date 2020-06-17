@@ -97,6 +97,10 @@ Button.Color {
     Position = (60, 40)
 }
 
+Button.UseColour {
+    Position = (80, 40)
+}
+
 TextBox.Input {
     HorizontalScrollbarPolicy = Never;
     Position = (60, 100);
