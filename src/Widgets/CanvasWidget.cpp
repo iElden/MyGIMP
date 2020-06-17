@@ -12,7 +12,7 @@ namespace Mimp
 	CanvasWidget::CanvasWidget(const ToolBox &box, const std::string &path):
 		CanvasWidget(box, Vector2<unsigned>{0, 0}, LayerManager(path))
 	{
-		this->_size = this->_layers.getSize();
+		this->_size = this->_layers->getSize();
 		this->m_size = {this->_size.x, this->_size.y};
 		this->selectedArea->setSize(this->_size);
 	}
@@ -53,7 +53,7 @@ namespace Mimp
 
 	tgui::Widget::Ptr CanvasWidget::clone() const
 	{
-		return CanvasWidget::Ptr(new CanvasWidget(this->_box, this->_size, this->_layers));
+		return CanvasWidget::Ptr(new CanvasWidget(this->_box, this->_size, *this->_layers));
 	}
 
 	void CanvasWidget::draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -82,7 +82,7 @@ namespace Mimp
 			realSize.y = std::min(parentSize.y, realSize.y);
 		}
 
-		for (auto &layer : this->_layers) {
+		for (auto &layer : *this->_layers) {
 			if (!layer->visible)
 				continue;
 
@@ -154,10 +154,10 @@ namespace Mimp
 
 	void CanvasWidget::importImageFromFile(const std::string &path)
 	{
-		this->_layers.importImageFromFile(path);
+		this->_layers->importImageFromFile(path);
 		this->_size = {
-			this->_layers.getSize().x,
-			this->_layers.getSize().y
+			this->_layers->getSize().x,
+			this->_layers->getSize().y
 		};
 		this->m_size = {
 			this->_size.x,
@@ -169,10 +169,10 @@ namespace Mimp
 
 	void CanvasWidget::importImageFromMemory(const std::string &path)
 	{
-		this->_layers.importImageFromMemory(path);
+		this->_layers->importImageFromMemory(path);
 		this->_size = {
-			this->_layers.getSize().x,
-			this->_layers.getSize().y
+			this->_layers->getSize().x,
+			this->_layers->getSize().y
 		};
 		this->m_size = {
 			this->_size.x,
@@ -256,19 +256,19 @@ namespace Mimp
 
 	void CanvasWidget::setSymmetry(Vector2<bool> symmetry)
 	{
-		this->_layers.getSelectedLayer().buffer->setSymmetry(symmetry);
+		this->_layers->getSelectedLayer().buffer->setSymmetry(symmetry);
 		this->_symmetry = symmetry;
 	}
 
 	void CanvasWidget::setSymmetryAxis(Vector2<int> axis)
 	{
-		this->_layers.getSelectedLayer().buffer->setSymmetryAxis(axis);
+		this->_layers->getSelectedLayer().buffer->setSymmetryAxis(axis);
 		this->_axis = axis;
 	}
 
 	void CanvasWidget::setCentralSymmetry(bool central)
 	{
-		this->_layers.getSelectedLayer().buffer->setCentralSymmetry(central);
+		this->_layers->getSelectedLayer().buffer->setCentralSymmetry(central);
 		this->_centralSymmetry = central;
 	}
 }

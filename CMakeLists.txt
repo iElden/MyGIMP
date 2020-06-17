@@ -187,7 +187,7 @@ set(MIMP_SRCS
     src/Tools/Lasso.cpp
     src/Tools/Lasso.hpp
     src/Tools/Polygon.cpp
-    src/Tools/Polygon.hpp src/Tools/Finger.cpp src/Tools/Finger.hpp)
+    src/Tools/Polygon.hpp src/Tools/Finger.cpp src/Tools/Finger.hpp src/Snapshot/LayerManagerSnapshot.cpp src/Snapshot/LayerManagerSnapshot.hpp)
 
 
 find_library(PNG_LIBRARY png)
