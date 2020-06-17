@@ -830,27 +830,28 @@ namespace Mimp {
 				win->close();
 			});
 		});
-		rename->connect("Pressed", [layersPanel, &layer, this, canvas, index] {
+		rename->connect("Pressed", [layersPanel, &layer, this, canvas, index, win] {
 			canvas->takeLayerSnapshot(index);
-			auto win = Utils::openWindowWithFocus(this->_gui, 200, 80);
+			auto renameWindow = Utils::openWindowWithFocus(this->_gui, 200, 80);
 
-			win->loadWidgetsFromFile("widgets/rename.gui");
-			win->setTitle("Rename layer");
+			renameWindow->loadWidgetsFromFile("widgets/rename.gui");
+			renameWindow->setTitle("Rename layer");
 
-			auto ok = win->get<tgui::Button>("OK");
-			auto cancel = win->get<tgui::Button>("Cancel");
-			auto name = win->get<tgui::EditBox>("Name");
+			auto ok = renameWindow->get<tgui::Button>("OK");
+			auto cancel = renameWindow->get<tgui::Button>("Cancel");
+			auto name = renameWindow->get<tgui::EditBox>("Name");
 
 			name->setText(std::string(layer.name, strnlen(layer.name, sizeof(layer.name))));
 			name->setMaximumCharacters(sizeof(layer.name));
-			cancel->connect("Pressed", [win] { win->close(); });
-			ok->connect("Pressed", [layersPanel, win, &layer, name, index] {
+			cancel->connect("Pressed", [renameWindow] { renameWindow->close(); });
+			ok->connect("Pressed", [layersPanel, renameWindow, &layer, name, index, canvas, this, win] {
 				auto newName = name->getText().toAnsiString();
 				auto size = strnlen(layer.name, sizeof(layer.name));
 
 				std::memcpy(layer.name, newName.c_str(), newName.size());
 				layersPanel->get<tgui::Label>("Label" + std::to_string(index))->setText(std::string(layer.name, size));
-				win->close();
+				this->_makeLayersPanel(win, canvas);
+				renameWindow->close();
 			});
 		});
 		return panel;
