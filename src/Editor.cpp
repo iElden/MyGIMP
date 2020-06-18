@@ -417,6 +417,12 @@ namespace Mimp {
 			KeyWidget::Ptr key;
 			auto shortcuts = std::make_shared<std::map<std::string, Keys::KeyCombination>>();
 
+			auto validateShortcuts = [this, shortcuts, win]() -> bool {
+				bool ret = this->_shortcutManager.isValid(*shortcuts);
+				win->get<tgui::Label>("Error")->setVisible(!ret);
+				return ret;
+			};
+
 			for (auto &i : this->_shortcutManager.getShortcuts()) {
 				(*shortcuts)[i.first] = i.second->getKeyCombination();
 
@@ -430,22 +436,25 @@ namespace Mimp {
 
 				ctrlTick->setPosition("(controllabel.x + (controllabel.w / 2)) - (w / 2)", id + ".y");
 				ctrlTick->setChecked(i.second->getKeyCombination().control);
-				ctrlTick->connect("Changed", [ctrlTick, i, shortcuts] {
+				ctrlTick->connect("Changed", [ctrlTick, i, shortcuts, validateShortcuts] {
 					(*shortcuts)[i.first].control = ctrlTick->isChecked();
+					validateShortcuts();
 				});
 				panel->add(ctrlTick);
 
 				altTick->setPosition("(altlabel.x + (altlabel.w / 2)) - (w / 2)", id + ".y");
 				altTick->setChecked(i.second->getKeyCombination().alt);
-				altTick->connect("Changed", [altTick, i, shortcuts] {
+				altTick->connect("Changed", [altTick, i, shortcuts, validateShortcuts] {
 					(*shortcuts)[i.first].alt = altTick->isChecked();
+					validateShortcuts();
 				});
 				panel->add(altTick);
 
 				shiftTick->setPosition("(shiftlabel.x + (shiftlabel.w / 2)) - (w / 2)", id + ".y");
 				shiftTick->setChecked(i.second->getKeyCombination().shift);
-				shiftTick->connect("Changed", [shiftTick, i, shortcuts] {
+				shiftTick->connect("Changed", [shiftTick, i, shortcuts, validateShortcuts] {
 					(*shortcuts)[i.first].shift = shiftTick->isChecked();
+					validateShortcuts();
 				});
 				panel->add(shiftTick);
 
@@ -454,6 +463,8 @@ namespace Mimp {
 				key->setPosition("(keylabel.x + (keylabel.w / 2)) - (w / 2)", id + ".y");
 				key->setSize(65, 20);
 				panel->add(key, "KeySelect" + id);
+
+				validateShortcuts();
 
 				idx += 1;
 			}
@@ -470,9 +481,12 @@ namespace Mimp {
 				win->close();
 				this->_shortcutManager.setBusy(false);
 			});
-			ok->connect("Pressed", [this, win, shortcuts] {
+			ok->connect("Pressed", [this, win, shortcuts, validateShortcuts] {
 				auto menu = this->_gui.get<tgui::MenuBar>("main_bar");
 				auto s = this->_shortcutManager.getShortcuts();
+
+				if (!validateShortcuts())
+					return
 
 				this->_keysImgOps.clear();
 				for (auto &imgOp : this->_imgOps) {

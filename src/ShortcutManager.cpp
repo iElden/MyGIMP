@@ -1,6 +1,7 @@
-#include "ShortcutManager.hpp"
 #include <iostream>
 #include <fstream>
+#include "ShortcutManager.hpp"
+#include "ShortcutComparator.hpp"
 #include "Exceptions.hpp"
 
 namespace Mimp {
@@ -67,5 +68,15 @@ namespace Mimp {
 			output << i.first << ":" << i.second->getKeyCombination().toString() << "\n";
 		}
 		output.close();
+	}
+
+	bool ShortcutManager::isValid(std::map<std::string, Keys::KeyCombination>& other)
+	{
+		for (auto &s : other) {
+			if (s.second.key != Keys::KEY_UNKNOWN && std::count(other.begin(), other.end(), Compare(s.second)) > 1) {
+				return false;
+			}
+		}
+		return true;
 	}
 }

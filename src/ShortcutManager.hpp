@@ -28,6 +28,8 @@ namespace Mimp {
 			return _shortcuts;
 		};
 
+		static bool isValid(std::map<std::string, Keys::KeyCombination>& other);
+
 		bool isBusy() { return this->_isBusy; }
 
 		void setBusy(bool b = true) { this->_isBusy = b; }

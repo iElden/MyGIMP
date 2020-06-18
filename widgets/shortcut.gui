@@ -112,3 +112,11 @@ Button.OK {
     TextSize = 13;
     renderer = &1;
 }
+
+Label.Error {
+    Position = ((ok.x - w) - 10, (mainpanel.y + mainpanel.h) + 10);
+    Text = "Some shortcuts are identical, please edit them.";
+    TextSize = 13;
+    renderer = &2;
+    Visible = false;
+}

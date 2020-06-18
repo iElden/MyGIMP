@@ -214,9 +214,9 @@ namespace Mimp
 			realPos.x = pos.x / this->_zoom;
 			realPos.y = pos.y / this->_zoom;
 			this->_edited = true;
-			this->_layers.getSelectedLayer().buffer->setSymmetryAxis(this->_axis);
-			this->_layers.getSelectedLayer().buffer->setSymmetry(this->_symmetry);
-			this->_layers.getSelectedLayer().buffer->setCentralSymmetry(this->_centralSymmetry);
+			this->_layers->getSelectedLayer().buffer->setSymmetryAxis(this->_axis);
+			this->_layers->getSelectedLayer().buffer->setSymmetry(this->_symmetry);
+			this->_layers->getSelectedLayer().buffer->setCentralSymmetry(this->_centralSymmetry);
 			this->_box.getSelectedTool()->onClick(realPos, MIMP_LEFT_CLICK, *this);
 		});
 		this->onMouseRelease.connect([this](tgui::Vector2f pos){
@@ -233,9 +233,9 @@ namespace Mimp
 			realPos.y = pos.y / this->_zoom;
 			this->_rightMouseDown = true;
 			this->_edited = true;
-			this->_layers.getSelectedLayer().buffer->setSymmetryAxis(this->_axis);
-			this->_layers.getSelectedLayer().buffer->setSymmetry(this->_symmetry);
-			this->_layers.getSelectedLayer().buffer->setCentralSymmetry(this->_centralSymmetry);
+			this->_layers->getSelectedLayer().buffer->setSymmetryAxis(this->_axis);
+			this->_layers->getSelectedLayer().buffer->setSymmetry(this->_symmetry);
+			this->_layers->getSelectedLayer().buffer->setCentralSymmetry(this->_centralSymmetry);
 			this->_box.getSelectedTool()->onClick(realPos, MIMP_RIGHT_CLICK, *this);
 		});
 		this->onRightMouseRelease.connect([this](tgui::Vector2f pos){
