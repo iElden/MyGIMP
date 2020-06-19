@@ -43,7 +43,6 @@ namespace Mimp
 	{
 		Vector2<int> realPos;
 
-		this->_edited |= this->m_mouseDown || this->_rightMouseDown;
 		realPos.x = (pos.x - this->getPosition().x) / this->_zoom;
 		realPos.y = (pos.y - this->getPosition().y) / this->_zoom;
 		if (this->m_mouseDown)
@@ -206,16 +205,6 @@ namespace Mimp
 		return this->_zoom;
 	}
 
-	bool CanvasWidget::isEdited() const
-	{
-		return this->_edited;
-	}
-
-	void CanvasWidget::setEdited(bool edited)
-	{
-		this->_edited = edited;
-	}
-
 	void CanvasWidget::_makeCallbacks()
 	{
 		this->onMousePress.connect([this](tgui::Vector2f pos){
@@ -223,7 +212,6 @@ namespace Mimp
 
 			realPos.x = pos.x / this->_zoom;
 			realPos.y = pos.y / this->_zoom;
-			this->_edited = true;
 			this->_layers->getSelectedLayer().buffer->setSymmetryAxis(this->_axis);
 			this->_layers->getSelectedLayer().buffer->setSymmetry(this->_symmetry);
 			this->_layers->getSelectedLayer().buffer->setCentralSymmetry(this->_centralSymmetry);
@@ -242,7 +230,6 @@ namespace Mimp
 			realPos.x = pos.x / this->_zoom;
 			realPos.y = pos.y / this->_zoom;
 			this->_rightMouseDown = true;
-			this->_edited = true;
 			this->_layers->getSelectedLayer().buffer->setSymmetryAxis(this->_axis);
 			this->_layers->getSelectedLayer().buffer->setSymmetry(this->_symmetry);
 			this->_layers->getSelectedLayer().buffer->setCentralSymmetry(this->_centralSymmetry);

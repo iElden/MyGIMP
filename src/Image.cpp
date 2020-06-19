@@ -85,6 +85,7 @@ namespace Mimp {
 
 	void Image::takeSnapshot(std::shared_ptr<Snapshot> snapshot) noexcept
 	{
+		this->_edited = true;
 		this->_snapshots.push_back(snapshot);
 		if (this->_snapshots.size() > this->_max_snapshots)
 			this->_snapshots.erase(this->_snapshots.begin());
@@ -147,5 +148,15 @@ namespace Mimp {
 	std::shared_ptr<LayerManager> &Image::getLayerManagerPtr() noexcept
 	{
 		return this->_layers;
+	}
+
+	bool Image::isEdited() const
+	{
+		return this->_edited;
+	}
+
+	void Image::setEdited(bool edited)
+	{
+		this->_edited = edited;
 	}
 }

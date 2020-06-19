@@ -22,6 +22,8 @@ namespace Mimp {
 		std::vector<std::shared_ptr<Snapshot>> _snapshots = {};
 		std::vector<std::shared_ptr<Snapshot>> _redoSnapshots = {};
 		unsigned _max_snapshots = 10;
+		bool _edited = false;
+
 	public:
 		std::shared_ptr<SelectedArea> selectedArea; //!< SelectedArea of the Image
 
@@ -57,6 +59,10 @@ namespace Mimp {
 		//! @brief Get the image size
 		//! @return Vector2<unsigned> Size of the image
 		Vector2<unsigned> getImageSize() const noexcept;
+
+		//! @brief Get the status of the Canvas
+		bool isEdited() const;
+		void setEdited(bool edited);
 
 		unsigned int getMaxSnapshots() const noexcept;
 		void setMaxSnapshots(unsigned int maxSnapshots) noexcept;
