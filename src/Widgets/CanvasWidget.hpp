@@ -34,8 +34,8 @@ namespace Mimp
 		Vector2<int> _axis = {0, 0};
 		bool _centralSymmetry = false;
 
-		mutable unsigned char _colorCounter = 0;
-
+		mutable sf::Clock _clock;
+		mutable float _colorCounter = 0;
 		mutable sf::Texture _drawBuffer;
 
 		//! @details Private Constructor of the Canvas Widget class

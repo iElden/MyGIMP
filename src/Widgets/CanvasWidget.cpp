@@ -7,6 +7,8 @@
 #include <SFML/Graphics/RenderTexture.hpp>
 #include "CanvasWidget.hpp"
 
+#include <iostream>
+
 namespace Mimp
 {
 	CanvasWidget::CanvasWidget(const ToolBox &box, const std::string &path):
@@ -62,11 +64,19 @@ namespace Mimp
 		sf::Sprite sprite;
 		auto size = this->_size;
 		FrameBuffer buffer{size};
-		auto color = Color{this->_colorCounter, this->_colorCounter, this->_colorCounter, 120};
+		auto color = Color(this->_colorCounter, this->_colorCounter, this->_colorCounter, 120);
 		auto realSize = size * this->_zoom;
+		auto time = this->_clock.getElapsedTime().asSeconds();
+		float newValue = this->_colorCounter + (this->_counterUp * 2 - 1) * time * 200;
 
-		this->_colorCounter += (this->_counterUp * 2 - 1) * 20;
-		this->_counterUp = (this->_counterUp && this->_colorCounter < 240) || !this->_colorCounter;
+		this->_counterUp = (this->_counterUp && newValue < 240) || (newValue <= 0);
+		this->_colorCounter = std::fmod(this->_colorCounter, 240);
+		if (this->_colorCounter < 0)
+			this->_colorCounter += 240;
+
+		this->_colorCounter += (this->_counterUp * 2 - 1) * time * 200;
+
+		this->_clock.restart();
 		if (this->selectedArea->isAnAreaSelected())
 			for (auto &pt : this->selectedArea->getPoints())
 				buffer.drawPixel(pt, color, SET);
