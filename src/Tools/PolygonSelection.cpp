@@ -11,37 +11,35 @@ namespace Mimp {
 
 	void PolygonSelection::onClick(Vector2<int> pos, MouseClick click, Image &image)
 	{
-		image.takeSelectionSnapshot();
-
-		if (click == MouseClick::MIMP_LEFT_CLICK) this->_polygon.add(pos);
-		if (click == MouseClick::MIMP_RIGHT_CLICK && !this->_polygon.empty()) this->_polygon.removeLast();
-
-		this->_box->setText(std::to_string(this->_polygon.size()));
-		image.selectedArea->clear();
-		this->_polygon.update([&image](Vector2<int> pt) { image.selectedArea->add(pt); });
+		if (click == MouseClick::MIMP_LEFT_CLICK) {
+			image.selectedArea->clear();
+			this->_polygon.reset();
+			this->_polygon.add(pos);
+			this->_polygon.update([&image](Vector2<int> pt) { image.selectedArea->add(pt); });
+		}
+		if (click == MouseClick::MIMP_RIGHT_CLICK) {
+			image.selectedArea->clear();
+			this->_polygon.add(pos);
+			this->_polygon.update([&image](Vector2<int> pt) { image.selectedArea->add(pt); });
+		}
 	}
 
 	tgui::ScrollablePanel::Ptr PolygonSelection::getParametersPanel()
 	{
 		auto panel = tgui::ScrollablePanel::create();
-		panel->loadWidgetsFromFile("widgets/tools_cfg/polyselect_cfg.gui");
 
-		auto button = panel->get<tgui::Button>("Clear");
-		this->_box = panel->get<tgui::EditBox>("Nb");
+		std::string content;
+		content += "Left click : Create a new selection and set start point.\n";
+		content += "Right click : Add point to the selection.\n";
+		content += "Note : Undo/Redo affect the Left click only,\nnot the Right click.";
+		auto hint = tgui::Label::create(content);
 
-		button->connect("Pressed", [this] { this->clear(); });
-		panel->add(button);
-
+		panel->add(hint);
 		return panel;
 	}
 
 	void PolygonSelection::clear()
 	{
-		this->_box->setText("0");
 		this->_polygon.reset();
-	}
-
-	void PolygonSelection::onMouseDrag(Vector2<int>, Vector2<int>, MouseClick, Image &)
-	{
 	}
 }
