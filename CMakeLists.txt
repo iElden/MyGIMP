@@ -199,11 +199,20 @@ find_library(PNG_LIBRARY png)
 find_package(clip REQUIRED)
 include_directories(${clip_INCLUDE_DIRS})
 
-add_executable(
-    MyGimp
-    src/main.cpp
-    ${MIMP_SRCS}
-)
+if (WIN32)
+    add_executable(
+        MyGimp
+        src/main.cpp
+        icon.rc
+        ${MIMP_SRCS}
+    )
+else ()
+    add_executable(
+            MyGimp
+            src/main.cpp
+            ${MIMP_SRCS}
+    )
+endif()
 
 if (WIN32)
     target_link_libraries(

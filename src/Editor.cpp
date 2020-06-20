@@ -15,12 +15,16 @@
 
 namespace Mimp {
 	Editor::Editor(const std::vector<std::string> &images) :
-			_mainWindow({640, 480}, "Mimp"),
-			_gui(this->_mainWindow),
-			_toolBox(this->_gui),
-			_imgOps(ImageOperationFactory::buildAll()),
-			_shortcutManager(_toolBox.getTools(), ImageOperationFactory::get())
+		_mainWindow({640, 480}, "Mimp"),
+		_gui(this->_mainWindow),
+		_toolBox(this->_gui),
+		_imgOps(ImageOperationFactory::buildAll()),
+		_shortcutManager(_toolBox.getTools(), ImageOperationFactory::get())
 	{
+		sf::Image icon;
+
+		icon.loadFromFile("icons/logo.png");
+		this->_mainWindow.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 		this->_toolBox.refreshToolBox();
 		this->_mainWindow.setFramerateLimit(240);
 		this->_gui.loadWidgetsFromFile("widgets/top_menu.gui");
