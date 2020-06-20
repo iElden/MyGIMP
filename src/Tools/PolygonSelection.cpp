@@ -14,8 +14,6 @@ namespace Mimp {
 		if (click == MouseClick::MIMP_LEFT_CLICK) {
 			image.selectedArea->clear();
 			this->_polygon.reset();
-			this->_polygon.add(pos);
-			this->_polygon.update([&image](Vector2<int> pt) { image.selectedArea->add(pt); });
 		}
 		if (click == MouseClick::MIMP_RIGHT_CLICK) {
 			image.selectedArea->clear();
@@ -29,9 +27,9 @@ namespace Mimp {
 		auto panel = tgui::ScrollablePanel::create();
 
 		std::string content;
-		content += "Left click : Create a new selection and set start point.\n";
-		content += "Right click : Add point to the selection.\n";
-		content += "Note : Undo/Redo affect the Left click only,\nnot the Right click.";
+		content += "Left click : Start a new selection. Must be used first\nwhen dealing with several images.\n";
+		content += "Right click : Add the mouse position to the selection.\n";
+		content += "Note : Undo/Redo don't work with this tool.\nUse Left click to clear the selection.";
 		auto hint = tgui::Label::create(content);
 
 		panel->add(hint);
