@@ -11,39 +11,40 @@
 #include "Snapshot/LayerSnapshot.hpp"
 #include "Snapshot/SelectionSnapshot.hpp"
 #include "Editor.hpp"
+#include "Snapshot/LayerManagerSnapshot.hpp"
 
 namespace Mimp {
 	Layer &Image::getSelectedLayer() noexcept
 	{
-		return this->_layers.getSelectedLayer();
+		return this->_layers->getSelectedLayer();
 	}
 
 	const Layer &Image::getSelectedLayer() const noexcept
 	{
-		return this->_layers.getSelectedLayer();
+		return this->_layers->getSelectedLayer();
 	}
 
 	Image::Image(Vector2<unsigned> size):
 		_size(size),
-		_layers(size),
+		_layers(std::make_shared<LayerManager>(size)),
 		selectedArea(std::make_shared<SelectedArea>(size))
 	{}
 
 	Image::Image(Vector2<unsigned> size, const LayerManager &layers):
 		_size(size),
-		_layers(layers),
+		_layers(std::make_shared<LayerManager>(layers)),
 		selectedArea(std::make_shared<SelectedArea>(size))
 	{
 	}
 
 	LayerManager &Image::getLayers() noexcept
 	{
-		return this->_layers;
+		return *this->_layers;
 	}
 
 	const LayerManager &Image::getLayers() const noexcept
 	{
-		return this->_layers;
+		return *this->_layers;
 	}
 
 	Vector2<unsigned> Image::getImageSize() const noexcept
@@ -61,7 +62,7 @@ namespace Mimp {
 		sf::Image image;
 		auto pixelArray = new sf::Color[size.x * size.y];
 
-		this->_layers.render(buffer);
+		this->_layers->render(buffer);
 		for (unsigned x = 0; x < size.x; x++)
 			for (unsigned y = 0; y < size.y; y++)
 				pixelArray[x + y * size.x] = buffer.getPixel({static_cast<int>(x), static_cast<int>(y)});
@@ -84,6 +85,7 @@ namespace Mimp {
 
 	void Image::takeSnapshot(std::shared_ptr<Snapshot> snapshot) noexcept
 	{
+		this->_edited = true;
 		this->_snapshots.push_back(snapshot);
 		if (this->_snapshots.size() > this->_max_snapshots)
 			this->_snapshots.erase(this->_snapshots.begin());
@@ -93,13 +95,13 @@ namespace Mimp {
 	void Image::takeFrameBufferSnapshot() noexcept
 	{
 		this->takeSnapshot(std::make_shared<FrameBufferSnapshot>(
-			*this->getSelectedLayer().buffer, this->_layers.getSelectedLayerIndex()
+			*this->getSelectedLayer().buffer, this->_layers->getSelectedLayerIndex()
 		));
 	}
 
 	void Image::takeLayerSnapshot() noexcept
 	{
-		this->takeLayerSnapshot(this->_layers.getSelectedLayerIndex());
+		this->takeLayerSnapshot(this->_layers->getSelectedLayerIndex());
 	}
 
 	void Image::takeLayerSnapshot(unsigned index) noexcept
@@ -113,6 +115,13 @@ namespace Mimp {
 	{
 		this->takeSnapshot(std::make_shared<SelectionSnapshot>(
 			*this->selectedArea
+		));
+	}
+
+	void Image::takeLayerManagerSnapshot() noexcept
+	{
+		this->takeSnapshot(std::make_shared<LayerManagerSnapshot>(
+				*this->_layers
 		));
 	}
 
@@ -136,4 +145,18 @@ namespace Mimp {
 		this->_redoSnapshots.pop_back();
 	}
 
+	std::shared_ptr<LayerManager> &Image::getLayerManagerPtr() noexcept
+	{
+		return this->_layers;
+	}
+
+	bool Image::isEdited() const
+	{
+		return this->_edited;
+	}
+
+	void Image::setEdited(bool edited)
+	{
+		this->_edited = edited;
+	}
 }

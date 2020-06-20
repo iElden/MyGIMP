@@ -7,12 +7,14 @@
 #include <SFML/Graphics/RenderTexture.hpp>
 #include "CanvasWidget.hpp"
 
+#include <iostream>
+
 namespace Mimp
 {
 	CanvasWidget::CanvasWidget(const ToolBox &box, const std::string &path):
 		CanvasWidget(box, Vector2<unsigned>{0, 0}, LayerManager(path))
 	{
-		this->_size = this->_layers.getSize();
+		this->_size = this->_layers->getSize();
 		this->m_size = {this->_size.x, this->_size.y};
 		this->selectedArea->setSize(this->_size);
 	}
@@ -41,7 +43,6 @@ namespace Mimp
 	{
 		Vector2<int> realPos;
 
-		this->_edited |= this->m_mouseDown || this->_rightMouseDown;
 		realPos.x = (pos.x - this->getPosition().x) / this->_zoom;
 		realPos.y = (pos.y - this->getPosition().y) / this->_zoom;
 		if (this->m_mouseDown)
@@ -53,7 +54,7 @@ namespace Mimp
 
 	tgui::Widget::Ptr CanvasWidget::clone() const
 	{
-		return CanvasWidget::Ptr(new CanvasWidget(this->_box, this->_size, this->_layers));
+		return CanvasWidget::Ptr(new CanvasWidget(this->_box, this->_size, *this->_layers));
 	}
 
 	void CanvasWidget::draw(sf::RenderTarget &target, sf::RenderStates states) const
@@ -62,11 +63,19 @@ namespace Mimp
 		sf::Sprite sprite;
 		auto size = this->_size;
 		FrameBuffer buffer{size};
-		auto color = Color{this->_colorCounter, this->_colorCounter, this->_colorCounter, 120};
+		auto color = Color(this->_colorCounter, this->_colorCounter, this->_colorCounter, 120);
 		auto realSize = size * this->_zoom;
+		auto time = this->_clock.getElapsedTime().asSeconds();
+		float newValue = this->_colorCounter + (this->_counterUp * 2 - 1) * time * 200;
 
-		this->_colorCounter += (this->_counterUp * 2 - 1) * 20;
-		this->_counterUp = (this->_counterUp && this->_colorCounter < 240) || !this->_colorCounter;
+		this->_counterUp = (this->_counterUp && newValue < 240) || (newValue <= 0);
+		this->_colorCounter = std::fmod(this->_colorCounter, 240);
+		if (this->_colorCounter < 0)
+			this->_colorCounter += 240;
+
+		this->_colorCounter += (this->_counterUp * 2 - 1) * time * 200;
+
+		this->_clock.restart();
 		if (this->selectedArea->isAnAreaSelected())
 			for (auto &pt : this->selectedArea->getPoints())
 				buffer.drawPixel(pt, color, SET);
@@ -82,7 +91,7 @@ namespace Mimp
 			realSize.y = std::min(parentSize.y, realSize.y);
 		}
 
-		for (auto &layer : this->_layers) {
+		for (auto &layer : *this->_layers) {
 			if (!layer->visible)
 				continue;
 
@@ -154,10 +163,10 @@ namespace Mimp
 
 	void CanvasWidget::importImageFromFile(const std::string &path)
 	{
-		this->_layers.importImageFromFile(path);
+		this->_layers->importImageFromFile(path);
 		this->_size = {
-			this->_layers.getSize().x,
-			this->_layers.getSize().y
+			this->_layers->getSize().x,
+			this->_layers->getSize().y
 		};
 		this->m_size = {
 			this->_size.x,
@@ -169,10 +178,10 @@ namespace Mimp
 
 	void CanvasWidget::importImageFromMemory(const std::string &path)
 	{
-		this->_layers.importImageFromMemory(path);
+		this->_layers->importImageFromMemory(path);
 		this->_size = {
-			this->_layers.getSize().x,
-			this->_layers.getSize().y
+			this->_layers->getSize().x,
+			this->_layers->getSize().y
 		};
 		this->m_size = {
 			this->_size.x,
@@ -196,16 +205,6 @@ namespace Mimp
 		return this->_zoom;
 	}
 
-	bool CanvasWidget::isEdited() const
-	{
-		return this->_edited;
-	}
-
-	void CanvasWidget::setEdited(bool edited)
-	{
-		this->_edited = edited;
-	}
-
 	void CanvasWidget::_makeCallbacks()
 	{
 		this->onMousePress.connect([this](tgui::Vector2f pos){
@@ -213,7 +212,9 @@ namespace Mimp
 
 			realPos.x = pos.x / this->_zoom;
 			realPos.y = pos.y / this->_zoom;
-			this->_edited = true;
+			this->_layers->getSelectedLayer().buffer->setSymmetryAxis(this->_axis);
+			this->_layers->getSelectedLayer().buffer->setSymmetry(this->_symmetry);
+			this->_layers->getSelectedLayer().buffer->setCentralSymmetry(this->_centralSymmetry);
 			this->_box.getSelectedTool()->onClick(realPos, MIMP_LEFT_CLICK, *this);
 		});
 		this->onMouseRelease.connect([this](tgui::Vector2f pos){
@@ -229,7 +230,9 @@ namespace Mimp
 			realPos.x = pos.x / this->_zoom;
 			realPos.y = pos.y / this->_zoom;
 			this->_rightMouseDown = true;
-			this->_edited = true;
+			this->_layers->getSelectedLayer().buffer->setSymmetryAxis(this->_axis);
+			this->_layers->getSelectedLayer().buffer->setSymmetry(this->_symmetry);
+			this->_layers->getSelectedLayer().buffer->setCentralSymmetry(this->_centralSymmetry);
 			this->_box.getSelectedTool()->onClick(realPos, MIMP_RIGHT_CLICK, *this);
 		});
 		this->onRightMouseRelease.connect([this](tgui::Vector2f pos){
@@ -256,19 +259,19 @@ namespace Mimp
 
 	void CanvasWidget::setSymmetry(Vector2<bool> symmetry)
 	{
-		this->_layers.getSelectedLayer().buffer->setSymmetry(symmetry);
+		this->_layers->getSelectedLayer().buffer->setSymmetry(symmetry);
 		this->_symmetry = symmetry;
 	}
 
 	void CanvasWidget::setSymmetryAxis(Vector2<int> axis)
 	{
-		this->_layers.getSelectedLayer().buffer->setSymmetryAxis(axis);
+		this->_layers->getSelectedLayer().buffer->setSymmetryAxis(axis);
 		this->_axis = axis;
 	}
 
 	void CanvasWidget::setCentralSymmetry(bool central)
 	{
-		this->_layers.getSelectedLayer().buffer->setCentralSymmetry(central);
+		this->_layers->getSelectedLayer().buffer->setCentralSymmetry(central);
 		this->_centralSymmetry = central;
 	}
 }

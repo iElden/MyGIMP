@@ -15,12 +15,16 @@
 
 namespace Mimp {
 	Editor::Editor(const std::vector<std::string> &images) :
-			_mainWindow({640, 480}, "Mimp"),
-			_gui(this->_mainWindow),
-			_toolBox(this->_gui),
-			_imgOps(ImageOperationFactory::buildAll()),
-			_shortcutManager(_toolBox.getTools(), ImageOperationFactory::get())
+		_mainWindow({640, 480}, "Mimp"),
+		_gui(this->_mainWindow),
+		_toolBox(this->_gui),
+		_imgOps(ImageOperationFactory::buildAll()),
+		_shortcutManager(_toolBox.getTools(), ImageOperationFactory::get())
 	{
+		sf::Image icon;
+
+		icon.loadFromFile("icons/logo.png");
+		this->_mainWindow.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 		this->_toolBox.refreshToolBox();
 		this->_mainWindow.setFramerateLimit(240);
 		this->_gui.loadWidgetsFromFile("widgets/top_menu.gui");
@@ -417,6 +421,12 @@ namespace Mimp {
 			KeyWidget::Ptr key;
 			auto shortcuts = std::make_shared<std::map<std::string, Keys::KeyCombination>>();
 
+			auto validateShortcuts = [this, shortcuts, win]() -> bool {
+				bool ret = this->_shortcutManager.isValid(*shortcuts);
+				win->get<tgui::Label>("Error")->setVisible(!ret);
+				return ret;
+			};
+
 			for (auto &i : this->_shortcutManager.getShortcuts()) {
 				(*shortcuts)[i.first] = i.second->getKeyCombination();
 
@@ -430,22 +440,25 @@ namespace Mimp {
 
 				ctrlTick->setPosition("(controllabel.x + (controllabel.w / 2)) - (w / 2)", id + ".y");
 				ctrlTick->setChecked(i.second->getKeyCombination().control);
-				ctrlTick->connect("Changed", [ctrlTick, i, shortcuts] {
+				ctrlTick->connect("Changed", [ctrlTick, i, shortcuts, validateShortcuts] {
 					(*shortcuts)[i.first].control = ctrlTick->isChecked();
+					validateShortcuts();
 				});
 				panel->add(ctrlTick);
 
 				altTick->setPosition("(altlabel.x + (altlabel.w / 2)) - (w / 2)", id + ".y");
 				altTick->setChecked(i.second->getKeyCombination().alt);
-				altTick->connect("Changed", [altTick, i, shortcuts] {
+				altTick->connect("Changed", [altTick, i, shortcuts, validateShortcuts] {
 					(*shortcuts)[i.first].alt = altTick->isChecked();
+					validateShortcuts();
 				});
 				panel->add(altTick);
 
 				shiftTick->setPosition("(shiftlabel.x + (shiftlabel.w / 2)) - (w / 2)", id + ".y");
 				shiftTick->setChecked(i.second->getKeyCombination().shift);
-				shiftTick->connect("Changed", [shiftTick, i, shortcuts] {
+				shiftTick->connect("Changed", [shiftTick, i, shortcuts, validateShortcuts] {
 					(*shortcuts)[i.first].shift = shiftTick->isChecked();
+					validateShortcuts();
 				});
 				panel->add(shiftTick);
 
@@ -454,6 +467,8 @@ namespace Mimp {
 				key->setPosition("(keylabel.x + (keylabel.w / 2)) - (w / 2)", id + ".y");
 				key->setSize(65, 20);
 				panel->add(key, "KeySelect" + id);
+
+				validateShortcuts();
 
 				idx += 1;
 			}
@@ -470,9 +485,12 @@ namespace Mimp {
 				win->close();
 				this->_shortcutManager.setBusy(false);
 			});
-			ok->connect("Pressed", [this, win, shortcuts] {
+			ok->connect("Pressed", [this, win, shortcuts, validateShortcuts] {
 				auto menu = this->_gui.get<tgui::MenuBar>("main_bar");
 				auto s = this->_shortcutManager.getShortcuts();
+
+				if (!validateShortcuts())
+					return
 
 				this->_keysImgOps.clear();
 				for (auto &imgOp : this->_imgOps) {
@@ -830,27 +848,28 @@ namespace Mimp {
 				win->close();
 			});
 		});
-		rename->connect("Pressed", [layersPanel, &layer, this, canvas, index] {
+		rename->connect("Pressed", [layersPanel, &layer, this, canvas, index, win] {
 			canvas->takeLayerSnapshot(index);
-			auto win = Utils::openWindowWithFocus(this->_gui, 200, 80);
+			auto renameWindow = Utils::openWindowWithFocus(this->_gui, 200, 80);
 
-			win->loadWidgetsFromFile("widgets/rename.gui");
-			win->setTitle("Rename layer");
+			renameWindow->loadWidgetsFromFile("widgets/rename.gui");
+			renameWindow->setTitle("Rename layer");
 
-			auto ok = win->get<tgui::Button>("OK");
-			auto cancel = win->get<tgui::Button>("Cancel");
-			auto name = win->get<tgui::EditBox>("Name");
+			auto ok = renameWindow->get<tgui::Button>("OK");
+			auto cancel = renameWindow->get<tgui::Button>("Cancel");
+			auto name = renameWindow->get<tgui::EditBox>("Name");
 
 			name->setText(std::string(layer.name, strnlen(layer.name, sizeof(layer.name))));
 			name->setMaximumCharacters(sizeof(layer.name));
-			cancel->connect("Pressed", [win] { win->close(); });
-			ok->connect("Pressed", [layersPanel, win, &layer, name, index] {
+			cancel->connect("Pressed", [renameWindow] { renameWindow->close(); });
+			ok->connect("Pressed", [layersPanel, renameWindow, &layer, name, index, canvas, this, win] {
 				auto newName = name->getText().toAnsiString();
 				auto size = strnlen(layer.name, sizeof(layer.name));
 
 				std::memcpy(layer.name, newName.c_str(), newName.size());
 				layersPanel->get<tgui::Label>("Label" + std::to_string(index))->setText(std::string(layer.name, size));
-				win->close();
+				this->_makeLayersPanel(win, canvas);
+				renameWindow->close();
 			});
 		});
 		return panel;

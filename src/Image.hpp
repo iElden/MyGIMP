@@ -18,10 +18,12 @@ namespace Mimp {
 	class Image {
 	protected:
 		Vector2<unsigned> _size; //!< Size of the Image
-		LayerManager _layers; //!< Layers of the Image
+		std::shared_ptr<LayerManager> _layers; //!< Layers of the Image
 		std::vector<std::shared_ptr<Snapshot>> _snapshots = {};
 		std::vector<std::shared_ptr<Snapshot>> _redoSnapshots = {};
 		unsigned _max_snapshots = 10;
+		bool _edited = false;
+
 	public:
 		std::shared_ptr<SelectedArea> selectedArea; //!< SelectedArea of the Image
 
@@ -58,13 +60,19 @@ namespace Mimp {
 		//! @return Vector2<unsigned> Size of the image
 		Vector2<unsigned> getImageSize() const noexcept;
 
+		//! @brief Get the status of the Canvas
+		bool isEdited() const;
+		void setEdited(bool edited);
+
 		unsigned int getMaxSnapshots() const noexcept;
 		void setMaxSnapshots(unsigned int maxSnapshots) noexcept;
+		std::shared_ptr<LayerManager> &getLayerManagerPtr() noexcept;
 		void takeSnapshot(std::shared_ptr<Snapshot> snapshot) noexcept;
 		void takeFrameBufferSnapshot() noexcept;
 		void takeLayerSnapshot() noexcept;
 		void takeLayerSnapshot(unsigned index) noexcept;
 		void takeSelectionSnapshot() noexcept;
+		void takeLayerManagerSnapshot() noexcept;
 		void undoLastAction(Editor &editor) noexcept;
 		void redoLastUndo(Editor &editor) noexcept;
 	};

@@ -24,7 +24,6 @@ namespace Mimp
 
 		mutable bool _counterUp = true;
 
-		bool _edited = false;
 		float _zoom = 1.f;
 
 		bool _drawGrid = false;
@@ -34,8 +33,8 @@ namespace Mimp
 		Vector2<int> _axis = {0, 0};
 		bool _centralSymmetry = false;
 
-		mutable unsigned char _colorCounter = 0;
-
+		mutable sf::Clock _clock;
+		mutable float _colorCounter = 0;
 		mutable sf::Texture _drawBuffer;
 
 		//! @details Private Constructor of the Canvas Widget class
@@ -74,13 +73,6 @@ namespace Mimp
 		//! @param path Path of the CanvasWidget file
 		//! @return CanvasWidget::Ptr
 		static CanvasWidget::Ptr create(const ToolBox &box, const std::string &path);
-
-		//! @brief Get the status of the Canvas
-		bool isEdited() const;
-
-		//! @brief Set the status of the CanvasWidget.
-		//! @param edited The status of the CanvasWidget. Default is true
-		void setEdited(bool edited = true);
 
 		//! @brief Set the zoom level of the canvas
 		//! @param zoom The zoom level
