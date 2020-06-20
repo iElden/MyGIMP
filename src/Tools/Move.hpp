@@ -11,6 +11,15 @@
 
 namespace Mimp
 {
+	enum MoveType {
+		MOVE_LAYER,
+		MOVE_SELECTION,
+		MOVE_AREA,
+		NO_MOVE
+	};
+	std::string moveTypeToString(MoveType mt);
+	MoveType stringToMoveType(const std::string &s);
+
 	//! @brief Define a Mover
 	class Move : public Tool {
 	public:
@@ -28,11 +37,19 @@ namespace Mimp
 		//! @param pos Position of the tool
 		//! @param click Mouse click state
 		//! @param image The Image to edit
-		void onClick(Vector2<int> pos, MouseClick click, Image &image) override;
+		void onClick(Vector2<int> pos, MouseClick, Image &image) override;
 
 		//! @brief Get the parameters panel for the Tool.
 		//! @return tgui::ScrollablePanel::Ptr Pointer containing the parameters panel
 		tgui::ScrollablePanel::Ptr getParametersPanel() override;
+
+	private:
+		void _moveSelection(Vector2<int> oldPos, Vector2<int> newPos, Image &image);
+		void _moveLayer(Vector2<int> oldPos, Vector2<int> newPos, Image &image);
+		void _moveArea(Vector2<int> oldPos, Vector2<int> newPos, Image &image);
+
+	private:
+		MoveType _mt = MOVE_LAYER;
 	};
 }
 
