@@ -446,14 +446,23 @@ namespace Mimp::Utils
 	tgui::ChildWindow::Ptr makeColorPickWindow(tgui::Gui &gui, const std::function<void(Color color)> &onFinish, Color startColor)
 	{
 		char buffer[8];
-		auto window = openWindowWithFocus(gui, 271, 182);
+		auto window = openWindowWithFocus(gui, 490, 370);
+
 		window->loadWidgetsFromFile("widgets/color.gui");
+		window->setTitle("Pick color");
 
 		auto red = window->get<tgui::Slider>("Red");
 		auto green = window->get<tgui::Slider>("Green");
 		auto blue = window->get<tgui::Slider>("Blue");
 		auto preview = window->get<tgui::TextBox>("Preview");
 		auto edit = window->get<tgui::EditBox>("Edit");
+		auto buttonCallBack = [red, green, blue](tgui::Button::Ptr button){
+			auto color = button->getRenderer()->getBackgroundColor();
+
+			red->setValue(color.getRed());
+			green->setValue(color.getGreen());
+			blue->setValue(color.getBlue());
+		};
 		auto sliderCallback = [red, green, blue, preview, edit]{
 			char buffer[8];
 			tgui::Color bufferColor{
@@ -467,6 +476,12 @@ namespace Mimp::Utils
 			edit->setText(buffer);
 		};
 
+		for (auto &id : window->getWidgetNames())
+			if (id.substring(0, strlen("Button")) == "Button") {
+				auto button = window->get<tgui::Button>(id);
+
+				button->connect("Clicked", buttonCallBack, button);
+			}
 		edit->connect("TextChanged", [red, green, blue, edit]{
 			std::string text = edit->getText();
 
