@@ -8,10 +8,10 @@
 #include <cmath>
 #include <TGUI/TGUI.hpp>
 #include "RectSelectTool.hpp"
-#include "EllipseSelectionTool.hpp"
+#include "../Utils.hpp"
 
 Mimp::RectSelectTool::RectSelectTool(ToolBox &toolBox) :
-		SelectionTool("RectSelect", toolBox), _esp(toolBox)
+		SelectionTool("RectSelect", toolBox)
 {
 	this->setKeyCombination({Keys::KEY_R, false, false, false});
 }
@@ -58,7 +58,7 @@ void Mimp::RectSelectTool::_updateSelectedArea(Image &image)
 
 	for (int j = 0; j <= radius; j++) {
 		for (int i = 0; i <= radius; i++) {
-			if (!this->_esp.point_in_ellipse(i, j, radius, radius)) {
+			if (!Mimp::Utils::point_in_ellipse(i, j, radius, radius)) {
 				image.selectedArea->remove(min_x - i + radius, min_y - j + radius); // Upper-left corner
 				image.selectedArea->remove(max_x + i - radius, min_y - j + radius); // Upper-right corner
 				image.selectedArea->remove(min_x - i + radius, max_y + j - radius); // Lower-left corner

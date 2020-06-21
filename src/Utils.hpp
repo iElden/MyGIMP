@@ -113,6 +113,7 @@ namespace Mimp::Utils
 	//! @param recurseLimit The redirection limit.
 	//! @return The body of the url, if resolved.
 	std::string resolveUrl(const std::string &url, unsigned recurseLimit = 10);
+	bool point_in_ellipse(int x, int y, int rx, int ry);
 }
 
 

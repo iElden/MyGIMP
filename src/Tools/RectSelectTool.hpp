@@ -9,7 +9,6 @@
 
 #include "SelectionTool.hpp"
 #include "../ToolBox.hpp"
-#include "EllipseSelectionTool.hpp"
 
 namespace Mimp {
 	//! @brief Define a RectSelectTool
@@ -21,7 +20,6 @@ namespace Mimp {
 
 		void _updateSelectedArea(Image &image);
 
-		EllipseSelectionTool _esp;
 		float _percentage = 0;
 
 	public:

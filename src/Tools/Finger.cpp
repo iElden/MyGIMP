@@ -1,9 +1,11 @@
 #include <TGUI/TGUI.hpp>
 #include "Finger.hpp"
+#include "../Utils.hpp"
 
 namespace Mimp {
 
-	Finger::Finger(Mimp::ToolBox &box) : SelectionTool("Finger", box), _est(box)
+	Finger::Finger(Mimp::ToolBox &box):
+		SelectionTool("Finger", box)
 	{
 		this->setKeyCombination({Keys::KEY_F, false, true, false});
 	}
@@ -46,12 +48,12 @@ namespace Mimp {
 
 		auto &buffer = image.getSelectedLayer().buffer;
 
-		std::vector<Color> pixels;
+		std::vector<std::pair<Vector2<int>, Color>> pixels;
 
 		for (int i = xmin; i < xmax; i += 1) {
 			for (int j = ymin; j < ymax; j += 1) {
-				if (this->_est.point_in_ellipse(i - pos.x, j - pos.y, this->_radius, this->_radius)) {
-					pixels.push_back(buffer->getPixel({i , j}));
+				if (Mimp::Utils::point_in_ellipse(i - pos.x, j - pos.y, this->_radius, this->_radius) && !Mimp::Utils::isOutOfBound({i, j}, image.getImageSize())) {
+					pixels.emplace_back(Vector2{i, j}, buffer->getPixel({i , j}));
 				}
 			}
 		}
@@ -64,27 +66,19 @@ namespace Mimp {
 		int b = 0;
 
 		for (auto &px : pixels) {
-			r += px.r;
-			g += px.g;
-			b += px.b;
+			r += px.second.r;
+			g += px.second.g;
+			b += px.second.b;
 		}
 		r /= pixels.size();
 		g /= pixels.size();
 		b /= pixels.size();
 
-		if (r > 255) r = 255;
-		if (r < 0) r = 0;
-		if (g > 255) g = 255;
-		if (g < 0) g = 0;
-		if (b > 255) b = 255;
-		if (b < 0) b = 0;
+		r = std::max(std::min(r, 255), 0);
+		g = std::max(std::min(g, 255), 0);
+		b = std::max(std::min(b, 255), 0);
 
-		for (int i = xmin; i < xmax; i += 1) {
-			for (int j = ymin; j < ymax; j += 1) {
-				if (this->_est.point_in_ellipse(i - pos.x, j - pos.y, this->_radius, this->_radius)) {
-					buffer->drawPixel({i, j}, Color(r, g, b, buffer->getPixel({i, j}).a));
-				}
-			}
-		}
+		for (auto &px: pixels)
+			buffer->drawPixel(px.first, Color(r, g, b, px.second.a));
 	}
 }

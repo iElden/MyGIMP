@@ -48,7 +48,6 @@ namespace Mimp {
 		//! @param y Y position of the point
 		//! @param rx X radius of the ellipse
 		//! @param ry Y radius of the ellipse
-		bool point_in_ellipse(int x, int y, int rx, int ry);
 	};
 }
 
