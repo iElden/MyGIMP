@@ -18,7 +18,8 @@ namespace Mimp
 		this->setKeyCombination({Keys::KEY_DEL, false, false, true});
 	}
 
-	void Eraser::onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick, Image &image)
+	void Eraser::onMouseDrag(Mimp::Vector2<float> oldPos, Mimp::Vector2<float> newPos, Mimp::MouseClick,
+				 Mimp::Image &image)
 	{
 		if (image.getSelectedLayer().isLocked())
 			return;
@@ -35,7 +36,7 @@ namespace Mimp
 		);
 	}
 
-	void Eraser::onClick(Vector2<int> pos, MouseClick, Image &image)
+	void Eraser::onClick(Mimp::Vector2<float> pos, Mimp::MouseClick, Mimp::Image &image)
 	{
 		if (image.getSelectedLayer().isLocked())
 			return;

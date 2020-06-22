@@ -15,7 +15,8 @@ namespace Mimp
 		this->setKeyCombination({Keys::KEY_P, false, false, false});
 	}
 
-	void Pencil::onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Image &image)
+	void Pencil::onMouseDrag(Mimp::Vector2<float> oldPos, Mimp::Vector2<float> newPos, Mimp::MouseClick click,
+				 Mimp::Image &image)
 	{
 		if (image.getSelectedLayer().isLocked())
 			return;
@@ -31,7 +32,7 @@ namespace Mimp
 		);
 	}
 
-	void Pencil::onClick(Vector2<int> pos, MouseClick click, Image &image)
+	void Pencil::onClick(Mimp::Vector2<float> pos, Mimp::MouseClick click, Mimp::Image &image)
 	{
 		if (image.getSelectedLayer().isLocked())
 			return;

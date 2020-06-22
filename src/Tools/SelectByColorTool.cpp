@@ -13,7 +13,7 @@ Mimp::SelectByColorTool::SelectByColorTool(ToolBox &toolBox):
 	this->setKeyCombination({Keys::KEY_U, true, false, false});
 }
 
-void Mimp::SelectByColorTool::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick click, Mimp::Image &image)
+void Mimp::SelectByColorTool::onClick(Mimp::Vector2<float> pos, Mimp::MouseClick click, Mimp::Image &image)
 {
 	auto &layer = image.getSelectedLayer();
 

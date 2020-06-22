@@ -17,7 +17,7 @@ TEST(Move, click) {
     ASSERT_EQ(i.getSelectedLayer().pos.x, 0);
     ASSERT_EQ(i.getSelectedLayer().pos.y, 0);
 
-    m.onClick({4, 6}, Mimp::MIMP_LEFT_CLICK, i);
+	m.onClick({4, 6}, Mimp::MIMP_LEFT_CLICK, i);
 
     ASSERT_EQ(i.getSelectedLayer().pos.x, 0);
     ASSERT_EQ(i.getSelectedLayer().pos.y, 0);
@@ -31,7 +31,7 @@ TEST(Move, dragOnLeft) {
     ASSERT_EQ(i.getSelectedLayer().pos.x, 0);
     ASSERT_EQ(i.getSelectedLayer().pos.y, 0);
 
-    m.onMouseDrag({4, 6}, {2, 6}, Mimp::MIMP_LEFT_CLICK, i);
+	m.onMouseDrag({4, 6}, {2, 6}, Mimp::MIMP_LEFT_CLICK, i);
 
     ASSERT_EQ(i.getSelectedLayer().pos.x, -2);
     ASSERT_EQ(i.getSelectedLayer().pos.y, 0);
@@ -45,7 +45,7 @@ TEST(Move, dragOnRight) {
     ASSERT_EQ(i.getSelectedLayer().pos.x, 0);
     ASSERT_EQ(i.getSelectedLayer().pos.y, 0);
 
-    m.onMouseDrag({4, 6}, {9, 6}, Mimp::MIMP_LEFT_CLICK, i);
+	m.onMouseDrag({4, 6}, {9, 6}, Mimp::MIMP_LEFT_CLICK, i);
 
     ASSERT_EQ(i.getSelectedLayer().pos.x, 5);
     ASSERT_EQ(i.getSelectedLayer().pos.y, 0);
@@ -60,7 +60,7 @@ TEST(Move, dragOnUp) {
     ASSERT_EQ(i.getSelectedLayer().pos.x, 0);
     ASSERT_EQ(i.getSelectedLayer().pos.y, 0);
 
-    m.onMouseDrag({4, 6}, {4, 1}, Mimp::MIMP_LEFT_CLICK, i);
+	m.onMouseDrag({4, 6}, {4, 1}, Mimp::MIMP_LEFT_CLICK, i);
 
     ASSERT_EQ(i.getSelectedLayer().pos.x, 0);
     ASSERT_EQ(i.getSelectedLayer().pos.y, -5);
@@ -74,7 +74,7 @@ TEST(Move, dragOnDown) {
     ASSERT_EQ(i.getSelectedLayer().pos.x, 0);
     ASSERT_EQ(i.getSelectedLayer().pos.y, 0);
 
-    m.onMouseDrag({4, 6}, {4, 10}, Mimp::MIMP_LEFT_CLICK, i);
+	m.onMouseDrag({4, 6}, {4, 10}, Mimp::MIMP_LEFT_CLICK, i);
 
     ASSERT_EQ(i.getSelectedLayer().pos.x, 0);
     ASSERT_EQ(i.getSelectedLayer().pos.y, 4);
@@ -89,7 +89,7 @@ TEST(Move, dragOnLeftUp) {
     ASSERT_EQ(i.getSelectedLayer().pos.x, 0);
     ASSERT_EQ(i.getSelectedLayer().pos.y, 0);
 
-    m.onMouseDrag({4, 6}, {-4, 0}, Mimp::MIMP_LEFT_CLICK, i);
+	m.onMouseDrag({4, 6}, {-4, 0}, Mimp::MIMP_LEFT_CLICK, i);
 
     ASSERT_EQ(i.getSelectedLayer().pos.x, -8);
     ASSERT_EQ(i.getSelectedLayer().pos.y, -6);

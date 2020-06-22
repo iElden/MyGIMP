@@ -37,7 +37,7 @@ TEST(Pencil, onClick) {
         }
     }
 
-    pencil.onClick(erasePos, Mimp::MIMP_LEFT_CLICK, image);
+	pencil.onClick(erasePos, Mimp::MIMP_LEFT_CLICK, image);
 
     buffer = image.getLayers()[0]->buffer.getBuffer();
     for (int i = 0; i < INT(size.x); i += 1) {
@@ -71,7 +71,7 @@ TEST(Pencil, onDrag) {
         }
     }
 
-    pencil.onMouseDrag(erasePosStart, erasePosEnd, Mimp::MIMP_LEFT_CLICK, image);
+	pencil.onMouseDrag(erasePosStart, erasePosEnd, Mimp::MIMP_LEFT_CLICK, image);
 
     buffer = image.getLayers()[0]->buffer.getBuffer();
     for (int i = 0; i < INT(size.x); i += 1) {
@@ -104,7 +104,7 @@ TEST(Pencil, onClickWithLockedLayer) {
     }
 
     image.getLayers()[0].locked = true;
-    pencil.onClick(erasePos, Mimp::MIMP_LEFT_CLICK, image);
+	pencil.onClick(erasePos, Mimp::MIMP_LEFT_CLICK, image);
 
     buffer = image.getLayers()[0]->buffer.getBuffer();
     for (int i = 0; i < INT(size.x); i += 1) {
@@ -133,7 +133,7 @@ TEST(Pencil, onDragWithLockedLayer) {
     }
 
     image.getLayers()[0].locked = true;
-    pencil.onMouseDrag(erasePosStart, erasePosEnd, Mimp::MIMP_LEFT_CLICK, image);
+	pencil.onMouseDrag(erasePosStart, erasePosEnd, Mimp::MIMP_LEFT_CLICK, image);
 
     buffer = image.getLayers()[0]->buffer.getBuffer();
     for (int i = 0; i < INT(size.x); i += 1) {

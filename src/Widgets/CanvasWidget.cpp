@@ -41,7 +41,7 @@ namespace Mimp
 
 	void CanvasWidget::mouseMoved(tgui::Vector2f pos)
 	{
-		Vector2<int> realPos;
+		Vector2<float> realPos;
 
 		realPos.x = (pos.x - this->getPosition().x) / this->_zoom;
 		realPos.y = (pos.y - this->getPosition().y) / this->_zoom;
@@ -208,7 +208,7 @@ namespace Mimp
 	void CanvasWidget::_makeCallbacks()
 	{
 		this->onMousePress.connect([this](tgui::Vector2f pos){
-			Vector2<int> realPos;
+			Vector2<float> realPos;
 
 			realPos.x = pos.x / this->_zoom;
 			realPos.y = pos.y / this->_zoom;
@@ -218,14 +218,14 @@ namespace Mimp
 			this->_box.getSelectedTool()->onClick(realPos, MIMP_LEFT_CLICK, *this);
 		});
 		this->onMouseRelease.connect([this](tgui::Vector2f pos){
-			Vector2<int> realPos;
+			Vector2<float> realPos;
 
 			realPos.x = pos.x / this->_zoom;
 			realPos.y = pos.y / this->_zoom;
 			this->_box.getSelectedTool()->onMouseRelease(realPos, MIMP_LEFT_CLICK, *this);
 		});
 		this->onRightMousePress.connect([this](tgui::Vector2f pos){
-			Vector2<int> realPos;
+			Vector2<float> realPos;
 
 			realPos.x = pos.x / this->_zoom;
 			realPos.y = pos.y / this->_zoom;
@@ -236,7 +236,7 @@ namespace Mimp
 			this->_box.getSelectedTool()->onClick(realPos, MIMP_RIGHT_CLICK, *this);
 		});
 		this->onRightMouseRelease.connect([this](tgui::Vector2f pos){
-			Vector2<int> realPos;
+			Vector2<float> realPos;
 
 			realPos.x = pos.x / this->_zoom;
 			realPos.y = pos.y / this->_zoom;

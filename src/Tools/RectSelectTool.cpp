@@ -21,18 +21,18 @@ void Mimp::RectSelectTool::clear()
 	this->_state = 0;
 }
 
-void Mimp::RectSelectTool::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick, Mimp::Image &image)
+void Mimp::RectSelectTool::onClick(Mimp::Vector2<float> pos, Mimp::MouseClick, Mimp::Image &image)
 {
 	image.takeSelectionSnapshot();
-	this->_pt1 = pos;
-	this->_pt2 = pos;
+	this->_pt1 = pos.to<float>();
+	this->_pt2 = pos + Vector2<float>{0.5, 0.5};
 	this->_state = 1;
 	this->_updateSelectedArea(image); // TODO: Add onMouseRelease event for optimisation
 }
 
-void Mimp::RectSelectTool::onMouseDrag(Mimp::Vector2<int>, Mimp::Vector2<int> newPos, Mimp::MouseClick, Mimp::Image &image)
+void Mimp::RectSelectTool::onMouseDrag(Mimp::Vector2<float>, Mimp::Vector2<float> newPos, Mimp::MouseClick, Mimp::Image &image)
 {
-	this->_pt2 = newPos;
+	this->_pt2 = newPos + Vector2<float>{0.5, 0.5};
 	this->_state = 2;
 	this->_updateSelectedArea(image); // TODO: Add onMouseRelease event for optimisation
 }

@@ -30,7 +30,7 @@ TEST(Fill, fillBlankImageClick) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
     }
 
-    fill.onClick({3, 3}, Mimp::MIMP_LEFT_CLICK, image);
+	fill.onClick({3, 3}, Mimp::MIMP_LEFT_CLICK, image);
     buffer = image.getLayers()[0]->buffer.getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::Black);
@@ -50,7 +50,7 @@ TEST(Fill, fillBlankImageClickOutOfBound) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
     }
 
-    fill.onClick({35, 3}, Mimp::MIMP_LEFT_CLICK, image);
+	fill.onClick({35, 3}, Mimp::MIMP_LEFT_CLICK, image);
     buffer = image.getLayers()[0]->buffer.getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
@@ -70,7 +70,7 @@ TEST(Fill, fillBlankImageClickSameColor) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
     }
 
-    fill.onClick({3, 3}, Mimp::MIMP_RIGHT_CLICK, image);
+	fill.onClick({3, 3}, Mimp::MIMP_RIGHT_CLICK, image);
     buffer = image.getLayers()[0]->buffer.getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
@@ -90,7 +90,7 @@ TEST(Fill, fillBlankImageDrag) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
     }
 
-    fill.onMouseDrag({0, 0}, {3, 3}, Mimp::MIMP_RIGHT_CLICK, image);
+	fill.onMouseDrag({0, 0}, {3, 3}, Mimp::MIMP_RIGHT_CLICK, image);
     buffer = image.getLayers()[0]->buffer.getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
@@ -112,7 +112,7 @@ TEST(Fill, fillWithTransparentColor) {
     }
 
     toolbox.setSelectedColor(Mimp::MIMP_RIGHT_CLICK, c);
-    fill.onClick({3, 3}, Mimp::MIMP_RIGHT_CLICK, image);
+	fill.onClick({3, 3}, Mimp::MIMP_RIGHT_CLICK, image);
     buffer = image.getLayers()[0]->buffer.getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == c);
@@ -133,7 +133,7 @@ TEST(Fill, fillWhenLayerIsLocked) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::Red);
     }
 
-    fill.onClick({3, 3}, Mimp::MIMP_LEFT_CLICK, image);
+	fill.onClick({3, 3}, Mimp::MIMP_LEFT_CLICK, image);
     buffer = image.getLayers()[0]->buffer.getBuffer();
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::Red);

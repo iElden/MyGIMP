@@ -2,23 +2,23 @@
 #include "Finger.hpp"
 #include "../Utils.hpp"
 
-namespace Mimp {
-
-	Finger::Finger(Mimp::ToolBox &box):
+namespace Mimp
+{
+	Finger::Finger(ToolBox &box):
 		SelectionTool("Finger", box)
 	{
 		this->setKeyCombination({Keys::KEY_F, false, true, false});
 	}
 
-	void Finger::onMouseDrag(Vector2<int>, Vector2<int> newPos, MouseClick, Image &image)
+	void Finger::onMouseDrag(Vector2<float>, Vector2<float> newPos, MouseClick, Image &image)
 	{
-		this->_apply(newPos, image);
+		this->_apply(newPos.to<int>(), image);
 	}
 
-	void Finger::onClick(Vector2<int> pos, MouseClick, Image &image)
+	void Finger::onClick(Vector2<float> pos, MouseClick, Image &image)
 	{
 		image.takeFrameBufferSnapshot();
-		this->_apply(pos, image);
+		this->_apply(pos.to<int>(), image);
 	}
 
 	tgui::ScrollablePanel::Ptr Finger::getParametersPanel()
@@ -52,7 +52,7 @@ namespace Mimp {
 
 		for (int i = xmin; i < xmax; i += 1) {
 			for (int j = ymin; j < ymax; j += 1) {
-				if (Mimp::Utils::point_in_ellipse(i - pos.x, j - pos.y, this->_radius, this->_radius) && !Mimp::Utils::isOutOfBound({i, j}, image.getImageSize())) {
+				if (Utils::point_in_ellipse(i - pos.x, j - pos.y, this->_radius, this->_radius) && !Utils::isOutOfBound({i, j}, image.getImageSize())) {
 					pixels.emplace_back(Vector2{i, j}, buffer->getPixel({i , j}));
 				}
 			}
