@@ -443,31 +443,166 @@ namespace Mimp::Utils
 		return window;
 	}
 
+	Color HSLtoRGB(const HSLColor &color)
+	{
+		struct {
+			double h;
+			double s;
+			double l;
+		} temp{
+			color.h % 240 == 0 ? 1 : color.h * 360 / 240.,
+			color.s / 240.,
+			color.l / 240.,
+		};
+		double C = (1 - std::abs(2 * temp.l - 1)) * temp.s;
+		double Tp = temp.h / 60;
+		double m = temp.l - C / 2;
+		double X = C * (1 - std::abs(std::fmod(Tp, 2) - 1));
+		struct {
+			double r;
+			double g;
+			double b;
+		} colorp;
+
+		if (temp.h == 0)
+			colorp = {0, 0, 0};
+		else if (Tp < 1)
+			colorp = {C, X, 0};
+		else if (Tp < 2)
+			colorp = {X, C, 0};
+		else if (Tp < 3)
+			colorp = {0, C, X};
+		else if (Tp < 4)
+			colorp = {0, X, C};
+		else if (Tp < 5)
+			colorp = {X, 0, C};
+		else if (Tp < 6)
+			colorp = {C, 0, X};
+
+		return {
+			static_cast<unsigned char>((colorp.r + m) * 255),
+			static_cast<unsigned char>((colorp.g + m) * 255),
+			static_cast<unsigned char>((colorp.b + m) * 255),
+			255
+		};
+	}
+
+	HSLColor RGBtoHSL(const Color &color)
+	{
+		struct {
+			double r;
+			double g;
+			double b;
+		} colorp{color.r / 255., color.g / 255., color.b / 255.};
+		double M = std::max(colorp.r, std::max(colorp.g, colorp.b));
+		double m = std::min(colorp.r, std::min(colorp.g, colorp.b));
+		double C = M - m;
+		double Tp = 0;
+
+		if (C == 0)
+			Tp = 0;
+		else if (M == colorp.r)
+			Tp = std::fmod((colorp.g - colorp.b) / C, 6);
+		else if (M == colorp.g)
+			Tp = std::fmod((colorp.b - colorp.r) / C + 2, 6);
+		else if (M == colorp.b)
+			Tp = std::fmod((colorp.r - colorp.g) / C + 4, 6);
+
+		double l = (M + m) / 2;
+
+		return HSLColor{
+			static_cast<unsigned char>(60. * Tp * 240 / 360),
+			static_cast<unsigned char>(l == 1 ? 0 : C / (1 - std::abs(2 * l - 1)) * 240),
+			static_cast<unsigned char>(l * 240)
+		};
+	}
+
 	tgui::ChildWindow::Ptr makeColorPickWindow(tgui::Gui &gui, const std::function<void(Color color)> &onFinish, Color startColor)
 	{
 		char buffer[8];
-		auto window = openWindowWithFocus(gui, 271, 182);
+		auto window = openWindowWithFocus(gui, 490, 370);
+
 		window->loadWidgetsFromFile("widgets/color.gui");
+		window->setTitle("Pick color");
 
-		auto red = window->get<tgui::Slider>("Red");
-		auto green = window->get<tgui::Slider>("Green");
-		auto blue = window->get<tgui::Slider>("Blue");
+		auto light = window->get<tgui::Slider>("Lightness");
+		auto satHuePic = window->get<tgui::Picture>("SatHue");
+		auto cross = window->get<tgui::Picture>("Cross");
 		auto preview = window->get<tgui::TextBox>("Preview");
+		auto hue = window->get<tgui::EditBox>("Hue");
+		auto saturation = window->get<tgui::EditBox>("Sat");
+		auto lightness = window->get<tgui::EditBox>("Light");
 		auto edit = window->get<tgui::EditBox>("Edit");
-		auto sliderCallback = [red, green, blue, preview, edit]{
-			char buffer[8];
-			tgui::Color bufferColor{
-				static_cast<unsigned char>(red->getValue()),
-				static_cast<unsigned char>(green->getValue()),
-				static_cast<unsigned char>(blue->getValue())
-			};
+		auto updateTexture = [light](HSLColor color) {
+			sf::Image image;
+			sf::Texture texture;
 
-			sprintf(buffer, "#%02X%02X%02X", bufferColor.getRed(), bufferColor.getGreen(), bufferColor.getBlue());
-			preview->getRenderer()->setBackgroundColor(bufferColor);
+			image.create(light->getSize().x, light->getSize().y);
+
+			auto size = image.getSize();
+
+			for (unsigned y = 0; y < size.y; y++) {
+				color.l = 240 - (240 * y / size.y);
+
+				auto rgb = HSLtoRGB(color);
+				sf::Color sf{rgb.r, rgb.g, rgb.b, 255};
+
+				for (unsigned x = 0; x < size.x; x++)
+					image.setPixel(x, y, sf);
+			}
+			texture.loadFromImage(image);
+			light->getRenderer()->setTextureTrack({texture});
+		};
+		auto buttonCallBack = [edit, satHuePic, preview, light, hue, saturation, lightness, cross](tgui::Button::Ptr button){
+			char buffer[8];
+			auto c = button->getRenderer()->getBackgroundColor();
+			Color temp = {
+				c.getRed(),
+				c.getGreen(),
+				c.getBlue()
+			};
+			HSLColor color = RGBtoHSL(temp);
+			auto pos = satHuePic->getPosition();
+			auto size = cross->getSize();
+
+			sprintf(buffer, "#%02X%02X%02X", temp.r, temp.g, temp.b);
+			light->setValue(color.l);
+			hue->setText(std::to_string(color.h));
+			saturation->setText(std::to_string(color.s));
+			lightness->setText(std::to_string(color.l));
+			cross->setPosition({
+				(color.h * 200 / 240) + pos.x - size.x / 2,
+				((240 - color.s) * 200 / 240) + pos.y - size.y / 2
+			});
 			edit->setText(buffer);
+			preview->getRenderer()->setBackgroundColor(c);
+		};
+		auto sliderCallback = [cross, light, lightness, satHuePic, hue, saturation, preview, edit]{
+			char buffer[8];
+			unsigned char h = (cross->getSize().x / 2 + cross->getPosition().x - satHuePic->getPosition().x) * 240 / 200;
+			unsigned char s = 240 - (cross->getSize().y / 2 + cross->getPosition().y - satHuePic->getPosition().y) * 240 / 200;
+			HSLColor color = {
+				h,
+				s,
+				static_cast<unsigned char>(light->getValue())
+			};
+			Color bufferColor = HSLtoRGB(color);
+
+			sprintf(buffer, "#%02X%02X%02X", bufferColor.r, bufferColor.g, bufferColor.b);
+			preview->getRenderer()->setBackgroundColor({bufferColor.r, bufferColor.g, bufferColor.b, 255});
+			edit->setText(buffer);
+			light->setValue(color.l);
+			lightness->setText(std::to_string(color.l));
 		};
 
-		edit->connect("TextChanged", [red, green, blue, edit]{
+		for (auto &id : window->getWidgetNames())
+			if (id.substring(0, strlen("Button")) == "Button") {
+				auto button = window->get<tgui::Button>(id);
+
+				button->connect("Clicked", buttonCallBack, button);
+			}
+		light->connect("ValueChanged", sliderCallback);
+		edit->onReturnKeyPress.connect( [cross, hue, saturation, light, lightness, satHuePic, edit, updateTexture]{
 			std::string text = edit->getText();
 
 			if (text.size() > 7) {
@@ -477,30 +612,176 @@ namespace Mimp::Utils
 				return;
 
 			tgui::Color color{edit->getText()};
+			Color bufferColor{
+				color.getRed(),
+				color.getGreen(),
+				color.getBlue()
+			};
+			auto tmp = RGBtoHSL(bufferColor);
+			auto pos = satHuePic->getPosition();
+			auto size = cross->getSize();
 
-			red->setValue(color.getRed());
-			green->setValue(color.getGreen());
-			blue->setValue(color.getBlue());
+			light->setValue(tmp.l);
+			hue->setText(std::to_string(tmp.h));
+			saturation->setText(std::to_string(tmp.s));
+			lightness->setText(std::to_string(tmp.l));
+			cross->setPosition({
+				(tmp.h * 200 / 240.f) + pos.x - size.x / 2,
+				((240 - tmp.s) * 200 / 240.f) + pos.y - size.y / 2
+			});
+			updateTexture(tmp);
 		});
+		hue->onReturnKeyPress.connect([cross, satHuePic, light, hue, saturation, lightness, edit, preview, updateTexture]{
+			unsigned char h;
+
+			try {
+				auto nbr = std::stoul(hue->getText().toAnsiString());
+
+				if (nbr > 240) {
+					hue->setText("0");
+					return;
+				}
+				h = nbr;
+			} catch (...) { hue->setText("0"); return; }
+
+			char buffer[8];
+			unsigned char s = 240 - (cross->getSize().y / 2 + cross->getPosition().y - satHuePic->getPosition().y) * 240 / 200;
+			HSLColor color = {
+				h,
+				s,
+				static_cast<unsigned char>(light->getValue())
+			};
+			Color temp = HSLtoRGB(color);
+			auto pos = satHuePic->getPosition();
+			auto size = cross->getSize();
+
+			sprintf(buffer, "#%02X%02X%02X", temp.r, temp.g, temp.b);
+			cross->setPosition({
+				(h * 200 / 240) + pos.x - size.x / 2,
+				cross->getPosition().y
+			});
+			edit->setText(buffer);
+			preview->getRenderer()->setBackgroundColor({buffer});
+			updateTexture(color);
+		});
+		saturation->onReturnKeyPress.connect([cross, satHuePic, light, hue, saturation, lightness, edit, preview, updateTexture]{
+			unsigned char s;
+
+			try {
+				auto nbr = std::stoul(saturation->getText().toAnsiString());
+
+					if (nbr > 240) {
+						saturation->setText("0");
+						return;
+					}
+				s = nbr;
+			} catch (...) { saturation->setText("0"); return; }
+
+			char buffer[8];
+			unsigned char h = (cross->getSize().x / 2 + cross->getPosition().x - satHuePic->getPosition().x) * 240 / 200;
+			HSLColor color = {
+				h,
+				s,
+				static_cast<unsigned char>(light->getValue())
+			};
+			Color temp = HSLtoRGB(color);
+			auto pos = satHuePic->getPosition();
+			auto size = cross->getSize();
+
+			sprintf(buffer, "#%02X%02X%02X", temp.r, temp.g, temp.b);
+			cross->setPosition({
+				(color.h * 200 / 240) + pos.x - size.x / 2,
+				((240 - color.s) * 200 / 240) + pos.y - size.y / 2
+			});
+			edit->setText(buffer);
+			preview->getRenderer()->setBackgroundColor({buffer});
+			updateTexture(color);
+		});
+		lightness->onReturnKeyPress.connect([cross, satHuePic, light, hue, saturation, lightness, edit, preview]{
+			unsigned char l;
+
+			try {
+				auto nbr = std::stoul(lightness->getText().toAnsiString());
+
+				if (nbr > 240) {
+					lightness->setText("0");
+					return;
+				}
+				l = nbr;
+			} catch (...) { lightness->setText("0"); return; }
+
+			char buffer[8];
+			unsigned char h = (cross->getSize().x / 2 + cross->getPosition().x - satHuePic->getPosition().x) * 240 / 200;
+			unsigned char s = 240 - (cross->getSize().y / 2 + cross->getPosition().y - satHuePic->getPosition().y) * 240 / 200;
+			HSLColor color = {
+				h,
+				s,
+				l
+			};
+			Color temp = HSLtoRGB(color);
+
+			sprintf(buffer, "#%02X%02X%02X", temp.r, temp.g, temp.b);
+			light->setValue(l);
+			edit->setText(buffer);
+			preview->getRenderer()->setBackgroundColor({buffer});
+		});
+
+		HSLColor color = RGBtoHSL(startColor);
+		auto pos = satHuePic->getPosition();
+		auto size = cross->getSize();
+
 		sprintf(buffer, "#%02X%02X%02X", startColor.r, startColor.g, startColor.b);
+		light->setValue(color.l);
+		hue->setText(std::to_string(color.h));
+		saturation->setText(std::to_string(color.s));
+		lightness->setText(std::to_string(color.l));
+		cross->setPosition({
+			(color.h * 200 / 240) + pos.x - size.x / 2,
+			((240 - color.s) * 200 / 240) + pos.y - size.y / 2
+		});
 		edit->setText(buffer);
+		preview->getRenderer()->setBackgroundColor({buffer});
+		updateTexture(color);
 
-		red->setValue(startColor.r);
-		green->setValue(startColor.g);
-		blue->setValue(startColor.b);
-		red->connect("ValueChanged", sliderCallback);
-		green->connect("ValueChanged", sliderCallback);
-		blue->connect("ValueChanged", sliderCallback);
+		cross->ignoreMouseEvents();
 
-		preview->getRenderer()->setBackgroundColor({startColor.r, startColor.g, startColor.b, 255});
+		auto colorPickHandler = [cross, satHuePic, light, hue, saturation, edit, preview, updateTexture](tgui::Vector2f pos){
+			char buffer[8];
+			unsigned char h = pos.x * 240 / 200;
+			unsigned char s = 240 - pos.y * 240 / 200;
+			HSLColor color = {
+				h,
+				s,
+				static_cast<unsigned char>(light->getValue())
+			};
+			Color temp = HSLtoRGB(color);
+			auto size = cross->getSize();
+
+			sprintf(buffer, "#%02X%02X%02X", temp.r, temp.g, temp.b);
+			hue->setText(std::to_string(color.h));
+			saturation->setText(std::to_string(color.s));
+			cross->setPosition({
+				(color.h * 200 / 240) + satHuePic->getPosition().x - size.x / 2,
+				((240 - color.s) * 200 / 240) + satHuePic->getPosition().y - size.y / 2
+			});
+			edit->setText(buffer);
+			preview->getRenderer()->setBackgroundColor({buffer});
+			updateTexture(color);
+		};
+
+		satHuePic->onMousePress.connect(colorPickHandler);
+		satHuePic->onMouseRelease.connect(colorPickHandler);
+
 		window->get<tgui::Button>("Cancel")->connect("Clicked", [window]{
 			window->close();
 		});
-		window->get<tgui::Button>("OK")->connect("Clicked", [onFinish, red, green, blue, window]{
+		window->get<tgui::Button>("OK")->connect("Clicked", [onFinish, edit, window]{
+			tgui::Color color{edit->getText()};
 			Color bufferColor{
-				static_cast<unsigned char>(red->getValue()),
-				static_cast<unsigned char>(green->getValue()),
-				static_cast<unsigned char>(blue->getValue())
+				color.getRed(),
+				color.getGreen(),
+				color.getBlue(),
+				255
 			};
 
 			if (onFinish)
@@ -667,5 +948,10 @@ namespace Mimp::Utils
 		if (static_cast<unsigned>(pt.y) >= size.y)
 			return true;
 		return false;
+	}
+
+	bool point_in_ellipse(int x, int y, int rx, int ry)
+	{
+		return std::pow(x, 2) / std::pow(rx, 2) + std::pow(y, 2) / std::pow(ry, 2) <= 1;
 	}
 }

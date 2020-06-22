@@ -19,7 +19,7 @@ TEST(SelectByColorTool, selectOnDrag) {
     Mimp::Image image({10, 10}, lm);
 
     ASSERT_TRUE(image.selectedArea->getPoints().size() == 0);
-    sbct.onMouseDrag({0, 0}, {10, 9}, Mimp::MIMP_LEFT_CLICK, image);
+	sbct.onMouseDrag({0, 0}, {10, 9}, Mimp::MIMP_LEFT_CLICK, image);
     ASSERT_TRUE(image.selectedArea->getPoints().size() == 0);
 }
 
@@ -31,7 +31,7 @@ TEST(SelectByColorTool, selectLayerWithDefaultColor) {
     Mimp::Image image({10, 10}, lm);
 
     ASSERT_TRUE(image.selectedArea->getPoints().size() == 0);
-    sbct.onMouseDrag({0, 0}, {10, 9}, Mimp::MIMP_LEFT_CLICK, image);
+	sbct.onMouseDrag({0, 0}, {10, 9}, Mimp::MIMP_LEFT_CLICK, image);
     ASSERT_TRUE(image.selectedArea->getPoints().size() == 0);
 }
 
@@ -43,7 +43,7 @@ TEST(SelectByColorTool, selectLayerWithColor) {
     Mimp::Image image({10, 10}, lm);
 
     ASSERT_TRUE(image.selectedArea->getPoints().size() == 0);
-    sbct.onClick({0, 0}, Mimp::MIMP_LEFT_CLICK, image);
+	sbct.onClick({0, 0}, Mimp::MIMP_LEFT_CLICK, image);
     ASSERT_TRUE(image.selectedArea->getPoints().size() == 100);
 }
 
@@ -56,7 +56,7 @@ TEST(SelectByColorTool, selectLayerWithColorWithoutAPixel) {
 
     image.getLayers()[0]->buffer.drawPixel({3, 8}, Mimp::Color::Magenta);
     ASSERT_TRUE(image.selectedArea->getPoints().size() == 0);
-    sbct.onClick({0, 0}, Mimp::MIMP_LEFT_CLICK, image);
+	sbct.onClick({0, 0}, Mimp::MIMP_LEFT_CLICK, image);
     ASSERT_TRUE(image.selectedArea->getPoints().size() == 99);
     ASSERT_FALSE(image.selectedArea->pointInMap(3, 8));
     ASSERT_TRUE(image.selectedArea->pointInMap(2, 8));
@@ -71,7 +71,7 @@ TEST(SelectByColorTool, selectLayerByAPixelOnly) {
 
     image.getLayers()[0]->buffer.drawPixel({3, 8}, Mimp::Color::Magenta);
     ASSERT_TRUE(image.selectedArea->getPoints().size() == 0);
-    sbct.onClick({3, 8}, Mimp::MIMP_LEFT_CLICK, image);
+	sbct.onClick({3, 8}, Mimp::MIMP_LEFT_CLICK, image);
     ASSERT_TRUE(image.selectedArea->getPoints().size() == 1);
     ASSERT_TRUE(image.selectedArea->pointInMap(3, 8));
     ASSERT_FALSE(image.selectedArea->pointInMap(2, 8));

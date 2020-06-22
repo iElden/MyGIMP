@@ -103,7 +103,7 @@ TEST(Eraser, onClickWithLockedLayer) {
     }
 
     image.getLayers()[0].locked = true;
-    eraser.onClick(erasePos, Mimp::MIMP_LEFT_CLICK, image);
+	eraser.onClick(erasePos, Mimp::MIMP_LEFT_CLICK, image);
 
     buffer = image.getLayers()[0]->buffer.getBuffer();
     for (int i = 0; i < INT(size.x); i += 1) {
@@ -132,7 +132,7 @@ TEST(Eraser, onDragWithLockedLayer) {
     }
 
     image.getLayers()[0].locked = true;
-    eraser.onMouseDrag(erasePosStart, erasePosEnd, Mimp::MIMP_LEFT_CLICK, image);
+	eraser.onMouseDrag(erasePosStart, erasePosEnd, Mimp::MIMP_LEFT_CLICK, image);
 
     buffer = image.getLayers()[0]->buffer.getBuffer();
     for (int i = 0; i < INT(size.x); i += 1) {

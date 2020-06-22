@@ -30,18 +30,20 @@ namespace Mimp
 	}
 
 	CanvasWidget::CanvasWidget(const ToolBox &box, Vector2<unsigned int> size):
-		Image(size, LayerManager(size, 1, Color::White)),
+		Image(size, LayerManager(size, 2, Color::White)),
 		_box(box)
 	{
 		this->m_size = {size.x, size.y};
 		this->m_type = "Canvas";
 		this->_drawBuffer.create(size.x, size.y);
 		this->_makeCallbacks();
+		strcpy(this->_layers->getLayerPtr(0)->name, "Background");
+		this->_layers->selectLayer(1);
 	}
 
 	void CanvasWidget::mouseMoved(tgui::Vector2f pos)
 	{
-		Vector2<int> realPos;
+		Vector2<float> realPos;
 
 		realPos.x = (pos.x - this->getPosition().x) / this->_zoom;
 		realPos.y = (pos.y - this->getPosition().y) / this->_zoom;
@@ -119,13 +121,14 @@ namespace Mimp
 		if (this->_drawGrid) {
 			auto realGridSize = this->_gridSize * this->_zoom;
 			sf::RectangleShape rs;
+
 			rs.setSize({realGridSize, realGridSize});
 			rs.setOutlineThickness(1.0);
 			rs.setOutlineColor(sf::Color::Black);
 			rs.setFillColor(sf::Color::Transparent);
 
-			for (int i = 0; i * realGridSize <= realSize.x; i += 1) {
-				for (int j = 0; j * realGridSize <= realSize.y; j += 1) {
+			for (unsigned i = 0; i * this->_gridSize < size.x; i += 1) {
+				for (unsigned j = 0; j * this->_gridSize < size.y; j += 1) {
 					rs.setPosition(i * rs.getSize().x, j * rs.getSize().y);
 					target.draw(rs, states);
 				}
@@ -208,7 +211,7 @@ namespace Mimp
 	void CanvasWidget::_makeCallbacks()
 	{
 		this->onMousePress.connect([this](tgui::Vector2f pos){
-			Vector2<int> realPos;
+			Vector2<float> realPos;
 
 			realPos.x = pos.x / this->_zoom;
 			realPos.y = pos.y / this->_zoom;
@@ -218,14 +221,14 @@ namespace Mimp
 			this->_box.getSelectedTool()->onClick(realPos, MIMP_LEFT_CLICK, *this);
 		});
 		this->onMouseRelease.connect([this](tgui::Vector2f pos){
-			Vector2<int> realPos;
+			Vector2<float> realPos;
 
 			realPos.x = pos.x / this->_zoom;
 			realPos.y = pos.y / this->_zoom;
 			this->_box.getSelectedTool()->onMouseRelease(realPos, MIMP_LEFT_CLICK, *this);
 		});
 		this->onRightMousePress.connect([this](tgui::Vector2f pos){
-			Vector2<int> realPos;
+			Vector2<float> realPos;
 
 			realPos.x = pos.x / this->_zoom;
 			realPos.y = pos.y / this->_zoom;
@@ -236,7 +239,7 @@ namespace Mimp
 			this->_box.getSelectedTool()->onClick(realPos, MIMP_RIGHT_CLICK, *this);
 		});
 		this->onRightMouseRelease.connect([this](tgui::Vector2f pos){
-			Vector2<int> realPos;
+			Vector2<float> realPos;
 
 			realPos.x = pos.x / this->_zoom;
 			realPos.y = pos.y / this->_zoom;

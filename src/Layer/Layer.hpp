@@ -24,6 +24,7 @@ namespace Mimp
 		float rotation = 0;  //!< Rotation of the layer
 		Vector2<int> pos = {0, 0}; //!< Position of the layer
 
+		Layer(const Layer &layer);
 		//! @brief Constructor of the Layer
 		//! @param size Size of the Layer
 		//! @param buffer An array of colors to create the FrameBuffer of the Layer

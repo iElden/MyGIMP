@@ -6,6 +6,7 @@
 */
 #include <cmath>
 #include "EllipseSelectionTool.hpp"
+#include "../Utils.hpp"
 
 Mimp::EllipseSelectionTool::EllipseSelectionTool(Mimp::ToolBox &toolBox):
 	SelectionTool("Elipse Selection", toolBox)
@@ -21,19 +22,18 @@ void Mimp::EllipseSelectionTool::clear()
 	this->_state = 0;
 }
 
-void Mimp::EllipseSelectionTool::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick, Mimp::Image &image)
+void Mimp::EllipseSelectionTool::onClick(Mimp::Vector2<float> pos, Mimp::MouseClick, Mimp::Image &image)
 {
 	image.takeSelectionSnapshot();
 	this->_pt1 = pos;
-	this->_pt2 = pos;
+	this->_pt2 = pos + Vector2<float>{0.5, 0.5};
 	this->_state = 1;
 	this->_updateSelectedArea(image); // TODO: Add onMouseRelease event for optimisation
 }
 
-void Mimp::EllipseSelectionTool::onMouseDrag(Mimp::Vector2<int>, Mimp::Vector2<int> newPos, Mimp::MouseClick,
-                                             Mimp::Image &image)
+void Mimp::EllipseSelectionTool::onMouseDrag(Mimp::Vector2<float>, Mimp::Vector2<float> newPos, Mimp::MouseClick, Mimp::Image &image)
 {
-	this->_pt2 = newPos;
+	this->_pt2 = newPos + Vector2{0.5f, 0.5f};
 	this->_state = 2;
 	this->_updateSelectedArea(image); // TODO: Add onMouseRelease event for optimisation
 }
@@ -47,7 +47,7 @@ void Mimp::EllipseSelectionTool::_updateSelectedArea(Mimp::Image &image)
 {
 	image.selectedArea->clear();
 
-	Vector2<int> center = {(this->_pt1.x + this->_pt2.x) / 2, (this->_pt1.y + this->_pt2.y) / 2};
+	Vector2<float> center = {(this->_pt1.x + this->_pt2.x) / 2, (this->_pt1.y + this->_pt2.y) / 2};
 	int min_x = std::min(this->_pt1.x, this->_pt2.x);
 	int min_y = std::min(this->_pt1.y, this->_pt2.y);
 	int max_x = std::max(this->_pt1.x, this->_pt2.x);
@@ -56,11 +56,6 @@ void Mimp::EllipseSelectionTool::_updateSelectedArea(Mimp::Image &image)
 	int ry = center.y - min_y;
 	for (int j = min_y; j < max_y; j++)
 		for (int i = min_x; i < max_x; i++)
-			if (this->point_in_ellipse(i - center.x, j - center.y, rx, ry))
+			if (Mimp::Utils::point_in_ellipse(i - center.x, j - center.y, rx, ry))
 				image.selectedArea->add(i, j);
-}
-
-bool Mimp::EllipseSelectionTool::point_in_ellipse(int x, int y, int rx, int ry)
-{
-	return std::pow(x, 2) / std::pow(rx, 2) + std::pow(y, 2) / std::pow(ry, 2) <= 1;
 }

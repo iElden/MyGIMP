@@ -19,7 +19,7 @@ TEST(ColorPick, pickImageColor) {
     Mimp::Image image({10, 10}, lm);
 
     ASSERT_TRUE(toolbox.getSelectedColor(Mimp::MIMP_LEFT_CLICK) == Mimp::Color::Black);
-    cp.onClick({5, 5}, Mimp::MIMP_LEFT_CLICK, image);
+	cp.onClick({5, 5}, Mimp::MIMP_LEFT_CLICK, image);
     ASSERT_TRUE(toolbox.getSelectedColor(Mimp::MIMP_LEFT_CLICK) == Mimp::Color::Magenta);
 }
 
@@ -31,6 +31,6 @@ TEST(ColorPick, pickColorOnDrag) {
     Mimp::Image image({10, 10}, lm);
 
     ASSERT_TRUE(toolbox.getSelectedColor(Mimp::MIMP_LEFT_CLICK) == Mimp::Color::Black);
-    cp.onMouseDrag({0, 0}, {10, 10}, Mimp::MIMP_LEFT_CLICK, image);
+	cp.onMouseDrag({0, 0}, {10, 10}, Mimp::MIMP_LEFT_CLICK, image);
     ASSERT_TRUE(toolbox.getSelectedColor(Mimp::MIMP_LEFT_CLICK) == Mimp::Color::Black);
 }

@@ -13,7 +13,7 @@ Mimp::FillSelection::FillSelection(Mimp::ToolBox &toolBox):
 	this->setKeyCombination({Keys::KEY_F, false, false, true});
 }
 
-void Mimp::FillSelection::onClick(Mimp::Vector2<int>, Mimp::MouseClick click, Mimp::Image &image)
+void Mimp::FillSelection::onClick(Mimp::Vector2<float>, Mimp::MouseClick click, Mimp::Image &image)
 {
 	if (image.getSelectedLayer().isLocked())
 		return;

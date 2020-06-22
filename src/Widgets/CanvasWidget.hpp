@@ -18,7 +18,7 @@ namespace Mimp
 	//! @brief Define a CanvasWidget
 	class CanvasWidget : public tgui::ClickableWidget, public Image {
 	private:
-		Vector2<int> _mousePos = {0, 0}; //!< Mouse Position
+		Vector2<float> _mousePos = {0, 0}; //!< Mouse Position
 		const ToolBox &_box; //!< The ToolBox used by the CanvasWidget
 		bool _rightMouseDown = false; //!< Mouse right click state
 

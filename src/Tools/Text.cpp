@@ -67,7 +67,7 @@ namespace Mimp {
 		}
 	}
 
-	void Text::onClick(Vector2<int> pos, MouseClick click, Image &image)
+	void Text::onClick(Mimp::Vector2<float> pos, Mimp::MouseClick click, Mimp::Image &image)
 	{
 		if (!this->_text.empty()) {
 			int xpos = 0;
@@ -94,7 +94,7 @@ namespace Mimp {
 					for (int y = 0; y < glyph.textureRect.height; y += 1) {
 						for (int x = 0; x < glyph.textureRect.width; x += 1) {
 							if (buffer.getPixel(x + glyph.textureRect.left, y + glyph.textureRect.top).a >= 100) {
-								layer.buffer->setPixel({pos.x + x + xpos, pos.y + y + ypos + spacing}, !this->_boxColours ? this->_toolBox.getSelectedColor(click) : this->_color);
+								layer.buffer->setPixel(Vector2<float>{pos.x + x + xpos, pos.y + y + ypos + spacing}.to<int>(), !this->_boxColours ? this->_toolBox.getSelectedColor(click) : this->_color);
 							}
 						}
 					}

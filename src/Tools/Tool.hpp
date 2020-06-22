@@ -45,7 +45,7 @@ namespace Mimp {
 		//! @param pos The position of the mouse
 		//! @param click Mouse click state
 		//! @param image The Image to edit
-		virtual void onMouseRelease(Vector2<int>, MouseClick, Image &)
+		virtual void onMouseRelease(Vector2<float>, MouseClick, Image &)
 		{};
 
 		//! @brief Handle the mouse dragging of the Tool.
@@ -53,13 +53,14 @@ namespace Mimp {
 		//! @param newPos New position of the mouse
 		//! @param click Mouse click state
 		//! @param image The Image to edit
-		virtual void onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Image &image) = 0;
+		virtual void
+		onMouseDrag(Vector2<float> oldPos, Vector2<float> newPos, MouseClick click, Image &image) = 0;
 
 		//! @brief Handle the mouse click of the Tool.
 		//! @param pos Position of the tool
 		//! @param click Mouse click state
 		//! @param image The Image to edit
-		virtual void onClick(Vector2<int> pos, MouseClick click, Image &image) = 0;
+		virtual void onClick(Vector2<float> pos, MouseClick click, Image &image) = 0;
 
 		//! @brief Get the parameters panel for the Tool.
 		//! @return tgui::ScrollablePanel::Ptr Pointer containing the parameters panel

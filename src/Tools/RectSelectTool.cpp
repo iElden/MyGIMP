@@ -8,10 +8,10 @@
 #include <cmath>
 #include <TGUI/TGUI.hpp>
 #include "RectSelectTool.hpp"
-#include "EllipseSelectionTool.hpp"
+#include "../Utils.hpp"
 
 Mimp::RectSelectTool::RectSelectTool(ToolBox &toolBox) :
-		SelectionTool("RectSelect", toolBox), _esp(toolBox)
+		SelectionTool("RectSelect", toolBox)
 {
 	this->setKeyCombination({Keys::KEY_R, false, false, false});
 }
@@ -21,18 +21,18 @@ void Mimp::RectSelectTool::clear()
 	this->_state = 0;
 }
 
-void Mimp::RectSelectTool::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick, Mimp::Image &image)
+void Mimp::RectSelectTool::onClick(Mimp::Vector2<float> pos, Mimp::MouseClick, Mimp::Image &image)
 {
 	image.takeSelectionSnapshot();
-	this->_pt1 = pos;
-	this->_pt2 = pos;
+	this->_pt1 = pos.to<float>();
+	this->_pt2 = pos + Vector2<float>{0.5, 0.5};
 	this->_state = 1;
 	this->_updateSelectedArea(image); // TODO: Add onMouseRelease event for optimisation
 }
 
-void Mimp::RectSelectTool::onMouseDrag(Mimp::Vector2<int>, Mimp::Vector2<int> newPos, Mimp::MouseClick, Mimp::Image &image)
+void Mimp::RectSelectTool::onMouseDrag(Mimp::Vector2<float>, Mimp::Vector2<float> newPos, Mimp::MouseClick, Mimp::Image &image)
 {
-	this->_pt2 = newPos;
+	this->_pt2 = newPos + Vector2<float>{0.5, 0.5};
 	this->_state = 2;
 	this->_updateSelectedArea(image); // TODO: Add onMouseRelease event for optimisation
 }
@@ -58,7 +58,7 @@ void Mimp::RectSelectTool::_updateSelectedArea(Image &image)
 
 	for (int j = 0; j <= radius; j++) {
 		for (int i = 0; i <= radius; i++) {
-			if (!this->_esp.point_in_ellipse(i, j, radius, radius)) {
+			if (!Mimp::Utils::point_in_ellipse(i, j, radius, radius)) {
 				image.selectedArea->remove(min_x - i + radius, min_y - j + radius); // Upper-left corner
 				image.selectedArea->remove(max_x + i - radius, min_y - j + radius); // Upper-right corner
 				image.selectedArea->remove(min_x - i + radius, max_y + j - radius); // Lower-left corner

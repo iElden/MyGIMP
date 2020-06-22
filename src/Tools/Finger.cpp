@@ -1,22 +1,24 @@
 #include <TGUI/TGUI.hpp>
 #include "Finger.hpp"
+#include "../Utils.hpp"
 
-namespace Mimp {
-
-	Finger::Finger(Mimp::ToolBox &box) : SelectionTool("Finger", box), _est(box)
+namespace Mimp
+{
+	Finger::Finger(ToolBox &box):
+		SelectionTool("Finger", box)
 	{
 		this->setKeyCombination({Keys::KEY_F, false, true, false});
 	}
 
-	void Finger::onMouseDrag(Vector2<int>, Vector2<int> newPos, MouseClick, Image &image)
+	void Finger::onMouseDrag(Vector2<float>, Vector2<float> newPos, MouseClick, Image &image)
 	{
-		this->_apply(newPos, image);
+		this->_apply(newPos.to<int>(), image);
 	}
 
-	void Finger::onClick(Vector2<int> pos, MouseClick, Image &image)
+	void Finger::onClick(Vector2<float> pos, MouseClick, Image &image)
 	{
 		image.takeFrameBufferSnapshot();
-		this->_apply(pos, image);
+		this->_apply(pos.to<int>(), image);
 	}
 
 	tgui::ScrollablePanel::Ptr Finger::getParametersPanel()
@@ -46,12 +48,15 @@ namespace Mimp {
 
 		auto &buffer = image.getSelectedLayer().buffer;
 
-		std::vector<Color> pixels;
+		std::vector<std::pair<Vector2<int>, Color>> pixels;
 
 		for (int i = xmin; i < xmax; i += 1) {
 			for (int j = ymin; j < ymax; j += 1) {
-				if (this->_est.point_in_ellipse(i - pos.x, j - pos.y, this->_radius, this->_radius)) {
-					pixels.push_back(buffer->getPixel({i , j}));
+				if (Utils::point_in_ellipse(i - pos.x, j - pos.y, this->_radius, this->_radius)
+				  && !Utils::isOutOfBound({i, j}, image.getImageSize())
+				  && buffer->getPixel({i, j}).a
+				  ) {
+					pixels.emplace_back(Vector2{i, j}, buffer->getPixel({i , j}));
 				}
 			}
 		}
@@ -62,29 +67,25 @@ namespace Mimp {
 		int r = 0;
 		int g = 0;
 		int b = 0;
+		int a = 0;
 
 		for (auto &px : pixels) {
-			r += px.r;
-			g += px.g;
-			b += px.b;
+			r += px.second.r;
+			g += px.second.g;
+			b += px.second.b;
+			a += px.second.b;
 		}
 		r /= pixels.size();
 		g /= pixels.size();
 		b /= pixels.size();
+		a /= pixels.size();
 
-		if (r > 255) r = 255;
-		if (r < 0) r = 0;
-		if (g > 255) g = 255;
-		if (g < 0) g = 0;
-		if (b > 255) b = 255;
-		if (b < 0) b = 0;
+		r = std::max(std::min(r, 255), 0);
+		g = std::max(std::min(g, 255), 0);
+		b = std::max(std::min(b, 255), 0);
+		a = std::max(std::min(a, 255), 0);
 
-		for (int i = xmin; i < xmax; i += 1) {
-			for (int j = ymin; j < ymax; j += 1) {
-				if (this->_est.point_in_ellipse(i - pos.x, j - pos.y, this->_radius, this->_radius)) {
-					buffer->drawPixel({i, j}, Color(r, g, b, buffer->getPixel({i, j}).a));
-				}
-			}
-		}
+		for (auto &px: pixels)
+			buffer->drawPixel(px.first, Color(r, g, b, a));
 	}
 }

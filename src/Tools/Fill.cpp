@@ -15,7 +15,7 @@ Mimp::Fill::Fill(Mimp::ToolBox &toolBox):
 	this->setKeyCombination({Keys::KEY_F, false, false, false});
 }
 
-void Mimp::Fill::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick click, Mimp::Image &image)
+void Mimp::Fill::onClick(Mimp::Vector2<float> pos, Mimp::MouseClick click, Mimp::Image &image)
 {
 	if (image.getSelectedLayer().isLocked())
 		return;
@@ -26,7 +26,7 @@ void Mimp::Fill::onClick(Mimp::Vector2<int> pos, Mimp::MouseClick click, Mimp::I
 	this->apply((pos - layer.pos).rotate(-layer.rotation, layer.getSize() / 2).to<int>(), layer, click);
 }
 
-void Mimp::Fill::onMouseDrag(Mimp::Vector2<int>, Mimp::Vector2<int> newPos, Mimp::MouseClick click, Mimp::Image &image)
+void Mimp::Fill::onMouseDrag(Mimp::Vector2<float>, Mimp::Vector2<float> newPos, Mimp::MouseClick click, Mimp::Image &image)
 {
 	auto &layer = image.getSelectedLayer();
 

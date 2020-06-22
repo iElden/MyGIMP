@@ -9,19 +9,20 @@ namespace Mimp {
 		this->setKeyCombination({Keys::KEY_L, false, false, false});
 	}
 
-	void Lasso::onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick click, Image &image)
+	void Lasso::onMouseDrag(Mimp::Vector2<float> oldPos, Mimp::Vector2<float> newPos, Mimp::MouseClick click,
+				Mimp::Image &image)
 	{
 		if (click == MouseClick::MIMP_LEFT_CLICK) {
-			image.selectedArea->addLine(oldPos, newPos);
-			this->_polygon.add(newPos);
+			image.selectedArea->addLine(oldPos.to<int>(), newPos.to<int>());
+			this->_polygon.add(newPos.to<int>());
 		}
 	}
 
-	void Lasso::onClick(Vector2<int> pos, MouseClick click, Image &image)
+	void Lasso::onClick(Mimp::Vector2<float> pos, Mimp::MouseClick click, Mimp::Image &image)
 	{
 		if (click == MouseClick::MIMP_LEFT_CLICK) {
 			image.takeSelectionSnapshot();
-			image.selectedArea->add(pos);
+			image.selectedArea->add(pos.to<int>());
 			image.selectedArea->clear();
 			this->_polygon.clear();
 		}
@@ -37,7 +38,7 @@ namespace Mimp {
 		this->_polygon.reset();
 	}
 
-	void Lasso::onMouseRelease(Vector2<int>, MouseClick click, Image &image)
+	void Lasso::onMouseRelease(Vector2<float>, MouseClick click, Image &image)
 	{
 		if (click == MouseClick::MIMP_LEFT_CLICK) {
 			image.selectedArea->clear();

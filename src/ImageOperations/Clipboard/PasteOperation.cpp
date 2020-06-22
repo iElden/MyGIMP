@@ -64,10 +64,14 @@ namespace Mimp
 			arr = convertImage<uint64_t>(img, specs);
 			break;
 		}
-		image->getLayers().addLayer(Layer{{
+
+		auto &layers = image->getLayers();
+
+		layers.addLayer(Layer{{
 			static_cast<unsigned int>(specs.width),
 			static_cast<unsigned int>(specs.height)
 		}, arr});
+		layers.selectLayer(layers.size() - 1);
 		delete[] arr;
 		editor._makeLayersPanel(win, image);
 	}

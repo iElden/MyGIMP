@@ -23,13 +23,13 @@ namespace Mimp {
 		//! @param toolBox ToolBox containing the SelectByColorTool Tool
 		SelectByColorTool(ToolBox &toolBox);
 
-		void onMouseDrag(Vector2<int>, Vector2<int>, MouseClick, Image &) override {};
+		void onMouseDrag(Vector2<float>, Vector2<float>, MouseClick, Image &) override {};
 
 		//! @brief Handle the mouse click of the Tool.
 		//! @param pos Position of the tool
 		//! @param click Mouse click state
 		//! @param image The Image to edit
-		void onClick(Vector2<int> pos, MouseClick click, Image &layer) override;
+		void onClick(Vector2<float> pos, MouseClick click, Image &layer) override;
 
 		//! @brief Get the parameters panel for the Tool.
 		//! @return tgui::ScrollablePanel::Ptr Pointer containing the parameters panel

@@ -24,7 +24,7 @@ TEST(FillSelection, fillNoSelectedLayer) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
     }
 
-    fs.onClick({0, 0}, Mimp::MIMP_LEFT_CLICK, image);
+	fs.onClick({0, 0}, Mimp::MIMP_LEFT_CLICK, image);
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
     }
@@ -45,7 +45,7 @@ TEST(FillSelection, fillDefaultColorWholeLayer) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
     }
 
-    fs.onClick({0, 0}, Mimp::MIMP_LEFT_CLICK, image);
+	fs.onClick({0, 0}, Mimp::MIMP_LEFT_CLICK, image);
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::Black);
     }
@@ -66,7 +66,7 @@ TEST(FillSelection, fillDefaultColorPartLayer) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
     }
 
-    fs.onClick({0, 0}, Mimp::MIMP_LEFT_CLICK, image);
+	fs.onClick({0, 0}, Mimp::MIMP_LEFT_CLICK, image);
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::Black);
     }
@@ -88,7 +88,7 @@ TEST(FillSelection, fillWithCustomLeftColorWholeLayer) {
     }
 
     toolbox.setSelectedColor(Mimp::MIMP_LEFT_CLICK, Mimp::Color::Magenta);
-    fs.onClick({0, 0}, Mimp::MIMP_LEFT_CLICK, image);
+	fs.onClick({0, 0}, Mimp::MIMP_LEFT_CLICK, image);
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::Magenta);
     }
@@ -110,7 +110,7 @@ TEST(FillSelection, fillWhenLayerIsLocked) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
     }
 
-    fs.onClick({0, 0}, Mimp::MIMP_LEFT_CLICK, image);
+	fs.onClick({0, 0}, Mimp::MIMP_LEFT_CLICK, image);
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::White);
     }
@@ -129,7 +129,7 @@ TEST(FillSelection, fillDrag) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::Red);
     }
 
-    fs.onMouseDrag({0, 0}, {10, 10}, Mimp::MIMP_LEFT_CLICK, image);
+	fs.onMouseDrag({0, 0}, {10, 10}, Mimp::MIMP_LEFT_CLICK, image);
     for (int i = 0; i < 100; i += 1) {
         ASSERT_TRUE(buffer[i] == Mimp::Color::Red);
     }

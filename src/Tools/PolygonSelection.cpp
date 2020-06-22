@@ -9,7 +9,7 @@ namespace Mimp {
 		this->setKeyCombination({Keys::KEY_P, true, false, false});
 	}
 
-	void PolygonSelection::onClick(Vector2<int> pos, MouseClick click, Image &image)
+	void PolygonSelection::onClick(Mimp::Vector2<float> pos, Mimp::MouseClick click, Mimp::Image &image)
 	{
 		if (click == MouseClick::MIMP_LEFT_CLICK) {
 			image.selectedArea->clear();
@@ -17,7 +17,7 @@ namespace Mimp {
 		}
 		if (click == MouseClick::MIMP_RIGHT_CLICK) {
 			image.selectedArea->clear();
-			this->_polygon.add(pos);
+			this->_polygon.add(pos.to<int>());
 			this->_polygon.update([&image](Vector2<int> pt) { image.selectedArea->add(pt); });
 		}
 	}

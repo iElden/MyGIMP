@@ -17,14 +17,14 @@ namespace Mimp {
 		//! @param pos Position of the mouse
 		//! @param click Mouse click state (unused)
 		//! @param image The Image to edit
-		void onClick(Vector2<int> pos, MouseClick click, Image &image) override;
+		void onClick(Vector2<float> pos, MouseClick click, Image &image) override;
 
 		//! @brief Handle the mouse dragging of the Tool (unused).
 		//! @param oldPos Old position of the mouse
 		//! @param newPos New position of the mouse
 		//! @param click Mouse click state
 		//! @param image The Image to edit
-		void onMouseDrag(Vector2<int>, Vector2<int>, MouseClick, Image &) override
+		void onMouseDrag(Vector2<float>, Vector2<float>, MouseClick, Image &) override
 		{};
 
 		//! @brief Get the parameters panel for the Tool.

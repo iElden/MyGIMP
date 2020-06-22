@@ -12,12 +12,12 @@ namespace Mimp
 		this->setKeyCombination({Keys::KEY_M, false, false, false});
 	}
 
-	void Move::onMouseDrag(Vector2<int> oldPos, Vector2<int> newPos, MouseClick, Image &image)
+	void Move::onMouseDrag(Mimp::Vector2<float> oldPos, Mimp::Vector2<float> newPos, Mimp::MouseClick, Mimp::Image &image)
 	{
-		image.getSelectedLayer().pos -= oldPos - newPos;
+		image.getSelectedLayer().pos -= oldPos.to<int>() - newPos.to<int>();
 	}
 
-	void Move::onClick(Vector2<int>, MouseClick, Image &image)
+	void Move::onClick(Mimp::Vector2<float>, Mimp::MouseClick, Mimp::Image &image)
 	{
 		image.takeLayerSnapshot();
 	}

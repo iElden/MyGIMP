@@ -11,8 +11,8 @@ namespace Mimp {
 	public:
 		PolygonSelection(ToolBox &toolBox);
 		void clear() override;
-		void onMouseDrag(Vector2<int>, Vector2<int>, MouseClick, Image &) override {};
-		void onClick(Vector2<int> pos, MouseClick click, Image &image) override;
+		void onMouseDrag(Vector2<float>, Vector2<float>, MouseClick, Image &) override {};
+		void onClick(Vector2<float> pos, MouseClick click, Image &image) override;
 		tgui::ScrollablePanel::Ptr getParametersPanel() override;
 
 	private:
