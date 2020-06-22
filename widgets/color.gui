@@ -64,14 +64,16 @@ Slider.Lightness {
         bordercolor = #3C3C3C;
         bordercolorhover = black;
         borders = (1, 1, 1, 1);
-        texturethumb = None;
+        opacitydisabled = -1;
+        texturethumb = "icons/black.png";
         texturethumbhover = None;
-        texturetrack = None;
+        texturetrack = "icons/transparent.png";
         texturetrackhover = None;
         thumbcolor = black;
         thumbcolorhover = transparent;
         trackcolor = transparent;
         trackcolorhover = transparent;
+        transparenttexture = false;
     }
 }
 
