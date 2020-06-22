@@ -25,13 +25,10 @@ namespace Mimp
 		this->_layers.reserve(nbOfLayer);
 		if (!nbOfLayer)
 			throw InvalidArgumentException("Must add at least a single layer");
-		while (nbOfLayer--) {
-			auto &layer = this->_layers.emplace_back(new Layer{size, defaultColor});
-#ifdef _WIN32
-			sprintf(layer->name, "Layer %llu", this->_layers.size());
-#else
-			sprintf(layer->name, "Layer %lu", this->_layers.size());
-#endif
+		for (unsigned i = 0; i < nbOfLayer; i++) {
+			auto &layer = this->_layers.emplace_back(new Layer{size, i == 0 ? defaultColor : Color::Transparent});
+
+			sprintf(layer->name, "Layer %u", i);
 		}
 	}
 
@@ -42,9 +39,9 @@ namespace Mimp
 		auto &lay = this->_layers.emplace_back(new Layer(layer));
 
 #ifdef _WIN32
-		sprintf(lay->name, "Layer %llu", this->_layers.size());
+		sprintf(lay->name, "Layer %llu", this->_layers.size() - 1);
 #else
-		sprintf(lay->name, "Layer %lu", this->_layers.size());
+		sprintf(lay->name, "Layer %lu", this->_layers.size() - 1);
 #endif
 		this->_unsetBusy();
 		return *lay;
@@ -55,9 +52,9 @@ namespace Mimp
 		this->_setBusy();
 		auto &layer = this->_layers.emplace_back(new Layer(size, defaultColor));
 #ifdef _WIN32
-		sprintf(layer->name, "Layer %llu", this->_layers.size());
+		sprintf(layer->name, "Layer %llu", this->_layers.size() - 1);
 #else
-		sprintf(layer->name, "Layer %lu", this->_layers.size());
+		sprintf(layer->name, "Layer %lu", this->_layers.size() - 1);
 #endif
 		this->_unsetBusy();
 		return *layer;
@@ -255,9 +252,9 @@ namespace Mimp
 
 		delete[] pixelBuffer;
 #ifdef _WIN32
-		sprintf(layer.name, "Layer %llu", this->_layers.size());
+		sprintf(layer.name, "Layer %llu", this->_layers.size() - 1);
 #else
-		sprintf(layer.name, "Layer %lu", this->_layers.size());
+		sprintf(layer.name, "Layer %lu", this->_layers.size() - 1);
 #endif
 	}
 
@@ -292,9 +289,9 @@ namespace Mimp
 
 		delete[] pixelBuffer;
 #ifdef _WIN32
-		sprintf(layer.name, "Layer %llu", this->_layers.size());
+		sprintf(layer.name, "Layer %llu", this->_layers.size() - 1);
 #else
-		sprintf(layer.name, "Layer %lu", this->_layers.size());
+		sprintf(layer.name, "Layer %lu", this->_layers.size() - 1);
 #endif
 	}
 

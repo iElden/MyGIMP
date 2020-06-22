@@ -30,13 +30,15 @@ namespace Mimp
 	}
 
 	CanvasWidget::CanvasWidget(const ToolBox &box, Vector2<unsigned int> size):
-		Image(size, LayerManager(size, 1, Color::White)),
+		Image(size, LayerManager(size, 2, Color::White)),
 		_box(box)
 	{
 		this->m_size = {size.x, size.y};
 		this->m_type = "Canvas";
 		this->_drawBuffer.create(size.x, size.y);
 		this->_makeCallbacks();
+		strcpy(this->_layers->getLayerPtr(0)->name, "Background");
+		this->_layers->selectLayer(1);
 	}
 
 	void CanvasWidget::mouseMoved(tgui::Vector2f pos)
