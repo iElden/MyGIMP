@@ -450,7 +450,7 @@ namespace Mimp::Utils
 			double s;
 			double l;
 		} temp{
-			color.h * 360 / 240.,
+			color.h % 240 == 0 ? 1 : color.h * 360 / 240.,
 			color.s / 240.,
 			color.l / 240.,
 		};
@@ -616,10 +616,12 @@ namespace Mimp::Utils
 			try {
 				auto nbr = std::stoul(hue->getText().toAnsiString());
 
-				if (nbr > UINT8_MAX)
+				if (nbr > 240) {
+					hue->setText("0");
 					return;
+				}
 				h = nbr;
-			} catch (...) { return; }
+			} catch (...) { hue->setText("0"); return; }
 
 			char buffer[8];
 			unsigned char s = 240 - (cross->getSize().y / 2 + cross->getPosition().y - satHuePic->getPosition().y) * 240 / 200;
@@ -646,10 +648,12 @@ namespace Mimp::Utils
 			try {
 				auto nbr = std::stoul(saturation->getText().toAnsiString());
 
-				if (nbr > UINT8_MAX)
-					return;
+					if (nbr > 240) {
+						saturation->setText("0");
+						return;
+					}
 				s = nbr;
-			} catch (...) { return; }
+			} catch (...) { saturation->setText("0"); return; }
 
 			char buffer[8];
 			unsigned char h = (cross->getSize().x / 2 + cross->getPosition().x - satHuePic->getPosition().x) * 240 / 200;
@@ -674,12 +678,14 @@ namespace Mimp::Utils
 			unsigned char l;
 
 			try {
-				auto nbr = std::stoul(saturation->getText().toAnsiString());
+				auto nbr = std::stoul(lightness->getText().toAnsiString());
 
-				if (nbr > UINT8_MAX)
+				if (nbr > 240) {
+					lightness->setText("0");
 					return;
+				}
 				l = nbr;
-			} catch (...) { return; }
+			} catch (...) { lightness->setText("0"); return; }
 
 			char buffer[8];
 			unsigned char h = (cross->getSize().x / 2 + cross->getPosition().x - satHuePic->getPosition().x) * 240 / 200;
