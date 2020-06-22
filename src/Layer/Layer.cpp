@@ -7,6 +7,11 @@
 
 namespace Mimp
 {
+
+	Layer::Layer(const Layer &layer):
+		Layer(layer.getSize(), layer.buffer->getBuffer())
+	{}
+
 	Layer::Layer(Vector2<unsigned int> size, const Color *buffer) :
 		buffer(std::make_shared<FrameBuffer>(size, buffer))
 	{
