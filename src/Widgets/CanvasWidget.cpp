@@ -119,13 +119,14 @@ namespace Mimp
 		if (this->_drawGrid) {
 			auto realGridSize = this->_gridSize * this->_zoom;
 			sf::RectangleShape rs;
+
 			rs.setSize({realGridSize, realGridSize});
 			rs.setOutlineThickness(1.0);
 			rs.setOutlineColor(sf::Color::Black);
 			rs.setFillColor(sf::Color::Transparent);
 
-			for (int i = 0; i * this->_gridSize <= size.x; i += 1) {
-				for (int j = 0; j * this->_gridSize <= size.y; j += 1) {
+			for (unsigned i = 0; i * this->_gridSize < size.x; i += 1) {
+				for (unsigned j = 0; j * this->_gridSize < size.y; j += 1) {
 					rs.setPosition(i * rs.getSize().x, j * rs.getSize().y);
 					target.draw(rs, states);
 				}
