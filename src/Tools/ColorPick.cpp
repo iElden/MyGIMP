@@ -21,7 +21,7 @@ void Mimp::ColorPick::onClick(Mimp::Vector2<float> pos, Mimp::MouseClick click, 
 	this->_toolBox.setSelectedColor(click, color);
 }
 
-void Mimp::ColorPick::onMouseDrag(Mimp::Vector2<float> oldPos, Mimp::Vector2<float> pos, Mimp::MouseClick click,
+void Mimp::ColorPick::onMouseDrag(Mimp::Vector2<float>, Mimp::Vector2<float> pos, Mimp::MouseClick click,
 				  Mimp::Image &image)
 {
 	auto &layer = image.getSelectedLayer();

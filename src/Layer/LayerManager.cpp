@@ -219,6 +219,7 @@ namespace Mimp
 		this->_layers.clear();
 		this->_unsetBusy();
 		this->addImageFromFile(path);
+		this->_selectedLayer = 0;
 	}
 
 	void LayerManager::addImageFromFile(const std::string &path)
