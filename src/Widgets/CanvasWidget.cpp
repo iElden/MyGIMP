@@ -124,8 +124,8 @@ namespace Mimp
 			rs.setOutlineColor(sf::Color::Black);
 			rs.setFillColor(sf::Color::Transparent);
 
-			for (int i = 0; i * realGridSize <= realSize.x; i += 1) {
-				for (int j = 0; j * realGridSize <= realSize.y; j += 1) {
+			for (int i = 0; i * this->_gridSize <= size.x; i += 1) {
+				for (int j = 0; j * this->_gridSize <= size.y; j += 1) {
 					rs.setPosition(i * rs.getSize().x, j * rs.getSize().y);
 					target.draw(rs, states);
 				}
