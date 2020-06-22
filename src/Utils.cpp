@@ -918,4 +918,9 @@ namespace Mimp::Utils
 			return true;
 		return false;
 	}
+
+	bool point_in_ellipse(int x, int y, int rx, int ry)
+	{
+		return std::pow(x, 2) / std::pow(rx, 2) + std::pow(y, 2) / std::pow(ry, 2) <= 1;
+	}
 }

@@ -122,6 +122,7 @@ namespace Mimp::Utils
 
 	HSLColor RGBtoHSL(const Color &color);
 	Color HSLtoRGB(const HSLColor &color);
+	bool point_in_ellipse(int x, int y, int rx, int ry);
 }
 
 

@@ -1,7 +1,7 @@
 #ifndef MYGIMP_FINGER_HPP
 #define MYGIMP_FINGER_HPP
 
-#include "EllipseSelectionTool.hpp"
+#include "SelectionTool.hpp"
 
 namespace Mimp {
 	class Finger : public SelectionTool {
@@ -12,7 +12,6 @@ namespace Mimp {
 		tgui::ScrollablePanel::Ptr getParametersPanel() override;
 
 	private:
-		EllipseSelectionTool _est;
 		int _radius = 5;
 
 		void _apply(Vector2<int> pos, Image &image);

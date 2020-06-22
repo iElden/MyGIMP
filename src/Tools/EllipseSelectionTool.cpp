@@ -6,6 +6,7 @@
 */
 #include <cmath>
 #include "EllipseSelectionTool.hpp"
+#include "../Utils.hpp"
 
 Mimp::EllipseSelectionTool::EllipseSelectionTool(Mimp::ToolBox &toolBox):
 	SelectionTool("Elipse Selection", toolBox)
@@ -56,11 +57,6 @@ void Mimp::EllipseSelectionTool::_updateSelectedArea(Mimp::Image &image)
 	int ry = center.y - min_y;
 	for (int j = min_y; j < max_y; j++)
 		for (int i = min_x; i < max_x; i++)
-			if (this->point_in_ellipse(i - center.x, j - center.y, rx, ry))
+			if (Mimp::Utils::point_in_ellipse(i - center.x, j - center.y, rx, ry))
 				image.selectedArea->add(i, j);
-}
-
-bool Mimp::EllipseSelectionTool::point_in_ellipse(int x, int y, int rx, int ry)
-{
-	return std::pow(x, 2) / std::pow(rx, 2) + std::pow(y, 2) / std::pow(ry, 2) <= 1;
 }
