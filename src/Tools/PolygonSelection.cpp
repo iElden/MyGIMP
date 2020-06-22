@@ -12,13 +12,25 @@ namespace Mimp {
 	void PolygonSelection::onClick(Mimp::Vector2<float> pos, Mimp::MouseClick click, Mimp::Image &image)
 	{
 		if (click == MouseClick::MIMP_LEFT_CLICK) {
-			image.selectedArea->clear();
-			this->_polygon.reset();
+			auto v = this->_map.find(&image);
+			if (v == this->_map.end()) {
+				image.selectedArea->clear();
+				this->_map.insert(std::pair<Image *, Polygon>(&image, Polygon()));
+				this->_map.at(&image).add(pos.to<int>());
+				this->_map.at(&image).update([&image](Vector2<int> pt) { image.selectedArea->add(pt); });
+			} else {
+				image.selectedArea->clear();
+				v->second.add(pos.to<int>());
+				v->second.update([&image](Vector2<int> pt) { image.selectedArea->add(pt); });
+			}
 		}
 		if (click == MouseClick::MIMP_RIGHT_CLICK) {
-			image.selectedArea->clear();
-			this->_polygon.add(pos.to<int>());
-			this->_polygon.update([&image](Vector2<int> pt) { image.selectedArea->add(pt); });
+			auto v = this->_map.find(&image);
+			if (v != this->_map.end()) {
+				image.selectedArea->clear();
+				v->second.removeLast();
+				v->second.update([&image](Vector2<int> pt) { image.selectedArea->add(pt); });
+			}
 		}
 	}
 
@@ -27,9 +39,9 @@ namespace Mimp {
 		auto panel = tgui::ScrollablePanel::create();
 
 		std::string content;
-		content += "Left click : Start a new selection. Must be used first\nwhen dealing with several images.\n";
-		content += "Right click : Add the mouse position to the selection.\n";
-		content += "Note : Undo/Redo don't work with this tool.\nUse Left click to clear the selection.";
+		content += "Left click : Add a point to the selection.\n";
+		content += "Right click : Remove the last point.\n";
+		content += "Note : Undo/Redo don't work with this tool.\nUse mouse clicks instead.";
 		auto hint = tgui::Label::create(content);
 
 		panel->add(hint);
@@ -38,6 +50,10 @@ namespace Mimp {
 
 	void PolygonSelection::clear()
 	{
-		this->_polygon.reset();
+		for (auto &m : this->_map) {
+			m.second.clear();
+		}
+		this->_map.clear();
 	}
+
 }

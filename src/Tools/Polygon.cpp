@@ -1,5 +1,7 @@
 #include "Polygon.hpp"
 
+#include <iostream>
+
 namespace Mimp {
 
 	void Polygon::add(Vector2<int> point)
@@ -13,10 +15,10 @@ namespace Mimp {
 
 	void Polygon::removeLast()
 	{
-		this->pop_back();
 		this->_min = {INT32_MAX, INT32_MAX};
 		this->_max = {INT32_MIN, INT32_MIN};
 		if (!this->empty()) {
+			this->pop_back();
 			for (auto &v : *this) {
 				this->_min.x = std::min(this->_min.x, v.x);
 				this->_min.y = std::min(this->_min.y, v.y);

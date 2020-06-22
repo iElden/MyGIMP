@@ -17,7 +17,7 @@ namespace Mimp {
 
 	private:
 		tgui::EditBox::Ptr _box;
-		Polygon _polygon;
+		std::unordered_map<Image *, Polygon> _map;
 	};
 }
 
