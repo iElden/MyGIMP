@@ -15,7 +15,7 @@
 
 namespace Mimp {
 	Editor::Editor(const std::vector<std::string> &images) :
-		_mainWindow({640, 480}, "Mimp"),
+		_mainWindow({640, 480}, "Mimp v1.1"),
 		_gui(this->_mainWindow),
 		_toolBox(this->_gui),
 		_imgOps(ImageOperationFactory::buildAll()),
@@ -531,7 +531,14 @@ namespace Mimp {
 			});
 		});
 
-		menu->addMenu("Help");
+		menu->addMenuItem({"Help", "About"});
+		menu->connectMenuItem({"Help", "About"}, [this]{
+			auto win = Utils::openWindowWithFocus(this->_gui, 350, 140);
+
+			win->setTitle("About Mimp");
+			win->loadWidgetsFromFile("widgets/about.gui");
+		});
+
 		menu->connect("MouseEntered", [](tgui::Widget::Ptr bar, const std::string &) {
 			bar->moveToFront();
 		});
