@@ -765,6 +765,7 @@ namespace Mimp {
 		newLayer->connect("Pressed", [this, locked, win, canvas, index, &layers] {
 			layers.addLayer(layers.getSize());
 			layers.setLayerIndex(layers.size() - 1, index + 1);
+			layers.selectLayer(index + 1);
 			this->_makeLayersPanel(win, canvas);
 		});
 		duplicate->connect("Pressed", [this, &layer, locked, win, canvas, index, &layers] {
