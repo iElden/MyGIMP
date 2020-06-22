@@ -533,6 +533,26 @@ namespace Mimp::Utils
 		auto saturation = window->get<tgui::EditBox>("Sat");
 		auto lightness = window->get<tgui::EditBox>("Light");
 		auto edit = window->get<tgui::EditBox>("Edit");
+		auto updateTexture = [light](HSLColor color) {
+			sf::Image image;
+			sf::Texture texture;
+
+			image.create(light->getSize().x, light->getSize().y);
+
+			auto size = image.getSize();
+
+			for (unsigned y = 0; y < size.y; y++) {
+				color.l = 240 - (240 * y / size.y);
+
+				auto rgb = HSLtoRGB(color);
+				sf::Color sf{rgb.r, rgb.g, rgb.b, 255};
+
+				for (unsigned x = 0; x < size.x; x++)
+					image.setPixel(x, y, sf);
+			}
+			texture.loadFromImage(image);
+			light->getRenderer()->setTextureTrack({texture});
+		};
 		auto buttonCallBack = [edit, satHuePic, preview, light, hue, saturation, lightness, cross](tgui::Button::Ptr button){
 			char buffer[8];
 			auto c = button->getRenderer()->getBackgroundColor();
@@ -582,7 +602,7 @@ namespace Mimp::Utils
 				button->connect("Clicked", buttonCallBack, button);
 			}
 		light->connect("ValueChanged", sliderCallback);
-		edit->onReturnKeyPress.connect( [cross, hue, saturation, light, lightness, satHuePic, edit]{
+		edit->onReturnKeyPress.connect( [cross, hue, saturation, light, lightness, satHuePic, edit, updateTexture]{
 			std::string text = edit->getText();
 
 			if (text.size() > 7) {
@@ -609,8 +629,9 @@ namespace Mimp::Utils
 				(tmp.h * 200 / 240.f) + pos.x - size.x / 2,
 				((240 - tmp.s) * 200 / 240.f) + pos.y - size.y / 2
 			});
+			updateTexture(tmp);
 		});
-		hue->onReturnKeyPress.connect([cross, satHuePic, light, hue, saturation, lightness, edit, preview]{
+		hue->onReturnKeyPress.connect([cross, satHuePic, light, hue, saturation, lightness, edit, preview, updateTexture]{
 			unsigned char h;
 
 			try {
@@ -641,8 +662,9 @@ namespace Mimp::Utils
 			});
 			edit->setText(buffer);
 			preview->getRenderer()->setBackgroundColor({buffer});
+			updateTexture(color);
 		});
-		saturation->onReturnKeyPress.connect([cross, satHuePic, light, hue, saturation, lightness, edit, preview]{
+		saturation->onReturnKeyPress.connect([cross, satHuePic, light, hue, saturation, lightness, edit, preview, updateTexture]{
 			unsigned char s;
 
 			try {
@@ -673,6 +695,7 @@ namespace Mimp::Utils
 			});
 			edit->setText(buffer);
 			preview->getRenderer()->setBackgroundColor({buffer});
+			updateTexture(color);
 		});
 		lightness->onReturnKeyPress.connect([cross, satHuePic, light, hue, saturation, lightness, edit, preview]{
 			unsigned char l;
@@ -718,10 +741,11 @@ namespace Mimp::Utils
 		});
 		edit->setText(buffer);
 		preview->getRenderer()->setBackgroundColor({buffer});
+		updateTexture(color);
 
 		cross->ignoreMouseEvents();
 
-		auto colorPickHandler = [cross, satHuePic, light, hue, saturation, edit, preview](tgui::Vector2f pos){
+		auto colorPickHandler = [cross, satHuePic, light, hue, saturation, edit, preview, updateTexture](tgui::Vector2f pos){
 			char buffer[8];
 			unsigned char h = pos.x * 240 / 200;
 			unsigned char s = 240 - pos.y * 240 / 200;
@@ -742,6 +766,7 @@ namespace Mimp::Utils
 			});
 			edit->setText(buffer);
 			preview->getRenderer()->setBackgroundColor({buffer});
+			updateTexture(color);
 		};
 
 		satHuePic->onMousePress.connect(colorPickHandler);
