@@ -16,6 +16,8 @@ namespace Mimp
 
 	void CutOperation::click(tgui::Gui &, CanvasWidget::Ptr image, tgui::ChildWindow::Ptr, Editor &) const
 	{
+		image->takeFrameBufferSnapshot();
+
 		Vector2<int> topLeft = {INT32_MAX, INT32_MAX};
 		Vector2<int> bottomRight = {INT32_MIN, INT32_MIN};
 		unsigned *pxBuffer;
@@ -36,8 +38,8 @@ namespace Mimp
 		for (auto &pt : image->selectedArea->getPoints()){
 			auto coord = (pt - topLeft);
 
-			pxBuffer[coord.x + coord.y * size.x] =  layer.buffer->getPixel(pt);
-			layer.buffer->setPixel(pt, Color::Transparent);
+			pxBuffer[coord.x + coord.y * size.x] = layer.buffer->getPixel(pt - layer.pos);
+			layer.buffer->setPixel(pt - layer.pos, Color::Transparent);
 		}
 
 		spec.width = size.x;
