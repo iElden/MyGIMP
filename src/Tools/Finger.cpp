@@ -52,7 +52,10 @@ namespace Mimp
 
 		for (int i = xmin; i < xmax; i += 1) {
 			for (int j = ymin; j < ymax; j += 1) {
-				if (Utils::point_in_ellipse(i - pos.x, j - pos.y, this->_radius, this->_radius) && !Utils::isOutOfBound({i, j}, image.getImageSize())) {
+				if (Utils::point_in_ellipse(i - pos.x, j - pos.y, this->_radius, this->_radius)
+				  && !Utils::isOutOfBound({i, j}, image.getImageSize())
+				  && buffer->getPixel({i, j}).a
+				  ) {
 					pixels.emplace_back(Vector2{i, j}, buffer->getPixel({i , j}));
 				}
 			}
@@ -64,21 +67,25 @@ namespace Mimp
 		int r = 0;
 		int g = 0;
 		int b = 0;
+		int a = 0;
 
 		for (auto &px : pixels) {
 			r += px.second.r;
 			g += px.second.g;
 			b += px.second.b;
+			a += px.second.b;
 		}
 		r /= pixels.size();
 		g /= pixels.size();
 		b /= pixels.size();
+		a /= pixels.size();
 
 		r = std::max(std::min(r, 255), 0);
 		g = std::max(std::min(g, 255), 0);
 		b = std::max(std::min(b, 255), 0);
+		a = std::max(std::min(a, 255), 0);
 
 		for (auto &px: pixels)
-			buffer->drawPixel(px.first, Color(r, g, b, px.second.a));
+			buffer->drawPixel(px.first, Color(r, g, b, a));
 	}
 }
