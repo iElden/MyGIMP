@@ -21,14 +21,6 @@ Renderer.1 {
 }
 
 Renderer.2 {
-    backgroundcolor = transparent;
-    bordercolor = #3C3C3C;
-    borders = (0, 0, 0, 0);
-    textcolor = #3C3C3C;
-    texturebackground = None;
-}
-
-Renderer.3 {
     backgroundcolor = #F5F5F5;
     backgroundcolordisabled = #E6E6E6;
     backgroundcolorhover = white;
@@ -50,7 +42,15 @@ Renderer.3 {
     texturehover = None;
 }
 
-Slider.Lightness {
+Renderer.3 {
+    backgroundcolor = transparent;
+    bordercolor = #3C3C3C;
+    borders = (0, 0, 0, 0);
+    textcolor = #3C3C3C;
+    texturebackground = None;
+}
+
+Slider.BlueSlider {
     ChangeValueOnScroll = true;
     InvertedDirection = false;
     Maximum = 240;
@@ -118,7 +118,7 @@ EditBox.Edit {
     Size = (70, 22);
     Text = "#000000";
     TextSize = 13;
-    renderer = &3;
+    renderer = &2;
 }
 
 Label.Label4 {
@@ -128,7 +128,7 @@ Label.Label4 {
     Size = (30.2, 18);
     Text = RGB;
     TextSize = 13;
-    renderer = &2;
+    renderer = &3;
 }
 
 Label.Label5 {
@@ -138,7 +138,7 @@ Label.Label5 {
     Size = (36.2, 18);
     Text = Color;
     TextSize = 13;
-    renderer = &2;
+    renderer = &3;
 }
 
 Label.Label6 {
@@ -148,7 +148,7 @@ Label.Label6 {
     Size = (76.2, 18);
     Text = "Base colors";
     TextSize = 13;
-    renderer = &2;
+    renderer = &3;
 }
 
 Button.Button1 {
@@ -1547,20 +1547,19 @@ Label.Label7 {
     Position = (380, 240);
     ScrollbarPolicy = Never;
     Size = (29.2, 18);
-    Text = Hue;
+    Text = Red;
     TextSize = 13;
-    renderer = &2;
+    renderer = &3;
 }
 
 Label.Label8 {
-    AutoSize = true;
     HorizontalAlignment = Right;
     Position = (340, 270);
     ScrollbarPolicy = Never;
     Size = (69.2, 18);
-    Text = Saturation;
+    Text = Green;
     TextSize = 13;
-    renderer = &2;
+    renderer = &3;
 }
 
 Label.Label9 {
@@ -1568,29 +1567,29 @@ Label.Label9 {
     Position = (340, 300);
     ScrollbarPolicy = Never;
     Size = (69.2, 18);
-    Text = Lightness;
+    Text = Blue;
     TextSize = 13;
-    renderer = &2;
+    renderer = &3;
 }
 
-EditBox.Hue {
+EditBox.Red {
     Alignment = Center;
     InputValidator = UInt;
     Position = (410, 237);
     Size = (40, 22);
     Text = 239;
     TextSize = 13;
-    renderer = &3;
+    renderer = &2;
 }
 
-EditBox.Sat {
+EditBox.Green {
     Alignment = Center;
     InputValidator = UInt;
     Position = (410, 267);
     Size = (40, 22);
     Text = 240;
     TextSize = 13;
-    renderer = &3;
+    renderer = &2;
 }
 
 EditBox.Light {
@@ -1600,10 +1599,10 @@ EditBox.Light {
     Size = (40, 22);
     Text = 240;
     TextSize = 13;
-    renderer = &3;
+    renderer = &2;
 }
 
-Picture.SatHue {
+Picture.RedGreen {
     Position = (230, 20);
     Size = (200, 200);
 
