@@ -94,7 +94,7 @@ Button.Cancel {
 TextBox.Preview {
     HorizontalScrollbarPolicy = Never;
     MaximumCharacters = 0;
-    Position = (230, 240);
+    Position = (10, 240);
     ReadOnly = true;
     Size = (98, 75);
     Text = "";
@@ -135,10 +135,10 @@ Label.Label4 {
 
 Label.Label5 {
     AutoSize = true;
-    Position = (260, 320);
+    Position = (120, 270);
     ScrollbarPolicy = Never;
-    Size = (36.2, 18);
-    Text = Color;
+    Size = (54.2, 18);
+    Text = Preview;
     TextSize = 13;
     renderer = &2;
 }
